@@ -1,0 +1,177 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\FunctionDLLTest\\FunctionDLLTest.csproj": {}
+  },
+  "projects": {
+    "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\AutoUpdate\\AutoUpdate.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\AutoUpdate\\AutoUpdate.csproj",
+        "projectName": "AutoUpdate",
+        "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\AutoUpdate\\AutoUpdate.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net40": {
+            "projectReferences": {
+              "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj": {
+                "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net40": {}
+      }
+    },
+    "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj",
+        "projectName": "Base",
+        "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net40": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net40": {}
+      }
+    },
+    "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\FunctionDLLTest\\FunctionDLLTest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\FunctionDLLTest\\FunctionDLLTest.csproj",
+        "projectName": "FunctionDLLTest",
+        "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\FunctionDLLTest\\FunctionDLLTest.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\FunctionDLLTest\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 25.1\\Components\\Offline Packages",
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 25.1.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 25.1\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "targetAlias": "netcoreapp2.1",
+            "projectReferences": {
+              "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\AutoUpdate\\AutoUpdate.csproj": {
+                "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\AutoUpdate\\AutoUpdate.csproj"
+              },
+              "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj": {
+                "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj"
+              },
+              "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\ProcessingWork\\ProcessingWork.csproj": {
+                "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\ProcessingWork\\ProcessingWork.csproj"
+              },
+              "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\SendEmailDll\\SendEmailDll.csproj": {
+                "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\SendEmailDll\\SendEmailDll.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "targetAlias": "netcoreapp2.1",
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[15.8.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[3.10.0, )"
+            },
+            "nunit": {
+              "target": "Package",
+              "version": "[3.13.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\ProcessingWork\\ProcessingWork.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\ProcessingWork\\ProcessingWork.csproj",
+        "projectName": "ProcessingWork",
+        "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\ProcessingWork\\ProcessingWork.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net452": {
+            "projectReferences": {
+              "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj": {
+                "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\Base\\Base.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net452": {}
+      }
+    },
+    "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\SendEmailDll\\SendEmailDll.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\SendEmailDll\\SendEmailDll.csproj",
+        "projectName": "SendEmailDll",
+        "projectPath": "D:\\hau_Work\\general\\NhatNam\\Nhat_Nam\\SendEmailDll\\SendEmailDll.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net452": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net452": {}
+      }
+    }
+  }
+}

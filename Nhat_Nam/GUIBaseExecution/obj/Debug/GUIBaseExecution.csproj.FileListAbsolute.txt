@@ -1,0 +1,2 @@
+E:\hau_Work\general\NhatNam\Nhat_Nam\GUIBaseExecution\obj\Debug\GUIBaseExecution.csprojAssemblyReference.cache
+E:\hau_Work\general\NhatNam\Nhat_Nam\GUIBaseExecution\obj\Debug\GUIBaseExecution.csproj.CoreCompileInputs.cache

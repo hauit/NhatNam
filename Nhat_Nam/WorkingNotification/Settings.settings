@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WorkingNotification" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LGSMTP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">156.147.1.150</Value>
+    </Setting>
+    <Setting Name="LGSender" Type="System.String" Scope="User">
+      <Value Profile="(Default)">minh.cao@lge.com</Value>
+    </Setting>
+    <Setting Name="LinkWeb" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10.226.90.26</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

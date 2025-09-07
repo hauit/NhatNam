@@ -1,0 +1,95 @@
+@startuml
+actor KH
+participant PKD
+participant PKT
+participant PKH
+participant MaterialWarehouse
+participant FAC
+participant Handle
+participant Insp
+participant Support
+participant Warehouse
+
+KH -> PKD: Thong tin don hang
+PKD -> PKT: Yeu cau xac nhan xem co lam duoc ko
+PKT -> PKD: Ket qua xac nhan
+opt Khong gia cong duoc
+  PKD -> KH: Tu choi gia cong
+  ======Ket thuc, KH khong dat hang =====
+end
+
+PKT -> PKD: Bao gia
+PKT -> PKH: Cau hinh chi tiet
+PKT -> PKH: D/S cong doan gia cong.
+PKD -> KH: Bao gia
+KH -> PKD: Thong tin don hang
+PKD -> PKH: Thong tin don hang
+PKH -> PKH: lap ke hoach gia cong
+PKH -> FAC: Y/C dang ki nguyen cong may(neu co)
+PKH -> Handle: Y/C dang ki nguyen cong sau gia cong(neu co)
+PKH -> Insp: Y/C dang ki nguyen cong kiem tra(neu co)
+PKH -> MaterialWarehouse:Y/C kiem tra vat lieu
+opt Thieu VL de gia cong
+  MaterialWarehouse -> PKD: Y/C dat hang vat lieu
+  PKD -> PKD: Tien hanh dat hang VL( nghiep vu rieng, ko ghi vao)
+  PKD -> Support: VL duoc van chuyen ve Cty.
+  Support -> MaterialWarehouse: VL nhap kho.
+end
+
+MaterialWarehouse -> PKH: Co du VL de gia cong
+PKH -> PKH: Start lenh va lap ke hoach gia cong
+=========Gia cong tai xuong ========
+PKH -> FAC: Danh sach ke hoach trong ca.
+FAC -> FAC: Tien hanh gia cong theo ke hoach
+FAC -> FAC: Nhap WTS
+FAC -> PKH: Thong tin ket qua lam viec trong ca de tinh toan ke hoach ca tiep theo
+opt Neu gia cong san pham bi hong phoi
+  FAC -> MaterialWarehouse: xin cap phoi moi de gia cong
+  MaterialWarehouse -> MaterialWarehouse: kiem tra xem co phoi khong
+  opt Thieu phoi thi MaterialWarehouse se tien hanh yeu cau mua phoi gap theo nghie vu mua phoi
+  end
+
+  MaterialWarehouse -> FAC: Phoi vatj lieu
+end
+
+opt Khi gia cong xong cac nguyen cong may
+  FAC -> Support: Da gia cong xong, co the van chuyen san pham den cong doan sau GC
+  Support -> Handle: van chuyen SP de tiep tuc xu ly
+end
+==============Gia cong tai cac bo phan sau gia cong==============
+PKH -> Handle: Danh sach ke hoach trong ca.
+Handle -> Handle: Tien hanh gia cong theo ke hoach
+Handle -> Handle: Nhap WTS
+Handle -> PKH: Thong tin ket qua lam viec trong ca de tinh toan ke hoach ca tiep theo
+opt Neu gia cong san pham bi hong phoi
+  Handle -> PKH: BC su co
+end
+
+opt Khi gia cong xong cac nguyen cong
+  Handle -> Support: Da gia cong xong, co the van chuyen san pham den cong doan sau GC
+  Support -> Insp: van chuyen SP de tiep tuc xu ly
+end
+==============Kiem tra san pham==============
+PKH -> Insp: Danh sach ke hoach trong ca.
+Insp -> Insp: Tien hanh gia cong theo ke hoach
+Insp -> Insp: Nhap WTS
+Insp -> PKH: Thong tin ket qua lam viec trong ca de tinh toan ke hoach ca tiep theo
+opt Neu san pham khong dat(NG)
+  Insp -> Support: Y/C van chuyen tra ve cac bo phan san xuat de sua chua
+end
+
+opt SP dat chat luong(OK)
+  Handle -> Support: Da gia cong xong, co the van chuyen san pham den cong doan sau GC
+  Support -> Warehouse: Lam thu tuc nhap kho
+end
+
+============================================
+Warehouse -> PKD: da du hang theo don
+PKD -> KH: thong bao gia cong xong va tien hanh van chuyen hang hoa
+
+=========================================Truong hop hang nhap kho OK nhung sau 1 TG(hoac vanc huyen den KH) thif phats sinh loi===========
+Warehouse -> PKH: bao loi hang
+PKH -> PKH: Tien hanh phat lenh lam bu cac san pham bi loi
+PKH -> PKH: Y/c cac bo phan tien han gia cong theo lenh  moi phat
+
+@enduml

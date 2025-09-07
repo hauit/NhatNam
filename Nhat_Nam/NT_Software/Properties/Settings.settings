@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NT_Software.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DomainMail" Type="System.String" Scope="User">
+      <Value Profile="(Default)">outlook.office365.com</Value>
+    </Setting>
+    <Setting Name="Server_Folder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\192.168.0.5\Share\Design\Phan mem\AutoUpdate</Value>
+    </Setting>
+    <Setting Name="LGSMTP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">156.147.1.150</Value>
+    </Setting>
+    <Setting Name="LGSender" Type="System.String" Scope="User">
+      <Value Profile="(Default)">minh.cao@lge.com</Value>
+    </Setting>
+    <Setting Name="LGPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

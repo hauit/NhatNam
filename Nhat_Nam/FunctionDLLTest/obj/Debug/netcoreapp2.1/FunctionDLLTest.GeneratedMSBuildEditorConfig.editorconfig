@@ -1,0 +1,8 @@
+is_global = true
+build_property.RootNamespace = FunctionDLLTest
+build_property.ProjectDir = D:\hau_Work\general\NhatNam\Nhat_Nam\FunctionDLLTest\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 
