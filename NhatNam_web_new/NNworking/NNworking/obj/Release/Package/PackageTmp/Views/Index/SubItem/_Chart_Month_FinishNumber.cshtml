@@ -1,0 +1,63 @@
+﻿
+@(Html.DevExtreme().Chart()
+    .ID("chart")
+    .CommonSeriesSettings(s => s
+        .ArgumentField("month")
+        .Type(SeriesType.Bar)
+    )
+    .Series(s =>
+    {
+        s.Add().ValueField("Total").Name("Tổng")
+        .Label(l => l.Visible(true) // Hiển thị giá trị trên cột
+            .Position(RelativePosition.Inside) // Vị trí bên ngoài cột
+            .Font(f => { f.Size(12);f.Color("black"); }) // Cỡ chữ
+            .BackgroundColor("transparent") // Nền trong suốt
+        );
+        s.Add().ValueField("Finised_Num").Name("Hoàn thành")
+        .Label(l => l.Visible(true) // Hiển thị giá trị trên cột
+            .Position(RelativePosition.Inside) // Vị trí bên ngoài cột
+            .Font(f => { f.Size(12); f.Color("green"); }) // Cỡ chữ
+            .BackgroundColor("transparent") // Nền trong suốt
+        );
+    })
+    .Legend(l => l
+        .VerticalAlignment(VerticalEdge.Bottom)
+        .HorizontalAlignment(HorizontalAlignment.Center)
+        .ItemTextPosition(Position.Top)
+    )
+    .ValueAxis(a => a
+        .Add()
+        .Title(t => t.Text("Order"))
+        .Position(Position.Right)
+    )
+    .Title("Số lượng đơn hàng hoàn thành")
+    .Export(e => e.Enabled(true))
+    .OnPointClick("OnPointClick")
+    .Tooltip(t => t
+        .Enabled(true)
+        .Location(ChartTooltipLocation.Edge)
+        .CustomizeTooltip(@<text>
+            function(arg) {
+            return {
+            text: arg.seriesName + " : " + arg.valueText
+            };
+            }
+        </text>)
+    )
+    .DataSource(Url.Action("GetMonth_FinishOrderNumber", "AllDept")
+    )
+)
+
+<div class="box-footer clearfix no-border">
+    <a href="@Url.Action("FinishOrderNumber", new {Controller= "AllDept" })">Xem chi tiết</a>
+</div>
+<script>
+    function OnPointClick(e) {
+        RefreshDetail(e);
+    }
+
+    function RefreshDetail(e, isLegend) {
+        var secID = '';
+        secID = e.data.month;
+    }
+</script>

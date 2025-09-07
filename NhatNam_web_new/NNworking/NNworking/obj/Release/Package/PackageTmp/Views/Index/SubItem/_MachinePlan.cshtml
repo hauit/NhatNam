@@ -1,0 +1,73 @@
+﻿
+<div id="MachineGroup">
+    
+</div>
+
+<script>
+    loadGroupMachine();
+    function loadGroupMachine() {
+        var dept = 'xuong';
+        var date = new Date();
+        $.ajax({
+            url: '@Url.Action("GetMachinePrepare", "WTS")',
+            dataType: 'Json',
+            type: 'POST',
+            data: { 'date': date, 'department': dept },
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK")
+                {
+                    alert(data.Values);
+                    return;
+                }
+
+                var GroupMachineBT = "";
+                $.each(data.Values, function (i, val) {
+                    var color = "#267326";// có kế hoạch - màu xanh
+                    switch (val.Active) {
+                        case 1: // máy không có KH - màu vàng
+                            color = "#cccc00";
+                            break;
+                        case 2: //// máy sự cố - màu đỏ
+                            color = "#ff6600";
+                            break;
+                    }
+                    GroupMachineBT += '<div style="margin-top: 10px;margin-left: 10px;width:130px;float:left;color:white;background-color:' + color + '">';
+                    GroupMachineBT += '<table>';
+                    GroupMachineBT += '<tr>';
+                    GroupMachineBT += '<td colspan="2" style="text-align:center">' + val.MachineID + '</td>';
+                    GroupMachineBT += '</tr>';
+                    GroupMachineBT += '<tr>';
+                    GroupMachineBT += '<td>NVGL: </td>';
+                    GroupMachineBT += '<td>' + val.GL_Staff + '</td>';
+                    GroupMachineBT += '</tr>';
+                    GroupMachineBT += '<tr>';
+                    GroupMachineBT += '<td>NVCT: </td>';
+                    GroupMachineBT += '<td>' + val.PBJ1_Staff + '</td>';
+                    GroupMachineBT += '</tr>';
+                    GroupMachineBT += '<tr>';
+                    GroupMachineBT += '<td>NVCB: </td>';
+                    GroupMachineBT += '<td>' + val.CB_Staff + '</td>';
+                    GroupMachineBT += '</tr>';
+                    GroupMachineBT += '<tr>';
+                    GroupMachineBT += '<td>PLJ1 hom truoc: </td>';
+                    GroupMachineBT += '<td>' + val.MassTime + '</td>';
+                    GroupMachineBT += '</tr>';
+                    GroupMachineBT += '<tr>';
+                    GroupMachineBT += '<td>PBJ1 hom truoc: </td>';
+                    GroupMachineBT += '<td>' + val.InspecTime + '</td>';
+                    GroupMachineBT += '</tr>';
+                    GroupMachineBT += '<tr>';
+                    GroupMachineBT += '<td>dung hom truoc: </td>';
+                    GroupMachineBT += '<td>' + val.StopTime + '</td>';
+                    GroupMachineBT += '</tr>';
+                    GroupMachineBT += '</table>';
+                    GroupMachineBT += '</div>';
+                    //GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;background-color:' + color + '" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick=""> ';
+                    
+                });
+                $("#MachineGroup").html(GroupMachineBT);
+            },
+        });
+    }
+</script>

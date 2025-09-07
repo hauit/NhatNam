@@ -1,0 +1,311 @@
+﻿    <!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="@Html.IsSelected(controller: "Dashboard")">
+                <a href="@Url.Action("Index","Index")">
+                    <i class="fa fa-dashboard"></i> <span>Trang chủ</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>WTS nhân viên</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("Index","WTS")"><i class="fa fa-circle-o"></i> WTS nhân viên trực tiếp</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("Index","AnodWTS")"><i class="fa fa-circle-o"></i> WTS mạ</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WTSGT","WTS")"><i class="fa fa-circle-o"></i> WTS nhân viên gián tiếp</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("CheckWTS","WTS")"><i class="fa fa-circle-o"></i> Duyệt WTS nhân viên</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("ToLenh","Planning")">@*enter1988*@
+                    <i class="fa fa-hospital-o"></i> <span>QL giao việc</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("ToLenh","Planning")">
+                    <i class="fa fa-hospital-o"></i> <span>Tờ lệnh</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Kế hoạch</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview" style="height: auto;">
+                        <a href="#">
+                            <i class="fa fa-coffee"></i> Kế hoạch sản xuất
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("Index","Planning")"><i class="fa fa-circle-o"></i>Lập kế hoạch</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("PlanPreparation","Planning")"><i class="fa fa-circle-o"></i>Chuẩn bị gia công</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("khgc","ProcessingDept")"><i class="fa fa-circle-o"></i>Kế hoạch máy</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("CheckPlan","Planning")"><i class="fa fa-circle-o"></i>Kiểm tra kế hoạch</a></li>
+                            <li><a href="@Url.Action("MachineListError","Alldept")" class=""><i class="fa fa-cart-plus"></i>Danh sách máy sự cố</a></li>
+                            @*<li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ToLenh","Planning")"><i class="fa fa-circle-o"></i>Tờ lệnh</a></li>*@
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("FactoryEvaluationOverview", "ProcessingDept")"><i class="fa fa-circle-o"></i> Tổng quan biểu đánh giá </a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ChatBetweenMachineAndPlan", "ProcessingDept")"><i class="fa fa-circle-o"></i> Trao đổi TT với KH </a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("StandTimeList", "AllDept")"><i class="fa fa-circle-o"></i> Thời gian Tiêu chuẩn </a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("OptionDataList", "Planning")"><i class="fa fa-circle-o"></i> Option data </a></li>
+                            <li><a href="@Url.Action("UpdateTGTC","Alldept")" class=""><i class="fa fa-times"></i>Cập nhật TGTC</a></li>
+                        </ul>
+                    </li>
+                    <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                        <a href="#">
+                            <i class="fa fa-stop-circle"></i> <span>Quản lý kho vật liệu</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("MaterialStock","MaterialStock")"><i class="fa fa-circle-o"></i> Danh sách vật liệu</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("MaterialConfiguration","MaterialStock")"><i class="fa fa-circle-o"></i> Cấu hình vật liệu</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("MaterialStock_Input","MaterialStock")"><i class="fa fa-circle-o"></i> Nhập kho</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("MaterialStock_Output","MaterialStock")"><i class="fa fa-circle-o"></i> Xuất kho</a></li>
+                        </ul>
+                    </li>
+                    <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                        <a href="#">
+                            <i class="fa fa-stop-circle"></i> <span>Quản lý kho TP</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="fa-address-book"><a href="@Url.Action("StokerInput","Tool")"><i class="fa fa-circle-o"></i> Hàng nhập kho</a></li>
+                            <li class="fa-address-book"><a href="@Url.Action("StokerOutput","Tool")"><i class="fa fa-circle-o"></i> Hàng xuất kho</a></li>
+                            <li class="fa-address-book"><a href="@Url.Action("StockerOutputCalculation","Tool")"><i class="fa fa-circle-o"></i> Tính toán xuất kho</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Giao nhận</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview" style="height: auto;">
+                        <a href="#">
+                            <i class="fa fa-coffee"></i> Quản lý dữ liệu
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li><a href="@Url.Action("ToolList","Tool")" class=""><i class="fa fa-cart-plus"></i>Đồ dùng - dụng cụ</a></li>
+                            <li><a href="@Url.Action("ToolCatergory","Tool")" class=""><i class="fa fa-cart-plus"></i>Nhóm dụng cụ</a></li>
+                            <li><a href="@Url.Action("ToolType","Tool")" class=""><i class="fa fa-cart-plus"></i>Loại dụng cụ</a></li>
+                            <li><a href="@Url.Action("GiaDeHang","Tool")" class=""><i class="fa fa-cart-plus"></i>Giá để hàng</a></li>
+                            <li><a href="@Url.Action("InventoryData","Tool")" class=""><i class="fa fa-cart-plus"></i>DL kiểm kê</a></li>
+                            @*<li><a href="@Url.Action("ErrorItemNotify","AllDept")" class=""><i class="fa fa-circle-o"></i>Danh sách báo lỗi</a></li>
+                <li><a href="@Url.Action("ErrorType","AllDept")" class=""><i class="fa fa-circle-o"></i>Kiểu lỗi</a></li>
+                <li><a href="@Url.Action("EvaluateIndex","AllDept")" class=""><i class="fa fa-circle-o"></i>Mã đánh giá hàng lỗi</a></li>*@
+                        </ul>
+                    </li>
+                    <li class="fa-address-book"><a href="@Url.Action("InventoryImport","Tool")"><i class="fa fa-circle-o"></i> Giao nhận</a></li>
+                    <li class="fa-address-book"><a href="@Url.Action("InventoryAvailable","Tool")"><i class="fa fa-circle-o"></i> Vi trí hàng hóa</a></li>
+                    <li class="fa-address-book"><a href="@Url.Action("InventoryPlaceOfItem", "Alldept")"><i class="fa fa-circle-o"></i> Vi trí hàng theo order</a></li>
+                    <li class="fa-address-book"><a href="@Url.Action("TrackingHistory","Tool")"><i class="fa fa-circle-o"></i> Lịch sử giao nhận</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Xưởng gia công</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ShiftHandOver","ProcessingDept")"><i class="fa fa-circle-o"></i>Bàn giao ca</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("YCKP","ProcessingDept")"><i class="fa fa-circle-o"></i>Yêu cầu khắc phục</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Bộ phận kỹ thuật</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("TechJob_Daily","Alldept")"><i class="fa fa-circle-o"></i>Công việc hàng ngày</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("TechJob_ChangePpoint","Alldept")"><i class="fa fa-circle-o"></i>Nội dung thay đổi</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Phòng cơ điện</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("MechanicalElectronical_WorkDaily","Alldept")"><i class="fa fa-circle-o"></i>Công việc hàng ngày</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Quản lý chung</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("DailyReport","Alldept")"><i class="fa fa-circle-o"></i> Daily report</a></li>
+                    <li class="treeview" style="height: auto;">
+                        <a href="#">
+                            <i class="fa fa-coffee"></i> Quản lý dữ liệu
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li><a href="@Url.Action("PartnerTypeList","Alldept")" class=""><i class="fa fa-cart-plus"></i>Kiểu đối tác</a></li>
+                            <li><a href="@Url.Action("PartnerList","Alldept")" class=""><i class="fa fa-cart-plus"></i>Danh sách đối tác</a></li>
+                            <li><a href="@Url.Action("MachineList","Alldept")" class=""><i class="fa fa-cart-plus"></i>Danh sách máy gia công</a></li>
+                            <li><a href="@Url.Action("MachineGroupList","Alldept")" class=""><i class="fa fa-cart-plus"></i>Danh sách nhóm máy</a></li>
+                            <li><a href="@Url.Action("Department","Alldept")" class=""><i class="fa fa-cart-plus"></i>Danh sách bộ phận</a></li>
+                            <li><a href="@Url.Action("StaffList","InputData")"><i class="fa fa-circle-o"></i> Danh sách nhân viên</a></li>
+                            <li><a href="@Url.Action("WorkIDManagement", "Alldept")"><i class="fa fa-circle-o"></i> Mã WTS các bộ phận</a></li>
+                            <li><a href="@Url.Action("ShiftRegister","Payroll")" class=""><i class="fa fa-circle-o"></i>Đăng kí ca hàng ngày</a></li>
+                            <li><a href="@Url.Action("ShiftList","AllDept")" class=""><i class="fa fa-circle-o"></i>Danh sách ca</a></li>
+                            <li><a href="@Url.Action("FunctionalList","AllDept")" class=""><i class="fa fa-circle-o"></i>Danh sách chức năng</a></li>
+                            <li><a href="@Url.Action("FunctionPermission","AllDept")" class=""><i class="fa fa-circle-o"></i>Cấp quyền truy cập</a></li>
+
+                            @*@if (Session["StaffID"].ToString() == "1556" || Session["StaffID"].ToString() == "0828")
+                            {*@
+                                <li><a href="@Url.Action("UserList","InputData")"><i class="fa fa-circle-o"></i> Danh sách tài khoản</a></li>
+                            @*}*@
+                        </ul>
+                    </li>
+                    <li class="treeview" style="height: auto;">
+                        <a href="#">
+                            <i class="fa fa-coffee"></i> Quản lý xe
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li><a href="@Url.Action("CarsList","Alldept")" class=""><i class="fa fa-cart-plus"></i>Danh sách xe</a></li>
+                            <li><a href="@Url.Action("CarRegister","Alldept")" class=""><i class="fa fa-cart-plus"></i>Đăng kí xe</a></li>
+                            <li><a href="@Url.Action("CarRegisterApproved","Alldept")" class=""><i class="fa fa-cart-plus"></i>Xác nhận ĐK xe</a></li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Thống kê - Báo cáo</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li><a href="@Url.Action("GetAllWTS","Alldept")" class=""><i class="fa fa-cart-plus"></i>Lấy dữ liệu WTS</a></li>
+                    <li><a href="@Url.Action("OrderExpire","ProcessingDept")" class=""><i class="fa fa-times"></i>Đơn hàng quá hạn</a></li>
+                    <li><a href="@Url.Action("Capacity","Alldept")" class=""><i class="fa fa-times"></i>Công suất máy</a></li>
+                    <li><a href="@Url.Action("Capacity2","Alldept")" class=""><i class="fa fa-times"></i>TL làm việc với Optiondata</a></li>
+                    <li><a href="@Url.Action("MeetingList","Alldept")" class=""><i class="fa fa-times"></i>Nội dung cuôc họp</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Quản lý hàng lỗi</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview" style="height: auto;">
+                        <a href="#">
+                            <i class="fa fa-coffee"></i> Quản lý dữ liệu
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ErrorProcess","AllDept")" class=""><i class="fa fa-cart-plus"></i>Hướng xử lý hàng lỗi</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ErrorHappenFrequency","AllDept")" class=""><i class="fa fa-cart-plus"></i>Số lần phát hiện</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("PredictErrorCause","AllDept")" class=""><i class="fa fa-cart-plus"></i>Nhận định nguyên nhân lỗi</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ErrorContent","AllDept")" class=""><i class="fa fa-circle-o"></i>Nội dung lỗi</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ErrorType","AllDept")" class=""><i class="fa fa-circle-o"></i>Kiểu lỗi</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("DeceidedTime","AllDept")" class=""><i class="fa fa-circle-o"></i>Thời điểm phát hiện lỗi</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview" style="height: auto;">
+                        <a href="#">
+                            <i class="fa fa-coffee"></i> Thông tin hàng lỗi
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ErrorItemNotify","AllDept")" class=""><i class="fa fa-cart-plus"></i>Thông báo hàng lỗi</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ErrorItemNotify_2","AllDept")" class=""><i class="fa fa-cart-plus"></i>Nguyên nhân - đối sách</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("Index","Stocker")">
+                    <i class="fa fa-hospital-o"></i> <span>Quản lý kho</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("Index","EmailConfiguration")">
+                    <i class="fa fa-hospital-o"></i> <span>QL thông báo email</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("Index","Payroll")">
+                    <i class="fa fa-hospital-o"></i> <span>QL nhân sự</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

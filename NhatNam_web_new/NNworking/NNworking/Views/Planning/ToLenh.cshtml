@@ -1,0 +1,261 @@
+﻿
+
+
+
+<div class="box box-body">
+    <div class="row" style="padding-left:10px;">
+        <form class="form-inline  " style="width:100%;display:block" action="@Url.Action("ToLenh","Planning")">
+            <input class="form-control mr-sm-2" required="" name="Order" minlength="7" maxlength="20" autofocus="" type="search" value="" placeholder="Nhập Order">
+        </form>
+    </div>
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-4">
+                <span> Giá thành: </span><span style="font-size:16pt;font-weight:bold">@ViewBag.GiaThanh</span>
+            </div>
+            <div class="col-lg-4">
+                <h1 class="text-center font-weight-bold col-12">
+                    <span id="TenChiTiet" style="font-size:28pt;font-weight:bold">  RAE-12505-2-A2+A</span>
+                </h1>
+                <h1 class="text-center font-weight-bold col-12">
+                    <span id="OrderNo" style="font-size:28pt;font-weight:bold">  Y123456</span>
+                </h1>
+            </div>
+            <div class="col-lg-4">
+                <span id="qrcode" class="text-center" style="width:100px; height:100px; margin-top:15px;"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4" style="width:300px;float:left">
+                <div>
+                    Thời hạn gia công:&nbsp;<span id="ThoiHanHiaCong" style="font-size:16pt;font-weight:bold"></span>
+                </div>
+                <div>
+                    Số lượng lệnh:&nbsp;<span id="SoLuongLenh" style="font-size:16pt;font-weight:bold"></span>
+                </div>
+            </div>
+            <div class="col-lg-4" style="float:left">
+                <div>
+                    <span> File HDGC </span><br />
+                    @{
+                        var fileHD = (Dictionary<string, string>)ViewBag.Paths;
+                        if (fileHD == null)
+                        {
+                            <a href="#">Không tìm thấy file</a>
+                        }
+                        else
+                        {
+                            foreach (var item in fileHD)
+                            {
+                                <a href="@Url.Action("PdfView", "Planning", new { path = item.Key, name = item.Value })"><span> @item.Key </span></a><br />
+                            }
+                        }
+                    }
+                </div>
+                <div>
+                    <span> File CTGC </span><br />
+                    @{
+                        var fileCT = (Dictionary<string, string>)ViewBag.PathsCT;
+                        if (fileCT == null || fileCT.Count == 0)
+                        {
+                            <a href="#">Không tìm thấy file</a>
+                        }
+                        else
+                        {
+                            foreach (var item in fileCT)
+                            {
+                                <a href="@Url.Action("PdfView", "Planning", new { path = item.Key, name = item.Value })"><span> @item.Key </span></a><br />
+                            }
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4" style="float:left">
+                <div>
+                    <span> Ghi chú lệnh: </span>@ViewBag.OrderNote
+                </div>
+                <div>
+                    <span> Ghi chú gia công: </span>@ViewBag.PartNote
+                </div>
+                <div>
+                    <span> Bản vẽ: </span>
+                    @{
+                        var fileDraw = (Dictionary<string, string>)ViewBag.PathsDraw;
+                        if (fileDraw == null)
+                        {
+                            <a href="#">Không tìm thấy file bản vẽ</a>
+                                    }
+                        else
+                        {
+                            foreach (var item in fileDraw)
+                            {
+                                <a href="@Url.Action("PdfView", "Planning", new { path = item.Key, name = item.Value })"><span> @item.Key </span></a><br/>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        @(Html.DevExtreme().DataGrid<NNworking.Models.sp_242_ToLenh_Result>()
+                .DataSource(ds => ds.WebApi()
+                    .RouteName("View_ToLenhApi")
+                    .LoadAction("Get")
+                    .LoadParams(new { order = ViewBag.Order })
+                    .Key("BOderNo")
+                )
+                .ID("DataGridToLenh")
+                .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                    .DescendingText("BOderNo")
+                )
+                .ColumnAutoWidth(true)
+                .FilterRow(fil => fil.Visible(true))
+                .FilterPanel(fi => fi.Visible(true))
+                .ShowColumnHeaders(true)
+                .ShowRowLines(true)
+                .RemoteOperations(true)
+                .Columns(columns =>
+                {
+
+                    columns.AddFor(m => m.BOderNo).Caption("Số đơn hàng");
+
+                    columns.AddFor(m => m.PartID).Caption("Tên chi tiết");
+
+                    columns.AddFor(m => m.Deadline).Caption("Thời hạn");
+
+                    columns.AddFor(m => m.OptionID).Caption("Nguyên công");
+
+                    columns.AddFor(m => m.MachineID).Caption("Máy KH");
+
+                    columns.AddFor(m => m.MachineWTS).Caption("Máy GC");
+
+                    columns.AddFor(m => m.FinishDate).Caption("Ngày kết thúc");
+
+                    columns.AddFor(m => m.Qty).Caption("Sl lệnh");
+
+                    columns.AddFor(m => m.TotalOK).Caption("Tổng OK");
+
+                    columns.AddFor(m => m.TotalNG).Caption("Tổng NG");
+
+                    columns.AddFor(m => m.OKQty).Caption("OK theo máy");
+
+                    columns.AddFor(m => m.NGQty).Caption("NG theo máy");
+
+                    columns.AddFor(m => m.TT).Caption("Trạng thái");
+                })
+                .OnRowPrepared("onRowPrepared")
+                .OnContentReady("ReloadData")
+        )
+    </div>
+</div>
+<div id="HangBaoLoi_Zone" style="overflow:hidden!important;background-color: #F44336!important;position: fixed!important;bottom: 0!important;border-radius: 10px;padding: 0;color: #fff;margin: 0;"> 
+    <div id="BaoHangLoi_Show" onclick="BaoHangLoi_Show()">Hiện báo lỗi</div>
+    <div id="BaoHangLoi"> 
+        <div> 
+            <h3>OrderNo này có phát sinh lỗi <a id="ThongBaoOrderNoLoi_DongTB" onclick="BaoHangLoi_Hide()" style="FONT-SIZE: 15PX;BACKGROUND: #009688;border-radius: 30px;padding: 7px;font-weight: bold;float: right;color: white;">Đóng</a></h3> 
+        </div> 
+        <div id="BaoHangLoi_Detail"> 
+        </div> 
+    </div> 
+</div>
+
+<script>
+    function onRowPrepared(rowElement) {
+        if (rowElement.rowType != "data") {
+            return;
+        }
+
+        $("#OrderNo").html(rowElement.data.BOderNo);
+        $("#TenChiTiet").html(rowElement.data.PartID);
+        $("#ThoiHanHiaCong").html(rowElement.data.Deadline.substring(0,10));
+        $("#SoLuongLenh").html(rowElement.data.Qty);
+    }
+
+    $(document).ready(function () {
+        document.getElementById("HangBaoLoi_Zone").style.display = "none";
+        var data = $("#DataGridToLenh").dxDataGrid("instance").option("dataSource");
+        if (data.length == 0) {
+            return;
+        }
+
+        var orderNo = data[0].BOderNo;
+        var qty = data[0].Qty;
+
+        $("#OrderNo").html(orderNo);
+        $("#TenChiTiet").html(data[0].PartID);
+        $("#ThoiHanHiaCong").html(data[0].Deadline);
+        $("#SoLuongLenh").html(qty);
+    });
+
+    function BaoHangLoi_Show() {
+        document.getElementById("HangBaoLoi_Zone").style.display = "";
+        document.getElementById("BaoHangLoi").style.display = "";
+        document.getElementById("BaoHangLoi_Show").style.display = "none";
+    }
+
+    function BaoHangLoi_Hide() {
+        document.getElementById("BaoHangLoi_Show").style.display = "";
+        document.getElementById("BaoHangLoi").style.display = "none";
+    }
+
+    function ReloadData() {
+        LoadQrCode();
+        LoadBaoHangLoi();
+    }
+
+    function LoadBaoHangLoi() {
+        var order = $("#OrderNo").html();
+        $.ajax({
+            url: '@Url.Action("GetHangBaoLoiByMONo", "AllDept")',
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            data: {'order': order},
+            success: function (data) {
+                if (data.Status != "OK" || data.Values.length == 0) {
+                    return;
+                }
+
+                var html = '';
+                html += '<table class="table">                      ';
+                html += '    <tbody>                                ';
+                html += '        <tr>                               ';
+                html += '            <th>Số báo lỗi</th>            ';
+                html += '            <th>OrderF2</th>               ';
+                html += '            <th>Ngày báo lỗi</th>          ';
+                html += '            <th>Nguyên công</th>           ';
+                html += '            <th>Đánh giá</th>              ';
+                html += '            <th></th>                      ';
+                html += '        </tr>                              ';
+                html += '    </tbody>                               ';
+                html += '    <tbody id="ThongBaoOrderNoLoi_body">   ';
+                $.each(data.Values, function (i, val) {
+                    html += '        <tr>                               ';
+                    html += '            <td>' + val.ErrorNumber + '</td>                      ';
+                    html += '            <td>' + val.MONo + '</td>                      ';
+                    html += '            <td>' + val.NotifyDate1 + '</td>                      ';
+                    html += '            <td>' + val.OptionID + '</td>                      ';
+                    html += '            <td>' + val.ErrorComment + '</td>                      ';
+                    html += '            <td></td>                      ';
+                    html += '        </tr>                              ';
+                });
+                html += '    </tbody>                               ';
+                html += '</table>                                   ';
+                $("#BaoHangLoi_Detail").html(html);
+                BaoHangLoi_Show();
+            },
+        });
+    }
+
+    function LoadQrCode() {
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width: 100,
+            height: 100
+        });
+        var qrText = $("#OrderNo").html() + '-' + $("#SoLuongLenh").html();
+        qrcode.makeCode(qrText);
+    }
+</script>

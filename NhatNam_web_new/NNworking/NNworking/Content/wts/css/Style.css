@@ -1,0 +1,148 @@
+﻿#sidebar ul {
+	list-style: none;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+#sidebar ul li ul li {
+	display: none;
+    background:#68BD56;
+	position:relative;
+	line-height: 38px;
+	padding-left: 15px;
+	color: #fff;
+}
+#sidebar ul li:hover{
+	background: #0e8a37
+}
+
+#sidebar ul li:hover >ul li{
+	display: block;
+}
+
+#sidebar ul li >ul {
+	position:absolute;
+    top:0px;
+    left:100%;
+}
+
+#sidebar ul li ul li a {
+	display: block;
+	color: #fff;
+    width:180px;
+}
+#Palet > ul{
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+li{
+	/*display:inline;*/
+}
+
+.btn-Fac{
+    Width: 120px;
+    Height: 70px;
+    font-size: 14pt;
+    background-color: #68bd56;
+    color: #fff;
+    font-weight:400;
+    text-align:center;
+    /*white-space:nowrap;*/
+    vertical-align:middle;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    border:1px solid transparent;
+    padding:.375rem .75rem;
+    font-size:1rem;
+    line-height:1.5;
+    border-radius:.25rem;
+    transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
+}
+
+#ShiftButton,#MachineGroupButton,#MachineButton,#OptionIDButtonTotal,#MONumberButton,#WorkIDButton,#GCB,
+#OptionIDButton,#detail-Kythuat,#ListNo-Kythuat,#ResultForm,#ResultCVPS,#CostDownType,#div_ToolExpired,
+#MachineOriginalTable,#ListErrorCodeButton,#OutSiteOfPlan,#SearchPlace,#ListDNCButton,#CuttingConfirmation,
+#Cauhinh_Confirm_div,#HoanThienDiv,#ListDesDrawNumber,#ManualExcutionChecking,#NotifyDiv,#PopupPanel
+{
+    display: none;
+    z-index:90;
+    background: #F9F9F9;
+    width: 70%; 
+    height: 70%; 
+    overflow: auto;
+	position: fixed; 
+    top: 2%; 
+    left: 48%; 
+    margin-left: -31%; 
+    margin-top: 70px;
+    padding: 15px;
+}
+#ShiftButton
+{
+    z-index:90;
+}
+#background-popup {
+    z-index:85; 
+    position: fixed; 
+    display:none; 
+    height:100%; 
+    width:100%; 
+    background:#000; 
+    top:0px; 
+    left:0px;
+}
+.VP{
+    Width: 60px;
+    Height: 40px;
+    font-size: 11pt;
+    background-color: #68bd56;
+    color: #fff;
+
+}
+
+.btn-green{
+    Width: 120px;
+    Height: 70px;
+    font-size: 14pt;
+    background-color: #68bd56;
+    color: #fff;
+}
+
+#WorkIDList td 
+{
+    Width: 250px;
+    border: 1px solid #e9f0f9;
+}
+
+#Palet>ul>li {
+    display: inline;
+}
+
+#Palet .hide {
+	display:none; 
+}
+/*
+#GhiChu{
+	width: 250px;
+	float: left;
+}
+
+#ButtonDiv{
+	width: 600px;
+	float: left;
+}
+*/
+
+.outlined-success{
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #398439;
+}
+
+.outlined-danger{
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #d43f3a;
+}

@@ -1,0 +1,57 @@
+﻿
+@(Html.DevExtreme().DataGrid<NNworking.Models.sp_242_Inventory_PlaceOfItem_Result>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_InventoryReceivedApi")
+        .LoadAction("sp_242_Inventory_PlaceOfItem")
+    )
+    .ID("dxInventoryPlaceOfItem")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("PartNo")
+    )
+    .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
+        //.FileName("ViTriHangHoa")
+        .AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.PartNo).Caption("Tên chi tiết");
+        columns.AddFor(m => m.OrderNumber).Caption("Số order");
+        columns.AddFor(m => m.Deadline).DataType(GridColumnDataType.DateTime).Format("dd/MM/yyyy").Caption("Thời hạn");
+        columns.AddFor(m => m.MOQty).Caption("Số lượng lệnh");
+        columns.AddFor(m => m.Finished).Caption("Kết thúc");
+        columns.AddFor(m => m.ANH);
+        columns.AddFor(m => m.TUY);
+        columns.AddFor(m => m.KHKCS);
+        columns.AddFor(m => m.TL);
+        columns.AddFor(m => m.THANH);
+        columns.AddFor(m => m.HIEU);
+        columns.AddFor(m => m.MANH);
+        columns.AddFor(m => m.TOAN);
+        columns.AddFor(m => m.NHAKY);
+        columns.AddFor(m => m.KCS);
+        columns.AddFor(m => m.CDN);
+        columns.AddFor(m => m.XUONG);
+        columns.AddFor(m => m.HANGLOI);
+        columns.AddFor(m => m.QM);
+        columns.AddFor(m => m.CUA);
+        columns.AddFor(m => m.KHOLOI);
+        columns.AddFor(m => m.KHOTP);
+        columns.AddFor(m => m.KEHOACH);
+        columns.AddFor(m => m.KY);
+    })
+    //.HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+)

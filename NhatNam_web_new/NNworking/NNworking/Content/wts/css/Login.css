@@ -1,0 +1,36 @@
+﻿Body {
+    font-family: Arial;
+    background:#eee;
+	height: 100%;
+}
+#Login {
+   /* position:absolute; */
+    background:url("../img/n_bg_login.png");
+    margin: auto;
+    margin-top:50px;
+    border: 5px solid #68bd56;
+    width: 700px;
+    height:450px;
+    border-radius:10px;
+    box-shadow:4px 6px 10px #ccc;
+}
+#LogoLogin {
+    height:100px;
+}
+#LogoLogin p {
+    text-align:center;
+}
+#LoginLeft {
+    float:left;
+    width:300px;
+}
+#LoginForm {
+    border: 1px solid #ccc;
+    float:left;
+    width:350px;
+    padding: 10px 10px 10px 10px;
+    border-radius:10px;
+}
+#LoginForm H3 {
+    color:#F2740B;
+}

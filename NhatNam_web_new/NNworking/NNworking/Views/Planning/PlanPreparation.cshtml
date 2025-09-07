@@ -1,0 +1,189 @@
+﻿
+@{
+    ViewBag.Title = "Chuẩn bị cho kế hoạch";
+}
+
+<div class="col-lg-12">
+    <table>
+        <tr>
+            <td style="padding-left: 10px;width: 100px;">
+                Từ Ngày:
+            </td>
+            <td style="padding-left: 10px;">
+                @(Html.DevExtreme().DateBox()
+                            .Value(DateTime.Now)
+                            .ID("dateFromDate")
+                )
+            </td>
+            <td style="padding-left: 10px;">
+                @(Html.DevExtreme().Button()
+                            .Text("Xem")
+                            .ID("btnView")
+                            .Type(ButtonType.Normal)
+                            .Width(90)
+                            .OnClick("ViewData")
+                )
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left: 10px;width: 100px;">
+                Đến Ngày:
+            </td>
+            <td style="padding-left: 10px;">
+                @(Html.DevExtreme().DateBox()
+                            .Value(DateTime.Now)
+                            .ID("dateToDate")
+                )
+            </td>
+            <td style="padding-left: 10px;width: 100px;">
+                @(Html.DevExtreme().Button()
+                            .Text("Import")
+                            .ID("btnImport")
+                            .Type(ButtonType.Normal)
+                            .Width(90)
+                )
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="col-lg-12">
+    @(Html.DevExtreme().DataGrid<NNworking.Models.C242_MachinePlan_Preparation>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("C242_MachinePlan_PreparationApi")
+                .LoadAction("Get")
+                .InsertAction("Post")
+                .UpdateAction("Put")
+                .DeleteAction("Delete")
+                .Key("ID")
+            )
+            .ID("dxDataGrid")
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("ID")
+            )
+            .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
+                //.FileName("ChuanBi")
+                .AllowExportSelectedData(true))
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .Columns(columns =>
+            {
+
+                columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+                columns.AddFor(m => m.Date);
+
+                columns.AddFor(m => m.PartID);
+
+                columns.AddFor(m => m.MachineID);
+
+                columns.AddFor(m => m.OptionID);
+
+                columns.AddFor(m => m.PBJ1_Staff);
+
+                columns.AddFor(m => m.PBJ1_Time);
+
+                columns.AddFor(m => m.STT);
+
+                columns.AddFor(m => m.Note);
+
+                columns.AddFor(m => m.Phoi_KH);
+
+                columns.AddFor(m => m.File_CB);
+
+                columns.AddFor(m => m.File_KT);
+
+                columns.AddFor(m => m.CT_CB);
+
+                columns.AddFor(m => m.CT_KT);
+
+                columns.AddFor(m => m.DG_CB);
+
+                columns.AddFor(m => m.DG_KT);
+
+                columns.AddFor(m => m.Dao_CB);
+
+                columns.AddFor(m => m.Dao_KT);
+
+                columns.AddFor(m => m.Confirmation);
+            })
+            .Editing(e => e
+                .AllowAdding(true)
+                .AllowUpdating(true)
+                .AllowDeleting(true)
+            )
+            .OnInitNewRow("OnInitRow")
+    )
+
+
+    <input id="File1" type="file" name="file" class="hide" onchange="ChoiceFile()" />
+</div>
+<script>
+    $(document).on('click', '#btnImport', function () {
+        $('#File1').trigger('click');
+    });
+
+    function ChoiceFile() {
+        var file = $('#File1').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        var date = getFromDateValue();
+        form.append(alo[0].name, alo[0]);
+        form.append(date, date);
+        $.ajax({
+            url: '@Url.Action("ImportPlanPreparation", "Planning")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Value);
+                    return;
+                }
+
+                alert(data.Status);
+                ViewData();
+                $('#File1').val('');
+            },
+        });
+    }
+
+    function OnInitRow(e) {
+        e.data.ID = 0;
+        e.data.PBJ1_Time = 0;
+        e.data.Date = new Date();
+        e.data.Phoi_KH = false;
+        e.data.File_CB = false;
+        e.data.File_KT = false;
+        e.data.CT_CB = false;
+        e.data.CT_KT = false;
+        e.data.DG_CB = false;
+        e.data.DG_KT = false;
+        e.data.Dao_CB = false;
+        e.data.Dao_KT = false;
+    }
+    
+    function getFromDateValue() {
+        var a = $("#dateFromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getToDateValue() {
+        var a = $("#dateToDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function ViewData() {
+        $("#dxDataGrid").dxDataGrid("instance").refresh();
+    }
+</script>

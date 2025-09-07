@@ -1,0 +1,144 @@
+﻿
+
+<section>
+    <div class="box box-body">
+        <div class="col-lg-4">
+            <table>
+                <tr>
+                    <td>
+                        Từ ngày:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().DateBox()
+                            .Type(DateBoxType.Date)
+                        .Value(DateTime.Now)
+                        .ID("dateFromDate")
+                        )
+                    </td>
+                    <td>
+                        Đến ngày:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().DateBox()
+                            .Type(DateBoxType.Date)
+                        .Value(DateTime.Now)
+                        .ID("dateToDate")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Xem")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .OnClick("ViewWTSForCheck")
+                        .Width(90)
+                        )
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.sp_242_WTS_GetTotalWTSForChecking_Result>()
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C242_WTSApi")
+            .LoadAction("GetWTSForCheck")
+            .LoadParams(new { fromDate = new JS("getFromDateValue"), toDate = new JS("getToDateValue"), staffID = new JS("getStaffID") })
+        )
+        .ID("dxDataGrid")
+        .Paging(page => page.PageSize(30))
+        .Selection(select => select.Mode(SelectionMode.Multiple))
+        .Pager(pager => pager.ShowPageSizeSelector(true)
+            .ShowInfo(true)
+            .AllowedPageSizes(new List<int> { 30, 50 })
+        )
+        .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+            .DescendingText("StaffID")
+        )
+        .ColumnAutoWidth(true)
+        .FilterRow(fil => fil.Visible(true))
+        .FilterPanel(fi => fi.Visible(true))
+        .SearchPanel(search => search.Visible(true)
+            .HighlightSearchText(true)
+            .Width(500)
+        )
+        .Columns(columns =>
+        {
+            columns.AddFor(m => m.Date).Caption("Ngày");
+            columns.AddFor(m => m.StaffID).Caption("Mã nhân viên");
+            columns.AddFor(m => m.StaffName).Caption("Tên nhân viên");
+            columns.AddFor(m => m.Shift).Caption("Ca làm việc");
+            columns.AddFor(m => m.Time).Caption("Thời gian làm việc");
+            columns.AddFor(m => m.Checked).Caption("Trạng thái");
+        })
+        .OnContextMenuPreparing("contextMenu")
+        .ShowColumnHeaders(true)
+        .ShowRowLines(true)
+)
+
+
+@(Html.DevExtreme().Button()
+    .Text("Duyệt WTS")
+    .ID("btnOKWTS")
+    .Type(ButtonType.Normal)
+    .OnClick("OKWTS")
+    .Width(150)
+)
+
+<script>
+    function ViewWTSForCheck() {
+        var dataGrid = $("#dxDataGrid").dxDataGrid("instance");
+        dataGrid.refresh();
+    }
+
+    function OKWTS() {
+        var dataGrid = $("#dxDataGrid").dxDataGrid("instance");
+        var selected = dataGrid.getSelectedRowsData();
+        $.ajax({
+            url: '@Url.Action("OKWTSGT", "WTS")',
+            dataType: 'Json',
+            type: 'POST',
+            data: { 'data': selected },
+            cache: false,
+            success: function (data) {
+                alert(data.Values);
+                dataGrid.refresh();
+            },
+        });
+    }
+
+    function contextMenu(e) {
+        if (e.row.rowType === "data") {
+            e.items = [{
+                text: "Chi tiết",
+                onItemClick: function () {
+                    var date = e.row.data.Date;
+                    var staffID = e.row.data.StaffID;
+                    var shift = e.row.data.Shift;
+                    ViewDetailWTS(date, staffID, shift);
+                }
+            }];
+        }
+    }
+
+    function ViewDetailWTS(date, staffID, shift) {
+        var url = '/WTS/DetailWTS?staffID=' + staffID + '&shift=' + shift + '&date=' + date;
+        window.open(url, "blank");
+    }
+
+    function getFromDateValue() {
+        var a = $("#dateFromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getStaffID() {
+        var a = '@Session["StaffID"].ToString()';
+        return a;
+    }
+
+    function getToDateValue() {
+        var a = $("#dateToDate").dxDateBox("instance").option("value");
+        return a;
+    }
+</script>

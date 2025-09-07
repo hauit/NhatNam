@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = "Thống kê cơm";
+}
+
+<div class="box box-body">
+    <table>
+        <tr>
+            <td>
+                Từ ngày:
+            </td>
+            <td style="padding-left: 10px;">
+                @(Html.DevExtreme().DateBox()
+                    .Value(DateTime.Now.Date)
+                    .ID("dateFrom")
+                    .DisplayFormat("dd/MM/yyyy")
+                )
+            </td>
+            <td>
+                Đến ngày:
+            </td>
+            <td style="padding-left: 10px;">
+                @(Html.DevExtreme().DateBox()
+                    .Value(DateTime.Now.Date)
+                    .ID("dateTo")
+                    .DisplayFormat("dd/MM/yyyy")
+                )
+            </td>
+            <td style="padding-left: 10px;">
+                @(Html.DevExtreme().Button()
+                    .Text("Xem")
+                    .ID("btnView")
+                    .Type(ButtonType.Normal)
+                    .Width(90)
+                    .OnClick("ReLoad")
+                )
+            </td>
+        </tr>
+    </table>
+</div>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.sp_222_MealStatics_Result>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_ShiftRegisterApi")
+        .LoadAction("GetMealStatics").LoadParams(new { dateFrom = new JS("getFromDate"), dateTo = new JS("getToDate") })
+    )
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("Date")
+    )
+    //.Export(e => e.Enabled(true).FileName("ThongKeCom").AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ID("dxDataGrid")
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.Date).Caption("Ngày");
+
+        columns.AddFor(m => m.DeptCode).Caption("Mã bộ phận");
+
+        columns.AddFor(m => m.Lunch).Caption("Ăn trưa");
+
+        columns.AddFor(m => m.Dinner).Caption("Ăn tối");
+
+        columns.AddFor(m => m.Breakfast).Caption("Ăn sáng");
+
+        columns.AddFor(m => m.Milk).Caption("Bánh sữa");
+    })
+)
+
+<script>
+    function getFromDate() {
+        var a = $("#dateFrom").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getToDate() {
+        var a = $("#dateTo").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function ReLoad() {
+        $("#dxDataGrid").dxDataGrid("instance").refresh();
+    }
+</script>

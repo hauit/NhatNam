@@ -1,0 +1,1089 @@
+﻿@{
+    ViewBag.Title = "WTS nhân viên mạ";
+}
+
+
+
+@*@using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <Span>Mã NV:</Span><input type="text" size="5" id="StaffID" onblur="CheckStaffID()" />
+        <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="ShiftBT" name="" value="Ca">
+        <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="MachineBT" name="" value="Máy" onclick="loadGroupMachine()">
+        <input class="btn btn-green" style="margin-top: 10px; width: 150px;" type="Button" tabindex="" id="SearchBT" name="" value="Tìm kiếm">
+        <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="StartBT" name="" value="Công việc" onclick="WorkID()">
+        <br />
+
+    }*@
+
+<table class="table table-advance" style="margin-left: 10px; margin-top: 10px; width: 700px;">
+    <tr>
+        <td style="margin-left: 10px; margin-top: 10px;">Mã nhân viên</td>
+        <td style="margin-left: 10px; margin-top: 10px;"><input type="text" id="StaffID" /></td>
+        <td style="margin-left: 10px; margin-top: 10px;">
+            <input class="btn btn-green" style="margin-top: 0px;height:40px;width:100px;" type="Button" tabindex="" id="ShiftBT" name="" value="Ca">
+        </td>
+        <td style="margin-left: 10px; margin-top: 10px;">
+            <span id="Working"></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="margin-left: 10px; margin-top: 10px;">Công đoạn</td>
+        <td style="margin-left: 10px; margin-top: 10px;">
+            <div id="Radiobox">
+                <input type="radio" name="gender" value="treo"> Khác hoàn thiện<br>
+                <input type="radio" name="gender" value="hoanThien"> Hoàn thiện<br>
+            </div>
+        </td>
+        <td style="margin-left: 10px; margin-top: 10px;"><h1 style=""><time>00:00:00</time></h1></td>
+        <td style="margin-left: 10px; margin-top: 10px;"></td>
+    </tr>
+</table>
+
+<div id="TreoDiv" style="display: none;">
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="MachineBT" name="" value="Máy" onclick="loadGroupMachine()">
+    <input class="btn btn-green" style="margin-top: 10px; width: 150px;" type="Button" tabindex="" id="OutOfPlanBT" name="" value="Ngoài kế hoạch" onclick="">
+    @*<input class="btn btn-green" style="margin-top: 10px; width: 150px;" type="Button" tabindex="" id="SearchBT" name="" value="Tìm kiếm">*@
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="StartBT" name="" value="Công việc" onclick="WorkID()">
+    Ghi chú: <input type="text" id="txtNote" />
+    @*<table class="table table-advance" style="margin-left: 10px; margin-top: 10px; width: 700px;">
+            <tr>
+                <td style="margin-left: 10px; margin-top: 10px;">Nguyên công</td>
+                <td style="margin-left: 10px; margin-top: 10px;"><input type="text" id="OptionID" /></td>
+                <td style="margin-left: 10px; margin-top: 10px;"></td>
+                <td style="margin-left: 10px; margin-top: 10px;"></td>
+            </tr>
+            <tr>
+                <td style="margin-left: 10px; margin-top: 10px;">Lệnh</td>
+                <td style="margin-left: 10px; margin-top: 10px;"><input type="text" id="MONo" onblur="GetPartNo()" /></td>
+                <td style="margin-left: 10px; margin-top: 10px;">Tên chi tiết</td>
+                <td style="margin-left: 10px; margin-top: 10px;"><input type="text" id="Part" /></td>
+            </tr>
+            <tr>
+                <td style="margin-left: 10px; margin-top: 10px;">Số lượng lệnh</td>
+                <td style="margin-left: 10px; margin-top: 10px;"><input type="text" id="Slg" /></td>
+                <td style="margin-left: 10px; margin-top: 10px;">Số lượng OK</td>
+                <td style="margin-left: 10px; margin-top: 10px;"><input type="text" id="Slg_OK" /></td>
+            </tr>
+        </table>
+
+        <input class="btn btn-green" style="margin-top: 10px; margin-left: 100px;" type="Button" tabindex="" id="InputOrderNotInPlan" name="" value="Nhập" onclick="InputWTSForAnodStaff()">*@
+</div>
+
+<div id="HoanThienDiv">
+    <div>
+        <table class="table table-advance" style="margin-left: 10px; margin-top: 10px; width: 700px;">
+            <tr>
+                <td style="margin-left: 10px; margin-top: 10px;">Mẻ mạ</td>
+                <td style="margin-left: 10px; margin-top: 10px;"><input type="text" id="MeMa" onblur="GetMeMa()" /></td>
+            </tr>
+            @*<tr>
+                    <td style="margin-left: 10px; margin-top: 10px;">Nguyên công</td>
+                    <td style="margin-left: 10px; margin-top: 10px;"><input type="text" id="OptionIDHT" /></td>
+                </tr>*@
+        </table>
+
+        <input class="btn btn-green" style="margin-top: 10px; margin-left: 100px;" type="Button" tabindex="" id="StartToCalculateTime" name="" value="Bắt đầu" onclick="StartToCalculateTime()">
+        <input class="btn btn-green" style="margin-top: 10px; margin-left: 100px;" type="Button" tabindex="" id="InputOrderNotInPlan" name="" value="Kết thúc" onclick="InputWTSForAnodStaff()">
+    </div>
+    <div id="MeMa_Content">
+
+    </div>
+</div>
+
+<div id="OutSiteOfPlan">
+    <h2>Nhập order ngoài kế hoạch</h2>
+    <table class="table-advance" style="margin-left: 100px; margin-top: 100px;">
+        <tr>
+            <td>Lệnh</td>
+            <td><input type="text" id="MONo" onchange="GetPartNo()" /></td>
+        </tr>
+        <tr>
+            <td>Số lượng lệnh</td>
+            <td><input type="text" id="Slg" /></td>
+        </tr>
+        <tr>
+            <td>Tên chi tiết</td>
+            <td><input type="text" id="Part" /></td>
+        </tr>
+        <tr>
+            <td>Nguyên công</td>
+            <td><input type="text" id="OptionID" /></td>
+            @*<td>
+                    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="STG00" name="" value="STG00" onclick="ChoiseNC('STG00')">
+                    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="STG01" name="" value="STG01" onclick="ChoiseNC('STG01')">
+                </td>*@
+        </tr>
+        @*<tr>
+                <td></td>
+                <td><input type="text" id="OptionID" /></td>
+            </tr>*@
+    </table>
+    <input class="btn btn-green" style="margin-top: 10px; margin-left: 100px;" type="Button" tabindex="" id="InputOrderNotInPlan" name="" value="Nhập" onclick="InputOrderNotInPlan()">
+</div>
+
+<div id="ListPlan">
+
+</div>
+
+<div id="SearchPlace">
+    <h2>Nhập tên chi tiết để tìm kiếm</h2>
+    <table class="table-advance" style="margin-left: 10px; margin-top: 10px;">
+        <tr>
+            <td>Lệnh</td>
+            <td><input type="text" id="MONoForSearch" /></td>
+        </tr>
+        <tr>
+            <td>Tên chi tiết</td>
+            <td><input type="text" id="PartForSearch" /></td>
+        </tr>
+        <tr>
+            <td>Nguyên công</td>
+            <td><input type="text" id="OptionIDForSearch" /></td>
+        </tr>
+    </table>
+    <input class="btn btn-green" style="margin-top: 10px; margin-left: 100px;" type="Button" tabindex="" id="StartSearch" name="" value="Tìm kiếm" onclick="StartSearch()">
+    <div>
+
+        <table class="table-advance" style="width: 1500px;">
+            <thead>
+            <td style="width: 30px;"> STT </td>
+            <td style="width: 70px;"> Tên chi tiết </td>
+            <td style="width: 30px;"> Order </td>
+            <td style="width: 30px;"> Qty </td>
+            <td style="width: 30px;"> Slg ok </td>
+            <td style="width: 30px;"> Trạng thái </td>
+            <td style="width: 30px;"> Chọn </td>
+            <td style="width: 150px;"> Cấu hình tham khảo </td>
+            <td style="width: 50px;"> TH gia công </td>
+            <td style="width: 30px;"> Nhà CC </td>
+            <td style="width: 30px;"> Tổng TG </td>
+            <td style="width: 30px;"> TG/1pc </td>
+            <td style="width: 70px;"> Ngày Cbị </td>
+            </thead>
+            <tbody id="SearchResultBuffer"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="WorkIDButton">
+    <Span>Bù thời gian:</Span><input type="text" size="5" id="BufferTime" value="0" /><br />
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9CJ1" name="9CJ1" value="9CJ1" onclick="StartInputWTS('9CJ1')">9CJ1 <br><span style="font-size:9px;"> Ga lap, theo huong dan va ban ve, han dinh </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9FJ1" name="9FJ1" value="9FJ1" onclick="StartInputWTS('9FJ1')">9FJ1 <br><span style="font-size:9px;"> Kiem tra sau cung</span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9KJ1" name="9KJ1" value="9KJ1" onclick="StartInputWTS('9KJ1')">9KJ1 <br><span style="font-size:9px;"> Danh khoi han, xu ly moi han </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9LJ1" name="9LJ1" value="9LJ1" onclick="StartInputWTS('9LJ1')">9LJ1 <br><span style="font-size:9px;"> Han </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9PJ1" name="9PJ1" value="9PJ1" onclick="StartInputWTS('9PJ1')">9PJ1 <br><span style="font-size:9px;"> Danh migaki sau han </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9RJ1" name="9RJ1" value="9RJ1" onclick="StartInputWTS('9RJ1')">9RJ1 <br><span style="font-size:9px;"> Sua chua hang loi </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9UJ1" name="9UJ1" value="9UJ1" onclick="StartInputWTS('9UJ1')">9UJ1 <br><span style="font-size:9px;"> Uon nan dieu chinh kich thuoc </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="93W1" name="93W1" value="93W1" onclick="StartInputWTS('93W1')">93W1 <br><span style="font-size:9px;"> Công việc liên quan đến giấy tờ, thủ tục, sách hướng dẫn. </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9561" name="9561" value="9561" onclick="StartInputWTS('9561')">9561 <br><span style="font-size:9px;"> Giao nhận sản phẩm </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="91Z1" name="91Z1" value="91Z1" onclick="StartInputWTS('91Z1')">91Z1 <br><span style="font-size:9px;"> Vệ sinh, 5S </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9YP1" name="9YP1" value="9YP1" onclick="StartInputWTS('9YP1')">9YP1 <br><span style="font-size:9px;"> Yêu cầu khắc phục, cv liên quan đến phôi, file bản vẽ chi tiết gia công. </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9ZA1" name="9ZA1" value="9ZA1" onclick="StartInputWTS('9ZA1')">9ZA1 <br><span style="font-size:9px;"> Thực tập - Học tập </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9ZA5" name="9ZA5" value="9ZA5" onclick="StartInputWTS('9ZA5')">9ZA5 <br><span style="font-size:9px;"> Làm việc ngoài công ty </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9ZB1" name="9ZB1" value="9ZB1" onclick="StartInputWTS('9ZB1')">9ZB1 <br><span style="font-size:9px;"> Hướng dẫn, chỉ đạo chung </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9ZE1" name="9ZE1" value="9ZE1" onclick="StartInputWTS('9ZE1')">9ZE1 <br><span style="font-size:9px;"> Chuan bi, SHD, ban ve, kiem tra may Han, phan cong cv </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9ZM1" name="9ZM1" value="9ZM1" onclick="StartInputWTS('9ZM1')">9ZM1 <br><span style="font-size:9px;"> Họp </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9ZZ1" name="9ZZ1" value="9ZZ1" onclick="StartInputWTS('9ZZ1')">9ZZ1 <br><span style="font-size:9px;"> Việc khác </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="92B1" name="92B1" value="92B1" onclick="StartInputWTS('92B1')">92B1 <br><span style="font-size:9px;"> Làm hướng dẫn công việc </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9461" name="9461" value="9461" onclick="StartInputWTS('9461')">9461 <br><span style="font-size:9px;"> Đặt hàng </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="96U1" name="96U1" value="96U1" onclick="StartInputWTS('96U1')">96U1 <br><span style="font-size:9px;"> Nhập dữ liệu </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9751" name="9751" value="9751" onclick="StartInputWTS('9751')">9751 <br><span style="font-size:9px;"> Lập kế hoạch </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="97F1" name="97F1" value="97F1" onclick="StartInputWTS('97F1')">97F1 <br><span style="font-size:9px;"> Triển khai, kiểm soát kế hoạch </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="99D1" name="99D1" value="99D1" onclick="StartInputWTS('99D1')">99D1 <br><span style="font-size:9px;"> CV đào tạo </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9DF1" name="9DF1" value="9DF1" onclick="StartInputWTS('9DF1')">9DF1 <br><span style="font-size:9px;"> Điều tra, báo cáo hàng lỗi, quản lý hàng lỗi </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9NC1" name="9NC1" value="9NC1" onclick="StartInputWTS('9NC1')">9NC1 <br><span style="font-size:9px;"> Làm nguyên công, báo giá, DKM </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9DG1" name="9DG1" value="9DG1" onclick="StartInputWTS('9DG1')">9DG1 <br><span style="font-size:9px;"> Làm đồ gá </span></div>
+    <div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="9TJ1" name="9TJ1" value="9TJ1" onclick="StartInputWTS('9TJ1')">9DG1 <br><span style="font-size:9px;"> Công việc tẩy vết cháy hàn. </span></div>
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="FinishBT" name="" value="Kết thúc" onclick="FinishInputWTS(1)">
+
+</div>
+
+<div id="ShiftButton">
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue('T1')">
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue('T2')">
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue('T3')">
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue('T1')">
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue('T2')">
+    <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca HC" onclick="ShiftValue('T0')">
+</div>
+
+<div id="MachineGroupButton">
+    <input class="btn btn-green" style="margin-top: 10px;margin-left: 10px; width: 150px;" type="Button" tabindex="" id="" name="" value="Anod" onclick="MachineSelected('Anod')">
+    <input class="btn btn-green" style="margin-top: 10px;margin-left: 10px; width: 150px;" type="Button" tabindex="" id="" name="" value="KO CO" onclick="MachineSelected('KO_CO')">
+</div>
+
+<div style="width:800px;">
+    <table id="ListHistory" style="width:900px;" class="table table-advance"></table>
+    <span id="SumTime"></span>
+</div>
+
+<div id="background-popup"></div>
+
+<script>
+    var Shift = '';
+    var WorkID = '';
+    var oldWork = '';
+    var congdoan = '';
+    var MachineId = '';
+    var popupStatus = 0;
+    var array = new Array();
+    var arrayCurrentOrder = new Array();
+
+    $(document).ready(function () {
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            var buferSult = $("#SearchResultBuffer").val();
+            if (buferSult != "") {
+                $("#SearchResultBuffer").val('');
+            }
+
+            if (popupStatus == 1) {
+                $("#ShiftButton").fadeOut(200);
+                //$("#TreoDiv").fadeOut(200);
+                $("#HoanThienDiv").fadeOut(200);
+                $("#OutSiteOfPlan").fadeOut(200);
+                $("#WorkIDButton").fadeOut(200);
+                $("#SearchPlace").fadeOut(200);
+                $("#MachineGroupButton").fadeOut(200);
+                $("#background-popup").fadeOut(200);
+                popupStatus = 0;
+            }
+        }
+
+        function loadSearchPopup() {
+            if (popupStatus == 0) {
+                $("#SearchPlace").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadShiftPopup() {
+            if (popupStatus == 0) {
+                $("#ShiftButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadTreoPopup() {
+            $("#TreoDiv").css("display", "block");
+        }
+
+        function loadOutSiteOfPlan() {
+            if (popupStatus == 0) {
+                $("#OutSiteOfPlan").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadMachineGroupPopup() {
+            if (popupStatus == 0) {
+                $("#MachineGroupButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadWorkIDPopup() {
+            if (popupStatus == 0) {
+                $("#WorkIDButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadHoanThienPopup() {
+            if (popupStatus == 0) {
+                $("#TreoDiv").fadeOut(200);
+                $("#HoanThienDiv").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        $("#ShiftBT").click(function () {
+            loadShiftPopup();
+        });
+
+        $("#Radiobox").click(function () {
+            congdoan = $("input[name='gender']:checked").val();
+            if (congdoan == null) {
+                return;
+            }
+
+            popupStatus = 0;
+            switch(congdoan)
+            {
+                case "treo":
+                    loadTreoPopup();
+                    break;
+                case "hoanThien":
+                    $("#TreoDiv").fadeOut(200);
+                    loadHoanThienPopup();
+                    break;
+            }
+        });
+
+        $("#SearchBT").click(function () {
+            var listPlan = '';
+            arrayCurrentOrder = new Array();
+            array = new Array();
+            $("#SearchResult").html(listPlan);
+            loadSearchPopup();
+        });
+
+        $("#StartBT").click(function () {
+            loadWorkIDPopup();
+        });
+
+        $("#OutOfPlanBT").click(function () {
+            if (Shift == "")
+            {
+                alert("Chưa chọn ca");
+                return;
+            }
+
+            if (MachineId == "") {
+                alert("Chưa chọn máy");
+                return;
+            }
+
+            loadOutSiteOfPlan();
+            $("#MONo").focus();
+        });
+
+        $("#MachineBT").click(function () {
+            loadMachineGroupPopup();
+        });
+    });
+</script>
+
+<script>
+    var h1 = document.getElementsByTagName('h1')[0],
+    start = document.getElementById('start'),
+    stop = document.getElementById('stop'),
+    clear = document.getElementById('clear'),
+    seconds = 0, minutes = 0, hours = 0,
+    t;
+
+    function add() {
+        seconds++;
+        if (seconds >= 60) {
+            seconds = 0;
+            minutes++;
+            if (minutes >= 60) {
+                minutes = 0;
+                hours++;
+            }
+        }
+
+        h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+        timer();
+    }
+    function timer() {
+        t = setTimeout(add, 1000);
+    }
+    timer();
+
+
+    /* Start button */
+    start.onclick = timer;
+
+    /* Stop button */
+    stop.onclick = function () {
+        clearTimeout(t);
+    }
+
+    /* Clear button */
+    function clear() {
+        h1.textContent = "00:00:00";
+        seconds = 0; minutes = 0; hours = 0;
+    }
+</script>
+
+<script>
+    $.ajax({
+        url: '@Url.Action("GetShiftList", "WTS")',
+        type: "POST", //JSON
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            if (data.Status != "OK!") {
+                alert(data.Values);
+                return;
+            }
+
+            var list_Shift = '';
+            $.each(data.Values, function (i, val) {
+                list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift_' + val.Shift + '" name="" value="' + val.Description + '" onclick="ShiftValue(\'' + val.Shift + '\')"> ';
+            });
+
+            $("#ShiftButton").html(list_Shift);
+        }
+    });
+
+    function ShiftValue(data) {
+        Shift = data;
+        $("#ShiftButton").append("<br/>" + Shift);
+    }
+
+    function MachineSelected(data) {
+        MachineId = data;
+    }
+
+    function GetPartNo() {
+        var mono = $("#MONo").val();
+        $.ajax({
+            url: '@Url.Action("GetPartNoByMONo", "Anod")',
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            data: { 'mono': mono },
+            success: function (data) {
+                if (data == "NG") {
+                    alert("Không tìm thấy tên chi tiết!");
+                    $("#Part").prop('readonly', false);
+                    $("#Slg").prop('readonly', false);
+                    $("#OptionID").prop('readonly', false);
+                    $("#Part").val("");
+                    $("#Slg").val("");
+                    return;
+                }
+
+                $("#OptionID").prop('readonly', true);
+                $("#Part").prop('readonly', true);
+                $("#Slg").prop('readonly', true);
+                $("#Part").val(data.PartID);
+                $("#Slg").val(data.MOQty);
+                $("#OptionID").val(data.OptionID);
+                InputOrderNotInPlan();
+            },
+        });
+    }
+
+    $.ajax({
+        url: '@Url.Action("GetWorkID", "Anod")',
+        dataType: 'JSON',
+        type: 'POST',
+        traditional: true,
+        cache: false,
+        success: function (data) {
+            if (data.status == "NG") {
+                alert(data.value);
+                return;
+            }
+
+            var listWorkID = '';
+            listWorkID += '<Span>Bù thời gian:</Span><input type="text" size="5" id="BufferTime" value="0" /><br />';
+            listWorkID += '<div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="HTBM" name="HTBM" value="HTBM" onclick="StartInputWTS(\'HTBM\')"> HTBM <br><span style="font-size:9px;"> Hệ thống bể mạ </span></div>';
+            $.each(data.value, function (i, val) {
+                listWorkID += '<div class="btn btn-green" style="margin-top: 10px; margin-left: 5px;" type="Button" id="' + val.WorkName + '" name="' + val.WorkName + '" value="' + val.WorkName + '" onclick="StartInputWTS(\'' + val.WorkName + '\')">' + val.WorkName + ' <br><span style="font-size:9px;"> ' + val.Des + ' </span></div>';
+            })
+
+            listWorkID += '<input class="btn btn-green" style="margin-top: 10px;margin-left: 10px;" type="Button" tabindex="" id="FinishBT" name="" value="Kết thúc" onclick="FinishInputWTS(1)">';
+            $("#WorkIDButton").html(listWorkID);
+        },
+    });
+
+    function FinishInputWTS(finish) {
+        if (finish == 1) {
+            var returnValue = confirm("Chắc chắn kết thúc công việc?");
+            if (returnValue == false) {
+                return
+            }
+        }
+        var staffID = $("#StaffID").val();
+        var bufferTime = $("#BufferTime").val();
+        var arrayRessult = new Array();
+        for (var i = 0; i < arrayCurrentOrder.length; i++) {
+            var okQty = $("#OKQty" + arrayCurrentOrder[i]).val();
+            var ngQty = $("#NGQty" + arrayCurrentOrder[i]).val();
+            if (okQty == "") {
+                okQty = 0;
+            }
+
+            if (ngQty == "") {
+                ngQty = 0;
+            }
+
+            var data = arrayCurrentOrder[i] + '-' + okQty + '-' + ngQty;
+            arrayRessult.push(JSON.stringify(data));
+        }
+
+        $.ajax({
+            url: '@Url.Action("FinishedWork", "Anod")',
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            data: { 'staffID': staffID, 'oldWork': oldWork, 'arrayRessult': arrayRessult, 'bufferTime': bufferTime, 'Finish': finish },
+            success: function (data) {
+                if (finish != 0) {
+                    alert(data);
+                }
+
+                if (data == "OK") {
+                    oldWork = '';
+                    arrayRessult = new Array();
+                }
+
+                seconds = 0;
+                minutes = 0;
+                hours = 0;
+                GetWorkingHistory();
+                $("#Working").html('');
+            },
+        });
+    }
+
+    function GetWorkingHistory() {
+        var staffID = $("#StaffID").val();
+        //lấy dữ liệu lịch sử công việc
+        $.ajax({
+            url: '@Url.Action("History", "Anod")',
+            dataType: 'Json',
+            type: 'GET',
+            data: { 'StaffID': staffID, 'Shift': Shift, 'MachineID': MachineId },
+            cache: false,
+            success: function (data) {
+                var i = 0;
+                var SumTime = 0;
+                var Detail = '<thead>';
+                Detail += '<td>Mã code</td>';
+                Detail += '<td>Nguyên công</td>';
+                Detail += '<td>Lệnh gia công</td>';
+                Detail += '<td>Mã công việc</td>';
+                Detail += '<td>OK</td>';
+                Detail += '<td>NG</td>';
+                Detail += '<td>Slg lệnh</td>';
+                Detail += '<td>Time</td>';
+                Detail += '<td>TGGC</td>';
+                Detail += '<td>TGGL</td>';
+                Detail += '<td>Ghi chú 1</td>';
+                Detail += '<td>Ghi chú 2</td>';
+                Detail += '</thead>';
+                Detail += '<tbody id="TableBody">';
+                $.each(data, function (i, val) {
+                    SumTime = SumTime + parseInt(val.time);
+                    Detail += '<tr>';
+                    Detail += '<td>';
+                    Detail += val.StaffID;
+                    Detail += '</td>';
+                    Detail += '<td>';
+                    Detail += val.OptionID;
+                    Detail += '</td>';
+                    Detail += '<td>';
+                    Detail += val.MONo;
+                    Detail += '</td>';
+                    Detail += '<td>';
+                    Detail += val.WorkID;
+                    Detail += '</td>';
+                    Detail += '<td>';
+                    if (val.WorkID == "AA71")
+                    {
+                        Detail += val.OKQty;
+                    }
+                    else
+                    {
+                        Detail += val.SubOKQty;
+                    }
+                    Detail += '</td>';
+                    Detail += '<td>';
+                    if (val.WorkID == "AA71") {
+                        Detail += val.NGQty;
+                    }
+                    else {
+                        Detail += val.SubNGQty;
+                    }
+
+                    Detail += '</td>';
+                    if (val.to != null) {
+                        Detail += '<td>';
+                        Detail += val.to;
+                        Detail += '</td>';
+                    }
+                    else {
+                        Detail += '<td>';
+                        Detail += '</td>';
+                    }
+                    Detail += '<td>';
+                    Detail += val.time;
+                    Detail += '</td>';
+                    Detail += '<td>';
+                    Detail += val.ProTime;
+                    Detail += '</td>';
+                    Detail += '<td>';
+                    Detail += val.Clamptime;
+                    Detail += '</td>';
+                    Detail += '<td>';
+
+                    if (val.Note1 != null) {
+
+                        if (val.WorkID == 'PLN1') {
+                            Detail += "Sửa:" + val.Note1;
+                        }
+                        else {
+                            Detail += val.Note1;
+                        }
+                    }
+                    else {
+                        Detail += '';
+                    }
+                    Detail += '</td>';
+
+                    Detail += '<td>';
+
+                    if (val.Note2 != null) {
+
+                        if (val.WorkID == 'PLN1') {
+                            Detail += "Sửa:" + val.Note2;
+                        }
+                        else {
+                            Detail += val.Note2;
+                        }
+                    }
+                    else {
+                        Detail += '';
+                    }
+                    Detail += '</td>';
+                    Detail += '</tr>';
+                });
+                Detail += '</tbody>';
+                $("#SumTime").html("Tổng thời gian: " + SumTime);
+                $("#ListHistory").html(Detail);
+            },
+        });
+    }
+
+    function StartInputWTS(workID) {
+        var returnValue = confirm("Chắc chắn chọn việc " + workID + " ?");
+        if (returnValue == false){
+            return
+        }
+
+        FinishInputWTS(0);
+
+        var staffID = $("#StaffID").val();
+
+        if (staffID == "") {
+            alert("Chưa nhập mã nhân viên");
+            return;
+        }
+
+        if (Shift == "") {
+            alert("Chưa chọn ca");
+            return;
+        }
+
+        var note = $("#txtNote").val();
+        $.ajax({
+            url: '@Url.Action("StartWorking", "Anod")',
+            data: { 'workID': workID, 'shift': Shift, 'machineID': MachineId, 'staffID': staffID, 'list': array, 'note': note },
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            success: function (data) {
+                alert(data);
+                seconds = 0;
+                minutes = 0;
+                hours = 0;
+                GetWorkingHistory();
+                if (data == "OK") {
+                    oldWork = workID;
+                    var working = "Đang làm công việc " + workID;
+                    $("#Working").html(working);
+                }
+            },
+        });
+    }
+
+    function InputOrderNotInPlan() {
+        var lenh = $("#MONo").val();
+        var chiTiet = $("#Part").val();
+        var soLuong = $("#Slg").val();
+        var optionID = $("#OptionID").val();
+
+        if (Shift == '') {
+            alert('Chưa chọn ca làm việc!');
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("InputOrderNotInPlan", "Anod")',
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            data: { 'shift': Shift, 'machineID': MachineId, 'mono': lenh, 'partID': chiTiet, 'slg': soLuong, 'optionID': optionID },
+            success: function (data) {
+                if (data != "OK")
+                {
+                    alert(data);
+                    return;
+                }
+
+                $("#MONoForSearch").val(lenh);
+                $("#PartForSearch").val(chiTiet);
+                $("#OptionIDForSearch").val(optionID);
+                StartSearch();
+                Guiding_Document_Content(chiTiet);
+            },
+        });
+    }
+
+    function CreatePlanForm() {
+        var listPlan = '';
+        listPlan += '<table class="table-advance" style="width: 1500px;">';
+        listPlan += '<thead>';
+        listPlan += '<td style="width: 30px;"> STT </td>';
+        listPlan += '<td style="width: 70px;"> Tên chi tiết </td>';
+        listPlan += '<td style="width: 30px;"> Order </td>';
+        listPlan += '<td style="width: 30px;"> NC </td>';
+        listPlan += '<td style="width: 30px;"> Qty </td>';
+        listPlan += '<td style="width: 30px;"> Slg ok </td>';
+        listPlan += '<td style="width: 30px;"> Slg NG </td>';
+        //listPlan += '<td style="width: 30px;"> Trạng thái </td>';
+        listPlan += '<td style="width: 30px;"> Chọn </td>';
+        listPlan += '<td style="width: 150px;"> Cấu hình tham khảo </td>';
+        listPlan += '<td style="width: 50px;"> TH gia công </td>';
+        listPlan += '<td style="width: 30px;"> Nhà CC </td>';
+        listPlan += '<td style="width: 30px;"> Tổng TG </td>';
+        listPlan += '<td style="width: 30px;"> TG/1pc </td>';
+        listPlan += '<td style="width: 70px;"> Ngày Cbị </td>';
+        listPlan += '</thead>';
+        listPlan += '<tbody id="SearchResult">';
+        listPlan += '</tbody>';
+        $("#ListPlan").html(listPlan);
+    }
+
+    function SelectedPlann(id, mahoa,soOrder) {
+        arrayTemp = new Array();
+        array = new Array();
+        arrayCurrentOrder = new Array();
+
+        Error_OrderNoF2(soOrder);
+
+        var a1 = $("#Select" + mahoa).is(":checked");
+        var data = id + '-' + mahoa;
+        var arrayTemp = new Array();
+        arrayTemp.push(JSON.stringify(data));
+        var b = JSON.stringify(data);
+        if (a1 == false) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] != arrayTemp[0]) {
+                    continue;
+                }
+
+                array.splice(i, 1);
+                arrayCurrentOrder.splice(i, 1);
+            }
+            return;
+        }
+
+        array.push(JSON.stringify(data));
+        arrayCurrentOrder.push(mahoa);
+    }
+
+    var alreadySearch = 0;
+    function StartSearch() {
+        var part = $("#PartForSearch").val();
+        var mono = $("#MONoForSearch").val();
+        var option = $("#OptionIDForSearch").val();
+
+        if (alreadySearch == 0)
+        {
+            CreatePlanForm();
+            alreadySearch++;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetPlanForCuttingMachineByPartNo", "Anod")',
+            data: {'shift': Shift,'machine': MachineId, 'partNo': part, 'mono': mono,'optionID':option },
+            dataType: 'JSON',
+            traditional: true,
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                if (data == 'NG') {
+                    alert("Không lấy được danh sách kế hoạch. Vui lòng thử lại");
+                    return;
+                }
+
+                var listPlan = '';
+                $.each(data, function (i, val) {
+                    listPlan += '<tr>';
+                    listPlan += '<td>' + val.K + '</td>';
+                    listPlan += '<td>' + val.Ký_hiệu_chi_tiết + '</td>';
+                    listPlan += '<td>' + val.Số_Order + '</td>';
+                    listPlan += '<td>' + val.Số_NC + '</td>';
+                    listPlan += '<td>' + val.OKQty + '/' + val.Slg_lệnh + '</td>';
+                    listPlan += '<td><input type="text" size="8" id="OKQty' + val.K + '" /></td>';
+                    listPlan += '<td><input type="text" size="8" id="NGQty' + val.K + '" /></td>';
+                    listPlan += '<td><input type="radio" name="Select" id="Select' + val.K + '" value="check1" onclick="SelectedPlann(\'' + val.ID + '\', \'' + val.K + '\', \'' + val.Số_Order + '\')" checked="checked"/></td>';
+                    listPlan += '<td>' + val.Cua_Size + '</td>';
+                    listPlan += '<td>' + val.Cua_GCTime1 + '</td>';
+                    listPlan += '<td>' + val.Cua_Factory + '</td>';
+                    listPlan += '<td>' + val.Cua_TotalTime + '</td>';
+                    listPlan += '<td>' + val.Cua_Plantime + '</td>';
+                    listPlan += '<td>' + val.Cua_PrepareDate + '</td>';
+                    listPlan += '</tr>';
+                });
+                listPlan += '';
+                $("#SearchResult").append(listPlan);
+                $("#SearchResultBuffer").append(listPlan);
+
+                $("#Part").prop('readonly', false);
+                $("#Slg").prop('readonly', false);
+                $("#OptionID").prop('readonly', false);
+                $("#Part").val("");
+                $("#Slg").val("");
+                $("#MONo").val("");
+                $("#OptionID").val("");
+                $("#MONo").focus();
+                //$("#OutSiteOfPlan").fadeOut(200);
+                //$("#background-popup").fadeOut(200);
+                //popupStatus = 0;
+            },
+        });
+    }
+
+    function Function()
+    {
+
+    }
+
+    function InputWTSForAnodStaff() {
+        congdoan = $("input[name='gender']:checked").val();
+        if (congdoan == null)
+        {
+            alert("Chưa chọn công đoạn làm việc. Vui lòng chọn đẩy đủ");
+            return;
+        }
+
+        if (Shift == '') {
+            alert("Chưa chọn ca làm việc. Vui lòng chọn lại");
+            return;
+        }
+
+        switch (congdoan) {
+            case "treo":
+                InputDataForTreo();
+                break;
+            case "hoanThien":
+                InputDataForHoanThien();
+                break;
+        }
+    }
+
+    function StartToCalculateTime() {
+        $.ajax({
+            url: '@Url.Action("StartToCalculateTime", "Anod")',
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            success: function (data) {
+                if (data != "OK") {
+                    alert(data);
+                    return;
+                }
+
+                seconds = 0;
+                minutes = 0;
+                hours = 0;
+                var meMa = $("#MeMa").val();
+                var working = "Đang làm mẻ mạ " + meMa;
+                $("#Working").html(working);
+                alert("OK");
+            },
+        });
+    }
+    function InputDataForHoanThien() {
+        var staffID = $("#StaffID").val();
+        var meMa = $("#MeMa").val();
+
+        if (staffID == '') {
+            alert("Mã nhân viên không được để trống");
+            return;
+        }
+
+        var list = new Array();
+        for(var i = 0; i < memaArr.length;i++)
+        {
+            list.push(JSON.stringify(memaArr[i]));
+        }
+
+        $.ajax({
+            url: '@Url.Action("InputWTSForAnodStaff", "Anod")',
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            data: { 'mono': '', 'staffID': staffID, 'part': '', 'slg': meMa, 'slg_OK': 0, 'shift': Shift, 'optionID': '', 'congdoan': congdoan, 'list': list },
+            success: function (data) {
+                if (data != "OK") {
+                    alert(data);
+                    memaArr = new Array();
+                    GetMeMa()
+                    return;
+                }
+
+                seconds = 0;
+                minutes = 0;
+                hours = 0;
+                memaArr = new Array();
+                $("#MeMa").val("");
+                $("#Working").html('');
+                alert("OK");
+            },
+        });
+    }
+
+    function InputDataForTreo()
+    {
+        var mono = $("#MONo").val();
+        var staffID = $("#StaffID").val();
+        var slg = $("#Slg").val();
+        var slg_OK = $("#Slg_OK").val();
+        var part = $("#Part").val();
+        var optionID = $("#OptionID").val();
+
+        if (Number(slg_OK) > Number(slg))
+        {
+            alert("Số lượng treo lớn hơn số lượng lệnh. vui lòng xem lại!");
+            return;
+        }
+
+        if (mono == '') {
+            alert("Order không được để trống");
+            return;
+        }
+
+        if (part == '') {
+            alert("Tên chi tiết không được để trống");
+            return;
+        }
+
+        if (optionID == '') {
+            alert("Nguyên công không được để trống");
+            return;
+        }
+
+        if (staffID == '') {
+            alert("Mã nhân viên không được để trống");
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("InputWTSForAnodStaff", "Anod")',
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            data: { 'mono': mono, 'staffID': staffID, 'part': part, 'slg': slg, 'slg_OK': slg_OK, 'shift': Shift, 'optionID': optionID, 'congdoan': congdoan },
+            success: function (data) {
+                if (data != "OK") {
+                    alert(data);
+                    return;
+                }
+
+                alert("OK");
+            },
+        });
+    }
+
+    var memaArr = new Array();
+    function GetMeMa() {
+        memaArr = new Array();
+        var mema = $("#MeMa").val();
+        $.ajax({
+            url: '@Url.Action("GetMeMa", "Anod")',
+            dataType: 'JSON',
+            type: 'POST',
+            traditional: true,
+            cache: false,
+            data: { 'mema': mema },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Value);
+                    return;
+                }
+
+                var memaInfor = "";
+                memaInfor += '<table class="table-advance" style="width: 1500px;">';
+                memaInfor += '<thead>';
+                memaInfor += '<td> STT </td>';
+                memaInfor += '<td> Tên chi tiết </td>';
+                memaInfor += '<td> Order </td>';
+                memaInfor += '<td> SlgMa </td>';
+                memaInfor += '<td> Mẻ mạ </td>';
+                memaInfor += '<td> Lũy tiến </td>';
+                memaInfor += '<td> Slg NG </td>';
+                //memaInfor += '<td> TG treo TC </td>';
+                memaInfor += '<td> TG HT TC </td>';
+                memaInfor += '</thead>';
+                memaInfor += '<tbody>';
+                var totoalTreo = 0;
+                $.each(data.Value, function (i, val) {
+                    var memaOrder = { MONo: val.MONo, NG: 0 };
+                    memaArr.push(memaOrder);
+                    totoalTreo += val.TimeComplete;
+                    memaInfor += '<tr>';
+                    memaInfor += '<td>' + i + '</td>';
+                    memaInfor += '<td>' + val.PartNo + '</td>';
+                    memaInfor += '<td>' + val.MONo + '</td>';
+                    memaInfor += '<td>' + val.SlgMa + '</td>';
+                    memaInfor += '<td>' + val.MeMa + '</td>';
+                    memaInfor += '<td>' + val.LuyTien + '</td>';
+                    memaInfor += '<td><input type="text" size="20" id="NG' + val.MONo + '" value = "0" onBlur="ChangeNGValue(\'' + val.MONo + '\')" /></td>';
+                    //memaInfor += '<td>' + val.TimeTreo + '</td>';
+                    memaInfor += '<td>' + val.TimeComplete + '</td>';
+                    memaInfor += '</tr>';
+                });
+                memaInfor += '<br/>';
+                memaInfor += '<span Style="color:red;">Tổng thời gian hoàn thiện của cả mẻ: ' + totoalTreo + '</span>';
+                memaInfor += '</tbody>';
+                $("#MeMa_Content").html(memaInfor);
+            },
+        });
+    }
+
+    function ChangeNGValue(mono)
+    {
+        var ng = $("#NG" + mono).val();
+        for(var i = 0; i< memaArr.length;i++)
+        {
+            if (memaArr[i].MONo != mono)
+            {
+                continue;
+            }
+
+            memaArr[i].NG = ng;
+        }
+    }
+
+    function Guiding_Document_Content(chiTiet) {
+        var win = window.open('PdfViewer/' + chiTiet + '.html', chiTiet);
+    }
+</script>

@@ -1,0 +1,125 @@
+﻿<table>
+    <tr>
+        <td>
+            Từ ngày:
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().DateBox()
+                            .Value(DateTime.Now.Date)
+                            .ID("dateFrom")
+                            .DisplayFormat("dd/MM/yyyy")
+            )
+        </td>
+        <td>
+            Đến ngày:
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().DateBox()
+                            .Value(DateTime.Now.Date)
+                            .ID("dateTo")
+                            .DisplayFormat("dd/MM/yyyy")
+            )
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().Button()
+                            .Text("Xem")
+                            .ID("btnView")
+                            .Type(ButtonType.Normal)
+                            .Width(90)
+                            .OnClick("ReLoad")
+            )
+        </td>
+    </tr>
+</table>
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_WTS>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_WTSApi")
+        .LoadAction("GetAllWTS").LoadParams(new { dateFrom = new JS("getFromDate"), dateTo = new JS("getToDate") })
+    )
+    .ID("dxDataGrid")
+    .Selection(select => select.Mode(SelectionMode.Multiple))
+    .Paging(page => page.PageSize(15))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 15, 30, 50 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("StaffID")
+    )
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ColumnAutoWidth(true)
+    .HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .Export(exp => exp.Enabled(true)
+        .FileName("WTS data")
+        .AllowExportSelectedData(true)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.Date);
+
+        columns.AddFor(m => m.StaffID);
+
+        columns.AddFor(m => m.Shift);
+
+        columns.AddFor(m => m.MachineID);
+
+        columns.AddFor(m => m.OptionID);
+
+        columns.AddFor(m => m.MONo);
+
+        columns.AddFor(m => m.PartID);
+
+        columns.AddFor(m => m.WorkID);
+
+        columns.AddFor(m => m.Time);
+
+        columns.AddFor(m => m.OKQty);
+
+        columns.AddFor(m => m.NGQty);
+
+        columns.AddFor(m => m.ProTime);
+
+        columns.AddFor(m => m.ClampTime);
+
+        columns.AddFor(m => m.Note);
+
+        columns.AddFor(m => m.Note1);
+
+        columns.AddFor(m => m.Note2);
+
+        columns.AddFor(m => m.StartTime);
+
+        columns.AddFor(m => m.FinishTime);
+
+        columns.AddFor(m => m.OVT);
+
+        columns.AddFor(m => m.LeaderCheck);
+    })
+)
+
+
+<script>
+    function getFromDate() {
+        var a = $("#dateFrom").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getToDate() {
+        var a = $("#dateTo").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function ReLoad()
+    {
+        $("#dxDataGrid").dxDataGrid("instance").refresh();
+    }
+</script>

@@ -1,0 +1,26 @@
+﻿@{
+    
+}
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        @*<ul class="sidebar-menu">
+            <li class="@Html.IsSelected(controller: " Dashboard")">
+                <a href="@Url.Action("Index","EmailConfiguration")">
+                    <i class="fa fa-dashboard"></i> <span>Trang chủ cấu hình</span>
+                </a>
+            </li>
+        </ul>*@
+
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("NotificationFunctionList","EmailConfiguration")"><i class="fa fa-circle-o"></i> Danh sách chức năng</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("NotificationEmailList","EmailConfiguration")"><i class="fa fa-circle-o"></i> Danh sách email</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("NotificationSendingEmail","EmailConfiguration")"><i class="fa fa-circle-o"></i> Chức năng - email</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("NotificationSendType","EmailConfiguration")"><i class="fa fa-circle-o"></i> Kiểu thông báo</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("TimeSendEmail","EmailConfiguration")"><i class="fa fa-circle-o"></i> Thời gian gửi mail</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ReportList","EmailConfiguration")"><i class="fa fa-circle-o"></i> Danh sách các báo cáo</a></li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

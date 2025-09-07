@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Số lần phát hiện lỗi";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ErrorHappenFrequency>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C242_ErrorHappenFrequencyApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("FrequencyIndex")
+    )
+    //.Export(e => e.Enabled(true).FileName("Frequency").AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.FrequencyIndex).Caption("Mã số");
+
+        columns.AddFor(m => m.Des).Caption("Nội dung");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+        e.data.FrequencyIndex = 0;
+    }
+
+</script>

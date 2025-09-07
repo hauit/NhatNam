@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "Đăng kí xe";
+}
+
+@*<div id="chart" style="width: 600px; height: 300px; margin: 20px auto;"></div>
+<div id="rangeSelector" style="width: 600px; height: 100px; margin: 20px auto;"></div>*@
+<script>
+    $(function () {
+        // Dữ liệu khoảng thời gian
+        let timeRanges = [
+            { type: "Ngủ", start: 0, end: 6, color: "#ccc" },
+            { type: "Tập thể dục", start: 6, end: 12, color: "#fb7764" },
+            { type: "Làm việc", start: 12, end: 18, color: "#73d47f" },
+            { type: "Giải trí", start: 18, end: 24, color: "#ffcc00" }
+        ];
+
+        // Hiển thị biểu đồ để thấy trực quan
+        $("#chart").dxChart({
+            dataSource: timeRanges,
+            commonSeriesSettings: {
+                type: "rangeBar",
+                argumentField: "type"
+            },
+            series: [{
+                valueField: "start",
+                name: "Start",
+                color: "#ccc"
+            }, {
+                valueField: "end",
+                name: "End",
+                color: "#fb7764"
+            }],
+            legend: { visible: false }
+        });
+
+        // Khởi tạo RangeSelector
+        $("#rangeSelector").dxRangeSelector({
+            dataSource: timeRanges,
+            scale: {
+                startValue: 0,
+                endValue: 24,
+                tickInterval: 6,
+                minorTickInterval: 1,
+                label: { format: { type: "fixedPoint", precision: 0 } }
+            },
+            selectedRangeColor: "transparent",
+            sliderMarker: { visible: true },
+            behavior: { callValueChanged: "onMoving" },
+            background: {
+                color: "white"
+            },
+            series: [{
+                argumentField: "start",
+                valueField: "end",
+                type: "rangeArea",
+                color: "#fb7764"
+            }]
+        });
+    });
+</script>
+
+
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_CarRegister>()
+                .DataSource(ds => ds.WebApi()
+                    .RouteName("C222_CarRegisterApi")
+                    .LoadAction("Get")
+                    .InsertAction("Post")
+                    .UpdateAction("Put")
+                    .DeleteAction("Delete")
+                    .Key("ID")
+                )
+                .ID("dxCarRegister")
+                //.Export(e => e.Enabled(true))
+                .Paging(page => page.PageSize(10))
+                .Pager(pager => pager.ShowPageSizeSelector(true)
+                    .ShowInfo(true)
+                    .AllowedPageSizes(new List<int> { 20, 30, 50, 100, 200 })
+                )
+                .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                    .DescendingText("Date")
+                )
+                .ColumnAutoWidth(true)
+                .FilterRow(fil => fil.Visible(true))
+                .FilterPanel(fi => fi.Visible(true))
+                .SearchPanel(search => search.Visible(true)
+                    .HighlightSearchText(true)
+                    .Width(500)
+                )
+                .Columns(columns =>
+                {
+
+                    columns.AddFor(m => m.ID).AllowEditing(false);
+
+                    columns.AddFor(m => m.Date).Caption("Ngày ĐK").Format("dd/MM/yyyy");
+
+                    columns.AddFor(m => m.RegStaff).Caption("NV đăng kí");
+
+                    columns.AddFor(m => m.NeedDate).Caption("Thời gian cần").DataType(GridColumnDataType.DateTime).Format("dd/MM/yyyy HH:mm");
+
+                    columns.AddFor(m => m.EstimatedEndTime).Caption("Kết thúc(dự kiến)").DataType(GridColumnDataType.DateTime).Format("dd/MM/yyyy HH:mm");
+
+                    columns.AddFor(m => m.Reason).Caption("Lí do ĐK");
+
+                    columns.AddFor(m => m.Car).Caption("Xe").Lookup(lup =>
+                        lup.DataSource(ds => ds.WebApi()
+                            .RouteName("C222_CarsApi")
+                            .LoadAction("Get")
+                            .Key("Car")
+                        )
+                        .DisplayExpr("Driver")
+                        .ValueExpr("Car")
+                    );
+
+                    columns.AddFor(m => m.SupportReason).Caption("Y/C người hỗ trợ");
+
+        //columns.AddFor(m => m.Accepted).Caption("Xác nhận");
+
+        //columns.AddFor(m => m.StartTime).Format("dd/MM/yyyy HH:mm");
+
+        //columns.AddFor(m => m.FinishTime).Format("dd/MM/yyyy HH:mm");
+
+        //columns.AddFor(m => m.Note).Caption("Ghi chú");
+    })
+                .Editing(e => e
+                    .AllowAdding(true)
+                    .AllowUpdating(true)
+                //.AllowDeleting(true)
+                )
+                .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+</script>

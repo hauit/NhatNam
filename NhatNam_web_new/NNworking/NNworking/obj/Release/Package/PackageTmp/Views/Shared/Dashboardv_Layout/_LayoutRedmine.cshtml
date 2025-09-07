@@ -1,0 +1,295 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>@ViewBag.Title - NNworking</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="~/Images/logo.png">
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/GeneralCSS")
+
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    @if (IsSectionDefined("Styles"))
+    {@RenderSection("Styles", required: false)}
+    <link href="~/Content/wts/css/Style.css" rel="stylesheet" />
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 20%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        #loader {
+            display: none;
+            z-index: 90;
+            background: #F9F9F9;
+            overflow: auto;
+            position: fixed;
+            top: 2%;
+            left: 48%;
+            margin-left: -31%;
+            margin-top: 70px;
+            padding: 15px;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/lib")
+    @RenderSection("scripts", required: false)
+
+    @Scripts.Render("~/Content/GeneralJS")
+    @Scripts.Render("~/signalr/hubs")
+    @Scripts.Render("~/Scripts/DevExtremeBundle")
+    @Styles.Render("~/Content/DevExtremeBundle")
+
+
+
+    <script>
+        function CheckPass() {
+
+            var a = document.getElementById("OldPass").value;
+            var b = document.getElementById("NewPass").value;
+            if (a == "") {
+                alert("Mật khẩu cũ không được để trống");
+            }
+            else if (b == "") {
+                alert("Mật khẩu mới không được trống");
+            }
+            else if (document.getElementById("NewPassConfirm").value != b) {
+                alert("Mật khẩu mới và xác nhận mật khẩu mới không giống nhau");
+            }
+            else {
+
+                $.ajax({
+                    url: '@Url.Action("ChangePass", "Login")',
+                    type: 'Post',
+                    data: { 'OldPass': a, 'NewPass': b },
+                    dataType: 'Json',
+                    cache: false,
+                    success: function (data) {
+                        alert(data);
+                    },
+                })
+                //document.getElementById("frm").submit();
+            }
+        }
+        var elementNames = ['hoa-chat'];
+        $(document).ready(function () {
+            var url = window.location;
+            // for sidebar menu but not for treeview submenu
+            $('ul.sidebar-menu a').filter(function () {
+                return this.href == url;
+            }).parent().siblings().removeClass('active').end().addClass('active');
+            // for treeview which is like a submenu
+            $('ul.treeview-menu a').filter(function () {
+                return this.href == url;
+            }).parentsUntil(".sidebar-menu > .treeview-menu").siblings().removeClass('active menu-open').end().addClass('active menu-open');
+
+            elementNames.forEach(function (e) {
+                if (url.href.indexOf(e) !== -1) {
+                    activeMenu(e);
+                };
+            });
+
+            $(".treeview-menu .active .menu-open").show();
+        });
+
+        function activeMenu(elementClass) {
+            $('.' + elementClass).parentsUntil(".sidebar-menu > .treeview-menu").siblings().removeClass('active menu-open').end().addClass('active menu-open');
+        }
+
+        @*$(document).ready(function () {
+            setInterval(function () {
+                $.ajax({
+                    url: '@Url.Action("check", "WTSF2")',
+                    data: { 'check': 'alo' },
+                    dataType: 'JSON',
+                    type: 'POST',
+                    cache: false
+                });
+            }, 1000 * 50);
+        })*@
+
+        function GetNotifyPermission()
+        {
+            if (!window.Notification) {
+                console.log('Browser does not support notifications.');
+            } else {
+                // check if permission is already granted
+                if (Notification.permission === 'granted') {
+                    // show notification here
+                } else {
+                    // request permission from user
+                    Notification.requestPermission().then(function (p) {
+                        if (p === 'granted') {
+                            // show notification here
+                        } else {
+                            console.log('User blocked notifications.');
+                        }
+                    }).catch(function (err) {
+                        console.error(err);
+                    });
+                }
+            }
+
+        }
+
+        GetNotifyPermission();
+        function XemNoiDungThongBao(fromClient, caption, content) {
+            @*var setting = 'width=300, height=250, top=' + (screen.height / 2) + ', left=' + (screen.width / 2);
+            window.open('@Url.Action("MessageBox", "Index", new { fromClient = "alo", caption = "alo123", content = "blo321" })', '_blank', setting);
+            var myWin = this;
+            myWin.name = "myWindowName";
+            alert(myWin.name);
+            window.open("", "myWindowName");*@
+            var toolBorrowOption = {
+                // whether to hide the notification on click
+                clickToHide: true,
+                // whether to auto-hide the notification
+                autoHide: true,
+                autoHideDelay: 10000,
+                arrowShow: true,
+                arrowSize: 5,
+                className: 'info',
+                globalPosition: 'bottom right',
+                style: 'bootstrap',
+                showAnimation: 'slideDown',
+                showDuration: 10,
+                hideAnimation: 'slideUp',
+                hideDuration: 10,
+                gap: 1
+            }
+            $.notify(content, toolBorrowOption);
+            new Notification(content);
+
+        };
+    </script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div id="loader" class="loader"></div>
+    <div class="wrapper">
+
+        <div id="DisPlayMessage" style="position: fixed;display:none;z-index: 99;width:70%;height:70%;margin:auto;left:300px;top:10%;background-color:white;text-align:center">
+            <div>
+                <h1>Thông báo từ bộ phận kế hoạch: </h1>
+                <div id="MessageContent"></div>
+            </div>
+        </div>
+
+        @*<div id="OpenMessage">*@
+
+    </div>
+    <script>
+            //DisplayChatBox();
+            function openForm() {
+                document.getElementById("MessageForm").style.display = "block";
+                document.getElementById("open_button").style.backgroundColor = "#555";
+            }
+
+            function closeForm() {
+                document.getElementById("MessageForm").style.display = "none";
+            }
+
+            function ReadMessage(id, replyTo) {
+                var staffID = sessionStaffID;
+                chatWithUser = replyTo;
+                var replyMessage = $("#msgReply").val();
+                $.ajax({
+                    url: '@Url.Action("SendReplyToOther", "AllDept")',
+                    type: "POST",
+                    data: {
+                        'toUser': replyTo,
+                        'message': replyMessage,
+                        'replyFor': id
+                    }, //JSON
+                    dataType: "json",
+                    cache: false,
+                    success: function (data) {
+                        if (data.Status != 'OK') {
+                            alert(data.Values)
+                            return;
+                        }
+
+                        $("#DisPlayMessage").fadeOut(200);
+                    }
+                });
+            }
+
+            DisplayChatBox('@Url.Action("SendMessageToOther", "AllDept")');
+            var group = '@Session["Group"].ToString()';
+            GetUser(group, '@Url.Action("ListAvailableUser", "Hub")');
+    </script>
+
+    @Html.Partial(@"~/Views/Shared/Dashboardv_Layout/_Header.cshtml")
+    @{
+        string CurrentName = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"]);
+        switch (CurrentName)
+        {
+            case "Stocker":
+                @Html.Partial("~/Views/Shared/Dashboardv_Layout/_DynamicLeftMenu.cshtml")
+                break;
+            case "EmailConfiguration":
+                @Html.Partial("~/Views/Shared/Dashboardv_Layout/ConfiguratuonNotification.cshtml")
+                break;
+            case "Payroll":
+                @Html.Partial("~/Views/Shared/Dashboardv_Layout/_PayrollMenu.cshtml")
+                break;
+            default:
+                @Html.Partial("~/Views/Shared/Dashboardv_Layout/_Sidebar.cshtml")
+                break;
+        }
+    }
+
+    <div class="content-wrapper">
+        @Html.Partial("~/Views/Shared/Dashboardv_Layout/_Pointer.cshtml")
+        @{
+            string action = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["Action"]);
+
+            if (CurrentName == "AllDept" && action == "Redmine")
+            {
+                <iframe src="http://localhost:55753/Trang-chu/Index.html" width="100%" height="100%" title="Quản lý giao việc"></iframe>
+            }
+        }
+        <!-- Main content -->
+        <section class="content">
+            @RenderBody()
+            <!-- Small boxes (Stat box) -->
+            <div id="background-popup"></div>
+        </section>
+        <!-- /.content -->
+    </div>
+    @Html.Partial("~/Views/Shared/Dashboardv_Layout/_Footer.cshtml")
+    @Html.Partial("~/Views/Shared/Dashboardv_Layout/_Aside.cshtml")
+    <!-- Add the sidebar's background. This div must be placed
+    immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+    </div>
+    <div id="NotifyDiv" onclick="HidenNotifyDiv()">
+
+    </div>
+    <script>
+        function HidenNotifyDiv() {
+            $("#NotifyDiv").fadeOut(200);
+        }
+
+        var sessionStaffID = "@Session["StaffID"].ToString()";
+    </script>
+</body>
+</html>

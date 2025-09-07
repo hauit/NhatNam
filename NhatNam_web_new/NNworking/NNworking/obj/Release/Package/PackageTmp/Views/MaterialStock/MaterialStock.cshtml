@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách vật liệu";
+}
+<table width="1000px">
+    <tr>
+        <td>
+            &nbsp;&nbsp;&nbsp;Đơn vị chuyển:
+            @(Html.DevExtreme().Lookup()
+                    .DataSource(d => d.WebApi()
+                        .RouteName("C242_InventoryReceivedApi")
+                        .LoadAction("GetAllPartner")
+                        .Key("Code")
+                    )
+                    .ID("fromDept")
+                    .DisplayExpr("Name")
+                    .ValueExpr("Code")
+            )
+        </td>
+        <td>
+            &nbsp;&nbsp;&nbsp;Đơn vị nhận:
+            @(Html.DevExtreme().Lookup()
+                    .DataSource(d => d.WebApi()
+                        .RouteName("C242_InventoryReceivedApi")
+                        .LoadAction("GetAllPartner")
+                        .Key("Code")
+                    )
+                    .ID("toDept")
+                    .DisplayExpr("Name")
+                    .ValueExpr("Code")
+            )
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.View_222_MaterialStock>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C222_MaterialStockApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .Key("ID")
+    )
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    //.Export(e => e.Enabled(true).FileName("DSvatlieu").AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.MaterialID);
+
+        columns.AddFor(m => m.Supplier);
+
+        columns.AddFor(m => m.Code).Visible(true);
+
+        columns.AddFor(m => m.Note);
+
+        columns.AddFor(m => m.InputWeight).AllowEditing(false);
+
+        columns.AddFor(m => m.OutputWeight).AllowEditing(false);
+
+        columns.AddFor(m => m.AvailableWeight).AllowEditing(false);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+</script>

@@ -1,0 +1,122 @@
+﻿
+<div class="box box-body">
+    @(Html.DevExtreme().Button()
+            .Text("Import")
+            .ID("btnImport")
+            .Type(ButtonType.Normal)
+            .Width(150)
+    )</br>
+</div>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_ShiftRegister>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_ShiftRegisterApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.Date);
+
+        columns.AddFor(m => m.StaffID);
+
+        columns.AddFor(m => m.Shift);
+
+        columns.AddFor(m => m.Income);
+
+        columns.AddFor(m => m.Outcome);
+
+        columns.AddFor(m => m.WorkTime);
+
+        columns.AddFor(m => m.Lunch);
+
+        columns.AddFor(m => m.Dinner);
+
+        columns.AddFor(m => m.Breakfast);
+
+        columns.AddFor(m => m.Milk);
+
+        columns.AddFor(m => m.Deleted);
+
+        columns.AddFor(m => m.UserDelete);
+
+        columns.AddFor(m => m.MachineID);
+
+        columns.AddFor(m => m.Note);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+)
+
+<input id="File2" type="file" name="file" class="hide" onchange="ChoiceFilePhu()" />
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+    }
+
+    $(document).on('click', '#btnImport', function () {
+        $('#File2').trigger('click');
+    });
+
+    function ChoiceFilePhu() {
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        $.ajax({
+            url: '@Url.Action("ImportStaff", "AllDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0) {
+                    DisplayImportError(data.Errors);
+                }
+
+                $('#File2').val('');
+                SearchByPartNo();
+            },
+        });
+    }
+</script>
+
+<script>
+    function TaoTK(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var machineID = options.data.StaffID;
+
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $('<div id="dxButton_TraDao_' + id + '" /><a href="#" onclick ="CheckAndCreateUserForMachine(\'' + machineID + '\')">Tạo TK</a></div>').appendTo(container);
+    }
+
+    function CheckAndCreateUserForMachine(machineID) {
+        $.ajax({
+            url: '@Url.Action("CheckAndCreateUserForMachine", "ProcessingDept")',
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            data: { 'machineID': machineID },
+            success: function (data) {
+                alert(data.Values);
+
+            },
+        });
+    }
+</script>

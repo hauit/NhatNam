@@ -1,0 +1,1073 @@
+﻿
+<section>
+    <div class="box box-body">
+        <div class="col-lg-4">
+            <table>
+                <tr>
+                    <td>
+                        Ngày:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().DateBox()
+                            .Type(DateBoxType.Date)
+                        .Value(DateTime.Now)
+                        .ID("dateDate")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Máy")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("loadGroupMachine")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Bộ phận")
+                        .ID("btnDept")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("loadDepartment")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Ca làm việc")
+                        .ID("btnShift")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("SelectShift")
+                        .Visible(false)
+                        )
+                    </td>
+                </tr>
+            </table>
+            <div id="ListPartNeedConfirmBy0194" style="color:red;"></div>
+        </div>
+
+        <div class="col-lg-5">
+            <div id="MachineGroupButton">
+                @*<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val+ '" name="" value="MachineGroupButton" onclick="MachineGroup()">*@
+            </div>
+            <div id="MachineGroupButtonHistory"></div>
+        </div>
+    </div>
+    <div class="box box-body">
+        <div class="col-lg-12">
+            <table>
+                <tr>
+                    <td>
+                       Order:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().TextBox()
+                            .ReadOnly(false)
+                            .OnFocusOut("GetPartIDByMONo")
+                        .ID("txtMONo")
+                        )
+                    </td>
+                    <td>
+                        Mã nhân viên:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().TextBox()
+                        .ID("txtStaffID")
+                        )
+                    </td>
+                    <td>                        
+                        Máy:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().TextBox()
+                        .ID("txtMachineID")
+                        .OnFocusIn("ShowListMachine")
+                        )
+                    </td>
+                    <td>
+                        Thời gian:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().NumberBox()
+                        .ID("txtTime")
+                        )
+                    </td>
+                    <td>
+                        OK:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().NumberBox()
+                        .ID("txtOK")
+                        )
+                    </td>
+                    <td>
+                        TGGC:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().NumberBox()
+                        .ID("txtTGGC")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .ID("btnInputWTS")
+                        .Text("Bắt đầu")
+                        .OnClick("StartWork")
+                        )
+                        &nbsp;
+                        @(Html.DevExtreme().Button()
+                        .ID("End")
+                        .Text("Kết thúc")
+                        .OnClick("FinishWork")
+                        .Visible(false)
+                        )
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       Nguyên công:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().TextBox()
+                            .ReadOnly(false)
+                            .OnFocusIn("ShowListOptionID")
+                            .OnFocusOut("GetLT")
+                        .ID("txtOptionID")
+                        )
+                    </td>
+                    <td>
+                        Mã công việc:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().TextBox()
+                        .ID("txtWorkID")
+                        .OnFocusIn("ShowListWorkID")
+                        )
+                    </td>
+                    <td>
+                        Ghi chú:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().TextBox()
+                        .ID("txtNote")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        Chi tiết
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().TextBox()
+                        .ID("txtPartID")
+                        .ReadOnly(true)
+                        )
+                    </td>
+                    <td>
+                        NG:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().NumberBox()
+                        .ID("txtNG")
+                        )
+                    </td>
+                    <td>
+                        TGGL:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().NumberBox()
+                        .ID("txtTGGL")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .ID("btnClear")
+                        .Text("Xóa")
+                        .OnClick("ClearForm")
+                        .Visible(false)
+                        )
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        OK NC truoc:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().NumberBox()
+                            .ID("txtOKNCTruoc")
+                            .ReadOnly(true)
+                        )
+                    </td>
+                    <td>
+                        NG NC truoc:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().NumberBox()
+                            .ID("txtNGNCTruoc")
+                        )
+                    </td>
+                    <td>
+                        CV trong TG hàng loạt
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().CheckBox()
+                            .Value(false)
+                            .ID("checkCVTrongTGHL")
+                        )
+                    </td>
+                </tr>
+            </table>
+            <div id="ListPartNeedConfirmBy0194" style="color:red;"></div>
+        </div>
+    </div>
+    
+    <div id="dataGrid">
+        <h3>Kế hoạch máy</h3>
+        @(Html.DevExtreme().DataGrid<NNworking.Models.Sp_242_MachinePlanning_GetPlanforMachine_Result>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("C242_WTSApi")
+                .LoadParams(new { shift = new JS("getShiftValue"), machineID = new JS("getMachineIDValue"), date = new JS("getDateValue") })
+                .LoadAction("GetPlan")
+                .Key("ID")
+            )
+            .ID("dxDataGrid")
+            .RemoteOperations(true)
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 30, 50 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("ID")
+            )
+            .ColumnAutoWidth(true)
+            .Selection(select => select.Mode(SelectionMode.Single))
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .OnSelectionChanged("SelectedToolBorrow")
+            .Columns(columns =>
+            {
+
+                columns.AddFor(m=>m.ID).AllowEditing(false);
+                
+                columns.AddFor(m => m.Date).AllowEditing(false);
+
+                columns.AddFor(m => m.Shift).AllowEditing(false);
+
+                columns.AddFor(m => m.MayGC).AllowEditing(false);
+
+                columns.AddFor(m => m.NC).AllowEditing(false);
+
+                columns.AddFor(m => m.Order).AllowEditing(false);
+
+                columns.AddFor(m => m.TenChiTiet).AllowEditing(false);
+
+                columns.AddFor(m => m.TGGC).AllowEditing(false);
+
+                columns.AddFor(m => m.TGGL).AllowEditing(false);
+
+                columns.AddFor(m => m.Slglenh).Visible(false);
+
+                columns.AddFor(m => m.OKQtyLT).Visible(false);
+
+                columns.AddFor(m => m.NGQtyLT).Visible(false);
+
+                columns.AddFor(m => m.QtyLT).Visible(false);
+            })
+        )
+    </div>
+
+    <div id="dataGrid">
+        <h3>Lịch sử WTS</h3>
+        @(Html.DevExtreme().DataGrid<NNworking.Models.C242_WTS>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("C242_WTSApi")
+                .LoadAction("GetDetailWTS")
+                .LoadParams(new { shift = new JS("getShiftValue"), machineID = new JS("getMachineIDValue"), staffID = new JS("getStaffID"), dept = new JS("getDepartment"), date = new JS("getDateValue") })
+                .UpdateAction("Put").UpdateMethod("Put")
+                .DeleteAction("Delete")
+                .Key("ID")
+            )
+            .ID("dxDetailWTS")
+            .RemoteOperations(true)
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 30, 50 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("ID")
+            )
+            .ColumnAutoWidth(true)
+            .Selection(select => select.Mode(SelectionMode.Single))
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .Columns(columns =>
+            {
+
+                columns.AddFor(m => m.ID).AllowEditing(false);
+
+                columns.AddFor(m => m.IDPlan).AllowEditing(false);
+
+                columns.AddFor(m => m.Date).AllowEditing(false);
+
+                columns.AddFor(m => m.Shift).AllowEditing(false);
+
+                columns.AddFor(m => m.MachineID).AllowEditing(false);
+
+                columns.AddFor(m => m.OptionID).AllowEditing(false);
+
+                columns.AddFor(m => m.MONo).AllowEditing(false);
+
+                columns.AddFor(m => m.PartID).AllowEditing(false);
+
+                columns.AddFor(m => m.WorkID);
+
+                columns.AddFor(m => m.StaffID);
+
+                columns.AddFor(m => m.Time);
+
+                columns.AddFor(m => m.ProTime);
+
+                columns.AddFor(m => m.ClampTime);
+
+                columns.AddFor(m => m.OKQty);
+
+                columns.AddFor(m => m.NGQty);
+
+                columns.AddFor(m => m.Note);
+
+                columns.AddFor(m => m.Status).AllowEditing(false).CellTemplate(new JS("CheckWTSStatus"));
+
+                columns.Add().Caption("Thao tác").AllowEditing(false).CellTemplate(new JS("Delete"));
+                columns.AddFor(m => m.Deleted).Visible(false);
+            })
+            .Editing(e => e
+                .AllowUpdating(true)
+                //.AllowDeleting(true)
+                .Mode(GridEditMode.Cell)
+            )
+            .OnRowValidating("ValidateRow")
+            .OnRowPrepared("OnRowPrepared")
+        )
+    </div>
+    <div id="ListHistory"></div>
+</section>
+
+<div id="WorkIDButton">
+    <h2>Danh sách dao hết hạn</h2>
+</div>
+<div id="btnWork">
+</div>
+
+
+<script>
+    var popupStatus = 0;
+    var shift = '';
+    var machineID = '';
+    var department = '';
+    $(document).ready(function () {
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            //$("#banga").html('<td><b>Bàn gá:</b></td> <td>' + palet + '</td>');
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus >= 1) {
+                $("#ShiftButton").fadeOut(200);
+                $("#MachineGroupButton").fadeOut(200);
+                $("#OptionIDButtonTotal").fadeOut(200);
+                $("#OptionIDButton").fadeOut(200);
+                $("#background-popup").fadeOut(200);
+                $("#ManualExcutionChecking").fadeOut(200);
+                $("#WorkIDButton").fadeOut(200);
+
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadShiftPopup() {
+            if (popupStatus == 0) {
+                $("#ShiftButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadMachineGroupPopup() {
+            if (popupStatus == 0) {
+                $("#MachineGroupButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadWorkButton() {
+            if (popupStatus == 0) {
+                $("#WorkIDButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        /** các hàm gọi sự kiện click **/
+        $("#ShiftBT").click(function () {
+            loadShiftPopup();
+        });
+
+        $("#btnView").click(function () {
+            loadMachineGroupPopup();
+        });
+
+        $("#btnDept").click(function () {
+            loadMachineGroupPopup();
+        });
+
+        $("#btnShift").click(function () {
+            loadMachineGroupPopup();
+        });
+
+        $("#btnWork").click(function () {
+            loadWorkButton();
+        });
+    })
+
+    var ID = 0;
+    var idPlan = 0;
+    var partID = '';
+    function SelectedToolBorrow(e) {
+        var plan = e.selectedRowsData[0];
+        $("#txtMONo").dxTextBox("instance").option("value", plan.Order);
+        $("#txtNG").dxNumberBox("instance").option("value", 0);
+        $("#txtNGNCTruoc").dxNumberBox("instance").option("value", plan.NGQtyLT);
+        $("#txtOKNCTruoc").dxNumberBox("instance").option("value", plan.OKQtyLT);
+        $("#txtWorkID").dxTextBox("instance").option("value", 'PLJ1');
+        $("#txtOptionID").dxTextBox("instance").option("value", plan.NC);
+        $("#txtOK").dxNumberBox("instance").option("value", plan.Slglenh);
+        $("#txtNote").dxTextBox("instance").option("value", '');
+        $("#txtTime").dxNumberBox("instance").option("value", 0);
+        $("#txtTGGC").dxNumberBox("instance").option("value", plan.TGGC);
+        $("#txtPartID").dxTextBox("instance").option("value", plan.TenChiTiet);
+        $("#txtTGGL").dxNumberBox("instance").option("value", plan.TGGL);
+
+        $("#txtOptionID").dxTextBox("instance").option("readOnly", false);
+        $("#txtMONo").dxTextBox("instance").option("readOnly", false);
+
+        if (department.toLowerCase() != 'xuong')
+        {
+            $("#txtStaffID").dxTextBox("instance").option("value", plan.MayGC);
+            $("#btnShift").dxButton("instance").option("visible", true);
+            $("#txtOptionID").dxTextBox("instance").option("readOnly", true);
+            $("#txtMONo").dxTextBox("instance").option("readOnly", true);
+        }
+
+        //machineID = plan.MayGC;
+        partID = plan.TenChiTiet;
+        //shift = plan.shift;
+        idPlan = plan.ID;
+    }
+
+    function Delete(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var checkedNumber = options.data.CheckedNumber;
+        var checkingItemNumber = options.data.CheckingItemNumber;
+        var maxCheckingNumber = options.data.MaxNumber;
+        var staffID = '@Session["StaffID"].ToString()';
+        if (!options.data.Status && (staffID == '0005' || staffID == '0137' || staffID == '0100' || staffID == '1556'))
+        {
+            CheckWTSFunction(container, options);
+            return;
+        }
+
+        //if(staffID != '0005' && staffID != '0137' && staffID != '0100' && staffID != '1556'  && staffID != '0092' && staffID != '0928' && staffID != '0037' && staffID != '0002' && staffID != '0038' && staffID != '0164')
+        //{
+        //    return;
+        //}
+
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $("<div id='dxButton_Delete_" + id + "'/>").dxButton({
+            text: 'Xóa',
+            stylingMode: "outlined",
+            type: "success",
+            onClick: function () {
+                DeleteWTS(row);
+            }
+        }).appendTo(container);
+        return;
+    }
+
+    function CheckWTSFunction(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $("<div id='dxButton_CheckingWTS_" + id + "'/>").dxButton({
+            text: 'Duyệt',
+            stylingMode: "outlined",
+            type: "success",
+            onClick: function () {
+                OKWTS(row);
+            }
+        }).appendTo(container);
+        return;
+    }
+
+    function OKWTS(row) {
+        var returnValue = confirm('Chắc chắn phê duyệt WTS đã chọn');
+        if (!returnValue) {
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("OKWTS", "WTS")',
+            dataType: 'Json',
+            type: 'POST',
+            data: { 'id': row.ID },
+            cache: false,
+            success: function (data) {
+                alert(data.Values);
+                $("#dxDetailWTS").dxDataGrid("instance").refresh();
+            },
+        });
+    }
+
+    function CheckWTSStatus(container, options) {
+        var id = options.data.ID;
+        var status = 'Chưa duyệt';
+        if (options.data.Status)
+        {
+            status = 'Đã duyệt';
+        }
+
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $('<div id="dxButton_StandTimeAffect_PBJ1_' + id + '" /><a style="color:blue;" href="#">' + status + '</a></div>').appendTo(container);
+        return;
+    }
+
+    function DeleteWTS(row) {
+        var returnValue = confirm('Chắc chắn muốn xóa dòng WTS đã chọn');
+        if (!returnValue) {
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("DeleteWTS", "WTS")',
+            dataType: 'Json',
+            type: 'POST',
+            data: { 'id': row.ID },
+            cache: false,
+            success: function (data) {
+                alert(data.Values);
+                $("#dxDetailWTS").dxDataGrid("instance").refresh();
+            },
+        });
+    }
+
+    function loadGroupMachine() {
+        if (department == '')
+        {
+            alert('Chưa chọn bộ phận làm việc. Vui lòng chọn bộ phận!');
+            return;
+        }
+
+        //switch(department)
+        //{
+        //    case 'Xuong':
+        //}
+
+        var date = getDateValue();
+        $.ajax({
+            url: '@Url.Action("GetListMachine", "WTS")',
+            dataType: 'Json',
+            type: 'POST',
+            data: { 'date': date, 'department': department },
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK")
+                {
+                    alert(data.Values);
+                    return;
+                }
+
+                var GroupMachineBT = "";
+                $.each(data.Values, function (i, val) {
+                    var color = "red";
+                    if (val.Active == true) {
+                        color = "blue";
+                    }
+
+                    if (val.ID == 0)
+                    {
+                        GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;background-color:' + color + '" type="Button" tabindex="" id="' + val.Key + '" name=""  value="' + val.Key + '" onclick="ListMachine(\'' + val.Key + '\')"> ';
+                        return;
+                    }
+
+                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;background-color:' + color + '" type="Button" tabindex="" id="' + val.Key + '" name=""  value="' + val.Key + '" onclick="ListMachine(\'' + val.Key + '\')"> ';
+                });
+                $("#MachineGroupButton").html(GroupMachineBT);
+            },
+        });
+    }
+
+    function loadDepartment() {
+        machineID = '';
+        ClearForm();
+        $.ajax({
+            url: '@Url.Action("GetListDepartment", "WTS")',
+            dataType: 'Json',
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                var GroupMachineBT = "";
+                $.each(data.Values, function (i, val) {
+                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val.DeptName + '" name=""  value="' + val.DeptName + '" onclick="Department(\'' + val.DeptCode + '\')"> ';
+                });
+                $("#MachineGroupButton").html(GroupMachineBT);
+            },
+        });
+    }
+
+    function Department(dept)
+    {
+        department = dept;
+        if (department.toLowerCase() != 'xuong') {
+            $("#btnShift").dxButton("instance").option("visible", true);
+        }
+    }
+
+    function ListMachine(machine) {
+        var list_Shift = '';
+        $.ajax({
+            url: '@Url.Action("GetShiftList", "WTS")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK!") {
+                    alert(data.Values);
+                    return;
+                }
+
+                $.each(data.Values, function (i, val) {
+                    list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift_' + val.Shift + '" name="" value="' + val.Description + '" onclick="ShiftValue(\'' + val.Shift + '\',\'' + machine + '\')"> ';
+                });
+
+                $("#MachineGroupButton").html(list_Shift);
+            }
+        });
+
+
+    }
+
+    function SelectShift() {
+        var data = 'KOCO';
+        ListMachine(data);
+    }
+    function ValidateRow(e) {
+        var dataGrid = e.component;
+        var rowIndex = dataGrid.getRowIndexByKey(e.key);
+        var data1 = e.newData;
+        var object1 = new Array();
+        object1.push(JSON.stringify(data1));
+
+        if (e.oldData.Status)
+        {
+            alert("WTS đã được duyệt, không thể sửa. Nếu có thay đổi vui lòng xóa đi nhập lại để quản lý kiểm soát được");
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("EdittWTS", "WTS")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'data': e.oldData, 'dataNew': object1 },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                }
+
+                $("#dxDetailWTS").dxDataGrid("instance").refresh();
+            }
+        });
+    }
+
+    function ClearForm()
+    {
+        $("#txtMONo").dxTextBox("instance").option("value", '');
+        $("#txtNG").dxNumberBox("instance").option("value", 0);
+        $("#txtNGNCTruoc").dxNumberBox("instance").option("value", 0);
+        $("#checkCVTrongTGHL").dxCheckBox("instance").option("value", false);
+        $("#txtOKNCTruoc").dxNumberBox("instance").option("value", 0);
+        $("#txtWorkID").dxTextBox("instance").option("value", '');
+        $("#txtOptionID").dxTextBox("instance").option("value", '');
+        $("#txtOK").dxNumberBox("instance").option("value",0);
+        $("#txtTime").dxNumberBox("instance").option("value", 0);
+        $("#txtTGGC").dxNumberBox("instance").option("value", 0);
+        $("#txtTGGL").dxNumberBox("instance").option("value", 0);
+        $("#txtNote").dxTextBox("instance").option("value", '');
+        $("#txtMachineID").dxTextBox("instance").option("value", '');
+        $("#txtMachineID").dxTextBox("instance").option("readOnly", false);
+    }
+
+    function StartWork() {
+        InputWTSToDatabase(true);
+    }
+
+    function FinishWork() {
+        InputWTSToDatabase(false);
+    }
+
+    function InputWTSToDatabase(start) {
+        var MONo = $("#txtMONo").dxTextBox("instance").option("value");
+        var NGQty = $("#txtNG").dxNumberBox("instance").option("value");
+        var NGNCTruoc = $("#txtNGNCTruoc").dxNumberBox("instance").option("value");
+        var TrongTGHangLoat = $("#checkCVTrongTGHL").dxCheckBox("instance").option("value");
+        var WorkID = $("#txtWorkID").dxTextBox("instance").option("value");
+        var OptionID = $("#txtOptionID").dxTextBox("instance").option("value");
+        var OKQty = $("#txtOK").dxNumberBox("instance").option("value");
+        var Time = $("#txtTime").dxNumberBox("instance").option("value");
+        var StaffID = $("#txtStaffID").dxTextBox("instance").option("value");
+        var tggc = $("#txtTGGC").dxNumberBox("instance").option("value");
+        var tggl = $("#txtTGGL").dxNumberBox("instance").option("value");
+        var note = $("#txtNote").dxTextBox("instance").option("value");
+        var machineID = $("#txtMachineID").dxTextBox("instance").option("value");
+        if (tggl == null || tggl == '') {
+            tggl = 0;
+        }
+
+        if (tggc == null || tggc == '') {
+            tggc = 0;
+        }
+
+        //var buTG = $('#LuyTienTime').val() + Time;
+        var buTG = Time;
+        var date = getDateValue();
+        if (start)
+        {
+            if (StaffID == '') {
+                alert("Chưa nhập mã nhân viên");
+                return;
+            }
+
+            if (machineID == '' || machineID == null) {
+                machineID = 'KOCO';
+            }
+
+            if (shift == '' || shift == null) {
+                alert("Chưa chọn ca");
+                return;
+            }
+
+            if (OptionID == '' || OptionID == null) {
+                alert("Chưa nhập nguyên công");
+                return;
+            }
+        }
+
+        if ((NGQty + OKQty > 0)) {
+            if ((tggl + tggc) == 0)
+            {
+                alert("Chưa nhập TGTC và TGGL");
+                return;
+            }
+        }
+
+
+        var object1 = {
+            ID : ID,
+            IDPlan : idPlan,
+            Date: getDateValue(),
+            Shift : shift,
+            MachineID : machineID,
+            OptionID : OptionID,
+            MONo: MONo,
+            PartID:partID,
+            StaffID: StaffID,
+            ProTime: tggc,
+            ClampTime: tggl,
+            Time: buTG,
+            OKQty : OKQty,
+            NGQty: NGQty,
+            WorkID : WorkID,
+            Note: note,
+            NGNCTruoc: NGNCTruoc,
+            WorkWhilePLJ1: TrongTGHangLoat
+        };
+
+        $.ajax({
+            url: '@Url.Action("InputMachineWTSToDatabase", "WTS")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'data': object1, 'date': date, 'end': start },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                alert("OK");
+                $("#dxDetailWTS").dxDataGrid("instance").refresh();
+                var des = 'Đang gia công lệnh: ,nguyên công: ,chi tiết: ,công việc:';
+                if(!start)
+                {
+                    des = 'Đang chờ việc';
+                }
+
+                $('#ListPartNeedConfirmBy0194').html(des);
+            }
+        });
+    }
+
+    function ShowListWorkID(){
+        $.ajax({
+        url: '@Url.Action("List_WorkID", "WTS")',
+        dataType: 'Json',
+        type: 'GET',
+        data: { 'dept': department },
+        cache: false,
+        success: function (data) {
+            var i = 0;
+            var bt = "";
+            bt += 'Thời gian cộng thêm(phút): <input type = "text" id="LuyTienTime" value = "0">';
+            bt += '<br/>';
+            $.each(data, function (i, val) {
+                i++;
+                bt += '<div class="btn-Fac" style="margin-top: 10px; margin-left: 5px;float:left;padding:0px;" type="Button" tabindex="' + i + '" id="' + val.WorkID + '" name="' + val.WorkID + '"  value="' + val.WorkID + '" onclick = "ChoseWorkID(\'' + val.WorkID + '\')">' + val.WorkID + ' <br><span style = "font-size:9px;"> ' + val.WorkName + '</span></div>';
+            });
+
+            $("#WorkIDButton").html(bt);
+            $("#btnWork").trigger("click");
+        },
+        });
+    }
+
+    function GetLT() {
+        var moNo = $("#txtMONo").dxTextBox("instance").option("value");
+        var optionID = $("#txtOptionID").dxTextBox("instance").option("value");
+        $.ajax({
+            url: '@Url.Action("GetLT", "WTS")',
+            dataType: 'Json',
+            type: 'GET',
+            data: { 'mono': moNo, 'optionID': optionID },
+            cache: false,
+            success: function (data) {
+                var OKLT = 0;
+                var NGLT = 0;
+                OKLT = data.Values.OKQtyLT;
+                NGLT = data.Values.NGQtyLT;
+                $("#txtOKNCTruoc").dxNumberBox("instance").option("value", OKLT);
+                $("#txtNGNCTruoc").dxNumberBox("instance").option("value", NGLT);
+            },
+        });
+    }
+
+    function ShowListOptionID() {
+        var partID = $("#txtPartID").dxTextBox("instance").option("value");
+        $.ajax({
+            url: '@Url.Action("ListOptionID", "WTS")',
+            dataType: 'Json',
+            type: 'GET',
+            data: { 'dept': department, 'partID': partID },
+            cache: false,
+            success: function (data) {
+                var i = 0;
+                var bt = "";
+                $.each(data.Values, function (i, val) {
+                    i++;
+                    bt += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="OptionID_' + val.OptionID + '" name="" value="' + val.OptionID + '" onclick="ChoseOptionID(\'' + val.OptionID + '\')"> ';
+                });
+
+                $("#WorkIDButton").html(bt);
+                $("#btnWork").trigger("click");
+            },
+        });
+    }
+
+    function GetPartIDByMONo() {
+        var MONo = $("#txtMONo").dxTextBox("instance").option("value");
+        $.ajax({
+            url: '@Url.Action("GetPartIDByMONo", "WTS")',
+            dataType: 'Json',
+            type: 'GET',
+            data: { 'mono': MONo },
+            cache: false,
+            success: function (data) {
+                partID = data.Values;
+                $("#txtPartID").dxTextBox("instance").option("value", partID);
+            },
+        });
+    }
+
+    function GetOptionIdData() {
+        var MONo = $("#txtMONo").dxTextBox("instance").option("value");
+        var OptionID = $("#txtOptionID").dxTextBox("instance").option("value");
+        if (MONo == '') {
+            alert('Vui lòng nhập order trước khi nhập nguyên công');
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetOptionIdData", "WTS")',
+            dataType: 'Json',
+            type: 'GET',
+            data: { 'mono': MONo, 'optionID': OptionID },
+            cache: false,
+            success: function (data) {
+                var proTime = 0;
+                var clampTime = 0;
+                if (data.Status == "OK!") {
+                    proTime = data.Values[0].ProTime;
+                    clampTime = data.Values[0].ClampTime;
+                }
+
+                $("#txtTGGC").dxNumberBox("instance").option("value", proTime);
+                $("#txtTGGL").dxNumberBox("instance").option("value", clampTime);
+            },
+        });
+    }
+
+    function ShowListMachine() {
+        $("#btnView").trigger("click");
+        @*$.ajax({
+            url: '@Url.Action("List_MachineID", "WTS")',
+            dataType: 'Json',
+            type: 'GET',
+            data: {'dept': department},
+            cache: false,
+            success: function (data) {
+                var i = 0;
+                var bt = "";
+                $.each(data, function (i, val) {
+                    i++;
+                    //bt += '<div class="btn-Fac" style="margin-top: 10px; margin-left: 5px;float:left;padding:0px;" type="Button" tabindex="' + i + '" id="' + val.MachineID + '" name="' + val.MachineID + '"  value="' + val.MachineID + '" onclick = "ChoseMachine(\'' + val.MachineID + '\')">' + val.MachineID + '</div>';
+                    bt += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val.MachineID + '" name="' + val.MachineID + '" value="' + val.MachineID + '" onclick="ChoseMachine(\'' + val.MachineID + '\')"> ';
+                });
+
+                $("#WorkIDButton").html(bt);
+                $("#btnWork").trigger("click");
+            },
+        });*@
+    }
+
+    function ChoseMachine(machine) {
+        if (department.toLowerCase() != 'xuong') {
+            machineID = machine;
+        }
+        DisplayMachineInTextBox(machine);
+        $("#txtMachineID").dxTextBox("instance").option("readOnly", true);
+    }
+
+    function DisplayMachineInTextBox(machine)
+    {
+        $("#txtMachineID").dxTextBox("instance").option("value", machineID);
+    }
+
+    function ChoseWorkID(workID)
+    {
+        $("#txtWorkID").dxTextBox("instance").option("value", workID);
+        $("#background-popup").trigger("click");
+    }
+
+    function ChoseOptionID(optionID) {
+        $("#txtOptionID").dxTextBox("instance").option("value", optionID);
+        GetOptionIdData();
+        $("#background-popup").trigger("click");
+    }
+
+    function ShiftValue(data, machine) {
+        shift = data;
+        machineID = machine;
+        if (department.toLowerCase() == 'xuong') {
+            DisplayMachineInTextBox(machineID);
+        }
+
+        $("#ShiftButton").append("<br/>" + shift);
+        $("#dxDataGrid").dxDataGrid("instance").refresh();
+        $("#dxDetailWTS").dxDataGrid("instance").refresh();
+    }
+
+    function getDateValue() {
+        var a = $("#dateDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getMachineIDValue() {
+        return machineID;
+    }
+
+    function getStaffID() {
+        var staffID = $("#txtStaffID").dxTextBox("instance").option("value");
+        return staffID;
+    }
+
+    function getDepartment() {
+        return department;
+    }
+
+    function getShiftValue() {
+        return shift;
+    }
+</script>
+
+<script>
+    var totalTime = 0;
+    var totalOvertime = 0;
+    var caledID = new Array();
+    function OnRowPrepared(e) {
+        if (e.rowType == "header") {
+            caledID = new Array();
+        }
+
+        if (e.rowType == "data") {
+            for (var i = 0; i < caledID.length; i++) {
+                if (caledID[i] != e.data.ID) {
+                    continue;
+                }
+
+                return;
+            }
+            caledID.push(e.data.ID);
+            totalTime += e.data.Time;
+            if (e.data.Overtime) {
+                totalOvertime += e.data.Time;
+            }
+        }
+
+        var ListHistory = '';
+        ListHistory += 'Tổng thời gian là: ' + totalTime + '</br>';
+        ListHistory += 'Thời gian thêm giờ: ' + totalOvertime;
+        $("#ListHistory").html(ListHistory);
+    }
+</script>

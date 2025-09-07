@@ -1,0 +1,252 @@
+﻿@(Html.DevExtreme().Button()
+        .Text("Thêm mới")
+        .ID("btnAdd")
+        .Type(ButtonType.Normal)
+        .Width(120)
+        .OnClick("ShowAddNewPopup")
+)
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.View_222_WebPermission>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_WebPermissionApi")
+        .LoadAction("Get")
+        .Key("ID")
+    )
+    .ID("dxGridFunctionPermission")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    //.HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.StaffID).Caption("Nhân viên");
+
+        columns.AddFor(m => m.Controller).Caption("Danh mục");
+
+        columns.AddFor(m => m.Action).Caption("Chức năng");
+
+        columns.AddFor(m => m.LocalPath).Caption("Link truy cập");
+
+        columns.AddFor(m => m.Note).Caption("Ghi chú");
+    })
+)
+
+
+<div id="PopupPanel">
+
+    <div>
+        <table class="table table-advance">
+            <tr>
+                <td>Nhân viên:</td>
+                <td>
+                    @(Html.DevExtreme().DropDownBox()
+                        .ValueExpr("StaffID")
+                        .DisplayExpr("StaffID")
+                        .DropDownOptions(o => o.Height(350))
+                        .DataSource(d => d.WebApi()
+                            .RouteName("C222_StaffApi")
+                            .LoadAction("Get")
+                            .Key("StaffID")
+                        )
+                        .ID("staffList")
+                        .Placeholder("Select a value...")
+                        .ShowClearButton(true)
+                        .OnValueChanged("gridBox_valueChanged")
+                        .ContentTemplate(new TemplateName("EmbeddedDataGridMultiple"))
+                    )
+
+                    @using (Html.DevExtreme().NamedTemplate("EmbeddedDataGridMultiple"))
+                    {
+                        @(Html.DevExtreme().DataGrid()
+                            .ID("embedded-datagrid")
+                            .DataSource(new JS(@"component.getDataSource()"))
+                            .Columns(columns =>
+                            {
+                                columns.Add().DataField("StaffID");
+                                columns.Add().DataField("StaffName");
+                            })
+                            .HoverStateEnabled(true)
+                            .Paging(p => p.PageSize(10))
+                            .FilterRow(f => f.Visible(true))
+                            .Scrolling(s => s.Mode(GridScrollingMode.Virtual))
+                            .Height(345)
+                            .Selection(s => s.Mode(SelectionMode.Multiple))
+                            .SelectedRowKeys(new JS(@"component.option(""value"")"))
+                            .OnSelectionChanged(@<text>
+                                function(selectedItems) {
+                                var keys = selectedItems.selectedRowKeys;
+                                component.option("value", keys);
+                                }
+                            </text>)
+                        )
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Link truy cập:</td>
+                <td>
+                    @(Html.DevExtreme().DropDownBox()
+                        .ValueExpr("ID")
+                        .DisplayExpr("LocalPath")
+                        .DropDownOptions(o => o.Height(350))
+                        .DataSource(d => d.WebApi()
+                            .RouteName("C222_WebUrlApi")
+                            .LoadAction("Get")
+                            .Key("ID")
+                        )
+                        .ID("FunctionList")
+                        .Placeholder("Select a value...")
+                        .ShowClearButton(true)
+                        .OnValueChanged("gridBox_valueChanged_Function")
+                        .ContentTemplate(new TemplateName("EmbeddedDataGridMultiple_Function"))
+                    )
+
+                    @using (Html.DevExtreme().NamedTemplate("EmbeddedDataGridMultiple_Function"))
+                    {
+                        @(Html.DevExtreme().DataGrid()
+                            .ID("embedded-datagrid_Function")
+                            .DataSource(new JS(@"component.getDataSource()"))
+                            .Columns(columns =>
+                            {
+                                columns.Add().DataField("Controller");
+                                columns.Add().DataField("Action");
+                                columns.Add().DataField("LocalPath");
+                                columns.Add().DataField("Note");
+                            })
+                            .HoverStateEnabled(true)
+                            .Paging(p => p.PageSize(10))
+                            .FilterRow(f => f.Visible(true))
+                            .Scrolling(s => s.Mode(GridScrollingMode.Virtual))
+                            .Height(345)
+                            .Selection(s => s.Mode(SelectionMode.Multiple))
+                            .SelectedRowKeys(new JS(@"component.option(""value"")"))
+                            .OnSelectionChanged(@<text>
+                                function(selectedItems) {
+                                var keys = selectedItems.selectedRowKeys;
+                                component.option("value", keys);
+                                }
+                            </text>)
+                        )
+                    }
+                </td>
+            </tr>
+        </table>
+        <input class="btn VP" style="margin-top: 10px;" type="Button" tabindex="" id="InputPermissionContent" name="" value="Nhập" onclick="InputPermissionContent()">
+    </div>
+</div>
+
+<div class="PopupPanel hide"></div>
+
+<script>
+    var popupStatus = 0;
+    $(document).ready(function () {
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus >= 1) {
+                $("#background-popup").fadeOut(200);
+                $("#PopupPanel").fadeOut(200);
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadPopupPanel() {
+            if (popupStatus == 0) {
+                $("#PopupPanel").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        $(".PopupPanel").click(function () {
+            loadPopupPanel();
+        });
+    })
+</script>
+
+<script>
+    function InputPermissionContent() {
+        var fList = $("#FunctionList").dxDropDownBox("instance").option("value");
+        var staff = $("#staffList").dxDropDownBox("instance").option("value");
+        $.ajax({
+            url: '@Url.Action("InputPermissionContent", "AllDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'staff': staff, 'fList': fList },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+                alert("OK");
+                $("#dxGridFunctionPermission").dxDataGrid("instance").refresh();
+            }
+        });
+    }
+
+    function OnInitRow(e) {
+        e.data.ID = 0;
+    }
+
+    function ShowAddNewPopup() {
+        $(".PopupPanel").trigger("click");
+    }
+
+    function gridBox_valueChanged(e) {
+        var $dataGrid = $("#embedded-datagrid");
+
+        if ($dataGrid.length) {
+            var dataGrid = $dataGrid.dxDataGrid("instance");
+            dataGrid.selectRows(e.value, false);
+        }
+    }
+
+    function gridBox_valueChanged_Function(e) {
+        var $dataGrid = $("#embedded-datagrid_Function");
+
+        if ($dataGrid.length) {
+            var dataGrid = $dataGrid.dxDataGrid("instance");
+            dataGrid.selectRows(e.value, false);
+        }
+    }
+</script>
+
+
+
+
+
+

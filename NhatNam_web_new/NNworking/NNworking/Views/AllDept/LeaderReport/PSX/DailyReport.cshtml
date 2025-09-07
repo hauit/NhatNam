@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "Báo cáo hàng ngày";
+}
+
+<h2>DailyReport</h2>
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_LeaderDailyInput>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_LeaderDailyInputApi")
+        .LoadAction("GetPSX")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxLeaderDailyInput")
+    //.OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("Date")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.Date).Caption("Ngày");
+
+        columns.AddFor(m => m.DeptCode).Caption("Mã bộ phận");
+
+        columns.AddFor(m => m.InputStaff).Visible(false).Caption("Người nhập");
+
+        columns.AddFor(m => m.WorkingEmployee).Caption("Nhân sự");
+
+        columns.AddFor(m => m.Staff2Machine).Caption("Người 2 máy");
+
+        columns.AddFor(m => m.WorkingMachine).Caption("Máy GC");
+
+        columns.AddFor(m => m.ProblemMachine).Caption("Máy sự cố");
+
+        columns.AddFor(m => m.EmptyMachine).Caption("Máy trống");
+
+        columns.AddFor(m => m.FaultyProduct).Caption("Hàng lỗi");
+
+        columns.AddFor(m => m.IncompleteError).Caption("Lỗi chưa HT");
+
+        columns.AddFor(m => m.ErrorOnDay).Caption("Lỗi trong ngày");
+
+        columns.AddFor(m => m.IssueWithOther).Caption("Vấn đề BP khác");
+
+        columns.AddFor(m => m.UrgentItem).Caption("Hàng gấp");
+
+        columns.AddFor(m => m.UrgentItemCompleted).Caption("Hàng gấp chưa HT");
+
+        columns.AddFor(m => m.NeedQty);
+
+        columns.AddFor(m => m.FinishQty);
+    })
+    .Editing(e => e
+        //.AllowAdding(true)
+        .AllowUpdating(true)
+        //.AllowDeleting(true)
+        .Mode(GridEditMode.Popup)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+</script>

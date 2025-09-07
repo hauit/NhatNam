@@ -1,0 +1,346 @@
+﻿
+@{
+    ViewBag.Title = "Xuất kho dụng cụ";
+}
+
+<div class="box box-body">
+    <table width="1000px">
+        <tr>
+            <td>
+                &nbsp;
+                @(Html.DevExtreme().Button()
+                                                    .Text("Import xuất kho")
+                                                    .ID("btnImportStokerOutput")
+                                                    .Type(ButtonType.Normal)
+                                                    .Width(250)
+                )
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="background-popup"></div>
+<div id="NotifyDiv">
+</div>
+<input id="File2" type="file" name="file" class="hide" onchange="ChoiceFilePhu()" />
+
+<script>
+    var popupStatus = 0;
+    function disablePopup() {
+        if (popupStatus == 1) {
+            $("#NotifyDiv").fadeOut(200);
+            $("#background-popup").fadeOut(200);
+            popupStatus = 0;
+        }
+    }
+
+    $("#background-popup").click(function () {
+        disablePopup();
+    });
+
+    function loadBackgroundToPopup() {
+        $("#background-popup").css("opacity", "0.2");
+        $("#background-popup").fadeIn(200);
+    }
+
+    /** load các popup của các phần **/
+    function loadListNoPopup() {
+        if (popupStatus == 0) {
+            $("#NotifyDiv").fadeIn(200);
+            loadBackgroundToPopup();
+            popupStatus = 1;
+        }
+    }
+
+    $(document).on('click', '#btnImportStokerOutput', function () {
+        $('#File2').trigger('click');
+    });
+
+    function ChoiceFilePhu() {
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        form.append('staffID', '@Session["StaffID"].ToString()');
+        $.ajax({
+            url: '@Url.Action("ImportStokerOutput", "AllDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0)
+                {
+                    var html = '';
+                    html += '<table class="table">                      ';
+                    html += '    <tbody>                                ';
+                    html += '        <tr>                               ';
+                    html += '            <th>Dòng</th>                  ';
+                    html += '            <th>Trạng thái</th>            ';
+                    html += '            <th>Nội dung</th>              ';
+                    html += '        </tr>                              ';
+                    html += '    </tbody>                               ';
+                    html += '    <tbody id="ThongBaoOrderNoLoi_body">   ';
+                    $.each(data.Errors, function (i, val) {
+                        html += '        <tr>                           ';
+                        html += '            <td>' + val.Line + '</td>  ';
+                        html += '            <td>' + val.Status + '</td>';
+                        html += '            <td>' + val.Des + '</td>   ';
+                        html += '        </tr>                          ';
+                    });
+                    html += '    </tbody>                               ';
+                    html += '</table>                                   ';
+                    $("#NotifyDiv").html(html);
+                    loadListNoPopup();
+                }
+
+                $('#File2').val('');
+            },
+        });
+    }
+</script>
+@*@(Html.DevExtreme().DataGrid<NNworking.Models.C222_StockerOutputDEtail>()
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C222_StockerOutputDEtailApi")
+            .LoadAction("Get")
+            .InsertAction("Post")
+            .UpdateAction("Put")
+            .DeleteAction("Delete")
+            .Key("ID")
+        )
+        .RemoteOperations(true)
+        .Columns(columns => {
+
+            columns.AddFor(m => m.ID);
+
+            columns.AddFor(m => m.Number);
+
+            columns.AddFor(m => m.OderCan);
+
+            columns.AddFor(m => m.SlgCan);
+
+            columns.AddFor(m => m.OrderCo);
+
+            columns.AddFor(m => m.SlgCo);
+
+            columns.AddFor(m => m.GiayXN);
+        })
+        .Editing(e => e
+            .AllowAdding(true)
+            .AllowUpdating(true)
+            .AllowDeleting(true)
+        )
+    )*@
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_StokerOutput>()
+                .DataSource(ds => ds.WebApi()
+                    .RouteName("C222_StokerOutputApi")
+                    .LoadAction("Get")
+                    .InsertAction("Post")
+                    .UpdateAction("Put")
+                    .DeleteAction("Delete")
+                    .Key("ID")
+                )
+                .ID("dxStokerOutput")
+                .Paging(page => page.PageSize(10))
+                .Pager(pager => pager.ShowPageSizeSelector(true)
+                    .ShowInfo(true)
+                    .AllowedPageSizes(new List<int> { 10, 20, 30 })
+                )
+                .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                    .DescendingText("PartNo")
+                )
+                .ColumnAutoWidth(true)
+                .FilterRow(fil => fil.Visible(true))
+                .FilterPanel(fi => fi.Visible(true))
+                .SearchPanel(search => search.Visible(true)
+                    .HighlightSearchText(true)
+                    .Width(500)
+                )
+                .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
+                    //.FileName("DanhsachHangXuatKho")
+                    .AllowExportSelectedData(true))
+                //.HeaderFilter(headFil => headFil.Visible(true))
+                .ShowColumnHeaders(true)
+                .ShowRowLines(true)
+                .RemoteOperations(true)
+                .Columns(columns =>
+                {
+
+                    columns.AddFor(m => m.ID).AllowEditing(false);
+
+                    columns.AddFor(m => m.OrderNo).Caption("Số order");
+
+                    columns.AddFor(m => m.StaffID).Caption("Nhân viên");
+
+                    columns.AddFor(m => m.Qty).Caption("Số lượng");
+
+                    columns.AddFor(m => m.ToDept).Lookup(lup =>
+                        lup.DataSource(ds => ds.WebApi()
+                            .RouteName("C222_DepartmentApi")
+                            .LoadAction("Get")
+                        )
+                        .DisplayExpr("DeptName")
+                        .ValueExpr("DeptCode")
+                    ).Caption("Bộ phận nhận");
+
+                    columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+                    columns.AddFor(m => m.Deleted).Visible(false).Caption("Đã xóa");
+                })
+                .Editing(e => e
+                    .AllowAdding(true)
+                    .AllowUpdating(true)
+                    .AllowDeleting(true)
+                )
+                .OnInitNewRow("onInitNewRow")
+                .MasterDetail(md =>
+                {
+                md.Enabled(true);
+                md.Template(@<text>
+                        <div class="master-detail-caption"> Chi xuất kho của order: <%- data.OrderNo %></div>
+                        @(Html.DevExtreme().DataGrid<NNworking.Models.C222_StockerOutputDEtail>()
+                            .DataSource(ds => ds.WebApi()
+                            .RouteName("C222_StockerOutputDEtailApi")
+                            .LoadAction("Get")
+                            .LoadParams(new { OrderNo = new JS("data.OrderNo") })
+                            .InsertAction("Post")
+                            .UpdateAction("Put")
+                            .DeleteAction("Delete")
+                            .Key("ID")
+                            )
+                            .Paging(page => page.PageSize(10))
+                            .Pager(pager => pager.ShowPageSizeSelector(true)
+                                .ShowInfo(true)
+                                .AllowedPageSizes(new List<int> { 10, 20, 30 })
+                            )
+                            .ColumnAutoWidth(true)
+                            .FilterRow(fil => fil.Visible(true))
+                            .FilterPanel(fi => fi.Visible(true))
+                            .SearchPanel(search => search.Visible(true)
+                                .HighlightSearchText(true)
+                                .Width(500)
+                            )
+                            //.HeaderFilter(headFil => headFil.Visible(true))
+                            .ShowColumnHeaders(true)
+                            .ShowRowLines(true)
+                            .RemoteOperations(true)
+                            .Columns(columns =>
+                            {
+
+                                columns.AddFor(m => m.ID).AllowEditing(false);
+
+                                columns.AddFor(m => m.Number).Caption("Tiêu đề");
+
+                                columns.AddFor(m => m.OderCan).Caption("Order cần hàng");
+
+                                columns.AddFor(m => m.SlgCan).Caption("Số lượng cần");
+
+                                columns.AddFor(m => m.OrderCo).Caption("Order lấy hàng");
+
+                                columns.AddFor(m => m.SlgCo).Caption("Số lượng lấy");
+
+                                columns.AddFor(m => m.GiayXN).Caption("Giấy xác nhận");
+                            })
+                            .Editing(e => e
+                                .AllowAdding(true)
+                                .AllowUpdating(true)
+                                .AllowDeleting(true)
+                                .Mode(GridEditMode.Popup)
+                            )
+                        )
+
+                        @(Html.DevExtreme().DataGrid<NNworking.Models.C242_InventoryReceivedDetail>()
+                                        .DataSource(ds => ds.WebApi()
+                                            .RouteName("C242_InventoryReceivedDetailApi")
+                                            .LoadAction("Get")
+                                            .LoadParams(new { importID = new JS("data.ID") })
+                                            .InsertAction("Post")
+                                            .UpdateAction("Put")
+                                            .DeleteAction("Delete")
+                                            .Key("ID")
+                                        )
+                                        .ID("dxInventoryReceivedDetail")
+                                        .Paging(page => page.PageSize(10))
+                                        .Pager(pager => pager.ShowPageSizeSelector(true)
+                                            .ShowInfo(true)
+                                            .AllowedPageSizes(new List<int> { 10, 20, 30 })
+                                        )
+                                        .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                                            .DescendingText("PartNo")
+                                        )
+                                        .ColumnAutoWidth(true)
+                                        .FilterRow(fil => fil.Visible(true))
+                                        .FilterPanel(fi => fi.Visible(true))
+                                        .SearchPanel(search => search.Visible(true)
+                                            .HighlightSearchText(true)
+                                            .Width(500)
+                                        )
+                                        //.HeaderFilter(headFil => headFil.Visible(true))
+                                        .ShowColumnHeaders(true)
+                                        .ShowRowLines(true)
+                                        .RemoteOperations(true)
+                                        .Columns(columns =>
+                                        {
+                                                    columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+                                                    columns.AddFor(m => m.VoucherID).AllowEditing(false).Caption("Số phiếu nhập");
+
+                                                    columns.AddFor(m => m.OrderNumber).SetCellValue("InputOrder").Caption("Số order");
+
+                                                    columns.AddFor(m => m.PartNo).Caption("Tên chi tiết").AllowEditing(false);
+
+                                                    columns.AddFor(m => m.Qty).Caption("Số lượng");
+
+                                                    columns.AddFor(m => m.GiaDe).Caption("Vị trí").Lookup(lup =>
+                                            lup.DataSource(ds => ds.WebApi()
+                                                .RouteName("C242_TrackingViTriApi")
+                                                .LoadAction("Get")
+                                                .Key("GiaCode")
+                                            )
+                                            .DisplayExpr("GiaCode")
+                                            .ValueExpr("GiaCode")
+                                        );
+
+                                                    columns.AddFor(m => m.Price).Caption("Đơn giá");
+
+                                                    columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+                                                    columns.AddFor(m => m.NguoiNhan).Caption("Người nhận");
+
+                                                    columns.AddFor(m => m.StatusID).Caption("Trạng thái").Visible(false);
+
+                                                    columns.AddFor(m => m.ReceivedConfirm).Caption("Xác nhận").SetCellValue(string.Format("function(newData, value, currentRowData) {{ SetConfirmationValue(newData, value, currentRowData,{0}); }}", new JS("data.ReceiveDept")));// "SetConfirmationValue");
+
+                                        columns.AddFor(m => m.ReceivedConfirmStaff).Caption("Người xác nhận").AllowEditing(false).Visible(false);
+
+                                                    columns.AddFor(m => m.Deleted).Visible(false);
+                                                })
+                                        .Editing(e => e
+                                            .AllowAdding(true)
+                                            .AllowUpdating(true)
+                                            .AllowDeleting(true)
+                                            .Mode(GridEditMode.Popup)
+                                        )
+                                        .OnInitNewRow(string.Format("function(e) {{ OnInitDetailRow(e, {0}); }}", new JS("data.OrderNo")))
+                        )
+                    </text>);
+                        })
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+        e.data.StaffID = '@Session["StaffID"]';
+        e.data.Date = new Date();
+        e.data.Qty = 0;
+        e.data.Deleted = false;
+    }
+</script>
+
+

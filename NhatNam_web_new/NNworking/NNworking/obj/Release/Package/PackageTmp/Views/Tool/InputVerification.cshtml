@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Xác nhận nhập kho";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_InventoryReceivedDetail>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_InventoryReceivedDetailApi")
+        .LoadAction("GetKhoTPUnverify")
+        .UpdateAction("Put")
+        .Key("ID")
+    )
+    .ID("dxInventoryReceivedDetail")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("PartNo")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    //.Export(e => e.Enabled(true).FileName("HangNhapKhoChoXacNhan").AllowExportSelectedData(true))
+    //.HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+        columns.AddFor(m => m.VoucherID).AllowEditing(false).Caption("Số phiếu nhập");
+
+        columns.AddFor(m => m.OrderNumber).Caption("Số order");
+
+        columns.AddFor(m => m.PartNo).Caption("Tên chi tiết").AllowEditing(false);
+
+        columns.AddFor(m => m.Qty).Caption("Số lượng");
+
+        columns.AddFor(m => m.GiaDe).Caption("Vị trí").Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C242_TrackingViTriApi")
+                .LoadAction("Get")
+                .Key("GiaCode")
+            )
+            .DisplayExpr("GiaCode")
+            .ValueExpr("GiaCode")
+        );
+
+        columns.AddFor(m => m.Price).Caption("Đơn giá");
+
+        columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+        columns.AddFor(m => m.NguoiNhan).Caption("Người nhận");
+
+        columns.AddFor(m => m.StatusID).Caption("Trạng thái").Visible(false);
+
+        columns.AddFor(m => m.ReceivedConfirm).Caption("Xác nhận");// "SetConfirmationValue");
+
+        columns.AddFor(m => m.ReceivedConfirmStaff).Caption("Người xác nhận").AllowEditing(false).Visible(false);
+
+        columns.AddFor(m => m.Deleted).Visible(false);
+    })
+    .Editing(e => e
+        .AllowUpdating(true)
+        .Mode(GridEditMode.Cell)
+    )
+)
+
+<script>
+    function SetConfirmationValue(newData, value, currentRowData, revDept) {
+        newData.ReceivedConfirm = value;
+        newData.ReceivedConfirmStaff = '@Session["StaffID"]';
+    }
+</script>

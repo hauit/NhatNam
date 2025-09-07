@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Hướng xử lý hàng lỗi";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ErrorProcess>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_ErrorProcessApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ContentIndex")
+    )
+    .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
+        //.FileName("Content")
+        .AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.ProcessIndex).Caption("Mã xử lý");
+
+        columns.AddFor(m => m.Des).Caption("Nội dung");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+        e.data.ContentIndex = 0;
+    }
+
+</script>

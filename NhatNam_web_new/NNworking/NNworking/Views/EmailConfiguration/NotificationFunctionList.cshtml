@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách chức năng thông báo";
+}
+
+
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_NotificationFunctionList>()
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C222_NotificationFunctionListApi")
+            .LoadAction("Get")
+            .InsertAction("Post")
+            .UpdateAction("Put")
+            .DeleteAction("Delete")
+            .Key("ID")
+        )
+        .ID("dxDataGridChucNang")
+        .Paging(page => page.PageSize(10))
+        .Pager(pager => pager.ShowPageSizeSelector(true)
+            .ShowInfo(true)
+            .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+        )
+        .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+            .DescendingText("ID")
+        )
+        .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
+            //.FileName("DSChucNang")
+            .AllowExportSelectedData(true))
+        .ColumnAutoWidth(true)
+        .FilterRow(fil => fil.Visible(true))
+        .FilterPanel(fi => fi.Visible(true))
+        .SearchPanel(search => search.Visible(true)
+            .HighlightSearchText(true)
+            .Width(500)
+        )
+        .Columns(columns =>
+        {
+            columns.AddFor(m => m.ID).AllowEditing(false);
+
+            columns.AddFor(m => m.Name).Caption("Tên chức năng");
+
+            columns.AddFor(m => m.Subject).Caption("Tiêu đề email");
+
+            columns.AddFor(m => m.STT).Caption("Số thứ tự");
+
+            columns.AddFor(m => m.TimeSend).Caption("Thời điểm gửi(Phút)").ValidationRules(val => val.AddRequired());
+
+            columns.AddFor(m => m.Data).Caption("Dữ liệu").Lookup(lup =>
+                lup.DataSource(ds => ds.WebApi()
+                    .RouteName("C222_ReportListApi")
+                    .LoadAction("Get")
+                )
+                .DisplayExpr("Caption")
+                .ValueExpr("ID")
+            ).ValidationRules(val => val.AddRequired());
+
+            columns.AddFor(m => m.DataTime).Caption("Thời gian lấy DL").Lookup(lup =>
+                lup.DataSource(ds => ds.WebApi()
+                    .RouteName("C222_Notification_DataTimeApi")
+                    .LoadAction("Get")
+                )
+                .DisplayExpr("Name")
+                .ValueExpr("ID")
+            ).ValidationRules(val => val.AddRequired());
+
+            columns.AddFor(m => m.DataTimeFrom).Caption("Lấy dữ liệu từ(ngày)");
+
+            columns.AddFor(m => m.DataTimeTo).Caption("Lấy dữ liệu đến(ngày)");
+        })
+        .Editing(e => e
+            .AllowAdding(true)
+            .AllowUpdating(true)
+            .AllowDeleting(true)
+            .Mode(GridEditMode.Popup)
+        )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+</script>

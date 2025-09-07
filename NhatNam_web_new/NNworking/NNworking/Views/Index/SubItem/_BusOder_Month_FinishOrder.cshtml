@@ -1,0 +1,67 @@
+﻿@(Html.DevExtreme().DataGrid<NNworking.Models.sp_242_BusOder_Month_FinishNumber_Result>()
+    .DataSource(Url.Action("GetMonth_FinishOrderNumber", "AllDept")
+    )
+    .ID("dxInventoryReceived")
+    .Paging(page => page.PageSize(15))
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("month")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.month).Caption("Tháng");
+
+        columns.AddFor(m => m.Finised_Num).Caption("Hoàn thành");
+
+        columns.AddFor(m => m.Total).Caption("Tổng");
+
+        columns.AddFor(m => m.Tile).Caption("Tỉ lệ");
+    })
+    .MasterDetail(md =>
+    {
+        md.Enabled(true);
+        md.Template(@<text>
+        <div class="master-detail-caption"> Chi tiết order hoàn thành tháng: <%- data.month %></div>
+        @(Html.DevExtreme().DataGrid<NNworking.Models.C242_InventoryReceivedDetail>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("C242_BusOderApi")
+                .LoadAction("GetByMonth")
+                .LoadParams(new { month = new JS("data.month") })
+                .Key("ID")
+            )
+            .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true).FileName("ViTriHangHoa" + new JS("data.month")).AllowExportSelectedData(true))
+            .ID("dxBusOrderList")
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("PartNo")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            //.HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+        )
+        </text>);
+    })
+)
+

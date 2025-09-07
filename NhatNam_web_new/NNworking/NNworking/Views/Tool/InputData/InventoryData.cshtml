@@ -1,0 +1,188 @@
+﻿
+<table class="table table-advance">
+    <tr>
+        <td>Ngày:</td>
+        <td>
+            @(Html.DevExtreme().DateBox()
+                    .Type(DateBoxType.Date)
+                    .Value(DateTime.Now)
+                    .ID("dateDate")
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>Bộ phận:</td>
+        <td>
+            @(Html.DevExtreme().Lookup()
+                .DataSource(d => d.WebApi()
+                    .RouteName("C242_InventoryReceivedApi")
+                    .LoadAction("GetAllPartner")
+                    .Key("Code")
+                )
+                .ID("inputDept")
+                .DisplayExpr("Name")
+                .ValueExpr("Code")
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>Order:</td>
+        <td>
+            @(Html.DevExtreme().TextBox()
+                    .ID("txtOrder")
+                    .Placeholder("Số order...")
+                    .OnFocusIn("StartInputOrder")
+                    .OnInput("InputOrder")
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>Số lượng:</td>
+        <td>
+            @(Html.DevExtreme().NumberBox()
+                            .ID("txtQty")
+                            .Placeholder("Số lượng...")
+                            .OnFocusIn("StartInputQty")
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @(Html.DevExtreme().Button()
+                            .Text("Nhập")
+                            .ID("btnInput")
+                            .Type(ButtonType.Normal)
+                            .Width(150)
+                            .OnClick("InputData")
+            )
+        </td>
+        <td>
+            @(Html.DevExtreme().Button()
+                                    .Text("Xem")
+                                    .ID("btnView")
+                                    .Type(ButtonType.Normal)
+                                    .Width(150)
+                                    .OnClick("ReloadData")
+            )
+        </td>
+    </tr>
+</table>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_BusOder_ActualQty>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C242_BusOder_ActualQtyApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxDataGrid")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("BusOder")
+    )
+    .Export(ex => ex.Enabled(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    //.HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).Visible(false);
+
+        columns.AddFor(m => m.date).Caption("Ngày");
+
+        columns.AddFor(m => m.dept).Caption("Bộ phận").Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C242_InventoryReceivedApi")
+                .LoadAction("GetAllPartner")
+                .Key("Code")
+            )
+            .DisplayExpr("Name")
+            .ValueExpr("Code")
+        );
+
+        columns.AddFor(m => m.BusOder).Caption("Đơn hàng");
+
+        columns.AddFor(m => m.Qty).Caption("Số lượng");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitRow")
+)
+
+<script>
+    function onInitRow(e) {
+        e.data.ID = 0;
+    }
+
+    function StartInputOrder() {
+        var order = $("#txtOrder").dxTextBox("instance");
+        var myInput = order.element().find('input');
+        myInput.select();
+    }
+
+    function StartInputQty() {
+        var order = $("#txtQty").dxNumberBox("instance");
+        var myInput = order.element().find('input');
+        myInput.select();
+    }
+
+    function InputOrder(e) {
+        var val = e.element.find(":input:not([type=hidden])")[0].value;
+        if (val.length < 10) {
+            return;
+        }
+        $("#txtQty").dxNumberBox("instance").focus();
+    }
+
+    function getDateValue() {
+        var a = $("#dateDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function InputData() {
+        var date = getDateValue();
+        var dept = $("#inputDept").dxLookup("instance").option("value");
+        var order = $("#txtOrder").dxTextBox("instance").option("value");
+        var qty = $("#txtQty").dxNumberBox("instance").option("value");
+        $.ajax({
+            url: '@Url.Action("InputInventoryData", "Tool")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'date': date, 'dept' : dept ,'order': order, 'qty': qty },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                //alert("Đã nhập xong!");
+                $("#txtOrder").dxTextBox("instance").option("value", '');
+                $("#txtQty").dxNumberBox("instance").option("value", 0);
+                $("#txtOrder").dxTextBox("instance").focus();
+                ReloadData();
+            }
+        });
+    }
+
+    function ReloadData() {
+        $("#dxDataGrid").dxDataGrid("instance").refresh();
+    }
+</script>

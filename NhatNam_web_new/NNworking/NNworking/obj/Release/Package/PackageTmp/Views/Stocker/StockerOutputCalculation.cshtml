@@ -1,0 +1,266 @@
+﻿
+@{
+    ViewBag.Title = "Xuất kho dụng cụ";
+}
+
+<div class="box box-body">
+    <table width="1000px">
+        <tr>
+            <td>
+                &nbsp;
+                @(Html.DevExtreme().Button()
+                    .Text("Import nhập kho")
+                    .ID("btnImportStokerOutput")
+                    .Type(ButtonType.Normal)
+                    .Width(250)
+                )
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="background-popup"></div>
+<div id="NotifyDiv">
+</div>
+<input id="File2" type="file" name="file" class="hide" onchange="ChoiceFilePhu()" />
+
+<script>
+    var popupStatus = 0;
+    function disablePopup() {
+        if (popupStatus == 1) {
+            $("#NotifyDiv").fadeOut(200);
+            $("#background-popup").fadeOut(200);
+            popupStatus = 0;
+        }
+    }
+
+    $("#background-popup").click(function () {
+        disablePopup();
+    });
+
+    function loadBackgroundToPopup() {
+        $("#background-popup").css("opacity", "0.2");
+        $("#background-popup").fadeIn(200);
+    }
+
+    /** load các popup của các phần **/
+    function loadListNoPopup() {
+        if (popupStatus == 0) {
+            $("#NotifyDiv").fadeIn(200);
+            loadBackgroundToPopup();
+            popupStatus = 1;
+        }
+    }
+
+    $(document).on('click', '#btnImportStokerOutput', function () {
+        $('#File2').trigger('click');
+    });
+
+    function ChoiceFilePhu() {
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        form.append('staffID', '@Session["StaffID"].ToString()');
+        $.ajax({
+            url: '@Url.Action("ImportStokerOutput", "AllDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0)
+                {
+                    var html = '';
+                    html += '<table class="table">                      ';
+                    html += '    <tbody>                                ';
+                    html += '        <tr>                               ';
+                    html += '            <th>Dòng</th>                  ';
+                    html += '            <th>Trạng thái</th>            ';
+                    html += '            <th>Nội dung</th>              ';
+                    html += '        </tr>                              ';
+                    html += '    </tbody>                               ';
+                    html += '    <tbody id="ThongBaoOrderNoLoi_body">   ';
+                    $.each(data.Errors, function (i, val) {
+                        html += '        <tr>                           ';
+                        html += '            <td>' + val.Line + '</td>  ';
+                        html += '            <td>' + val.Status + '</td>';
+                        html += '            <td>' + val.Des + '</td>   ';
+                        html += '        </tr>                          ';
+                    });
+                    html += '    </tbody>                               ';
+                    html += '</table>                                   ';
+                    $("#NotifyDiv").html(html);
+                    loadListNoPopup();
+                }
+
+                $('#File2').val('');
+            },
+        });
+    }
+</script>
+@(Html.DevExtreme().DataGrid<NNworking.Models.sp_222_StockerOutput_OutputPreparation_Result>()
+        //.DataSource(Url.Action("History", "Punching", new { shift = string.Empty, MachineID = string.Empty })
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C222_StokerOutputApi")
+            .LoadAction("sp_222_StockerOutput_OutputPreparation")
+            //.Key("ID")
+        )
+        .ID("dxSp_222_StockerOutput_OutputPreparation")
+        .Paging(page => page.PageSize(10))
+        .Pager(pager => pager.ShowPageSizeSelector(true)
+            .ShowInfo(true)
+            .AllowedPageSizes(new List<int> { 10, 20, 30 })
+        )
+        .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+            .DescendingText("PartNo")
+        )
+        .ColumnAutoWidth(true)
+        .FilterRow(fil => fil.Visible(true))
+        .FilterPanel(fi => fi.Visible(true))
+        .SearchPanel(search => search.Visible(true)
+            .HighlightSearchText(true)
+            .Width(500)
+        )
+        //.HeaderFilter(headFil => headFil.Visible(true))
+        .ShowColumnHeaders(true)
+        .ShowRowLines(true)
+        .RemoteOperations(true)
+        //.Columns(columns =>
+        //{
+
+        //    columns.AddFor(m => m.ID).AllowEditing(false);
+
+        //    columns.AddFor(m => m.OrderNo).Caption("Số order");
+
+        //    columns.AddFor(m => m.StaffID).Caption("Nhân viên");
+
+        //    columns.AddFor(m => m.Qty).Caption("Số lượng");
+
+        //    columns.AddFor(m => m.ToDept).Lookup(lup =>
+        //        lup.DataSource(ds => ds.WebApi()
+        //            .RouteName("C222_DepartmentApi")
+        //            .LoadAction("Get")
+        //        )
+        //        .DisplayExpr("DeptName")
+        //        .ValueExpr("DeptCode")
+        //    ).Caption("Bộ phận nhận");
+
+        //    columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+        //    columns.AddFor(m => m.Deleted).Visible(false).Caption("Đã xóa");
+        //})
+        .MasterDetail(md =>
+        {
+        md.Enabled(true);
+        md.Template(@<text>
+                <div class="master-detail-caption"> Tính toán xuất cho order: <%- data.BOderNo %></div>
+                @(Html.DevExtreme().Button()
+                    .Text("Xác nhận xuất kho")
+                    .ID(new JS("'btnImportStokerOutput_' + data.BOderNo"))
+                    .Type(ButtonType.Normal)
+                    .OnClick(string.Format("function(e) {{ OKOnClick(e, {0}); }}", new JS("data.BOderNo")))
+                    .Width(250)
+                )
+                @(Html.DevExtreme().DataGrid<NNworking.Models.sp_222_StockerOutput_OutputPreparation_Detail_Result>()
+                    .DataSource(ds => ds.WebApi()
+                    .RouteName("C222_StokerOutputApi")
+                    .LoadAction("sp_222_StockerOutput_OutputPreparation_Detail")
+                    .LoadParams(new { partID = new JS("data.PartID"),needQty = new JS("data.needQty") })
+                    //.UpdateAction("OutputCalculation")
+                    //.Key("ID")
+                    )
+                    .ID(new JS("'dxDetail_' + data.BOderNo"))
+                    .Paging(page => page.PageSize(10))
+                    .Pager(pager => pager.ShowPageSizeSelector(true)
+                        .ShowInfo(true)
+                        .AllowedPageSizes(new List<int> { 10, 20, 30 })
+                    )
+                    .ColumnAutoWidth(true)
+                    .FilterRow(fil => fil.Visible(true))
+                    .FilterPanel(fi => fi.Visible(true))
+                    .SearchPanel(search => search.Visible(true)
+                        .HighlightSearchText(true)
+                        .Width(500)
+                    )
+                    //.HeaderFilter(headFil => headFil.Visible(true))
+                    .ShowColumnHeaders(true)
+                    .ShowRowLines(true)
+                    .RemoteOperations(true)
+                    .Columns(columns =>
+                    {
+
+                        columns.AddFor(m => m.OrderNo).Caption("Số order").AllowEditing(false);
+
+                        columns.AddFor(m => m.Deadline).Caption("Thời hạn").AllowEditing(false);
+
+                        columns.AddFor(m => m.PartID).Caption("Tên chi tiết").AllowEditing(false);
+
+                        columns.AddFor(m => m.InputQty).Caption("Số lượng đã nhập kho").AllowEditing(false);
+
+                        columns.AddFor(m => m.OutputQty).Caption("Số lượng đã xuất kho").AllowEditing(false);
+
+                        columns.AddFor(m => m.AvailableQty).Caption("Số lượng trong kho").AllowEditing(false);
+
+                        columns.AddFor(m => m.GiayXN).Caption("Giấy xác nhận").AllowEditing(false);
+
+                        columns.AddFor(m => m.NeedQty).Caption("Số lượng cần").AllowEditing(false);
+
+                        columns.AddFor(m => m.UseQty).Caption("Số lượng sử dụng");
+                    })
+                    .Editing(e => e
+                        .AllowUpdating(true)
+                        .Mode(GridEditMode.Cell)
+                    )
+                    .OnRowValidating("ConfirmData")
+                )
+            </text>);
+        })
+)
+
+<script>
+    @*function onInitNewRow(e) {
+        e.data.ID = 0;
+        e.data.StaffID = '@Session["StaffID"]';
+        e.data.Date = new Date();
+        e.data.Qty = 0;
+        e.data.Deleted = false;
+    }*@
+
+    function ConfirmData(e) {
+        var a = e.newData;
+        if (a.UseQty > e.oldData.AvailableQty) {
+            alert("Số lượng sử dụng lớn hơn số lượng trong kho");
+            e.component.cancelEditData();
+            return;
+        }
+        e.oldData.UseQty = a.UseQty;
+        e.component.cancelEditData();
+    }
+
+    function OKOnClick(e, order) {
+        var a = $("#dxDetail_" + order).dxDataGrid("instance");
+        var data = a.getDataSource().items();
+        $.ajax({
+            url: '@Url.Action("ImportStockerOutput", "Tool")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'order': order, 'data': data },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+            }
+        });
+    }
+</script>
+
+

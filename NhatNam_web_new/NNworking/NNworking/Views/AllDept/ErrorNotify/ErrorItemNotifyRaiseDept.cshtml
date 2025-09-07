@@ -1,0 +1,333 @@
+﻿
+@{
+    ViewBag.Title = "Nhập đối sách hàng lỗi";
+}
+<div class="box box-body">
+    <table width="1000px">
+        <tr>
+            <td>
+                &nbsp;
+                @(Html.DevExtreme().Button()
+                                .Text("Import NNDS")
+                                .ID("btnImportNNDS")
+                                .Type(ButtonType.Normal)
+                                .Width(250)
+                )
+            </td>
+        </tr>
+    </table>
+</div>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ErrorItemNotify_View>()
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C242_ErrorItemNotify_NewApi")
+            .LoadAction("GetNotify")
+            .InsertAction("Post")
+            .UpdateAction("Put")
+            .DeleteAction("Delete")
+            .OnBeforeSend("UpdateExpandData")
+            .Key("ID")
+        )
+        .Paging(page => page.PageSize(10))
+        .Pager(pager => pager.ShowPageSizeSelector(true)
+            .ShowInfo(true)
+            .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+        )
+        .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+            .DescendingText("DateWrite")
+        )
+        .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
+            //.FileName("BaoLoiSP")
+            .AllowExportSelectedData(true))
+        .ColumnAutoWidth(true)
+        .FilterRow(fil => fil.Visible(true))
+        .FilterPanel(fi => fi.Visible(true))
+        .SearchPanel(search => search.Visible(true)
+            .HighlightSearchText(true)
+            .Width(500)
+        )
+        .Columns(columns =>
+        {
+
+            columns.AddFor(m => m.ID).AllowEditing(false).Caption("Mã giấy báo lỗi");
+
+            columns.AddFor(m => m.ErrorNo).Caption("Mã giấy báo lỗi").AllowEditing(false).Visible(false);//1
+
+            columns.AddFor(m => m.DateRaiseErr).Caption("Ngày gây lỗi").AllowEditing(false);//1
+
+            columns.AddFor(m => m.DateWrite).Caption("Ngày viết giấy").AllowEditing(false);//1
+
+            columns.AddFor(m => m.Deadline).Caption("Thời hạn hoàn thành").AllowEditing(false);//1
+
+            columns.AddFor(m => m.NotifyDept).Caption("Bộ phận TB").AllowEditing(false);//1
+
+            columns.AddFor(m => m.RaiseErrorDept).Caption("Bộ phận gây lỗi").AllowEditing(false);//1
+
+            columns.AddFor(m => m.Supplier).Caption("Nhà cung cấp").AllowEditing(false);//1
+
+            columns.AddFor(m => m.NotifyStaff).Caption("Nhân viên TB").AllowEditing(false);//1
+
+            columns.AddFor(m => m.Customer).Caption("Khách hàng").AllowEditing(false);//1
+
+            columns.AddFor(m => m.OrderNo).Caption("Số order").AllowEditing(false);//1
+
+            columns.AddFor(m => m.PartID).Caption("Tên chi tiết").AllowEditing(false);//1
+
+            columns.AddFor(m => m.Qty).Caption("Số lương lệnh").AllowEditing(false);//1
+
+            columns.AddFor(m => m.ErrorQty).Caption("Số lượng lỗi").AllowEditing(false);//1
+
+            columns.AddFor(m => m.ErrorDes).Caption("Mô tả nội dung lỗi").AllowEditing(false);//1
+
+            //columns.AddFor(m => m.ErrorContent).Caption("Nội dung lỗi").Lookup(lup =>
+            //                lup.DataSource(ds => ds.WebApi()
+            //                    .RouteName("C242_ErrorContentApi")
+            //                    .LoadAction("Get")
+            //                    .Key("ID")
+            //                )
+            //                .DisplayExpr("ContentDes")
+            //                .DisplayExpr("ContentDes")
+            //                .ValueExpr("ContentIndex")
+            //            ).ValidationRules(val => val.AddRequired());//1
+
+            columns.AddFor(m => m.ErrorContent).Caption("Nội dung lỗi").Lookup(lup =>
+                                        lup.DataSource(ds => ds.WebApi()
+                                            .RouteName("C242_ErrorContentApi")
+                                            .LoadAction("Get")
+                                            .Key("ID")
+                                        )
+                                        .DisplayExpr("ContentDes")
+                                        .ValueExpr("ContentIndex")
+                                    ).AllowEditing(false);//1
+
+            columns.AddFor(m => m.DeceidedTime).Caption("Thời điểm phát hiện lỗi").Lookup(lup =>
+                                        lup.DataSource(ds => ds.WebApi()
+                                            .RouteName("C242_DeceidedTimeApi")
+                                            .LoadAction("Get")
+                                            .Key("ID")
+                                        )
+                                        .DisplayExpr("Des")
+                                        .ValueExpr("DeceidedTimeIndex")
+                                    ).AllowEditing(false);//1
+
+            columns.AddFor(m => m.PredictErrorCause).Caption("Nhận định nguyên nhân lỗi").Lookup(lup =>
+                                        lup.DataSource(ds => ds.WebApi()
+                                            .RouteName("C242_PredictErrorCauseApi")
+                                            .LoadAction("Get")
+                                            .Key("ID")
+                                        )
+                                        .DisplayExpr("Des")
+                                        .ValueExpr("PredictErrorCauseIndex")
+                                    ).AllowEditing(false);//1
+
+            columns.AddFor(m => m.ErrorHappenFrequency).Caption("Số lần phát hiện").Lookup(lup =>
+                                        lup.DataSource(ds => ds.WebApi()
+                                            .RouteName("C242_ErrorHappenFrequencyApi")
+                                            .LoadAction("Get")
+                                            .Key("ID")
+                                        )
+                                        .DisplayExpr("Des")
+                                        .ValueExpr("FrequencyIndex")
+                                    ).AllowEditing(false);//1
+
+            columns.AddFor(m => m.ErrorType).Caption("Kiểu lỗi").Lookup(lup =>
+                                lup.DataSource(ds => ds.WebApi()
+                                    .RouteName("C242_ErrorTypeApi")
+                                    .LoadAction("Get")
+                                    .Key("ID")
+                                )
+                                .DisplayExpr("ErrorType")
+                                .ValueExpr("ID")
+                        ).ValidationRules(val => val.AddRequired());//1
+
+            columns.AddFor(m => m.OptionID).Caption("Nguyên công").Lookup(lup =>
+                                        lup.DataSource(ds => ds.WebApi()
+                                            .RouteName("C242_OptionApi")
+                                            .LoadAction("Get")
+                                            .Key("ID")
+                                        )
+                                        .DisplayExpr("OptionID")
+                                        .ValueExpr("OptionID")
+                                    ).ValidationRules(val => val.AddRequired());//1
+
+            columns.AddFor(m => m.RaiseErrorStaff).Caption("Nhân viên gây lỗi");//2
+
+            columns.AddFor(m => m.DecisionToFine).Caption("Quyết định xử phạt");//.ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.NotPenalizeDes).Caption("Lý do không xử phạt");//.ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.ErrorProcess).Caption("Cách xử lý").Lookup(lup =>
+                            lup.DataSource(ds => ds.WebApi()
+                                .RouteName("C242_ErrorProcessApi")
+                                .LoadAction("Get")
+                                .Key("ID")
+                            )
+                            .DisplayExpr("Des")
+                            .ValueExpr("ProcessIndex")
+                        ).ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.ErrorCause).Caption("Nguyên nhân gây lỗi").ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.ErrorCause1).Caption("Nguyên nhân gây lỗi 2").ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.ErrorCause2).Caption("Nguyên nhân gây lỗi 3").ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.Remedies).Caption("NN-ĐS 1").ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.Remedies1).Caption("NN-ĐS 2").ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.Remedies2).Caption("NN-ĐS 3").ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.ManagerRemedies).Caption("Biện pháp khắc phục của quản lý").ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.PIC).Caption("Người phụ trách").ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.ViTriHang).Caption("Vị trí hàng").Lookup(lup =>
+                                        lup.DataSource(ds => ds.WebApi()
+                                            .RouteName("C222_PartnerApi")
+                                            .LoadAction("GetAllPartner")
+                                        )
+                                        .DisplayExpr("Name")
+                                        .ValueExpr("Code")
+                                    ).ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.Completed).Caption("Đã hoàn thành");//.ValidationRules(val => val.AddRequired());//2
+
+            columns.AddFor(m => m.Shift).Caption("Ca").Lookup(lup =>
+                lup.DataSource(ds => ds.WebApi()
+                    .RouteName("C222_ShiftApi")
+                    .LoadAction("GetForNNDS")
+                )
+                .DisplayExpr("Description")
+                .ValueExpr("Shift")
+            ).ValidationRules(val => val.AddRequired());
+        })
+        .Editing(e => e
+            .AllowUpdating(true)
+            .Mode(GridEditMode.Popup)
+        )
+    //.OnContentReady("DockHeader")
+)
+
+
+<div id="background-popup"></div>
+<div id="NotifyDiv">
+</div>
+<input id="File2" type="file" name="file" class="hide" onchange="ChoiceFilePhu()" />
+
+<script>
+    var popupStatus = 0;
+    function disablePopup() {
+        if (popupStatus == 1) {
+            $("#NotifyDiv").fadeOut(200);
+            $("#background-popup").fadeOut(200);
+            popupStatus = 0;
+        }
+    }
+
+    $("#background-popup").click(function () {
+        disablePopup();
+    });
+
+    function loadBackgroundToPopup() {
+        $("#background-popup").css("opacity", "0.2");
+        $("#background-popup").fadeIn(200);
+    }
+
+    /** load các popup của các phần **/
+    function loadListNoPopup() {
+        if (popupStatus == 0) {
+            $("#NotifyDiv").fadeIn(200);
+            loadBackgroundToPopup();
+            popupStatus = 1;
+        }
+    }
+
+    function UpdateExpandData(type, data) {
+        if (type != "delete" && type != "update") {
+            return;
+        }
+
+        data.data.extraParam = '@Session["StaffID"].ToString()';
+        //e.data.UpdateStaff = '@Session["StaffID"].ToString()';
+    }
+
+    $(document).on('click', '#btnImportNNDS', function () {
+        $('#File2').trigger('click');
+    });
+
+    function ChoiceFilePhu() {
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        form.append('staffID', '@Session["StaffID"].ToString()');
+        $.ajax({
+            url: '@Url.Action("ImportNNDS", "AllDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+
+                if (data.Errors.length > 0)
+                {
+                    var html = '';
+                    html += '<table class="table">                      ';
+                    html += '    <tbody>                                ';
+                    html += '        <tr>                               ';
+                    html += '            <th>Dòng</th>                  ';
+                    html += '            <th>Trạng thái</th>            ';
+                    html += '            <th>Nội dung</th>              ';
+                    html += '        </tr>                              ';
+                    html += '    </tbody>                               ';
+                    html += '    <tbody id="ThongBaoOrderNoLoi_body">   ';
+                    $.each(data.Errors, function (i, val) {
+                        html += '        <tr>                           ';
+                        html += '            <td>' + val.Line + '</td>  ';
+                        html += '            <td>' + val.Status + '</td>';
+                        html += '            <td>' + val.Des + '</td>   ';
+                        html += '        </tr>                          ';
+                    });
+                    html += '    </tbody>                               ';
+                    html += '</table>                                   ';
+                    $("#NotifyDiv").html(html);
+                    loadListNoPopup();
+                }
+
+                $('#File2').val('');
+            },
+        });
+    }
+</script>
+
+<script>
+    function DockHeader(e) {
+        var $header = $('#dxDataGridBaoLoi').find(".dx-datagrid-headers");
+        $t_fixed = $header.clone();
+        $t_fixed.addClass("fixed-headers").insertAfter($header);
+        $t_fixed.width($('#gridContainer').width());
+    }
+</script>
+@*@(Html.DevExtreme().DataGrid<NNworking.Models.C242_Option>()
+        .Columns(columns => {
+
+            columns.AddFor(m => m.ID);
+
+            columns.AddFor(m => m.DeptCode);
+
+            columns.AddFor(m => m.OptionID);
+
+            columns.AddFor(m => m.Note);
+
+            columns.AddFor(m => m.InputTime);
+
+            columns.AddFor(m => m.Deleted);
+        })
+        .Editing(e => e
+            .AllowAdding(true)
+            .AllowUpdating(true)
+            .AllowDeleting(true)
+        )
+    )*@

@@ -1,0 +1,122 @@
+﻿
+@{
+    
+}
+
+<h2>Danh sách nhóm máy</h2>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_GroupMachine>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_GroupMachineApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    //.HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.GroupName);
+
+        columns.AddFor(m => m.DeptID);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .Mode(GridEditMode.Form)
+    )
+)
+
+@(Html.DevExtreme().Autocomplete()
+        .DataSource(//new[] {"Test 1","Test 2","Test 3"}
+            d => d.Mvc()
+            .Controller("ProcessingDept")
+            .LoadAction("ListMachineByGroup")
+            .LoadMethod("POST")
+            .LoadParams(new { Group = "PHAY 1", shift = "T1" }).Key("MachineID")
+        )
+        .Placeholder("Type first name...")
+        .OnValueChanged("name_changed")
+)
+
+<script>
+    var firstName = "",
+        lastName = "",
+        position = "CEO",
+        city = "",
+        state = "";
+
+    function updateEmployeeInfo() {
+        var result = $.trim((firstName || "") + " " + (lastName || ""));
+
+        result += (result && position) ? (", " + position) : position;
+        result += (result && city) ? (", " + city) : city;
+        result += (result && state) ? (", " + state) : state;
+
+        $("#employee-data").text(result);
+    }
+
+    function name_changed(data) {
+        firstName = data.value;
+        updateEmployeeInfo();
+    }
+</script>
+
+<h2>Danh sách bộ phận</h2>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_Department>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_DepartmentApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    //.HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.DeptCode);
+
+        columns.AddFor(m => m.DeptName);
+
+        columns.AddFor(m => m.SecID);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .Mode(GridEditMode.Form)
+    )
+)

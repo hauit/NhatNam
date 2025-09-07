@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Cấu hình vật liệu";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_MaterialConfiguration>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C222_MaterialConfigurationApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    //.Export(e => e.Enabled(true).FileName("DSCauHinhVL").AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.MaterialID).Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_MaterialStockApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("MaterialID")
+            .ValueExpr("MaterialID")
+        );
+
+        columns.AddFor(m => m.MaterialConfiguration);
+
+        columns.AddFor(m => m.Note);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+</script>

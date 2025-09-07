@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<div id="Login">
+    <div id="LogoLogin">
+        <p>
+        <!--<img alt="" src="#" style=" height:80px">-->
+        </p>
+    </div>
+    <div id="LoginLeft">
+      &nbsp;
+    </div>
+    <div id="LoginForm">
+        <div style="float:left">
+         <h3>   Đăng nhập hệ thống</h3>
+@using (@Html.BeginForm("Login", "Login",FormMethod.Post, new { @name = "FormLogin", @id = "FormLogin"}))
+{      
+    <table style="width:300px; float:left">
+                <tbody><tr>
+                    <td>Tài khoản:</td>
+                    <td>
+                        <input id="taikhoan" name ="taikhoan" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mật khẩu:</td>
+                    <td>
+                        <input id="matkhau" name ="matkhau" type="Password">
+                    </td>
+                </tr>
+            </tbody>
+
+    </table><br/>
+         <!--   <input name="submit" src="img/n_btn_login.png" tabindex="3" style="float:left;" type="image"> -->
+				<input class="btn btn-green" style="margin-top: 10px; margin-left: 3px;" type="submit" tabindex="3" value="Đăng nhập"> <span> &nbsp&nbsp</span>
+				<input class="btn btn-green" style="margin-top: 10px;" type="reset" tabindex="3"  value="Xóa">
+                @*<input class="btn btn-green" style="margin-top: 10px;" type="button" tabindex="3" value="WTS NVCB" onclick="WTSF2()">
+                <input class="btn btn-green" style="margin-top: 10px;" type="button" tabindex="3" value="WTS Máy" onclick="WTSF2Test()">*@
+}           
+            <script>
+                //// TODO: need to be change
+                @*function WTSF2() {
+                    window.location = "@NNworking.Models.clsSession.NVCBTest";
+                }
+
+                function WTSF2Test() {
+                    window.location = "@NNworking.Models.clsSession.Test";
+                }*@
+            </script>
+        </div>
+        <div style="float:left;border-top:1px dotted #ccc;width:100%; display:none">
+         <a href="#" style="text-decoration:double">WTS xưởng sản xuất</a>
+        
+        </div>
+    </div>
+</div>

@@ -1,0 +1,293 @@
+﻿
+@{
+    ViewBag.Title = "Đăng ký thêm giờ";
+}
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="box box-body">
+            <table>
+                <tr>
+                    <td>
+                        Mã phòng:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <input type="text" class="text" width="90" id="txtStaffID" />
+                    </td>
+                    <td>
+                        Từ ngày:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateFromDate")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Xem")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("ViewData")
+                        )
+
+                        @(Html.DevExtreme().Button()
+                        .Text("Import")
+                        .ID("btnImport")
+                        .Type(ButtonType.Normal)
+                        .Width(150)
+                        )
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="padding-left: 10px;"></td>
+                    <td>
+                        Đến ngày:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateToDate")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;"></td>
+                </tr>
+            </table>
+        </div>
+
+        @(Html.DevExtreme().DataGrid<NNworking.Models.C222_ShiftRegister>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("C222_ShiftRegisterApi")
+                .LoadAction("Get").LoadParams(new { secID = "", fromDate = new JS("getFromDateValue"), toDate = new JS("getToDateValue") })
+                .InsertAction("Post")
+                .UpdateAction("Put")
+                .DeleteAction("Delete")
+                .Key("ID")
+            )
+            .ID("gridView")
+            .OnContextMenuPreparing("contextMenu")
+            .Selection(select => select.Mode(SelectionMode.Multiple))
+            .Paging(page => page.PageSize(15))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 15, 30, 50 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("StaffID")
+            )
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+            .Columns(columns =>
+            {
+
+                columns.AddFor(m => m.ID).AllowEditing(false);
+
+                columns.AddFor(m => m.Date);
+
+                columns.AddFor(m => m.StaffID);
+
+                columns.AddFor(m => m.OverTimeFrom1).Format("yy/MM/dd HH:mm").DataType(GridColumnDataType.DateTime);
+
+                columns.AddFor(m => m.OvertTimeTo1).Format("yy/MM/dd HH:mm").DataType( GridColumnDataType.DateTime);
+
+                columns.AddFor(m => m.Lunch);
+
+                columns.AddFor(m => m.Dinner);
+
+                columns.AddFor(m => m.Midnight);
+
+                columns.AddFor(m => m.BreackFast);
+
+                columns.AddFor(m => m.BusStation);
+
+                columns.AddFor(m => m.StartWork).Format("yy/MM/dd HH:mm").DataType(GridColumnDataType.DateTime).AllowEditing(false);
+
+                columns.AddFor(m => m.FinishWork).Format("yy/MM/dd HH:mm").DataType(GridColumnDataType.DateTime).AllowEditing(false);
+            })
+            .Editing(e => e
+            .AllowAdding(true)
+            .AllowUpdating(true)
+            //.AllowDeleting(true)
+            .Mode(GridEditMode.Cell)
+            )
+        )
+        <input id="File1" type="file" name="file" class="hide" onchange="ChoiceFile()" />
+        <div>
+
+        </div>
+    </section>
+<div id="MachineGroupButton"></div>
+    <!-- /.content -->
+<!-- /.content-wrapper -->
+@section Scripts
+{
+    @Scripts.Render("~/bundles/dashboard1")
+}
+
+
+<script>
+    var popupStatus = 0;
+    $(document).ready(function () {
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            //$("#banga").html('<td><b>Bàn gá:</b></td> <td>' + palet + '</td>');
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus >= 1) {
+                $("#ShiftButton").fadeOut(200);
+                $("#MachineGroupButton").fadeOut(200);
+                $("#OptionIDButtonTotal").fadeOut(200);
+                $("#OptionIDButton").fadeOut(200);
+                $("#background-popup").fadeOut(200);
+                $("#ManualExcutionChecking").fadeOut(200);
+                if (popupStatus == 2) {
+                    $("#CheckOK").trigger("click");
+                }
+
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadShiftPopup() {
+            if (popupStatus == 0) {
+                $("#ShiftButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadMachineGroupPopup() {
+            if (popupStatus == 0) {
+                $("#MachineGroupButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        /** các hàm gọi sự kiện click **/
+        $("#ShiftBT").click(function () {
+            loadShiftPopup();
+        });
+
+        //$("#btnView").click(function () {
+        //    loadMachineGroupPopup();
+        //});
+    })
+
+    function ViewData() {
+        var a = $("#gridView").dxDataGrid("instance").refresh();
+    }
+
+    function getToDateValue() {
+        var a = $("#dateToDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getFromDateValue() {
+        var a = $("#dateFromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function contextMenu(e) {
+        if (e.row.rowType === "data") {
+            //e.items = [{
+            //    text: "edit",
+            //    onItemClick: function () {
+            //        $("#gridView").dxDataGrid("instance").editRow(e.row.rowIndex);
+            //    }
+            //},
+            //{
+            //    text: "insert",
+            //    onItemClick: function () {
+            //        $("#gridView").dxDataGrid("instance").insertRow();
+            //    }
+            //},
+            e.items = [{
+                text: "delete",
+                onItemClick: function () {
+                    $("#gridView").dxDataGrid("instance").removeRow(e.row.rowIndex);
+                }
+            },
+            {
+                text: "Refresh",
+                onItemClick: function () {
+                    $("#gridView").dxDataGrid("instance").refresh();
+                }
+            }];
+        }
+    }
+</script>
+
+<script>
+    $(document).on('click', '#btnImport', function () {
+        $('#File1').trigger('click');
+    });
+
+    function ChoiceFile() {
+        var file = $('#File1').get(0);
+        var alo = file.files;
+        if (alo.length == 0) {
+            return;
+        }
+
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        $.ajax({
+            url: '@Url.Action("ImportSuppendStaff", "AllDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0)
+                {
+                    DisplayError(data.Errors);
+                }
+
+                $('#File1').val('');
+            },
+        });
+    }
+
+    function DisplayError(errors) {
+        var html = '';
+        $.each(errors, function (i, val) {
+            html += 'Line:' + val.Line + ' Lỗi: ' + val.Des + '</br>';
+        });
+
+        $("#MachineGroupButton").html(html);
+        $("#MachineGroupButton").fadeIn(200);
+        $("#background-popup").css("opacity", "0.2");
+        $("#background-popup").fadeIn(200);
+        popupStatus = 1;
+    }
+</script>

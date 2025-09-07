@@ -1,0 +1,163 @@
+﻿
+
+<div class="box box-body">
+    @(Html.DevExtreme().TextBox()
+        .ID("txtPartNo")
+        .Placeholder("Tìm kiếm phiếu xuất theo chi tiết")
+        .Width("500")
+        .OnEnterKey("SearchByPartNo")
+    )
+    @*@(Html.DevExtreme().Button()
+            .Text("Tìm kiếm")
+            .ID("btnView")
+            .Type(ButtonType.Normal)
+            .Width(90)
+            .OnClick("SearchByPartNo")
+        )*@
+</div>
+<h2> Danh sách phiếu xuất </h2>
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_InventoryReceived>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_InventoryReceivedApi")
+        .LoadAction("GetInventoryExport").LoadParams(new { partNo = new JS("GetPartNoForSearch") })
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxInventoryExport")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("Date")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    //.HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+        columns.AddFor(m => m.Date).Caption("Ngày nhập");
+
+        columns.AddFor(m => m.StaffID).Caption("Nhân viên nhập");
+
+        columns.AddFor(m => m.Import).Visible(false);
+
+        columns.AddFor(m => m.ReceiveDept).Caption("Đơn vị nhận");
+
+        columns.AddFor(m => m.ImportFrom).Caption("Đơn vị cung cấp");
+
+        columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+        columns.AddFor(m => m.Deleted).Visible(false);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("OnInitRow")
+    .MasterDetail(md =>
+    {
+        md.Enabled(true);
+        md.Template(@<text>
+        <div class="master-detail-caption"> Chi tiết phiếu nhập số: <%- data.ID %></div>
+        @(Html.DevExtreme().DataGrid<NNworking.Models.C242_InventoryReceivedDetail>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("C242_InventoryReceivedDetailApi")
+                .LoadAction("Get")
+                .LoadParams(new { importID = new JS("data.ID") })
+                .InsertAction("Post")
+                .UpdateAction("Put")
+                .DeleteAction("Delete")
+                .Key("ID")
+            )
+            .ID("dxInventoryReceivedDetail")
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("PartNo")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            //.HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+            .Columns(columns =>
+            {
+                columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+                columns.AddFor(m => m.VoucherID).AllowEditing(false).Caption("Số phiếu nhập");
+
+                columns.AddFor(m => m.PartNo).Caption("Tên chi tiết");
+
+                columns.AddFor(m => m.OrderNumber).Caption("Số order");
+
+                columns.AddFor(m => m.Qty).Caption("Số lượng");
+
+                columns.AddFor(m => m.Price).Caption("Đơn giá");
+
+                columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+                columns.AddFor(m => m.StatusID).Caption("Trạng thái").Visible(false);
+
+                columns.AddFor(m => m.Deleted).Visible(false);
+            })
+            .Editing(e => e
+                .AllowAdding(true)
+                .AllowUpdating(true)
+                .AllowDeleting(true)
+            )
+            .OnInitNewRow(string.Format("function(e) {{ OnInitDetailRow(e, {0}); }}", new JS("data.ID")))
+        )
+        </text>);
+    })
+)
+
+<script>
+    function OnInitRow(e) {
+        e.data.ID = 0;
+        e.data.Import = false;
+        e.data.Date = new Date();
+        e.data.StaffID = '@Session["StaffID"]';
+    }
+
+    function OnInitDetailRow(e,parentID) {
+        e.data.ID = 0;
+        e.data.Qty = 0;
+        e.data.Price = 0;
+        e.data.StatusID = 0;
+        e.data.VoucherID = parentID;
+    }
+
+    function SearchByPartNo() {
+        $("#dxInventoryExport").dxDataGrid("instance").refresh();
+    }
+
+    function GetPartNoForSearch() {
+        var partNo = $("#txtPartNo").dxTextBox("instance").option("value");
+        return partNo;
+    }
+</script>

@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+}
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content">
+    <div class="box box-body">
+        <table>
+            <tr>
+                <td>
+                    Mã nhân viên:
+                </td>
+                <td style="padding-left: 10px;">
+                    <div id="txtStaffID"></div>
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().Button()
+                        .Text("Tạo TK")
+                        .ID("btnCreateUser")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("CreateUser")
+                    )
+
+                    @(Html.DevExtreme().Button()
+                        .Text("Reset MK")
+                        .ID("btnResetPass")
+                        .Type(ButtonType.Normal)
+                        .Width(120)
+                        .OnClick("ResetPass")
+                    )
+
+                    @(Html.DevExtreme().Button()
+                        .Text("Import nhân viên")
+                        .ID("btnImport")
+                        .Type(ButtonType.Normal)
+                        .Width(150)
+                    )
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <input id="File1" type="file" name="file" class="hide" onchange="ChoiceFile()" />
+    <div>
+        @(Html.DevExtreme().DataGrid<NNworking.Models.C222_Users>()
+            .DataSource(ds => ds.WebApi()
+		        .RouteName("C222_UsersApi")
+                .LoadAction("Get")
+                .Key("UserName")
+            )
+            .ID("dxDatagrid")
+            .RemoteOperations(true)
+            .Columns(columns => {
+
+                columns.AddFor(m => m.UserName).AllowEditing(false);
+
+                columns.AddFor(m => m.Password).AllowEditing(false);
+
+                columns.AddFor(m => m.UserGroupID).AllowEditing(false);
+
+                columns.AddFor(m => m.DepartmentID).AllowEditing(false);
+
+                columns.AddFor(m => m.StaffID).AllowEditing(false);
+            })
+            .Editing(e => e
+                .AllowAdding(false)
+                .AllowUpdating(false)
+                .AllowDeleting(false)
+            )
+        )
+    </div>
+</section>
+<!-- /.content -->
+<!-- /.content-wrapper -->
+@section Scripts
+{
+    @Scripts.Render("~/bundles/dashboard1")
+}
+<script>
+    $(document).on('click', '#btnImport', function () {
+        $('#File1').trigger('click');
+    });
+
+    function CreateUser() {
+        var staffID = getStaffID();
+        if(!CheckStaffID(staffID))
+        {
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("CreateUser", "InputData")',
+            dataType: 'Json',
+            type: 'POST',
+            cache: false,
+            data: { 'staffID': staffID },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+            },
+        });
+    }
+
+    GetListStaff();
+    function GetListStaff() {
+        $.ajax({
+            url: '@Url.Action("GetStaffIDList", "InputData")',
+            dataType: 'Json',
+            type: 'GET',
+            data: '',
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                $("#txtStaffID").dxAutocomplete({
+                    dataSource: data.Values,
+                    placeholder: "Mã nhân viên"
+                });
+            },
+        });
+    }
+
+    function getStaffID()
+    {
+        var staffID = $("#txtStaffID").dxAutocomplete("instance").option("value");
+        return staffID;
+    }
+
+    function ResetPass() {
+        var staffID = getStaffID();
+        if (!CheckStaffID(staffID)) {
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("ResetPass", "InputData")',
+            dataType: 'Json',
+            type: 'POST',
+            cache: false,
+            data: { 'staffID': staffID },
+            Success: function (data) {
+                if (data.Status != "OK")
+                {
+                    alert(data.Values);
+                    return;
+                }
+            },
+        });
+    }
+
+    function CheckStaffID(staffID) {
+        var dataList = $("#txtStaffID").dxAutocomplete("instance").option("dataSource");
+        for (var i = 0; i < dataList.length; i++)
+        {
+            if(staffID ==dataList[i])
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function ChoiceFile() {
+        var file = $('#File1').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        $.ajax({
+            url: '@Url.Action("ImportSuppendStaff", "AllDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            Success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Value);
+                    return;
+                }
+
+                alert(data.Status);
+                $('#File1').val('');
+            },
+        });
+    }
+</script>

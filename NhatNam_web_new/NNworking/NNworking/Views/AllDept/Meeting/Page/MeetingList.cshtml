@@ -1,0 +1,390 @@
+﻿
+<div class="box box-body">
+    <div class="col-lg-3">
+        <table>
+            <tr>
+                <td>
+                    Từ Ngày:
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().DateBox()
+                            .Value(DateTime.Now)
+                            .ID("fromDate")
+                            .DisplayFormat("dd/MM/yyyy")
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Đến Ngày:
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().DateBox()
+                            .Value(DateTime.Now)
+                            .ID("toDate")
+                            .DisplayFormat("dd/MM/yyyy")
+                    )
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-9">
+        @(Html.DevExtreme().Button()
+            .Text("Xem")
+            .ID("btnView")
+            .Type(ButtonType.Normal)
+            .Width(120)
+            .OnClick("RefreshList")
+        )
+
+        @(Html.DevExtreme().Button()
+            .Text("Thêm mới")
+            .ID("btnAdd")
+            .Type(ButtonType.Normal)
+            .Width(120)
+            .OnClick("ShowAddNewPopup")
+        )
+    </div>
+</div>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_MeetingContent>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_MeetingContentApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxMeetingList")
+    .RemoteOperations(true)
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 30, 50 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .Selection(select => select.Mode(SelectionMode.Single))
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .OnContextMenuPreparing("contextMenu")
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+        columns.AddFor(m => m.Date).Caption("Ngày");
+
+        columns.AddFor(m => m.Staff).Caption("Người liên quan");
+
+        columns.AddFor(m => m.Subject).Caption("Chủ đề").Width("500");
+
+        columns.AddFor(m => m.Solution).Caption("Giải pháp").Width("300");
+
+        columns.AddFor(m => m.Command).Caption("Chỉ thị").Width("300");
+
+        columns.AddFor(m => m.Deadline).Caption("Thời hạn");
+
+        columns.AddFor(m => m.Evaluate).Caption("Đánh giá").Width("300");
+
+        columns.AddFor(m => m.Confirmed).Visible(false).Visible(false);
+
+        columns.AddFor(m => m.Deleted).Visible(false).Visible(false);
+    })
+    .Editing(e => e
+        .AllowDeleting(true)
+        .Mode(GridEditMode.Popup)
+    )
+)
+
+<div id="PopupPanel">
+
+    <div>
+        <table class="table table-advance">
+            <tr>
+                <td>Ngày:</td>
+                <td>
+                    @(Html.DevExtreme().DateBox()
+                            .Value(DateTime.Now)
+                            .ID("dateDate")
+                            .DisplayFormat("dd/MM/yyyy")
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>Người Liên quan:</td>
+                <td>
+                    @(Html.DevExtreme().DropDownBox()
+                            .ValueExpr("StaffID")
+                            .DisplayExpr("StaffID")
+                            .DropDownOptions(o => o.Height(350))
+                            .DataSource(d => d.WebApi()
+                                .RouteName("C222_StaffApi")
+                                .LoadAction("Get")
+                                .Key("StaffID")
+                            )
+                            .ID("staffList")
+                            .Placeholder("Select a value...")
+                            .ShowClearButton(true)
+                            .OnValueChanged("gridBox_valueChanged")
+                            .ContentTemplate(new TemplateName("EmbeddedDataGridMultiple"))
+                    )
+
+                    @using (Html.DevExtreme().NamedTemplate("EmbeddedDataGridMultiple"))
+                    {
+                        @(Html.DevExtreme().DataGrid()
+                                .ID("embedded-datagrid")
+                                .DataSource(new JS(@"component.getDataSource()"))
+                                .Columns(columns =>
+                                {
+                                    columns.Add().DataField("StaffID");
+                                    columns.Add().DataField("StaffName");
+                                })
+                                .HoverStateEnabled(true)
+                                .Paging(p => p.PageSize(10))
+                                .FilterRow(f => f.Visible(true))
+                                .Scrolling(s => s.Mode(GridScrollingMode.Virtual))
+                                .Height(345)
+                                .Selection(s => s.Mode(SelectionMode.Multiple))
+                                .SelectedRowKeys(new JS(@"component.option(""value"")"))
+                                .OnSelectionChanged(@<text>
+                                    function(selectedItems) {
+                                    var keys = selectedItems.selectedRowKeys;
+                                    component.option("value", keys);
+                                    }
+                                </text>)
+                        )
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Chủ đề</td>
+                <td>
+                    @(Html.DevExtreme().TextBox()
+                            .ID("txtSubject")
+                            .Placeholder("Chủ đề cuộc họp...")
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>Nội dung:</td>
+                <td>
+                    @Html.Partial("~/Views/Index/SubItem/_CkEditor.cshtml")
+                </td>
+            </tr>
+            <tr>
+                <td>Đánh giá:</td>
+                <td>
+                    @(Html.DevExtreme().TextBox()
+                            .ID("txtEvaluate")
+                            .Placeholder("Đánh giá...")
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>Chỉ thị:</td>
+                <td>
+                    @(Html.DevExtreme().TextBox()
+                            .ID("txtCommand")
+                            .Placeholder("Chỉ dạo củ quản lý...")
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>Thời hạn:</td>
+                <td>
+                    @(Html.DevExtreme().DateBox()
+                            .Value(DateTime.Now)
+                            .ID("Deadline")
+                            .DisplayFormat("dd/MM/yyyy")
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>File đính kèm:</td>
+                <td>
+                    <input id="File2" type="file" name="file" class="" multiple onchange="" />
+                </td>
+            </tr>
+        </table>
+        <input class="btn VP" style="margin-top: 10px;" type="Button" tabindex="" id="InputMeetingContent" name="" value="Nhập" onclick="InputMeetingContent()">
+    </div>
+</div>
+
+<div class="PopupPanel hide"></div>
+
+<script>
+    var popupStatus = 0;
+    $(document).ready(function () {
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus >= 1) {
+                $("#background-popup").fadeOut(200);
+                $("#PopupPanel").fadeOut(200);
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadPopupPanel() {
+            if (popupStatus == 0) {
+                $("#PopupPanel").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        $(".PopupPanel").click(function () {
+            loadPopupPanel();
+        });
+    })
+</script>
+
+<div id="background-popup">
+
+</div>
+
+<script>
+    function InputMeetingContent() {
+        var date = $("#dateDate").dxDateBox("instance").option("value");
+        var deadline = $("#Deadline").dxDateBox("instance").option("value");
+        var content = CKEDITOR.instances.editor.getData();
+        var txtSubject = $("#txtSubject").dxTextBox("instance").option("value");
+        var txtEvaluate = $("#txtEvaluate").dxTextBox("instance").option("value");
+        var txtCommand = $("#txtCommand").dxTextBox("instance").option("value");
+        var staff = $("#staffList").dxDropDownBox("instance").option("value");
+
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        for (var i = 0; i < alo.length; i++) {
+            form.append(alo[i].name, alo[i]);
+        }
+
+        form.append('date', date);
+        form.append('deadline', deadline);
+        form.append('content', content);
+        form.append('subject', txtSubject);
+        form.append('evaluate', txtEvaluate);
+        form.append('command', txtCommand);
+        form.append('staff', staff);
+
+        $.ajax({
+            url: '@Url.Action("InputMeetingContent", "AllDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                alert("OK!");
+            }
+        });
+    }
+
+    function gridBox_valueChanged(e) {
+        var $dataGrid = $("#embedded-datagrid");
+
+        if ($dataGrid.length) {
+            var dataGrid = $dataGrid.dxDataGrid("instance");
+            dataGrid.selectRows(e.value, false);
+        }
+    }
+
+    function ShowAddNewPopup() {
+        $(".PopupPanel").trigger("click");
+    }
+
+    function RefreshList() {
+        $("#dxMeetingList").dxDataGrid("instance").refresh();
+    }
+
+    function getFromDate() {
+        var a = $("#fromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getToDate() {
+        var a = $("#toDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function OnInitRow(e) {
+        e.data.ID = 0;
+        e.data.Confirmed = false;
+        e.data.Deleted = false;
+        e.data.Date = new Date();
+    }
+
+    function contextMenu(e) {
+        var id = e.row.data.ID;
+        if (e.row.rowType === "data") {
+            e.items = [{
+                text: "Chi tiết",
+                onItemClick: function () {
+                    var win = window.open('Chi-tiet-cuoc-hop-' + id + '.html', "blank");
+                }
+            }];
+        }
+    }
+</script>
+
+@*@(Html.DevExtreme().DataGrid<NNworking.Models.C222_MeetingComment>()
+    .DataSource(ds => ds.WebApi()
+		.Controller("C222_MeetingComment")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.MeetingID);
+
+        columns.AddFor(m => m.Date);
+
+        columns.AddFor(m => m.StaffID);
+
+        columns.AddFor(m => m.Comment);
+
+        columns.AddFor(m => m.ToStaff);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+)*@

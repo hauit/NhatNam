@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "EvaluateIndex";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ErrorItemEvaluate>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_ErrorItemEvaluateApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(true);
+
+        columns.AddFor(m => m.EvaluateIndex);
+
+        columns.AddFor(m => m.Note);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+</script>

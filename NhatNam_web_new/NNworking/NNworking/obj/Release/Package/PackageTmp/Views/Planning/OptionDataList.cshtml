@@ -1,0 +1,175 @@
+﻿
+@{
+    ViewBag.Title = "OptionData";
+}
+
+<div class="box box-body">
+    <table width="1000px">
+        <tr>
+            <td>
+                &nbsp;
+                @(Html.DevExtreme().Button()
+                                .Text("Import thay đổi TK")
+                                .ID("btnImportTDTK")
+                                .Type(ButtonType.Normal)
+                                .Width(250)
+                )
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="background-popup"></div>
+<div id="NotifyDiv">
+</div>
+<input id="File2" type="file" name="file" class="hide" onchange="ChoiceFilePhu()" />
+
+<script>
+    var popupStatus = 0;
+    function disablePopup() {
+        if (popupStatus == 1) {
+            $("#NotifyDiv").fadeOut(200);
+            $("#background-popup").fadeOut(200);
+            popupStatus = 0;
+        }
+    }
+
+    $("#background-popup").click(function () {
+        disablePopup();
+    });
+
+    function loadBackgroundToPopup() {
+        $("#background-popup").css("opacity", "0.2");
+        $("#background-popup").fadeIn(200);
+    }
+
+    /** load các popup của các phần **/
+    function loadListNoPopup() {
+        if (popupStatus == 0) {
+            $("#NotifyDiv").fadeIn(200);
+            loadBackgroundToPopup();
+            popupStatus = 1;
+        }
+    }
+
+    $(document).on('click', '#btnImportTDTK', function () {
+        $('#File2').trigger('click');
+    });
+
+    function ChoiceFilePhu() {
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        form.append('staffID', '@Session["StaffID"].ToString()');
+        $.ajax({
+            url: '@Url.Action("ImportTDTK", "Planning")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0)
+                {
+                    var html = '';
+                    html += '<table class="table">                      ';
+                    html += '    <tbody>                                ';
+                    html += '        <tr>                               ';
+                    html += '            <th>Dòng</th>                  ';
+                    html += '            <th>Trạng thái</th>            ';
+                    html += '            <th>Nội dung</th>              ';
+                    html += '        </tr>                              ';
+                    html += '    </tbody>                               ';
+                    html += '    <tbody id="ThongBaoOrderNoLoi_body">   ';
+                    $.each(data.Errors, function (i, val) {
+                        html += '        <tr>                           ';
+                        html += '            <td>' + val.Line + '</td>  ';
+                        html += '            <td>' + val.Status + '</td>';
+                        html += '            <td>' + val.Des + '</td>   ';
+                        html += '        </tr>                          ';
+                    });
+                    html += '    </tbody>                               ';
+                    html += '</table>                                   ';
+                    $("#NotifyDiv").html(html);
+                    loadListNoPopup();
+                }
+
+                $('#File2').val('');
+            },
+        });
+    }
+</script>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_OptionData>()
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C242_OptionDataApi")
+            .LoadAction("Get")
+            .InsertAction("Post")
+            .UpdateAction("Put")
+            .DeleteAction("Delete")
+            .Key("ID")
+        )
+        .RemoteOperations(true)
+        .Columns(columns =>
+        {
+
+            columns.AddFor(m => m.ID).AllowEditing(false);
+
+            columns.AddFor(m => m.InputDate).AllowEditing(false);
+
+            columns.AddFor(m => m.PartID).AllowEditing(false);
+
+            columns.AddFor(m => m.MachineID).AllowEditing(false);
+
+            columns.AddFor(m => m.OptionID).AllowEditing(false);
+
+            columns.AddFor(m => m.ProTime);
+
+            columns.AddFor(m => m.ClampTime);
+
+            columns.AddFor(m => m.LastOption).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.JigID).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.ToolQty).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.TechDate).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.UpdateDay).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.StaffID).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.Note).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.AondNote).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.Memo).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.CLUpdateday).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.JigType).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.Jig).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.Tich).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.Doc).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.TimeTreo).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.TimeComplete).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.Deleted).AllowEditing(false).Visible(false);
+        })
+        .Editing(e => e
+            .AllowAdding(true)
+            .AllowUpdating(true)
+            .AllowDeleting(true)
+        )
+)
+

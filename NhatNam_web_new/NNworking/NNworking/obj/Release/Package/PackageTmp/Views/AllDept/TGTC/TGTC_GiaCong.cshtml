@@ -1,0 +1,73 @@
+﻿
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_StandTime>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C242_StandTimeApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxTGTCGC")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    //.Export(e => e.Enabled(true).FileName("ThoiGianTieuChuanGiaCong").AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.Date);
+
+        columns.AddFor(m => m.PartNo);
+
+        columns.AddFor(m => m.MachineID);
+
+        columns.AddFor(m => m.OptionID);
+
+        columns.AddFor(m => m.PJ61_PKN1);
+
+        columns.AddFor(m => m.PZE1);
+
+        columns.AddFor(m => m.PBJ1);
+
+        columns.AddFor(m => m.PU71);
+
+        columns.AddFor(m => m.PH71);
+
+        columns.AddFor(m => m.Note);
+
+        columns.AddFor(m => m.Note2);
+
+        columns.AddFor(m => m.NumberOption);
+
+        columns.AddFor(m => m.Status);
+
+        columns.AddFor(m => m.MachineGroup);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .Mode(GridEditMode.Form)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+    }
+</script>

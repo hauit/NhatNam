@@ -1,0 +1,70 @@
+﻿@(Html.DevExtreme().DataGrid<NNworking.Models.C242_Work>()
+        .DataSource(ds => ds.WebApi()
+        .RouteName("C242_WorkApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Export(exp => exp.Enabled(true)
+        .FileName("Exported data")
+        .AllowExportSelectedData(true)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.WorkID);
+
+        columns.AddFor(m => m.WorkName);
+
+        columns.AddFor(m => m.DirectWork).Caption("CV TT");
+
+        columns.AddFor(m => m.OptionDataWork).Caption("CV có TGTC");
+
+        columns.AddFor(m => m.MassWork).Caption("CV hàng loạt");
+
+        columns.AddFor(m => m.InspecWork).Caption("CV Kiểm tra");
+
+        columns.AddFor(m => m.StopWork).Caption("CV dừng máy");
+
+        columns.AddFor(m => m.DeptOption).Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C242_WorkApi")
+                .LoadAction("GetOptionDept")
+            )
+            .DisplayExpr("OptionID")
+            .ValueExpr("OptionID")
+        );
+
+        columns.AddFor(m => m.GroupID);
+
+        columns.AddFor(m => m.DeptCode);
+
+        columns.AddFor(m => m.SortingNumber);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .Mode(GridEditMode.Form)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+    }
+</script>

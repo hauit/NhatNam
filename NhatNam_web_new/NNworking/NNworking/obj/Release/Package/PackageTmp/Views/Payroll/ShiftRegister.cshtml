@@ -1,0 +1,240 @@
+﻿
+@{
+    ViewBag.Title = "Đăng kí ca";
+}
+
+<div class="box box-body">
+    <table width="1000px">
+        <tr>
+            <td>
+                &nbsp;
+                @(Html.DevExtreme().Button()
+                                .Text("Import đăng kí ca")
+                                .ID("btnImportShiftRegister")
+                                .Type(ButtonType.Normal)
+                                .Width(250)
+                )
+            </td>
+            <td>
+                &nbsp;
+                @(Html.DevExtreme().Button()
+                                .Text("Import đăng kí OT")
+                                .ID("btnImportOTRegister")
+                                .Type(ButtonType.Normal)
+                                .Width(250)
+                )
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="background-popup"></div>
+<div id="NotifyDiv">
+</div>
+<input id="File2" type="file" name="file" class="hide" onchange="ChoiceFilePhu()" />
+<input id="File3" type="file" name="file" class="hide" onchange="ChoiceFileOT()" />
+
+<script>
+    var popupStatus = 0;
+    function disablePopup() {
+        if (popupStatus == 1) {
+            $("#NotifyDiv").fadeOut(200);
+            $("#background-popup").fadeOut(200);
+            popupStatus = 0;
+        }
+    }
+
+    $("#background-popup").click(function () {
+        disablePopup();
+    });
+
+    function loadBackgroundToPopup() {
+        $("#background-popup").css("opacity", "0.2");
+        $("#background-popup").fadeIn(200);
+    }
+
+    /** load các popup của các phần **/
+    function loadListNoPopup() {
+        if (popupStatus == 0) {
+            $("#NotifyDiv").fadeIn(200);
+            loadBackgroundToPopup();
+            popupStatus = 1;
+        }
+    }
+
+    $(document).on('click', '#btnImportOTRegister', function () {
+        $('#File3').trigger('click');
+    });
+
+    $(document).on('click', '#btnImportShiftRegister', function () {
+        $('#File2').trigger('click');
+    });
+
+    function ChoiceFilePhu() {
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        form.append('staffID', '@Session["StaffID"].ToString()');
+        $.ajax({
+            url: '@Url.Action("ImportShiftRegister", "Payroll")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0)
+                {
+                    var html = '';
+                    html += '<table class="table">                      ';
+                    html += '    <tbody>                                ';
+                    html += '        <tr>                               ';
+                    html += '            <th>Dòng</th>                  ';
+                    html += '            <th>Trạng thái</th>            ';
+                    html += '            <th>Nội dung</th>              ';
+                    html += '        </tr>                              ';
+                    html += '    </tbody>                               ';
+                    html += '    <tbody id="ThongBaoOrderNoLoi_body">   ';
+                    $.each(data.Errors, function (i, val) {
+                        html += '        <tr>                           ';
+                        html += '            <td>' + val.Line + '</td>  ';
+                        html += '            <td>' + val.Status + '</td>';
+                        html += '            <td>' + val.Des + '</td>   ';
+                        html += '        </tr>                          ';
+                    });
+                    html += '    </tbody>                               ';
+                    html += '</table>                                   ';
+                    $("#NotifyDiv").html(html);
+                    loadListNoPopup();
+                }
+
+                $('#File2').val('');
+            },
+        });
+    }
+
+    function ChoiceFileOT() {
+        var file = $('#File3').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        form.append('staffID', '@Session["StaffID"].ToString()');
+        $.ajax({
+            url: '@Url.Action("ImportOTRegister", "Payroll")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0)
+                {
+                    var html = '';
+                    html += '<table class="table">                      ';
+                    html += '    <tbody>                                ';
+                    html += '        <tr>                               ';
+                    html += '            <th>Dòng</th>                  ';
+                    html += '            <th>Trạng thái</th>            ';
+                    html += '            <th>Nội dung</th>              ';
+                    html += '        </tr>                              ';
+                    html += '    </tbody>                               ';
+                    html += '    <tbody id="ThongBaoOrderNoLoi_body">   ';
+                    $.each(data.Errors, function (i, val) {
+                        html += '        <tr>                           ';
+                        html += '            <td>' + val.Line + '</td>  ';
+                        html += '            <td>' + val.Status + '</td>';
+                        html += '            <td>' + val.Des + '</td>   ';
+                        html += '        </tr>                          ';
+                    });
+                    html += '    </tbody>                               ';
+                    html += '</table>                                   ';
+                    $("#NotifyDiv").html(html);
+                    loadListNoPopup();
+                }
+
+                $('#File3').val('');
+            },
+        });
+    }
+</script>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.View_222_ShiftRegister>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("C222_ShiftRegisterApi")
+                .LoadAction("Get")
+                .InsertAction("Post")
+                .UpdateAction("Put")
+                .DeleteAction("Delete")
+                .Key("ID")
+            )
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("ID")
+            )
+            //.Export(e => e.Enabled(true).FileName("DSCaNV").AllowExportSelectedData(true))
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .Columns(columns =>
+            {
+
+                columns.AddFor(m => m.ID).AllowEditing(false);
+
+                columns.AddFor(m => m.Date).Caption("Ngày");
+
+                columns.AddFor(m => m.StaffID).Caption("Nhân viên");
+
+                columns.AddFor(m => m.Shift).Caption("Ca");
+
+                columns.AddFor(m => m.Income).Caption("Bắt đầu");
+
+                columns.AddFor(m => m.Outcome).Caption("Kết thúc");
+
+                columns.AddFor(m => m.WorkTime).Caption("Thời gian làm việc");
+
+                columns.AddFor(m => m.Lunch).Caption("Ăn trưa");
+
+                columns.AddFor(m => m.Dinner).Caption("Ăn tối");
+
+                columns.AddFor(m => m.Breakfast).Caption("Ăn sáng");
+
+                columns.AddFor(m => m.Milk).Caption("Bánh sữa");
+
+                columns.AddFor(m => m.MachineID).Caption("Máy GC");
+
+                columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+                columns.AddFor(m => m.Deleted).Visible(false);
+
+                columns.AddFor(m => m.UserDelete).Visible(false);
+            })
+            .Editing(e => e
+                .AllowAdding(true)
+                .AllowUpdating(true)
+                .AllowDeleting(true)
+            )
+            .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+</script>

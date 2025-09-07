@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "Đăng kí nghỉ";
+}
+
+<div class="box box-body">
+    <table width="1000px">
+        <tr>
+            <td>
+                Mã nhân viên:
+            </td>
+            <td>
+                @(Html.DevExtreme().TextBox()
+                    .ID("txtStaffID")
+                    .Width(250)
+                    .Value(Session["StaffID"].ToString())
+                )
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Từ ngày:
+            </td>
+            <td>
+                @(Html.DevExtreme().DateBox()
+                    .ID("dateFrom")
+                    .Width(250)
+                    .DisplayFormat("dd/MM/yyyy HH:mm")
+                    .Type(DateBoxType.DateTime)
+                    .Value(DateTime.Now.Date.AddHours(8))
+                )
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Đến ngày:
+            </td>
+            <td>
+                @(Html.DevExtreme().DateBox()
+                    .ID("dateTo")
+                    .Width(250)
+                    .DisplayFormat("dd/MM/yyyy HH:mm")
+                    .Type( DateBoxType.DateTime)
+                    .Value(DateTime.Now.Date.AddHours(17))
+                )
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Lí do:
+            </td>
+            <td>
+                @(Html.DevExtreme().TextArea()
+                    .ID("txtReason")
+                    .Width(250)
+                )
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @(Html.DevExtreme().Button()
+                    .Text("Đăng kí")
+                    .ID("btnAbsentInput")
+                    .OnClick("AbsendRegister")
+                    .Type(ButtonType.Normal)
+                    .Width(150)
+                )
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    function AbsendRegister() {
+
+    }
+</script>

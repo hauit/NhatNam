@@ -1,0 +1,58 @@
+﻿@(Html.DevExtreme().DataGrid<NNworking.Models.C222_Partner>()
+        .DataSource(ds => ds.WebApi()
+        .RouteName("C222_PartnerApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Export(exp => exp.Enabled(true)
+        .FileName("Exported data")
+        .AllowExportSelectedData(true)
+    )
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.Code);
+
+        columns.AddFor(m => m.Name);
+
+        columns.AddFor(m => m.Type).Caption("Kiểu").Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_PartnerTypeApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("Note")
+            .ValueExpr("ID")
+        );
+
+        //columns.AddFor(m => m.Type).Caption("Khách hàng");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .Mode(GridEditMode.Form)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+    }
+</script>

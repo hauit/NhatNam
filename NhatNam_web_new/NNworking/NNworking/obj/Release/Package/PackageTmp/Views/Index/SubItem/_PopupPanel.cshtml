@@ -1,0 +1,48 @@
+﻿
+<div id="PopupPanel">
+    
+</div>
+
+<div class="PopupPanel hide"></div>
+
+<script>
+    var popupStatus = 0;
+    $(document).ready(function () {
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus >= 1) {
+                $("#background-popup").fadeOut(200);
+                $("#PopupPanel").fadeOut(200);
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadPopupPanel() {
+            if (popupStatus == 0) {
+                $("#PopupPanel").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        $(".PopupPanel").click(function () {
+            loadPopupPanel();
+        });
+    })
+</script>

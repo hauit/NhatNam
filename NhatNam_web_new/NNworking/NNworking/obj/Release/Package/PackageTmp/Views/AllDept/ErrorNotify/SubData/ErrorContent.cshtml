@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Nội dung lỗi";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ErrorContent>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C242_ErrorContentApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ContentIndex")
+    )
+    //.Export(e => e.Enabled(true).FileName("Content").AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.ContentIndex).Caption("Mã số");
+
+        columns.AddFor(m => m.ContentDes).Caption("Nội dung");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+        e.data.ContentIndex = 0;
+    }
+
+</script>

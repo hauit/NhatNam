@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Danh mục sản phẩm";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_StokerCatergory>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_StokerCatergoryApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("Alias")
+    )
+    .ID("dxDataGridDanhMucSP")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
+        //.FileName("DanhMucSanPhamKho")
+        .AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.MenuType).Caption("Kiểu danh mục").Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_StokerCatergoryTypeApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("CatergoryType")
+            .ValueExpr("ID")
+        );
+
+        columns.AddFor(m => m.Catergory).Caption("Danh mục");
+
+        columns.AddFor(m => m.Alias).AllowEditing(false).Visible(false);
+
+        columns.AddFor(m => m.Note).Caption("Ghi chú");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+</script>

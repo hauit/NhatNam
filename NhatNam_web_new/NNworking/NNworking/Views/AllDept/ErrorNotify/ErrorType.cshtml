@@ -1,0 +1,29 @@
+﻿
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ErrorType>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C242_ErrorTypeApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.ErrorType);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+    }
+</script>

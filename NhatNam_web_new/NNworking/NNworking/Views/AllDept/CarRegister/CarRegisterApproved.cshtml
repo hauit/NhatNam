@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Xác nhận đăng kí xe";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_CarRegister>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_CarRegisterApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxCarRegisterApproved")
+    .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("Date")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns =>
+    {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.Date).Caption("Ngày ĐK").Format("dd/MM/yyyy").AllowEditing(false);
+
+        columns.AddFor(m => m.RegStaff).Caption("NV đăng kí").AllowEditing(false);
+
+        columns.AddFor(m => m.NeedDate).Caption("Thời gian cần").AllowEditing(false).DataType(GridColumnDataType.DateTime).Format("dd/MM/yyyy HH:mm");
+
+        columns.AddFor(m => m.EstimatedEndTime).Caption("Kết thúc(dự kiến)").AllowEditing(false).DataType(GridColumnDataType.DateTime).Format("dd/MM/yyyy HH:mm");
+
+        columns.AddFor(m => m.Reason).Caption("Lí do ĐK").AllowEditing(false);
+
+        columns.AddFor(m => m.Car).Caption("Xe").AllowEditing(false);
+
+        columns.AddFor(m => m.SupportReason).Caption("Y/C người hỗ trợ").AllowEditing(false);
+
+        columns.AddFor(m => m.Accepted).Caption("Xác nhận xe");
+
+        columns.AddFor(m => m.StartTime).Caption("Bắt đầu(TT)").DataType(GridColumnDataType.DateTime).Format("HH:mm");
+
+        columns.AddFor(m => m.FinishTime).Caption("Kết thúc(TT)").DataType(GridColumnDataType.DateTime).Format("HH:mm");
+
+        columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+        columns.AddFor(m => m.Completed).Caption("Xác nhận hoàn thành");
+    })
+    .Editing(e => e
+        //.AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+)
+
+

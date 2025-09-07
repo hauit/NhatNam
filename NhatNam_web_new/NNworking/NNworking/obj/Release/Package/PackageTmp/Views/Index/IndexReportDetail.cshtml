@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Chi tiết báo cáo - thông kê";
+    if(ViewBag.Data == null)
+    {
+        //return;
+    }
+}
+
+
+    <!-- Main content -->
+    <section class="content">
+        <div id="ReportContent">
+            @(Html.DevExtreme().DataGrid<dynamic>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("TrangChuAPI")
+                .LoadAction("GetWorkingReportDetail").LoadParams(new { reportID = ViewBag.ReportID, json = true })
+            //ds => ds.RemoteController()
+            //.LoadUrl(Url.Action("ReportID1DetailData", "Index", new { reportID = ViewBag.ReportID, json = true }))
+            )
+            .Paging(page => page.PageSize(20))
+            .ColumnAutoWidth(true)
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 20, 50, 100 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("MONo")
+            )
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .Export(exp => exp.Enabled(true)
+                .FileName("Exported data")
+                .AllowExportSelectedData(true)
+            )
+            .RemoteOperations(true)
+                    )
+        </div>
+    </section>
+    <!-- /.content -->
+
+@Scripts.Render("~/Content/Custom/CustomJS/IndexAcquiringData.js")
+<script>
+    @*$(function () {
+        switch(@ViewBag.ReportID)
+        {
+            case 1:
+                GetDataForReportNumber1('@Url.Action("ReportDetail", "Index")',@ViewBag.ReportID);
+                break;
+        }
+    });*@
+</script>

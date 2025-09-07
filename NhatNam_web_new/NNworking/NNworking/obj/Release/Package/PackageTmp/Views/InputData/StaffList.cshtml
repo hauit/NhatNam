@@ -1,0 +1,192 @@
+﻿
+<div class="box box-body">
+    @(Html.DevExtreme().Button()
+            .Text("Import")
+            .ID("btnImport")
+            .Type(ButtonType.Normal)
+            .Width(150)
+    )</br>
+</div>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_Staff>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_StaffApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxDataGrid")
+            .Paging(page => page.PageSize(30))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 30, 50, 100, 200 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("ID")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.StaffID);
+
+        columns.AddFor(m => m.StaffName);
+
+        columns.AddFor(m => m.Birthday).Visible(false);
+
+        columns.AddFor(m => m.HireDate).Caption("Ngày vào cty").Visible(true);
+
+        columns.AddFor(m => m.StopDate).Caption("Ngày rời cty").Visible(true);
+
+        columns.AddFor(m => m.SecID);
+
+        columns.AddFor(m => m.SecName);
+
+        columns.AddFor(m => m.GroupID);
+
+        columns.AddFor(m => m.Sub_Group);
+
+        columns.AddFor(m => m.DeptCode).Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_DepartmentApi")
+                .LoadAction("Get")
+            )
+            .DisplayExpr("DeptName")
+            .ValueExpr("DeptCode")
+        );
+
+        columns.AddFor(m => m.PersonalInf).Visible(false);
+
+        columns.AddFor(m => m.Sex).Visible(false);
+
+        columns.AddFor(m => m.DepartmentID).Visible(false);
+
+        columns.AddFor(m => m.Photo).Visible(false);
+
+        columns.AddFor(m => m.Education).Visible(false);
+
+        columns.AddFor(m => m.PhoneNumber).Visible(false);
+
+        columns.AddFor(m => m.Address).Visible(false);
+
+        columns.AddFor(m => m.level).Visible(false);
+
+        columns.AddFor(m => m.StaffNote).Visible(false);
+
+        columns.AddFor(m => m.BoPhan).Visible(false);
+
+        columns.AddFor(m => m.VITRI).Visible(false);
+
+        columns.AddFor(m => m.TT_GT).Visible(false);
+
+        columns.AddFor(m => m.Email);
+
+        columns.AddFor(m => m.EmailHC).Visible(false);
+
+        columns.AddFor(m => m.ngduyet).Visible(true);
+
+        columns.AddFor(m => m.ngduyet2).Visible(true);
+
+        columns.AddFor(m => m.ngduyet3).Visible(true);
+
+        columns.AddFor(m => m.BusStation).Visible(false);
+
+        columns.AddFor(m => m.BusStation_Original).Visible(false);
+
+        columns.AddFor(m => m.Status).Visible(false);
+
+        columns.AddFor(m => m.CreateDate).Visible(false);
+
+        columns.AddFor(m => m.StopDate1).Visible(false);
+
+        columns.AddFor(m => m.Number).Caption("Ngày phép").Visible(true);
+
+        columns.AddFor(m => m.EmailSoft).Visible(false);
+
+        columns.AddFor(m => m.Deleted).Visible(false);
+
+        columns.Add().Caption("").AllowEditing(false).CellTemplate(new JS("TaoTK"));
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<input id="File2" type="file" name="file" class="hide" onchange="ChoiceFilePhu()" />
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+    }
+
+    $(document).on('click', '#btnImport', function () {
+        $('#File2').trigger('click');
+    });
+
+    function ChoiceFilePhu() {
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        $.ajax({
+            url: '@Url.Action("ImportStaff", "AllDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0) {
+                    DisplayImportError(data.Errors);
+                }
+
+                $('#File2').val('');
+                SearchByPartNo();
+            },
+        });
+    }
+</script>
+
+<script>
+    function TaoTK(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var machineID = options.data.StaffID;
+
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $('<div id="dxButton_TraDao_' + id + '" /><a href="#" onclick ="CheckAndCreateUserForMachine(\'' + machineID + '\')">Tạo TK</a></div>').appendTo(container);
+    }
+
+    function CheckAndCreateUserForMachine(machineID) {
+        $.ajax({
+            url: '@Url.Action("CheckAndCreateUserForMachine", "ProcessingDept")',
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            data: { 'machineID': machineID },
+            success: function (data) {
+                alert(data.Values);
+
+            },
+        });
+    }
+</script>

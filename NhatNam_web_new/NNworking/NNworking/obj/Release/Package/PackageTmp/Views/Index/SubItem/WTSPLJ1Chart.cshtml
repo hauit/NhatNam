@@ -1,0 +1,284 @@
+﻿
+@{
+    ViewBag.Title = "WTSChart";
+}
+
+<div class="row">
+    <!-- Left col -->
+    <section class="col-lg-4 connectedSortable">
+        <div class="box box-primary">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div id="Condition">Chọn thông tin để xem báo cáo</div>
+                <div>
+                    <table>
+                        <tr>
+                            @*<th>
+                                Máy GC:
+                            </th>
+                            <th style="padding-left: 10px;" colspan="2">
+                                @(Html.DevExtreme().TextBox()
+                                .ID("txtMachineID")
+                                )
+                            </th>*@
+                        </tr>
+                        <tr>
+                            <th>
+                                Từ ngày:
+                            </th>
+                            <th style="padding-left: 10px;">
+                                @(Html.DevExtreme().DateBox()
+                                .Value(DateTime.Now)
+                                .ID("dateFromDate")
+                                )
+                            </th>
+                            <th style="padding-left: 10px;">
+                                Đến ngày:
+                            </th>
+                            <th>
+                                @(Html.DevExtreme().DateBox()
+                                .Value(DateTime.Now)
+                                .ID("dateToDate")
+                                )
+                            </th>
+                        </tr>
+                        <tr>
+                            @*<th>
+                                Báo cáo:
+                            </th>
+                            <th style="padding-left: 10px;" colspan="3">
+                                @(Html.DevExtreme().SelectBox()
+                                    .DataSource(new[] {
+                                        "Thống kê tổng tg thêm giờ",
+                                        "Thống kê thêm giờ theo nhóm, mã công việc",
+                                        "Thống kê thêm giờ theo NV, mã công việc",
+                                        "Thống kê chi tiết thêm giờ nhân viên",
+                                        "Thống kê thêm giờ theo ngày" })
+                                    .Placeholder("Choose report")
+                                    .ID("ReportList")
+                                //.ReadOnly(true)
+                                )
+                            </th>*@
+                        </tr>
+                        <tr>
+                            <th colspan="4">
+                                @(Html.DevExtreme().Button()
+                                    .Text("Xem")
+                                    .ID("btnView")
+                                    .Type(ButtonType.Normal)
+                                    .Width(90)
+                                    .OnClick("ViewReport")
+                                )
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="col-lg-8 connectedSortable">
+        <div class="box box-primary">
+            <div id="MainChart">
+
+            </div>
+            @(Html.DevExtreme().PieChart()
+                .ID("pie")
+                .Size(s => s.Width(800))
+                .Palette(VizPalette.Bright)
+                .Series(s => s
+                    .Add()
+                    .ArgumentField("MachineID")
+                    .ValueField("PLJ1Time")
+                    .Label(l => l
+                        .Visible(false)
+                        .Connector(c => c
+                            .Visible(true)
+                            .Width(1)
+                        )
+                    .Position(PieChartLabelPosition.Columns)
+                    )
+                )
+                .Legend(l => l
+                    .Orientation(Orientation.Horizontal)
+                    .ItemTextPosition(Position.Right)
+                    .HorizontalAlignment(HorizontalAlignment.Center)
+                    .VerticalAlignment(VerticalEdge.Bottom)
+                    .ColumnCount(4)
+                    .CustomizeText(@<text>
+                        function (e) {
+                        var name = this.pointName,text;
+                        var pieChart = $("#pie").dxPieChart('instance'),percentValue = (pieChart.getAllSeries()[0].getAllPoints()[this.pointIndex].percent * 100).toFixed(2);
+                        return this.pointName + " - " + percentValue + "%";
+                        }
+                    </text>)
+
+                )
+                .Title("Tỉ lệ thời gian gia công hàng loạt")
+                .Export(e => e.Enabled(true))
+                //.OnPointClick("includePie2")
+                //.OnLegendClick("includePie2")
+                .DataSource(d => d.Mvc().Controller("Index").LoadAction("sp_242_GetWorkingTimePLJ1Total").LoadParams(new { fromDate = new JS("getFromDateValue"), toDate = new JS("getToDateValue") })
+                    //Url.Action("sp_242_GetWorkingTimePLJ1Total", "Index", new { fromDate = new JS("getFromDateValue"), toDate = new JS("getToDateValue") })
+                    )
+
+            )
+
+        </div>
+    </section>
+
+</div>
+
+<script>
+
+    function getToDateValue() {
+        var a = $("#dateToDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getFromDateValue() {
+        var a = $("#dateFromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function ViewReport(e) {
+        GetWTSTotal();
+        //var selectBoxVal = $("#ReportList").dxSelectBox("instance").option("displayValue");
+        //switch(selectBoxVal)
+        //{
+        //    case "Thống kê tổng tg thêm giờ":
+        //        GetWTSTotal();
+        //        break;
+        //}
+
+    }
+
+    function GetWTSTotal() {
+        var fromdate = getFromDateValue();
+        var todate = getToDateValue();
+        $.ajax({
+            url: '@Url.Action("sp_242_GetWorkingTimePLJ1Total", "Index")',
+            dataType: 'JSON',
+            traditional: true,
+            data: { 'fromDate': fromdate, 'toDate': todate },
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data == 'NG') {
+                    return;
+                }
+
+                $('#pie').dxPieChart('instance').option('dataSource', data);
+                //$('#GridDetail').dxDataGrid('instance').option('dataSource', data);
+                //$('#GridDetail').dxDataGrid('instance').option('onContextMenuPreparing', 'contextMenu');
+                //$("#chart").dxChart("instance").refresh();
+            }
+        });
+    }
+
+    function OnLegendClick(e) {
+        var arg = e.target;
+        includePie2(this.getAllSeries()[0].getPointsByArg(arg)[0], true);
+    }
+
+    function OnPointClick(e) {
+        includePie2(e, false);
+    }
+
+    function includePie2(e, isLegend) {
+        var machineID = '';
+        if (isLegend) {
+            machineID = e.data.MachineID;
+        }
+        else {
+            var arg = e.target;
+            machineID = arg.data.MachineID;
+        }
+
+        var fromdate = getFromDateValue();
+        var todate = getToDateValue();
+        $.ajax({
+            url: '@Url.Action("sp_242_WTS_RateTimeWorkInTotal_Machine", "Index")',
+            dataType: 'JSON',
+            traditional: true,
+            data: { 'fromDate': fromdate, 'toDate': todate, 'machineID': machineID },
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data == 'NG') {
+                    return;
+                }
+
+                $('#GridDetail').dxDataGrid('instance').option('dataSource', data);
+                $("#pie2").dxChart({
+                    dataSource: data,
+                    series: {
+                        argumentField: "Date",
+                        valueField: "WorkIDTime",
+                        name: "Time(minute)",
+                        type: "bar",
+                        color: '#ffaa66'
+                    },
+                    title: "Thống kế WTS: " + machineID,
+                    "export": {
+                        enabled: true
+                    },
+                    onPointClick: function (e) {
+                        var point = e.target;
+
+                        toggleVisibility(point);
+                    },
+                    onLegendClick: function (e) {
+                        var arg = e.target;
+
+                        toggleVisibility(this.getAllSeries()[0].getPointsByArg(arg)[0]);
+                    },
+                    customizeText: function (e) {
+                        var name = this.pointName, text;
+                        var pieChart = $("#pie2").dxPieChart('instance'), percentValue = (pieChart.getAllSeries()[0].getAllPoints()[this.pointIndex].percent * 100).toFixed(2);
+                        return this.pointName + " - " + percentValue + "%";
+                    }
+                });
+            }
+        });
+
+        //var arg = e.target;
+        //var b = arg.data.Country;
+        //alert(b);
+
+        function toggleVisibility(item) {
+            LoadTotalWTSByStaffid(item.data.Sub_Group);
+        }
+    }
+
+    function contextMenu(e) {
+        if (e.row.rowType === "data") {
+            e.items = [{
+                text: "Chi tiết",
+                onItemClick: function () {
+                    var subGroup = e.row.data.Sub_Group;
+                    LoadTotalWTSByStaffid(subGroup);
+                }
+            }];
+        }
+    }
+
+    function LoadTotalWTSByStaffid(subGroup) {
+        var fromdate = getFromDateValue();
+        var todate = getToDateValue();
+        $.ajax({
+            url: '@Url.Action("sp_222_GetWorkingTimeTotal_OVT_ByGroup", "Index")',
+            dataType: 'JSON',
+            traditional: true,
+            data: { 'fromDate': fromdate, 'toDate': todate, 'subGroup': subGroup },
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data == 'NG') {
+                    return;
+                }
+
+                $('#GridDetail').dxDataGrid('instance').option('dataSource', data);
+            }
+        });
+    }
+</script>
