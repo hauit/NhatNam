@@ -17,6 +17,17 @@ namespace NNworking {
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DevExtremeBundleConfig.RegisterBundles(BundleTable.Bundles);
+            //RouteTable.Routes.MapMvcAttributeRoutes();
+
+            //DevExtremeBundleConfig.RegisterBundles(BundleTable.Bundles);
+            //RRCWTSBundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //AreaRegistration.RegisterAllAreas();
+            //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            //RouteConfig.RegisterRoutes(RouteTable.Routes);
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }
 }

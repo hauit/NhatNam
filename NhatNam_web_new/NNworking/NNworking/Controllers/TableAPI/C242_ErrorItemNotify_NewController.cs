@@ -183,8 +183,10 @@ namespace NNworking.Models.Controllers
             string ERROR_HAPPEN_FREQUENCY = nameof(C242_ErrorItemNotify_New.ErrorHappenFrequency);
             string PIC = nameof(C242_ErrorItemNotify_New.PIC);
             string Completed = nameof(C242_ErrorItemNotify_New.Completed);
+            string StartDate = nameof(C242_ErrorItemNotify_New.StartDate);
+            string Status = nameof(C242_ErrorItemNotify_New.Status);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID)) {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
@@ -306,6 +308,16 @@ namespace NNworking.Models.Controllers
 
             if(values.Contains(ERROR_HAPPEN_FREQUENCY)) {
                 model.ErrorHappenFrequency = Convert.ToInt32(values[ERROR_HAPPEN_FREQUENCY]);
+            }
+
+            if (values.Contains(StartDate))
+            {
+                model.StartDate = Convert.ToDateTime(values[StartDate]);
+            }
+
+            if (values.Contains(Status))
+            {
+                model.Status = Convert.ToInt32(values[Status]);
             }
         }
 

@@ -80,7 +80,6 @@ namespace NNworking.Models
         public virtual DbSet<C242_ErrorHappenFrequency> C242_ErrorHappenFrequency { get; set; }
         public virtual DbSet<C242_ErrorItemEvaluate> C242_ErrorItemEvaluate { get; set; }
         public virtual DbSet<C242_ErrorItemNotify> C242_ErrorItemNotify { get; set; }
-        public virtual DbSet<C242_ErrorItemNotify_New> C242_ErrorItemNotify_New { get; set; }
         public virtual DbSet<C242_ErrorProcess> C242_ErrorProcess { get; set; }
         public virtual DbSet<C242_ErrorType> C242_ErrorType { get; set; }
         public virtual DbSet<C242_HandOverItem> C242_HandOverItem { get; set; }
@@ -288,7 +287,6 @@ namespace NNworking.Models
         public virtual DbSet<Welfare_Relative> Welfare_Relative { get; set; }
         public virtual DbSet<Welfare_Rule> Welfare_Rule { get; set; }
         public virtual DbSet<WorkingNotifycation> WorkingNotifycations { get; set; }
-        public virtual DbSet<C242_ErrorItemNotify_View> C242_ErrorItemNotify_View { get; set; }
         public virtual DbSet<C242_MachinePlanning_view> C242_MachinePlanning_view { get; set; }
         public virtual DbSet<P_LayNClamKHGcong01> P_LayNClamKHGcong01 { get; set; }
         public virtual DbSet<P_LayNClamKHGcong01_All> P_LayNClamKHGcong01_All { get; set; }
@@ -334,6 +332,9 @@ namespace NNworking.Models
         public virtual DbSet<View_ToLenh> View_ToLenh { get; set; }
         public virtual DbSet<View_Tracking_History> View_Tracking_History { get; set; }
         public virtual DbSet<Welfare_V_StaffProfile> Welfare_V_StaffProfile { get; set; }
+        public virtual DbSet<C242_ErrorItemNotify_New> C242_ErrorItemNotify_New { get; set; }
+        public virtual DbSet<C242_ErrorItemStatus> C242_ErrorItemStatus { get; set; }
+        public virtual DbSet<C242_ErrorItemNotify_View> C242_ErrorItemNotify_View { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {

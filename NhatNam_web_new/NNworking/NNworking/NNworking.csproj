@@ -4761,8 +4761,8 @@
     <Compile Include="Controllers\AllDept\AllDeptController.cs" />
     <Compile Include="Controllers\AllDept\StaffManagementController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\C242_ErrorItemStatusController.cs" />
     <Compile Include="Controllers\EmailConfigurationController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HubController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\InputDataController.cs" />
@@ -5040,6 +5040,9 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C242_ErrorItemNotify_View.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_ErrorItemStatus.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C242_ErrorProcess.cs">
