@@ -325,7 +325,8 @@ namespace NNworking.Controllers
         private bool ImportGiaoNhan(string fname, out List<clsError> Error)
         {
             Error = new List<clsError>();
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage.License.SetNonCommercialPersonal("Alo1234");
+            //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage package = new ExcelPackage(new FileInfo(fname)))
             {
                 var b = package.Workbook.Worksheets.Count;

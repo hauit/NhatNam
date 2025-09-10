@@ -191,6 +191,17 @@
                                         .ValueExpr("Code")
                                     ).ValidationRules(val => val.AddRequired());//2
 
+            columns.AddFor(m => m.StartDate).Caption("Ngày xử lý");
+
+            columns.AddFor(m => m.Status).Caption("Trạng thái").Lookup(lup =>
+                            lup.DataSource(ds => ds.WebApi()
+                                .RouteName("C242_ErrorItemStatusApi")
+                                .LoadAction("Get")
+                            )
+                            .DisplayExpr("Status")
+                            .ValueExpr("ID")
+                        ).ValidationRules(val => val.AddRequired());
+
             columns.AddFor(m => m.Completed).Caption("Đã hoàn thành");//.ValidationRules(val => val.AddRequired());//2
 
             columns.AddFor(m => m.Shift).Caption("Ca").Lookup(lup =>
@@ -208,7 +219,6 @@
         )
     //.OnContentReady("DockHeader")
 )
-
 
 <div id="background-popup"></div>
 <div id="NotifyDiv">

@@ -58,7 +58,6 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorHappenFrequency" Width="1.5" PointX="2.75" PointY="20.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemEvaluate" Width="1.5" PointX="20.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify" Width="1.5" PointX="4.75" PointY="20.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" Width="1.5" PointX="20.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorProcess" Width="1.5" PointX="10.75" PointY="20.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorType" Width="1.5" PointX="20.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_HandOverItem" Width="1.5" PointX="20.75" PointY="19.75" IsExpanded="true" />
@@ -266,7 +265,6 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.Welfare_Relative" Width="1.5" PointX="42.75" PointY="51.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.Welfare_Rule" Width="1.5" PointX="52.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.WorkingNotifycation" Width="1.5" PointX="52.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_View" Width="1.5" PointX="6.75" PointY="52.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_MachinePlanning_view" Width="1.5" PointX="52.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.P_LayNClamKHGcong01" Width="1.5" PointX="52.75" PointY="26.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.P_LayNClamKHGcong01_All" Width="1.5" PointX="52.75" PointY="33.75" IsExpanded="true" />
@@ -312,6 +310,9 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.View_ToLenh" Width="1.5" PointX="56.75" PointY="22.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_Tracking_History" Width="1.5" PointX="56.75" PointY="26.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.Welfare_V_StaffProfile" Width="1.5" PointX="26.75" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" Width="1.5" PointX="5.375" PointY="55.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemStatus" Width="1.5" PointX="7.375" PointY="52.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_View" Width="1.5" PointX="47.375" PointY="56.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

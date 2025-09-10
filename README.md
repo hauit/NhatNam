@@ -46,3 +46,35 @@ You can **Clone / Download** the repo and then start building beautiful web app 
 
 
 
+# Create friend url
+## IIS fix
+- Đôi iis mặc định sẽ chặn các url có đuôi .html. Để khắc phục thì cần thêm thẻ sau vào web config 
+```
+
+system.webServer>
+  <rewrite>
+    <rules>
+      <rule name="RewriteHtmlToMvc" stopProcessing="true">
+        <match url="(.*)\.html$" ignoreCase="true" />
+        <action type="Rewrite" url="{R:1}" />
+      </rule>
+    </rules>
+  </rewrite>
+</system.webServer>
+
+```
+
+# Sửa web.config 
+- <modules runAllManagedModulesForAllRequests="true" />
+
+## Route config cho url
+- Gọi ***routes.MapMvcAttributeRoutes();*** trong route config 
+
+## Thêm attribute để tạo link
+- Thêm attribute vào controller name: [RoutePrefix("Trang-chu")]
+- Thêm attribute vào action name: [Route("Index.html")]
+- Với các url động theo tên cảu tham số thì thêm attribute vào action như sau: [Route("Thong-bao/{caption}-{content?}.html")] với caption, content là tham số đầu vào của action
+
+## Để kiểm tra các controller và action có được load đầy đủ hay không thì có thể kiểm tra bằng RouteDebuggig
+- cài đặt: Install-Package RouteDebugger
+- gỡ cài đặt: Uninstall-Package RouteDebugger -RemoveDependencies

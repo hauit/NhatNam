@@ -54,5 +54,7 @@ namespace NNworking.Models
         public string ErrorCause2 { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public string UpdateStaff { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<int> Status { get; set; }
     }
 }

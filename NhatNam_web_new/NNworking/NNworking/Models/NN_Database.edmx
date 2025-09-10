@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NN_DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NN_DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="222_CarRegister">
           <Key>
             <PropertyRef Name="ID" />
@@ -335,14 +335,6 @@ warning 6002: The table/view 'NN_Database.dbo.222_PathOfSofware' does not have a
           <Property Name="QueryStr" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.222_ReportPermiss' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="222_ReportPermiss">
-          <Property Name="ID" Type="int" />
-          <Property Name="ReportID" Type="int" />
-          <Property Name="SecID" Type="nvarchar" MaxLength="250" />
-          <Property Name="SubGroup" Type="nvarchar" MaxLength="250" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.222_RootPath' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="222_RootPath">
@@ -901,6 +893,15 @@ warning 6002: The table/view 'NN_Database.dbo.242_Dulieudonhangmoi' does not hav
           <Property Name="Shift" Type="nvarchar" MaxLength="50" />
           <Property Name="Deleted" Type="bit" />
           <Property Name="UpdateStaff" Type="nvarchar" MaxLength="50" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="242_ErrorItemStatus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="242_ErrorProcess">
           <Key>
@@ -2142,33 +2143,6 @@ warning 6002: The table/view 'NN_Database.dbo.CS_WorkStandard' does not have a p
           <Property Name="WorkStandard" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="ID" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.DataTemp' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="DataTemp">
-          <Property Name="CodeProfile" Type="nvarchar" MaxLength="50" />
-          <Property Name="StaffID" Type="nvarchar" MaxLength="255" />
-          <Property Name="Ngay_Nghi_Viec" Type="smalldatetime" />
-          <Property Name="Loại lý do" Type="nvarchar" MaxLength="255" />
-          <Property Name="Ly_Do" Type="nvarchar" MaxLength="255" />
-          <Property Name="Ngay_Nop_Don" Type="smalldatetime" />
-          <Property Name="Ngay_Lam_Viec_Cuoi_Cung" Type="smalldatetime" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="255" />
-          <Property Name="DepartmentID" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group_Name" Type="nvarchar" MaxLength="255" />
-          <Property Name="Work_Status" Type="nvarchar" MaxLength="255" />
-          <Property Name="Start_Date" Type="smalldatetime" />
-          <Property Name="DOB" Type="smalldatetime" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="255" />
-          <Property Name="Address" Type="nvarchar" MaxLength="255" />
-          <Property Name="Identification" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued date" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued place" Type="nvarchar" MaxLength="255" />
-          <Property Name="School" Type="nvarchar" MaxLength="255" />
-          <Property Name="Grade" Type="nvarchar" MaxLength="255" />
-          <Property Name="Major" Type="nvarchar" MaxLength="255" />
-          <Property Name="Training School" Type="nvarchar" MaxLength="255" />
-          <Property Name="Change Job" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.DES_Drawing_FullOption' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DES_Drawing_FullOption">
@@ -4848,109 +4822,6 @@ warning 6002: The table/view 'NN_Database.dbo.SM_WorkPosition' does not have a p
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.StaffClass' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="StaffClass">
-          <Property Name="Code" Type="nvarchar" MaxLength="255" />
-          <Property Name="Division" Type="nvarchar" MaxLength="255" />
-          <Property Name="Dept#" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Position" Type="nvarchar" MaxLength="255" />
-          <Property Name="Vị trí" Type="nvarchar" MaxLength="255" />
-          <Property Name="Class" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.StaffList2015' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="StaffList2015">
-          <Property Name="Code" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (Time New Roman)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (English)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Division" Type="nvarchar" MaxLength="255" />
-          <Property Name="Dept#" Type="nvarchar" MaxLength="255" />
-          <Property Name="Sections(Nhan su)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Position" Type="nvarchar" MaxLength="255" />
-          <Property Name="Vị trí" Type="nvarchar" MaxLength="255" />
-          <Property Name="Class" Type="nvarchar" MaxLength="255" />
-          <Property Name="Birthdate" Type="smalldatetime" />
-          <Property Name="Sex" Type="nvarchar" MaxLength="255" />
-          <Property Name="Age" Type="float" />
-          <Property Name="HiredDate" Type="smalldatetime" />
-          <Property Name="Địa chỉ thường trú" Type="nvarchar" MaxLength="255" />
-          <Property Name="Identification" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued date" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued place" Type="nvarchar" MaxLength="255" />
-          <Property Name="Nơi sinh" Type="nvarchar" MaxLength="255" />
-          <Property Name="Ten truong" Type="nvarchar" MaxLength="255" />
-          <Property Name="Trình độ" Type="nvarchar" MaxLength="255" />
-          <Property Name="Chuyen nganh" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.StaffList2016' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="StaffList2016">
-          <Property Name="Code" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (Time New Roman)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (English)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Division" Type="nvarchar" MaxLength="255" />
-          <Property Name="Dept#" Type="nvarchar" MaxLength="255" />
-          <Property Name="Sections(Nhan su)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Position" Type="nvarchar" MaxLength="255" />
-          <Property Name="Vị trí" Type="nvarchar" MaxLength="255" />
-          <Property Name="Class" Type="nvarchar" MaxLength="255" />
-          <Property Name="Địa chỉ thường trú" Type="nvarchar" MaxLength="255" />
-          <Property Name="Identification" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued date" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued place" Type="nvarchar" MaxLength="255" />
-          <Property Name="Nơi sinh" Type="nvarchar" MaxLength="255" />
-          <Property Name="Ten truong" Type="nvarchar" MaxLength="255" />
-          <Property Name="Trình độ" Type="nvarchar" MaxLength="255" />
-          <Property Name="Chuyen nganh" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.Stafflist2017' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Stafflist2017">
-          <Property Name="Code" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (Time New Roman)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (English)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Division" Type="nvarchar" MaxLength="255" />
-          <Property Name="Dept#" Type="nvarchar" MaxLength="255" />
-          <Property Name="Sections(Nhan su)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Position" Type="nvarchar" MaxLength="255" />
-          <Property Name="Vị trí" Type="nvarchar" MaxLength="255" />
-          <Property Name="Class" Type="nvarchar" MaxLength="255" />
-          <Property Name="Địa chỉ thường trú" Type="nvarchar" MaxLength="255" />
-          <Property Name="Identification" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued date" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued place" Type="nvarchar" MaxLength="255" />
-          <Property Name="Nơi sinh" Type="nvarchar" MaxLength="255" />
-          <Property Name="Ten truong" Type="nvarchar" MaxLength="255" />
-          <Property Name="Trình độ" Type="nvarchar" MaxLength="255" />
-          <Property Name="Chuyen nganh" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.Stafflist2018' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Stafflist2018">
-          <Property Name="Code" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (Time New Roman)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (English)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Division" Type="nvarchar" MaxLength="255" />
-          <Property Name="Dept#" Type="nvarchar" MaxLength="255" />
-          <Property Name="Sections(Nhan su)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Position" Type="nvarchar" MaxLength="255" />
-          <Property Name="Vị trí" Type="nvarchar" MaxLength="255" />
-          <Property Name="Class" Type="nvarchar" MaxLength="255" />
-          <Property Name="Địa chỉ thường trú" Type="nvarchar" MaxLength="255" />
-          <Property Name="Identification" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued date" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued place" Type="nvarchar" MaxLength="255" />
-          <Property Name="Nơi sinh" Type="nvarchar" MaxLength="255" />
-          <Property Name="Ten truong" Type="nvarchar" MaxLength="255" />
-          <Property Name="Trình độ" Type="nvarchar" MaxLength="255" />
-          <Property Name="Chuyen nganh" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.StaffListCheck202002' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="StaffListCheck202002">
           <Key>
@@ -4967,74 +4838,6 @@ warning 6002: The table/view 'NN_Database.dbo.StaffListCheck202002' does not hav
           <Property Name="Id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.StaffListClass2014' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="StaffListClass2014">
-          <Property Name="Code" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (Time New Roman)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (English)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Dept" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Position" Type="nvarchar" MaxLength="255" />
-          <Property Name="Class" Type="nvarchar" MaxLength="255" />
-          <Property Name="Birthdate" Type="smalldatetime" />
-          <Property Name="Sex" Type="nvarchar" MaxLength="255" />
-          <Property Name="HiredDate" Type="smalldatetime" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.StaffListOff2019' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="StaffListOff2019">
-          <Property Name="No#" Type="float" />
-          <Property Name="Code" Type="nvarchar" MaxLength="255" />
-          <Property Name="Name (Time New Roman)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Dept#" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Position" Type="nvarchar" MaxLength="255" />
-          <Property Name="Birthdate" Type="float" />
-          <Property Name="Sex" Type="nvarchar" MaxLength="255" />
-          <Property Name="HiredDate" Type="float" />
-          <Property Name="Submitting date" Type="float" />
-          <Property Name="Off work date" Type="float" />
-          <Property Name="Reason for quitting" Type="nvarchar" MaxLength="255" />
-          <Property Name="Address" Type="nvarchar" MaxLength="255" />
-          <Property Name="ID" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued date" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued place" Type="nvarchar" MaxLength="255" />
-          <Property Name="Training School" Type="nvarchar" MaxLength="255" />
-          <Property Name="Training School (Vnese)" Type="nvarchar" MaxLength="255" />
-          <Property Name="Class" Type="nvarchar" MaxLength="255" />
-          <Property Name="Major" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.StaffOff' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="StaffOff">
-          <Property Name="No#" Type="float" />
-          <Property Name="Code" Type="nvarchar" MaxLength="255" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="255" />
-          <Property Name="Dept#" Type="nvarchar" MaxLength="255" />
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Position" Type="nvarchar" MaxLength="255" />
-          <Property Name="Birthdate" Type="smalldatetime" />
-          <Property Name="Sex" Type="nvarchar" MaxLength="255" />
-          <Property Name="HiredDate" Type="smalldatetime" />
-          <Property Name="Submitting date" Type="smalldatetime" />
-          <Property Name="Off work date" Type="smalldatetime" />
-          <Property Name="Reason for quitting" Type="nvarchar" MaxLength="255" />
-          <Property Name="Address" Type="nvarchar" MaxLength="255" />
-          <Property Name="ID" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued date" Type="nvarchar" MaxLength="255" />
-          <Property Name="Issued place" Type="nvarchar" MaxLength="255" />
-          <Property Name="Training School" Type="nvarchar" MaxLength="255" />
-          <Property Name="TrainingSchool_Vi" Type="nvarchar" MaxLength="255" />
-          <Property Name="Class" Type="nvarchar" MaxLength="255" />
-          <Property Name="Major" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.SubgroupTemp' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="SubgroupTemp">
-          <Property Name="SubGroupOld" Type="nvarchar" MaxLength="50" />
-          <Property Name="SubGroupNew" Type="nvarchar" MaxLength="50" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.sysdiagrams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="sysdiagrams">
           <Key>
@@ -5048,27 +4851,6 @@ warning 6002: The table/view 'NN_Database.dbo.sysdiagrams' does not have a prima
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Table_1">
-          <Property Name="Dept" Type="nvarchar" MaxLength="500" />
-          <Property Name="Section" Type="nvarchar" MaxLength="500" />
-          <Property Name="Nhom" Type="nvarchar" MaxLength="500" />
-          <Property Name="Position" Type="nvarchar" MaxLength="500" />
-          <Property Name="Vitri" Type="nvarchar" MaxLength="500" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.Table_2' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Table_2">
-          <Property Name="Code" Type="nvarchar" MaxLength="50" />
-          <Property Name="Name" Type="nvarchar" MaxLength="250" />
-          <Property Name="Dept" Type="nvarchar" MaxLength="250" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.Table_3' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Table_3">
-          <Property Name="Name" Type="nvarchar" MaxLength="250" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.Training_Group_TrainingContent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Training_Group_TrainingContent">
@@ -5428,6 +5210,8 @@ warning 6002: The table/view 'NN_Database.dbo.242_ErrorItemNotify_View' does not
           <Property Name="ErrorCause2" Type="nvarchar(max)" />
           <Property Name="Deleted" Type="bit" />
           <Property Name="UpdateStaff" Type="nvarchar" MaxLength="50" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="Status" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.242_MachinePlanning_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6122,33 +5906,6 @@ warning 6002: The table/view 'NN_Database.dbo.View_242_ErrorItemNotify' does not
           <Property Name="ErrorCause2" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_Inventory_PlaceOfItem' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_Inventory_PlaceOfItem">
-          <Property Name="PartNo" Type="nvarchar" MaxLength="250" />
-          <Property Name="OrderNumber" Type="nvarchar" MaxLength="250" />
-          <Property Name="Deadline" Type="datetime" />
-          <Property Name="Finished" Type="bit" />
-          <Property Name="ANH" Type="int" />
-          <Property Name="TUY" Type="int" />
-          <Property Name="KHKCS" Type="int" />
-          <Property Name="TL" Type="int" />
-          <Property Name="THANH" Type="int" />
-          <Property Name="HIEU" Type="int" />
-          <Property Name="MANH" Type="int" />
-          <Property Name="TOAN" Type="int" />
-          <Property Name="NHAKY" Type="int" />
-          <Property Name="KCS" Type="int" />
-          <Property Name="CDN" Type="int" />
-          <Property Name="XUONG" Type="int" />
-          <Property Name="HANGLOI" Type="int" />
-          <Property Name="QM" Type="int" />
-          <Property Name="CUA" Type="int" />
-          <Property Name="KHOLOI" Type="int" />
-          <Property Name="KHOTP" Type="int" />
-          <Property Name="KEHOACH" Type="int" />
-          <Property Name="KY" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.View_242_InventoryData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_InventoryData">
           <Key>
@@ -6186,14 +5943,6 @@ warning 6002: The table/view 'NN_Database.dbo.View_242_InventoryExport' does not
           <Property Name="Note" Type="nvarchar(max)" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_InventoryExportSummary' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_InventoryExportSummary">
-          <Property Name="PartNo" Type="nvarchar" MaxLength="250" />
-          <Property Name="OrderNumber" Type="nvarchar" MaxLength="250" />
-          <Property Name="ExportQty" Type="int" />
-          <Property Name="ExportDept" Type="nvarchar" MaxLength="50" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.View_242_InventoryReceived' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_InventoryReceived">
@@ -6241,14 +5990,6 @@ warning 6002: The table/view 'NN_Database.dbo.View_242_InventoryReceivedDetail' 
           <Property Name="ReceivedConfirmStaff" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_InventoryReceivedSummary' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_InventoryReceivedSummary">
-          <Property Name="PartNo" Type="nvarchar" MaxLength="250" />
-          <Property Name="OrderNumber" Type="nvarchar" MaxLength="250" />
-          <Property Name="ReceiveQty" Type="int" />
-          <Property Name="ReceiveDept" Type="nvarchar" MaxLength="50" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.View_242_Jig' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_Jig">
           <Key>
@@ -6261,41 +6002,6 @@ warning 6002: The table/view 'NN_Database.dbo.View_242_Jig' does not have a prim
           <Property Name="JigName" Type="nvarchar" MaxLength="30" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_LaborWTSInShift' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_LaborWTSInShift">
-          <Property Name="Date" Type="datetime" />
-          <Property Name="Shift" Type="nvarchar" MaxLength="50" />
-          <Property Name="StaffID" Type="nvarchar" MaxLength="50" />
-          <Property Name="Time" Type="decimal" Precision="38" Scale="0" />
-          <Property Name="OKQty" Type="int" />
-          <Property Name="NGQty" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_MachinePlan_FilePKT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_MachinePlan_FilePKT">
-          <Property Name="PartNo" Type="nvarchar" MaxLength="50" />
-          <Property Name="OptionID" Type="nvarchar(max)" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_MachineQty' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_MachineQty">
-          <Property Name="MONo" Type="nvarchar" MaxLength="50" />
-          <Property Name="OptionID" Type="nvarchar" MaxLength="50" />
-          <Property Name="PartID" Type="nvarchar(max)" />
-          <Property Name="OKQty" Type="int" />
-          <Property Name="NGQty" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_MachineWTSInShift' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_MachineWTSInShift">
-          <Property Name="Date" Type="datetime" />
-          <Property Name="Shift" Type="nvarchar" MaxLength="50" />
-          <Property Name="MachineID" Type="nvarchar" MaxLength="50" />
-          <Property Name="Time" Type="decimal" Precision="38" Scale="0" />
-          <Property Name="OKQty" Type="int" />
-          <Property Name="NGQty" Type="int" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.View_242_Material' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_Material">
@@ -6545,24 +6251,6 @@ warning 6002: The table/view 'NN_Database.dbo.View_242_WTS' does not have a prim
           <Property Name="NGNCTruoc" Type="int" />
           <Property Name="WorkWhilePLJ1" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_WTS_Processing_Quantity' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_WTS_Processing_Quantity">
-          <Property Name="MONo" Type="nvarchar" MaxLength="50" />
-          <Property Name="OptionID" Type="nvarchar" MaxLength="50" />
-          <Property Name="MachineID" Type="nvarchar" MaxLength="50" />
-          <Property Name="OKQty" Type="int" />
-          <Property Name="NGQty" Type="int" />
-          <Property Name="FinishDate" Type="datetime" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'NN_Database.dbo.View_242_WTS_Quantity' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="View_242_WTS_Quantity">
-          <Property Name="MONo" Type="nvarchar" MaxLength="50" />
-          <Property Name="OptionID" Type="nvarchar" MaxLength="50" />
-          <Property Name="OKQty" Type="int" />
-          <Property Name="NGQty" Type="int" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.View_242_YCKP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_YCKP">
@@ -7323,6 +7011,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="242_ErrorItemEvaluate" EntityType="Self.242_ErrorItemEvaluate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="242_ErrorItemNotify" EntityType="Self.242_ErrorItemNotify" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="242_ErrorItemNotify_New" EntityType="Self.242_ErrorItemNotify_New" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="242_ErrorItemStatus" EntityType="Self.242_ErrorItemStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="242_ErrorProcess" EntityType="Self.242_ErrorProcess" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="242_ErrorType" EntityType="Self.242_ErrorType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="242_HandOverItem" EntityType="Self.242_HandOverItem" Schema="dbo" store:Type="Tables" />
@@ -10391,7 +10080,9 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
     [242_ErrorItemNotify_View].[ErrorCause1] AS [ErrorCause1], 
     [242_ErrorItemNotify_View].[ErrorCause2] AS [ErrorCause2], 
     [242_ErrorItemNotify_View].[Deleted] AS [Deleted], 
-    [242_ErrorItemNotify_View].[UpdateStaff] AS [UpdateStaff]
+    [242_ErrorItemNotify_View].[UpdateStaff] AS [UpdateStaff], 
+    [242_ErrorItemNotify_View].[StartDate] AS [StartDate], 
+    [242_ErrorItemNotify_View].[Status] AS [Status]
     FROM [dbo].[242_ErrorItemNotify_View] AS [242_ErrorItemNotify_View]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="242_MachinePlanning_view" EntityType="Self.242_MachinePlanning_view" store:Type="Views" store:Schema="dbo">
@@ -11294,8 +10985,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
     FROM [dbo].[Welfare_V_StaffProfile] AS [Welfare_V_StaffProfile]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NN_DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -12000,50 +11690,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="CauseOfError" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Evaluate" Type="Int32" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="C242_ErrorItemNotify_New">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ErrorNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateRaiseErr" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DateWrite" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="NotifyDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RaiseErrorDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NotifyStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Supplier" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RaiseErrorStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Customer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorType2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PartID" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Qty" Type="Int32" Nullable="false" />
-          <Property Name="ErrorQty" Type="Int32" Nullable="false" />
-          <Property Name="OptionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorDes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DecisionToFine" Type="Boolean" Nullable="false" />
-          <Property Name="NotPenalizeDes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorProcess" Type="Int32" Nullable="false" />
-          <Property Name="ErrorCause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorCause1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorCause2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Remedies" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Remedies1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Remedies2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ManagerRemedies" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorContent" Type="Int32" Nullable="false" />
-          <Property Name="DeceidedTime" Type="Int32" Nullable="false" />
-          <Property Name="PredictErrorCause" Type="Int32" Nullable="false" />
-          <Property Name="ErrorHappenFrequency" Type="Int32" Nullable="false" />
-          <Property Name="Completed" Type="Boolean" />
-          <Property Name="PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ViTriHang" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Shift" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="UpdateStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="C242_ErrorProcess">
           <Key>
@@ -16071,77 +15717,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="NotifyTime" Type="DateTime" Precision="3" />
           <Property Name="ReplyTo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="C242_ErrorItemNotify_View">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="ErrorNo" />
-            <PropertyRef Name="DateRaiseErr" />
-            <PropertyRef Name="DateWrite" />
-            <PropertyRef Name="NotifyDept" />
-            <PropertyRef Name="RaiseErrorDept" />
-            <PropertyRef Name="NotifyStaff" />
-            <PropertyRef Name="Supplier" />
-            <PropertyRef Name="RaiseErrorStaff" />
-            <PropertyRef Name="Customer" />
-            <PropertyRef Name="ErrorType" />
-            <PropertyRef Name="OrderNo" />
-            <PropertyRef Name="PartID" />
-            <PropertyRef Name="Qty" />
-            <PropertyRef Name="ErrorQty" />
-            <PropertyRef Name="OptionID" />
-            <PropertyRef Name="ErrorDes" />
-            <PropertyRef Name="DecisionToFine" />
-            <PropertyRef Name="NotPenalizeDes" />
-            <PropertyRef Name="ErrorProcess" />
-            <PropertyRef Name="ErrorCause" />
-            <PropertyRef Name="Remedies" />
-            <PropertyRef Name="ManagerRemedies" />
-            <PropertyRef Name="ErrorContent" />
-            <PropertyRef Name="DeceidedTime" />
-            <PropertyRef Name="PredictErrorCause" />
-            <PropertyRef Name="ErrorHappenFrequency" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="ErrorNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateRaiseErr" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DateWrite" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="NotifyDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RaiseErrorDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NotifyStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Supplier" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RaiseErrorStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Customer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="OrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PartID" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Qty" Type="Int32" Nullable="false" />
-          <Property Name="ErrorQty" Type="Int32" Nullable="false" />
-          <Property Name="OptionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorDes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DecisionToFine" Type="Boolean" Nullable="false" />
-          <Property Name="NotPenalizeDes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorProcess" Type="Int32" Nullable="false" />
-          <Property Name="ErrorCause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Remedies" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Remedies1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Remedies2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ManagerRemedies" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorContent" Type="Int32" Nullable="false" />
-          <Property Name="DeceidedTime" Type="Int32" Nullable="false" />
-          <Property Name="PredictErrorCause" Type="Int32" Nullable="false" />
-          <Property Name="ErrorHappenFrequency" Type="Int32" Nullable="false" />
-          <Property Name="Completed" Type="Boolean" />
-          <Property Name="PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ViTriHang" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Deadline" Type="DateTime" Precision="3" />
-          <Property Name="Shift" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorType2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorCause1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorCause2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="UpdateStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="C242_MachinePlanning_view">
           <Key>
             <PropertyRef Name="ID" />
@@ -17289,7 +16864,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="C242_ErrorHappenFrequency" EntityType="Self.C242_ErrorHappenFrequency" />
           <EntitySet Name="C242_ErrorItemEvaluate" EntityType="Self.C242_ErrorItemEvaluate" />
           <EntitySet Name="C242_ErrorItemNotify" EntityType="Self.C242_ErrorItemNotify" />
-          <EntitySet Name="C242_ErrorItemNotify_New" EntityType="Self.C242_ErrorItemNotify_New" />
           <EntitySet Name="C242_ErrorProcess" EntityType="Self.C242_ErrorProcess" />
           <EntitySet Name="C242_ErrorType" EntityType="Self.C242_ErrorType" />
           <EntitySet Name="C242_HandOverItem" EntityType="Self.C242_HandOverItem" />
@@ -17497,7 +17071,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="Welfare_Relative" EntityType="Self.Welfare_Relative" />
           <EntitySet Name="Welfare_Rule" EntityType="Self.Welfare_Rule" />
           <EntitySet Name="WorkingNotifycations" EntityType="Self.WorkingNotifycation" />
-          <EntitySet Name="C242_ErrorItemNotify_View" EntityType="Self.C242_ErrorItemNotify_View" />
           <EntitySet Name="C242_MachinePlanning_view" EntityType="Self.C242_MachinePlanning_view" />
           <EntitySet Name="P_LayNClamKHGcong01" EntityType="Self.P_LayNClamKHGcong01" />
           <EntitySet Name="P_LayNClamKHGcong01_All" EntityType="Self.P_LayNClamKHGcong01_All" />
@@ -17544,7 +17117,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="View_Tracking_History" EntityType="Self.View_Tracking_History" />
           <EntitySet Name="Welfare_V_StaffProfile" EntityType="Self.Welfare_V_StaffProfile" />
           <FunctionImport Name="sp_222_AcquireNotifications" ReturnType="Collection(NN_DatabaseModel.sp_222_AcquireNotifications_Result)">
-            <Parameter Name="staffID" Mode="In" Type="String" />
+          <Parameter Name="staffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_222_CompareWorkTimeAndRegistedTime" ReturnType="Collection(NN_DatabaseModel.sp_222_CompareWorkTimeAndRegistedTime_Result)">
             <Parameter Name="fromdate" Mode="In" Type="DateTime" />
@@ -17567,22 +17140,22 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <FunctionImport Name="sp_222_PartnerGetAll" ReturnType="Collection(NN_DatabaseModel.sp_222_PartnerGetAll_Result)" />
           <FunctionImport Name="sp_222_StockerOutput_OutputPreparation" ReturnType="Collection(NN_DatabaseModel.sp_222_StockerOutput_OutputPreparation_Result)" />
           <FunctionImport Name="sp_222_StockerOutput_OutputPreparation_Detail" ReturnType="Collection(NN_DatabaseModel.sp_222_StockerOutput_OutputPreparation_Detail_Result)">
-            <Parameter Name="PartID" Mode="In" Type="String" />
+          <Parameter Name="PartID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="Sp_222_stokertool_InOut" ReturnType="Collection(NN_DatabaseModel.Sp_222_stokertool_InOut_Result)" />
           <FunctionImport Name="sp_242_BusOder_Cancel" />
           <FunctionImport Name="sp_242_BusOder_ChangeDeadLine">
-            <Parameter Name="StaffID" Mode="In" Type="String" />
+          <Parameter Name="StaffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_BusOder_CheckProcessTime" ReturnType="Collection(NN_DatabaseModel.sp_242_BusOder_CheckProcessTime_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="sp_242_BusOder_Finish">
-            <Parameter Name="StaffID" Mode="In" Type="String" />
+          <Parameter Name="StaffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_BusOder_GetByMonth" ReturnType="Collection(NN_DatabaseModel.sp_242_BusOder_GetByMonth_Result)">
-            <Parameter Name="Month" Mode="In" Type="String" />
+          <Parameter Name="Month" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_BusOder_HangThieu" ReturnType="Collection(NN_DatabaseModel.sp_242_BusOder_HangThieu_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
@@ -17592,14 +17165,14 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <FunctionImport Name="sp_242_BusOder_InToLenh" />
           <FunctionImport Name="sp_242_BusOder_Month_FinishNumber" ReturnType="Collection(NN_DatabaseModel.sp_242_BusOder_Month_FinishNumber_Result)" />
           <FunctionImport Name="sp_242_BusOder_OrderCat">
-            <Parameter Name="StaffID" Mode="In" Type="String" />
+          <Parameter Name="StaffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_BusOder_PaymentStatus">
-            <Parameter Name="StaffID" Mode="In" Type="String" />
+          <Parameter Name="StaffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_BusOder_Start" />
           <FunctionImport Name="sp_242_BusOder_Status">
-            <Parameter Name="StaffID" Mode="In" Type="String" />
+          <Parameter Name="StaffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_BusOder_Update">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -17637,7 +17210,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="sp_242_GetChatHistorySummarize" ReturnType="Collection(NN_DatabaseModel.sp_242_GetChatHistorySummarize_Result)">
-            <Parameter Name="StaffID" Mode="In" Type="String" />
+          <Parameter Name="StaffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_GetKhoTPReceivedForVerification" ReturnType="Collection(NN_DatabaseModel.sp_242_GetKhoTPReceivedForVerification_Result)">
             <Parameter Name="fromdate" Mode="In" Type="DateTime" />
@@ -17717,17 +17290,17 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <FunctionImport Name="sp_242_Inventory" ReturnType="Collection(NN_DatabaseModel.sp_242_Inventory_Result)" />
           <FunctionImport Name="sp_242_Inventory_PlaceOfItem" ReturnType="Collection(NN_DatabaseModel.sp_242_Inventory_PlaceOfItem_Result)" />
           <FunctionImport Name="sp_242_InventoryExport_GetAll" ReturnType="Collection(NN_DatabaseModel.sp_242_InventoryExport_GetAll_Result)">
-            <Parameter Name="PartNo" Mode="In" Type="String" />
+          <Parameter Name="PartNo" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_InventoryReceived_GetAll" ReturnType="Collection(NN_DatabaseModel.sp_242_InventoryReceived_GetAll_Result)">
-            <Parameter Name="PartNo" Mode="In" Type="String" />
+          <Parameter Name="PartNo" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_MachineHavePlan_Rate" ReturnType="Collection(NN_DatabaseModel.sp_242_MachineHavePlan_Rate_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="sp_242_MachinePlan_Preparation" ReturnType="Collection(NN_DatabaseModel.sp_242_MachinePlan_Preparation_Result)">
-            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+          <Parameter Name="fromDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="sp_242_MachinePlanning_CheckPlan" ReturnType="Collection(NN_DatabaseModel.sp_242_MachinePlanning_CheckPlan_Result)">
             <Parameter Name="fromdate" Mode="In" Type="DateTime" />
@@ -17759,7 +17332,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="Slg" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_242_MachineWTS_GetLastShiftOfPlan" ReturnType="Collection(NN_DatabaseModel.sp_242_MachineWTS_GetLastShiftOfPlan_Result)">
-            <Parameter Name="Shift" Mode="In" Type="String" />
+          <Parameter Name="Shift" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_MachineWTS_GetRunningTime" ReturnType="Collection(NN_DatabaseModel.sp_242_MachineWTS_GetRunningTime_Result)" />
           <FunctionImport Name="sp_242_ManualExcutionChecking_DoesNotFollowWTSQty" ReturnType="Collection(NN_DatabaseModel.sp_242_ManualExcutionChecking_DoesNotFollowWTSQty_Result)">
@@ -17880,7 +17453,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="Note" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_Planning_Delete">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_242_Planning_Update">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -17941,10 +17514,10 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="sp_242_ToLenh" ReturnType="Collection(NN_DatabaseModel.sp_242_ToLenh_Result)">
-            <Parameter Name="order" Mode="In" Type="String" />
+          <Parameter Name="order" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_ToolNeedToReturn" ReturnType="Collection(NN_DatabaseModel.sp_242_ToolNeedToReturn_Result)">
-            <Parameter Name="MachineID" Mode="In" Type="String" />
+          <Parameter Name="MachineID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_242_Tracking" ReturnType="Collection(NN_DatabaseModel.SP_242_Tracking_Result)" />
           <FunctionImport Name="sp_242_WTS_DirectWorkPercen" ReturnType="Collection(NN_DatabaseModel.sp_242_WTS_DirectWorkPercen_Result)">
@@ -18026,7 +17599,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="sp_242_WTS_SuaSauDuyet" ReturnType="Collection(NN_DatabaseModel.sp_242_WTS_SuaSauDuyet_Result)">
-            <Parameter Name="staffID" Mode="In" Type="String" />
+          <Parameter Name="staffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_242_WTS_TiLeWorkInDay" ReturnType="Collection(NN_DatabaseModel.sp_242_WTS_TiLeWorkInDay_Result)">
             <Parameter Name="fromdate" Mode="In" Type="DateTime" />
@@ -18042,7 +17615,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="shift" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_AcquireMachineChatHistory" ReturnType="Collection(NN_DatabaseModel.sp_AcquireMachineChatHistory_Result)">
-            <Parameter Name="group" Mode="In" Type="String" />
+          <Parameter Name="group" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_DanhSachNhanVienDacBiet" ReturnType="Collection(String)" />
           <FunctionImport Name="sp_GetAllMachineWWTS_Cache">
@@ -18068,7 +17641,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="machineID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_GetReportByStaffID" ReturnType="Collection(NN_DatabaseModel.sp_GetReportByStaffID_Result)">
-            <Parameter Name="staffID" Mode="In" Type="String" />
+          <Parameter Name="staffID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_GetResultOfCheckMachineProcess" ReturnType="Collection(NN_DatabaseModel.sp_GetResultOfCheckMachineProcess_Result)">
             <Parameter Name="date" Mode="In" Type="DateTime" />
@@ -18103,6 +17676,9 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="PartID" Mode="In" Type="String" />
             <Parameter Name="MONo" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="C242_ErrorItemNotify_New" EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" />
+          <EntitySet Name="C242_ErrorItemStatus" EntityType="NN_DatabaseModel.C242_ErrorItemStatus" />
+          <EntitySet Name="C242_ErrorItemNotify_View" EntityType="NN_DatabaseModel.C242_ErrorItemNotify_View" />
         </EntityContainer>
         <ComplexType Name="sp_222_AcquireNotifications_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -19527,6 +19103,132 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Type="Int32" Name="CurrentQty" Nullable="true" />
           <Property Type="Int32" Name="MOQty" Nullable="false" />
         </ComplexType>
+        <EntityType Name="C242_ErrorItemNotify_New">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ErrorNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateRaiseErr" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateWrite" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NotifyDept" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RaiseErrorDept" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NotifyStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Supplier" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RaiseErrorStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorType2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartID" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" Nullable="false" />
+          <Property Name="ErrorQty" Type="Int32" Nullable="false" />
+          <Property Name="OptionID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorDes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DecisionToFine" Type="Boolean" Nullable="false" />
+          <Property Name="NotPenalizeDes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorProcess" Type="Int32" Nullable="false" />
+          <Property Name="ErrorCause" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorCause1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorCause2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Remedies" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Remedies1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Remedies2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ManagerRemedies" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorContent" Type="Int32" Nullable="false" />
+          <Property Name="DeceidedTime" Type="Int32" Nullable="false" />
+          <Property Name="PredictErrorCause" Type="Int32" Nullable="false" />
+          <Property Name="ErrorHappenFrequency" Type="Int32" Nullable="false" />
+          <Property Name="Completed" Type="Boolean" />
+          <Property Name="PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ViTriHang" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Shift" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="UpdateStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" />
+        </EntityType>
+        <EntityType Name="C242_ErrorItemStatus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="C242_ErrorItemNotify_View">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ErrorNo" />
+            <PropertyRef Name="DateRaiseErr" />
+            <PropertyRef Name="DateWrite" />
+            <PropertyRef Name="NotifyDept" />
+            <PropertyRef Name="RaiseErrorDept" />
+            <PropertyRef Name="NotifyStaff" />
+            <PropertyRef Name="Supplier" />
+            <PropertyRef Name="RaiseErrorStaff" />
+            <PropertyRef Name="Customer" />
+            <PropertyRef Name="ErrorType" />
+            <PropertyRef Name="OrderNo" />
+            <PropertyRef Name="PartID" />
+            <PropertyRef Name="Qty" />
+            <PropertyRef Name="ErrorQty" />
+            <PropertyRef Name="OptionID" />
+            <PropertyRef Name="ErrorDes" />
+            <PropertyRef Name="DecisionToFine" />
+            <PropertyRef Name="NotPenalizeDes" />
+            <PropertyRef Name="ErrorProcess" />
+            <PropertyRef Name="ErrorCause" />
+            <PropertyRef Name="Remedies" />
+            <PropertyRef Name="ManagerRemedies" />
+            <PropertyRef Name="ErrorContent" />
+            <PropertyRef Name="DeceidedTime" />
+            <PropertyRef Name="PredictErrorCause" />
+            <PropertyRef Name="ErrorHappenFrequency" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ErrorNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateRaiseErr" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateWrite" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NotifyDept" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RaiseErrorDept" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NotifyStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Supplier" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RaiseErrorStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartID" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" Nullable="false" />
+          <Property Name="ErrorQty" Type="Int32" Nullable="false" />
+          <Property Name="OptionID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorDes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DecisionToFine" Type="Boolean" Nullable="false" />
+          <Property Name="NotPenalizeDes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorProcess" Type="Int32" Nullable="false" />
+          <Property Name="ErrorCause" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Remedies" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Remedies1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Remedies2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ManagerRemedies" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorContent" Type="Int32" Nullable="false" />
+          <Property Name="DeceidedTime" Type="Int32" Nullable="false" />
+          <Property Name="PredictErrorCause" Type="Int32" Nullable="false" />
+          <Property Name="ErrorHappenFrequency" Type="Int32" Nullable="false" />
+          <Property Name="Completed" Type="Boolean" />
+          <Property Name="PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ViTriHang" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="Shift" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorType2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorCause1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorCause2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="UpdateStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -20284,51 +19986,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
                 <ScalarProperty Name="CauseOfError" ColumnName="CauseOfError" />
                 <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="C242_ErrorItemNotify_New">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemNotify_New">
-              <MappingFragment StoreEntitySet="242_ErrorItemNotify_New">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ErrorNo" ColumnName="ErrorNo" />
-                <ScalarProperty Name="DateRaiseErr" ColumnName="DateRaiseErr" />
-                <ScalarProperty Name="DateWrite" ColumnName="DateWrite" />
-                <ScalarProperty Name="NotifyDept" ColumnName="NotifyDept" />
-                <ScalarProperty Name="RaiseErrorDept" ColumnName="RaiseErrorDept" />
-                <ScalarProperty Name="NotifyStaff" ColumnName="NotifyStaff" />
-                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
-                <ScalarProperty Name="RaiseErrorStaff" ColumnName="RaiseErrorStaff" />
-                <ScalarProperty Name="Customer" ColumnName="Customer" />
-                <ScalarProperty Name="ErrorType" ColumnName="ErrorType" />
-                <ScalarProperty Name="ErrorType1" ColumnName="ErrorType1" />
-                <ScalarProperty Name="ErrorType2" ColumnName="ErrorType2" />
-                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="ErrorQty" ColumnName="ErrorQty" />
-                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
-                <ScalarProperty Name="ErrorDes" ColumnName="ErrorDes" />
-                <ScalarProperty Name="DecisionToFine" ColumnName="DecisionToFine" />
-                <ScalarProperty Name="NotPenalizeDes" ColumnName="NotPenalizeDes" />
-                <ScalarProperty Name="ErrorProcess" ColumnName="ErrorProcess" />
-                <ScalarProperty Name="ErrorCause" ColumnName="ErrorCause" />
-                <ScalarProperty Name="ErrorCause1" ColumnName="ErrorCause1" />
-                <ScalarProperty Name="ErrorCause2" ColumnName="ErrorCause2" />
-                <ScalarProperty Name="Remedies" ColumnName="Remedies" />
-                <ScalarProperty Name="Remedies1" ColumnName="Remedies1" />
-                <ScalarProperty Name="Remedies2" ColumnName="Remedies2" />
-                <ScalarProperty Name="ManagerRemedies" ColumnName="ManagerRemedies" />
-                <ScalarProperty Name="ErrorContent" ColumnName="ErrorContent" />
-                <ScalarProperty Name="DeceidedTime" ColumnName="DeceidedTime" />
-                <ScalarProperty Name="PredictErrorCause" ColumnName="PredictErrorCause" />
-                <ScalarProperty Name="ErrorHappenFrequency" ColumnName="ErrorHappenFrequency" />
-                <ScalarProperty Name="Completed" ColumnName="Completed" />
-                <ScalarProperty Name="PIC" ColumnName="PIC" />
-                <ScalarProperty Name="ViTriHang" ColumnName="ViTriHang" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -24310,52 +23967,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="C242_ErrorItemNotify_View">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemNotify_View">
-              <MappingFragment StoreEntitySet="242_ErrorItemNotify_View">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ErrorNo" ColumnName="ErrorNo" />
-                <ScalarProperty Name="DateRaiseErr" ColumnName="DateRaiseErr" />
-                <ScalarProperty Name="DateWrite" ColumnName="DateWrite" />
-                <ScalarProperty Name="NotifyDept" ColumnName="NotifyDept" />
-                <ScalarProperty Name="RaiseErrorDept" ColumnName="RaiseErrorDept" />
-                <ScalarProperty Name="NotifyStaff" ColumnName="NotifyStaff" />
-                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
-                <ScalarProperty Name="RaiseErrorStaff" ColumnName="RaiseErrorStaff" />
-                <ScalarProperty Name="Customer" ColumnName="Customer" />
-                <ScalarProperty Name="ErrorType" ColumnName="ErrorType" />
-                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="ErrorQty" ColumnName="ErrorQty" />
-                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
-                <ScalarProperty Name="ErrorDes" ColumnName="ErrorDes" />
-                <ScalarProperty Name="DecisionToFine" ColumnName="DecisionToFine" />
-                <ScalarProperty Name="NotPenalizeDes" ColumnName="NotPenalizeDes" />
-                <ScalarProperty Name="ErrorProcess" ColumnName="ErrorProcess" />
-                <ScalarProperty Name="ErrorCause" ColumnName="ErrorCause" />
-                <ScalarProperty Name="Remedies" ColumnName="Remedies" />
-                <ScalarProperty Name="Remedies1" ColumnName="Remedies1" />
-                <ScalarProperty Name="Remedies2" ColumnName="Remedies2" />
-                <ScalarProperty Name="ManagerRemedies" ColumnName="ManagerRemedies" />
-                <ScalarProperty Name="ErrorContent" ColumnName="ErrorContent" />
-                <ScalarProperty Name="DeceidedTime" ColumnName="DeceidedTime" />
-                <ScalarProperty Name="PredictErrorCause" ColumnName="PredictErrorCause" />
-                <ScalarProperty Name="ErrorHappenFrequency" ColumnName="ErrorHappenFrequency" />
-                <ScalarProperty Name="Completed" ColumnName="Completed" />
-                <ScalarProperty Name="PIC" ColumnName="PIC" />
-                <ScalarProperty Name="ViTriHang" ColumnName="ViTriHang" />
-                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="ErrorType1" ColumnName="ErrorType1" />
-                <ScalarProperty Name="ErrorType2" ColumnName="ErrorType2" />
-                <ScalarProperty Name="ErrorCause1" ColumnName="ErrorCause1" />
-                <ScalarProperty Name="ErrorCause2" ColumnName="ErrorCause2" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="C242_MachinePlanning_view">
             <EntityTypeMapping TypeName="NN_DatabaseModel.C242_MachinePlanning_view">
               <MappingFragment StoreEntitySet="242_MachinePlanning_view">
@@ -27116,6 +26727,109 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="C242_ErrorItemNotify_New">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemNotify_New">
+              <MappingFragment StoreEntitySet="242_ErrorItemNotify_New">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="ViTriHang" ColumnName="ViTriHang" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="ErrorHappenFrequency" ColumnName="ErrorHappenFrequency" />
+                <ScalarProperty Name="PredictErrorCause" ColumnName="PredictErrorCause" />
+                <ScalarProperty Name="DeceidedTime" ColumnName="DeceidedTime" />
+                <ScalarProperty Name="ErrorContent" ColumnName="ErrorContent" />
+                <ScalarProperty Name="ManagerRemedies" ColumnName="ManagerRemedies" />
+                <ScalarProperty Name="Remedies2" ColumnName="Remedies2" />
+                <ScalarProperty Name="Remedies1" ColumnName="Remedies1" />
+                <ScalarProperty Name="Remedies" ColumnName="Remedies" />
+                <ScalarProperty Name="ErrorCause2" ColumnName="ErrorCause2" />
+                <ScalarProperty Name="ErrorCause1" ColumnName="ErrorCause1" />
+                <ScalarProperty Name="ErrorCause" ColumnName="ErrorCause" />
+                <ScalarProperty Name="ErrorProcess" ColumnName="ErrorProcess" />
+                <ScalarProperty Name="NotPenalizeDes" ColumnName="NotPenalizeDes" />
+                <ScalarProperty Name="DecisionToFine" ColumnName="DecisionToFine" />
+                <ScalarProperty Name="ErrorDes" ColumnName="ErrorDes" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="ErrorQty" ColumnName="ErrorQty" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="ErrorType2" ColumnName="ErrorType2" />
+                <ScalarProperty Name="ErrorType1" ColumnName="ErrorType1" />
+                <ScalarProperty Name="ErrorType" ColumnName="ErrorType" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="RaiseErrorStaff" ColumnName="RaiseErrorStaff" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="NotifyStaff" ColumnName="NotifyStaff" />
+                <ScalarProperty Name="RaiseErrorDept" ColumnName="RaiseErrorDept" />
+                <ScalarProperty Name="NotifyDept" ColumnName="NotifyDept" />
+                <ScalarProperty Name="DateWrite" ColumnName="DateWrite" />
+                <ScalarProperty Name="DateRaiseErr" ColumnName="DateRaiseErr" />
+                <ScalarProperty Name="ErrorNo" ColumnName="ErrorNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C242_ErrorItemStatus">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemStatus">
+              <MappingFragment StoreEntitySet="242_ErrorItemStatus">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C242_ErrorItemNotify_View">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemNotify_View">
+              <MappingFragment StoreEntitySet="242_ErrorItemNotify_View">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="ErrorCause2" ColumnName="ErrorCause2" />
+                <ScalarProperty Name="ErrorCause1" ColumnName="ErrorCause1" />
+                <ScalarProperty Name="ErrorType2" ColumnName="ErrorType2" />
+                <ScalarProperty Name="ErrorType1" ColumnName="ErrorType1" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="ViTriHang" ColumnName="ViTriHang" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="ErrorHappenFrequency" ColumnName="ErrorHappenFrequency" />
+                <ScalarProperty Name="PredictErrorCause" ColumnName="PredictErrorCause" />
+                <ScalarProperty Name="DeceidedTime" ColumnName="DeceidedTime" />
+                <ScalarProperty Name="ErrorContent" ColumnName="ErrorContent" />
+                <ScalarProperty Name="ManagerRemedies" ColumnName="ManagerRemedies" />
+                <ScalarProperty Name="Remedies2" ColumnName="Remedies2" />
+                <ScalarProperty Name="Remedies1" ColumnName="Remedies1" />
+                <ScalarProperty Name="Remedies" ColumnName="Remedies" />
+                <ScalarProperty Name="ErrorCause" ColumnName="ErrorCause" />
+                <ScalarProperty Name="ErrorProcess" ColumnName="ErrorProcess" />
+                <ScalarProperty Name="NotPenalizeDes" ColumnName="NotPenalizeDes" />
+                <ScalarProperty Name="DecisionToFine" ColumnName="DecisionToFine" />
+                <ScalarProperty Name="ErrorDes" ColumnName="ErrorDes" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="ErrorQty" ColumnName="ErrorQty" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="ErrorType" ColumnName="ErrorType" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="RaiseErrorStaff" ColumnName="RaiseErrorStaff" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="NotifyStaff" ColumnName="NotifyStaff" />
+                <ScalarProperty Name="RaiseErrorDept" ColumnName="RaiseErrorDept" />
+                <ScalarProperty Name="NotifyDept" ColumnName="NotifyDept" />
+                <ScalarProperty Name="DateWrite" ColumnName="DateWrite" />
+                <ScalarProperty Name="DateRaiseErr" ColumnName="DateRaiseErr" />
+                <ScalarProperty Name="ErrorNo" ColumnName="ErrorNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
