@@ -56,5 +56,6 @@ namespace NNworking.Models
         public string UpdateStaff { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<int> Status { get; set; }
+        public Nullable<decimal> Money { get; set; }
     }
 }

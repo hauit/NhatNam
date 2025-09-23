@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách chi tiết";
+}
+
+<div class="box box-body">
+    @(Html.DevExtreme().Button()
+            .Text("Import")
+            .ID("btnImport")
+            .Type(ButtonType.Normal)
+            .Width(150)
+    )</br>
+</div>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_Part>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_PartApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxPartListGrid")
+    .Paging(page => page.PageSize(30))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.PartNo);
+
+        columns.AddFor(m => m.PartNoRRC);
+
+        columns.AddFor(m => m.PartName);
+
+        columns.AddFor(m => m.CustomerID);
+
+        columns.AddFor(m => m.SupplierID);
+
+        columns.AddFor(m => m.UpQty);
+
+        columns.AddFor(m => m.CatID);
+
+        columns.AddFor(m => m.Unit);
+
+        columns.AddFor(m => m.IsTool);
+
+        columns.AddFor(m => m.GiaThanh);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+    //.AllowUpdating(true)
+    //.AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<input id="File2" type="file" name="file" class="hide" onchange="ChoiceFilePhu()" />
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+    }
+
+    $(document).on('click', '#btnImport', function () {
+        $('#File2').trigger('click');
+    });
+
+    function ChoiceFilePhu() {
+        var file = $('#File2').get(0);
+        var alo = file.files;
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        $.ajax({
+            url: '@Url.Action("ImportPartList", "AllDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: form,
+            success: function (data) {
+                alert(data.Values);
+                if (data.Status != "OK") {
+                    return;
+                }
+
+                if (data.Errors.length > 0) {
+                    DisplayImportError(data.Errors);
+                }
+
+                $('#File2').val('');
+                SearchByPartNo();
+            },
+        });
+    }
+</script>

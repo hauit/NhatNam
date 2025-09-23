@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewBag.Title = "Thống kê - báo cáo";
+}
+
+
+<div class="row">
+    <!-- Left col -->
+    <section class="col-lg-12 connectedSortable">
+        <div class="box box-primary">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div id="Condition">Chọn thông tin để xem báo cáo</div>
+                <div>
+                    <table>
+                        <tr>
+                            <th>
+                                Từ ngày:
+                            </th>
+                            <th style="padding-left: 10px;">
+                                @(Html.DevExtreme().DateBox()
+                                .Value(DateTime.Now)
+                                .ID("dateFromDate")
+                                )
+                            </th>
+                            <th style="padding-left: 10px;">
+                                Đến ngày:
+                            </th>
+                            <th>
+                                @(Html.DevExtreme().DateBox()
+                                .Value(DateTime.Now)
+                                .ID("dateToDate")
+                                )
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Báo cáo:
+                            </th>
+                            <th style="padding-left: 10px;" colspan="3">
+                                @(Html.DevExtreme().SelectBox()
+                                    .DataSource(new[] {
+                                        "Thống kê WTS theo máy",
+                                        "Thống kê WTS theo người"
+                                    })
+                                    .Placeholder("Choose report")
+                                    .ID("ReportList")
+                                //.ReadOnly(true)
+                                )
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="4">
+                                @(Html.DevExtreme().Button()
+                                    .Text("Xem")
+                                    .ID("btnView")
+                                    .Type(ButtonType.Normal)
+                                    .Width(90)
+                                    .OnClick("ViewReport")
+                                )
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="row">
+    <section class="col-lg-12">
+        @(Html.DevExtreme().DataGrid<dynamic>()
+            .DataSource(ds => ds.RemoteController()
+                .LoadUrl(Url.Action("ProcessingStatistic", "ProcessingDept", new { reportID = 1, from = new JS("getFromDateValue"), to = new JS("getToDateValue") }))
+            ).Selection(select => select.Mode(SelectionMode.Multiple))
+            .Paging(page => page.PageSize(15))
+            .ID("dxDatagrid")
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 15, 30, 50 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("StaffID")
+            )
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .Export(exp => exp.Enabled(true)
+                .FileName("Exported data")
+                .AllowExportSelectedData(true)
+            )
+            .RemoteOperations(true)
+        )
+    </section>
+</div>
+<script>
+    function getToDateValue() {
+        var a = $("#dateToDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getFromDateValue() {
+        var a = $("#dateFromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function ViewReport(e) {
+        var selectBoxVal = $("#ReportList").dxSelectBox("instance").option("displayValue");
+        //alert(selectBoxVal);
+        //var indexInDataSource = e.component.getDataSource().items().indexOf(selectBoxVal);
+        //alert(indexInDataSource);
+        switch (selectBoxVal) {
+            case "Thống kê WTS theo máy":
+                GetWTSTotal(1);
+                break;
+            case "Thống kê WTS theo người":
+                GetWTSTotal(2);
+                break;
+        }
+
+    }
+
+    function GetWTSTotal(reportID) {
+        var fromdate = getFromDateValue();
+        var todate = getToDateValue();
+        $.ajax({
+            url: '@Url.Action("GetDataOfReport", "ProcessingDept")',
+            dataType: 'JSON',
+            traditional: true,
+            data: { 'from': fromdate, 'to': todate, 'reportID': reportID },
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data.Status != 'OK') {
+                    alert(data.Values);
+                    return;
+                }
+                $('#dxDatagrid').dxDataGrid('instance').option('dataSource', data.Values);
+            }
+        });
+    }
+</script>

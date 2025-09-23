@@ -1,0 +1,526 @@
+﻿
+@{
+    ViewBag.Title = "Đánh giá thực tế gia công";
+}
+
+<section>
+    <Row>
+        <div class="box box-body">
+            <div class="col-lg-4">
+                <table>
+                    <tr>
+                        <td>
+                            Ngày:
+                        </td>
+                        <td style="padding-left: 10px;">
+                            @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateDate")
+                            )
+                        </td>
+                        <td style="padding-left: 10px;">
+                            @(Html.DevExtreme().Button()
+                        .Text("Máy")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("loadGroupMachine")
+                            )
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-lg-8">
+                <div id="MachineGroupButton">
+                </div>
+                <div id="MachineGroupButtonHistory"></div>
+            </div>
+        </div>
+    </Row>
+    <Row>
+        <div id="list_Plan">
+        </div>
+    </Row>
+</section>
+
+<div id="MachineOriginalTable">
+    <h2 id="MachineOriginalTable_Info"></h2>
+    <div id="MachineOriginalTable_Detail">
+        <table style="width:600px;font-size: 14px;" class="table table-advance">
+            <thead>
+                <tr>
+                    <td>G</td>
+                    <td>X</td>
+                    <td>Y</td>
+                    <td>Z</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>G54</td>
+                    <td><input type="text" id="txt_G54_X" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G54_Y" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G54_Z" value="" size=15 /></td>
+                </tr>
+                <tr>
+                    <td>G55</td>
+                    <td><input type="text" id="txt_G55_X" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G55_Y" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G55_Z" value="" size=15 /></td>
+                </tr>
+                <tr>
+                    <td>G56</td>
+                    <td><input type="text" id="txt_G56_X" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G56_Y" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G56_Z" value="" size=15 /></td>
+                </tr>
+                <tr>
+                    <td>G57</td>
+                    <td><input type="text" id="txt_G57_X" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G57_Y" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G57_Z" value="" size=15 /></td>
+                </tr>
+                <tr>
+                    <td>G58</td>
+                    <td><input type="text" id="txt_G58_X" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G58_Y" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G58_Z" value="" size=15 /></td>
+                </tr>
+                <tr>
+                    <td>G59</td>
+                    <td><input type="text" id="txt_G59_X" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G59_Y" value="" size=15 /></td>
+                    <td><input type="text" id="txt_G59_Z" value="" size=15 /></td>
+                </tr>
+            </tbody>
+        </table>
+        <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="InputCompleted" name="" value="Nhập xong" onclick="InputOriginalComplete(1)">
+    </div>
+</div>
+
+<div id="OpenMessage">
+
+</div>
+
+<script>
+    var Shift = '';
+    var MachineId = '';
+    var array = new Array();
+    var arrayStock = new Array();
+    var popupStatus = 0;
+</script>
+<script>
+
+    function ValidateRow(e) {
+        var dataGrid = e.component;
+        var rowIndex = dataGrid.getRowIndexByKey(e.key);
+
+    }
+</script>
+<script>
+
+    $(document).ready(function () {
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            //$("#banga").html('<td><b>Bàn gá:</b></td> <td>' + palet + '</td>');
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus == 1) {
+                $("#ShiftButton").fadeOut(200);
+                $("#MachineGroupButton").fadeOut(200);
+                $("#OptionIDButtonTotal").fadeOut(200);
+                $("#OptionIDButton").fadeOut(200);
+                $("#WorkIDButton").fadeOut(200);
+                $("#background-popup").fadeOut(200);
+                $("#MachineOriginalTable").fadeOut(200);
+                $("#GCB").fadeOut(200);
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadShiftPopup() {
+            if (popupStatus == 0) {
+                $("#ShiftButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadMachineGroupPopup() {
+            if (popupStatus == 0) {
+                $("#MachineGroupButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        /** các hàm gọi sự kiện click **/
+        $("#ShiftBT").click(function () {
+            loadShiftPopup();
+        });
+
+        $("#btnView").click(function () {
+            loadMachineGroupPopup();
+        });
+    })
+
+    function loadGroupMachine() {
+        $.ajax({
+            url: '@Url.Action("ListMachineGroup", "ProcessingDept")',
+            dataType: 'Json',
+            type: 'GET',
+            data: '',
+            cache: false,
+            success: function (data) {
+                var GroupMachineBT = "";
+                $.each(data, function (i, val) {
+                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val + '" name=""  value="' + val + '" onclick="ListMachine(\'' + val + '\')"> ';
+                });
+                $("#MachineGroupButton").html(GroupMachineBT);
+            },
+        });
+    }
+
+    function getDateValue() {
+        var a = $("#dateDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getShift() {
+        return "T1";
+    }
+
+    function getMachineID() {
+        return "MachineID";
+    }
+
+    function ListMachine(data) {
+        var list_Shift = '';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue(\'T1\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue(\'T2\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue(\'T3\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue(\'T1\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue(\'T2\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca HC" onclick="ShiftValue(\'T0\',\'' + data + '\')"> ';
+        $("#MachineGroupButton").html(list_Shift);
+
+    }
+
+    function ShiftValue(data, group) {
+        Shift = data;
+        $("#ShiftButton").append("<br/>" + Shift);
+        $.ajax({
+            url: '@Url.Action("ListMachineByGroup", "ProcessingDept")',
+            data: { 'Group': group, 'shift': Shift },
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                var a = '';
+                if (data != null) {
+                    $.each(data, function (i, val) {
+                        if (val.HavePlan == true) {
+                            a += '<input class="btn btn-green" style="margin-top: 10px;background-color: red;" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick="SelectedMachine(\'' + val.MachineID + '\')"> ';
+                            return;
+                        }
+
+                        a += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick="SelectedMachine(\'' + val.MachineID + '\')"> ';
+                    });
+                    $("#MachineGroupButton").html(a);
+                }
+                else {
+                    $("#MachineGroupButton").html(nulldata);
+                }
+            },
+        });
+    }
+
+
+    function SelectedMachine(data) {
+        MachineId = data;
+        GetPlanOfMachine();
+        var msg = '<h3><span style="color:red;">Bạn đang xem kế hoạch của máy: ' + MachineId + '</span></h3>';
+        $("#MachineGroupButtonHistory").html(msg);
+    }
+
+    function GetPlanOfMachine() {
+        var Date = getDateValue();
+        $.ajax({
+            url: '@Url.Action("GetMachinePlanForCheckMachineProcess", "FactoryWTS")',
+            data: { 'Shift': Shift, 'MachineID': MachineId, 'date': Date },
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                var list_plan = '';
+                list_plan += '<table id="Staff_Info" style="width:1000px;text-align: center" class="table table-advance">';
+                list_plan += '<thead style = "background: #ccc;">';
+                list_plan += '<td style="width:250px;">Tên chi tiết</td>';
+                list_plan += '<td style="width:30px;">Lệnh gia công</td>';
+                list_plan += '<td style="width:30px;">NC</td>';
+                list_plan += '<td style="width:100px;">Người chạy thử</td>';
+                list_plan += '<td style="width:100px;">Người gia công</td>';
+                list_plan += '<td>Kết quả</td>';
+                list_plan += '<td></td>';
+                list_plan += '<td></td>';
+                list_plan += '</thead>';
+                list_plan += '<tbody id="TableBody">';
+                var stt = 0;
+                $.each(data, function (i, val) {
+                    stt++;
+                    if (val.TotalResult == true) {
+                        list_plan += '<tr>';
+                        list_plan += '<td style="color: red;">' + val.Ký_hiệu_chi_tiết + '</td>';
+                        list_plan += '<td style="color: red;">' + val.Số_Order + ' </td>';
+                        list_plan += '<td style="color: red;">' + val.Số_NC + ' </td>';
+                        list_plan += '<td style="color: red;"><input type="text" id="txt_staff_PBJ1' + stt + '" value="' + val.Staff_PB + '" size=10/></td>';
+                        list_plan += '<td style="color: red;"><input type="text" id="txt_staff_PLJ1' + stt + '" value="' + val.Staff_PL + '" size=10/></td>';
+                        if (val.TotalResult == true) {
+                            list_plan += '<td style="color: red;"><input type="checkbox" id="' + stt + '_TotalResult" value="check1" checked onclick="" /></td>';
+                        }
+                        //else {
+                        //    list_plan += '<td style="color: red;"><input type="checkbox" id="' + stt + '_TotalResult" value="check1" onclick="" /></td>';
+                        //}
+                        list_plan += '<td style="color: red;"><span style = "font-size : 13pt;" onclick = "ShowOriginalTable()"> Bảng gốc GC tại máy </span></td>';
+                        list_plan += '<td style="color: red;">';
+                        list_plan += '<span style = "font-size : 16pt;" onclick = "ShowDetailCheck(1,\'' + val.Ký_hiệu_chi_tiết + '\',\'' + val.Số_NC + '\',\'' + Date + '\',\'' + val.Fac_MachineID + '\',' + stt + ',\'' + val.Số_Order + '\')"> OK </span>';
+                        list_plan += '<span style = "font-size : 16pt;" onclick = "ShowDetailCheck(0,\'' + val.Ký_hiệu_chi_tiết + '\',\'' + val.Số_NC + '\',\'' + Date + '\',\'' + val.Fac_MachineID + '\',' + stt + ',\'' + val.Số_Order + '\')"> NG </span>';
+                        list_plan += '</td>';
+                        list_plan += '</tr>';
+                    }
+                    else {
+                        list_plan += '<tr>';
+                        list_plan += '<td>' + val.Ký_hiệu_chi_tiết + '</td>';
+                        list_plan += '<td>' + val.Số_Order + ' </td>';
+                        list_plan += '<td>' + val.Số_NC + ' </td>';
+                        list_plan += '<td><input type="text" id="txt_staff_PBJ1' + stt + '" value="' + val.Staff_PB + '" size=10/></td>';
+                        list_plan += '<td><input type="text" id="txt_staff_PLJ1' + stt + '" value="' + val.Staff_PL + '" size=10/></td>';
+                        //if (val.TotalResult == true) {
+                        //    list_plan += '<td style="color: red;"><input type="checkbox" id="' + stt + '_TotalResult" value="check1" checked onclick="" /></td>';
+                        //}
+                        //else {
+                            list_plan += '<td style="color: red;"><input type="checkbox" id="' + stt + '_TotalResult" value="check1" onclick="" /></td>';
+                        //}
+                        list_plan += '<td><span style = "font-size : 13pt;" onclick = "ShowOriginalTable(\'' + val.Ký_hiệu_chi_tiết + '\',\'' + val.Số_NC + '\',\'' + val.Số_Order + '\')"> Bảng gốc GC tại máy </span></td>';
+                        list_plan += '<td><span style = "font-size : 16pt;" onclick = "ShowDetailCheck(0,\'' + val.Ký_hiệu_chi_tiết + '\',\'' + val.Số_NC + '\',\'' + Date + '\',\'' + val.Fac_MachineID + '\',' + stt + ',\'' + val.Số_Order + '\')"> Gửi </span></td>';
+                        list_plan += '</tr>';
+                    }
+                })
+                list_plan += '</tbody>';
+                list_plan += '</table>';
+                $("#list_Plan").html(list_plan);
+            },
+        });
+    }
+
+    function ShowOriginalTable(partID1, optionID1, order1) {
+        var Date = getDateValue();
+        partID = partID1;
+        optionID = optionID1;
+        order = order1;
+        var key = partID + optionID + order + MachineId + Shift + Date;
+        var existed = 0;
+        for (var i = 0; i < arrayStock.length; i++) {
+            if (arrayStock[i][0] == key) {
+                $("#txt_G54_X").val(arrayStock[i][1]);
+                $("#txt_G54_Y").val(arrayStock[i][2]);
+                $("#txt_G54_Z").val(arrayStock[i][3]);
+                $("#txt_G55_X").val(arrayStock[i][4]);
+                $("#txt_G55_Y").val(arrayStock[i][5]);
+                $("#txt_G55_Z").val(arrayStock[i][6]);
+                $("#txt_G56_X").val(arrayStock[i][7]);
+                $("#txt_G56_Y").val(arrayStock[i][8]);
+                $("#txt_G56_Z").val(arrayStock[i][9]);
+                $("#txt_G57_X").val(arrayStock[i][10]);
+                $("#txt_G57_Y").val(arrayStock[i][11]);
+                $("#txt_G57_Z").val(arrayStock[i][12]);
+                $("#txt_G58_X").val(arrayStock[i][13]);
+                $("#txt_G58_Y").val(arrayStock[i][14]);
+                $("#txt_G58_Z").val(arrayStock[i][15]);
+                $("#txt_G59_X").val(arrayStock[i][16]);
+                $("#txt_G59_Y").val(arrayStock[i][17]);
+                $("#txt_G59_Z").val(arrayStock[i][18]);
+                existed = 1;
+                break;
+            }
+        }
+
+        if (existed == 0) {
+            $("#txt_G54_X").val("");
+            $("#txt_G54_Y").val("");
+            $("#txt_G54_Z").val("");
+            $("#txt_G55_X").val("");
+            $("#txt_G55_Y").val("");
+            $("#txt_G55_Z").val("");
+            $("#txt_G56_X").val("");
+            $("#txt_G56_Y").val("");
+            $("#txt_G56_Z").val("");
+            $("#txt_G57_X").val("");
+            $("#txt_G57_Y").val("");
+            $("#txt_G57_Z").val("");
+            $("#txt_G58_X").val("");
+            $("#txt_G58_Y").val("");
+            $("#txt_G58_Z").val("");
+            $("#txt_G59_X").val("");
+            $("#txt_G59_Y").val("");
+            $("#txt_G59_Z").val("");
+        }
+
+        $(document).ready(function () {
+
+            function loadBackgroundToPopup() {
+                $("#background-popup").css("opacity", "0.2");
+                $("#background-popup").fadeIn(200);
+            }
+
+            function disablePopup() {
+                if (popupStatus == 1) {
+                    $("#background-popup").fadeOut(200);
+                    $("#MachineOriginalTable").fadeOut(200);
+                    popupStatus = 0;
+                }
+            }
+
+            function loadOriginalTable() {
+                if (popupStatus == 0) {
+                    $("#MachineOriginalTable").fadeIn(200);
+                    loadBackgroundToPopup();
+                    popupStatus = 1;
+                }
+            }
+
+            loadOriginalTable();
+        })
+    }
+    function ShowDetailCheck(status, partid, NC, date, machine, stt, mono) {
+        InputOriginalComplete(0);
+        var staff_PBJ1 = $("#txt_staff_PBJ1" + stt).val();
+        var staff_PLJ1 = $("#txt_staff_PLJ1" + stt).val();
+
+        if (staff_PBJ1 == "" || staff_PLJ1 == "") {
+            alert("Người chạy thử và người gia công phải nhập đầy đủ");
+            return;
+        }
+
+        var TotalResult = $("#" + stt + "_TotalResult").is(":checked");
+        var myJSON = JSON.stringify(array);
+        $.ajax({
+            url: '@Url.Action("InputCheckResult", "FactoryWTS")',
+            data: {
+                'status': status, 'partid': partid, 'mono': mono,
+                'optionID': NC, 'MachineID': MachineId, 'date': date, 'staff_PBJ1': staff_PBJ1,
+                'staff_PLJ1': staff_PLJ1, 'TotalResult': TotalResult, 'listOriginal': array
+            },
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                if (data == "OK") {
+                    alert("Đánh giá xong");
+                    GetPlanOfMachine();
+                }
+                else {
+                    alert(data);
+                }
+            },
+        });
+    }
+
+    function InputOriginalComplete(id) {
+        var Date = getDateValue();
+        array = new Array();
+        var G54X = $("#txt_G54_X").val();// == '' ? '0' : $("#txt_G54_X").val();
+        var G54Y = $("#txt_G54_Y").val();// == '' ? '0' : $("#txt_G54_Y").val();
+        var G54Z = $("#txt_G54_Z").val();// == '' ? '0' : $("#txt_G54_Z").val();
+        var G55X = $("#txt_G55_X").val();// == '' ? '0' : $("#txt_G55_X").val();
+        var G55Y = $("#txt_G55_Y").val();// == '' ? '0' : $("#txt_G55_Y").val();
+        var G55Z = $("#txt_G55_Z").val();// == '' ? '0' : $("#txt_G55_Z").val();
+        var G56X = $("#txt_G56_X").val();// == '' ? '0' : $("#txt_G56_X").val();
+        var G56Y = $("#txt_G56_Y").val();// == '' ? '0' : $("#txt_G56_Y").val();
+        var G56Z = $("#txt_G56_Z").val();// == '' ? '0' : $("#txt_G56_Z").val();
+        var G57X = $("#txt_G57_X").val();// == '' ? '0' : $("#txt_G57_X").val();
+        var G57Y = $("#txt_G57_Y").val();// == '' ? '0' : $("#txt_G57_Y").val();
+        var G57Z = $("#txt_G57_Z").val();// == '' ? '0' : $("#txt_G57_Z").val();
+        var G58X = $("#txt_G58_X").val();// == '' ? '0' : $("#txt_G58_X").val();
+        var G58Y = $("#txt_G58_Y").val();// == '' ? '0' : $("#txt_G58_Y").val();
+        var G58Z = $("#txt_G58_Z").val();// == '' ? '0' : $("#txt_G58_Z").val();
+        var G59X = $("#txt_G59_X").val();// == '' ? '0' : $("#txt_G59_X").val();
+        var G59Y = $("#txt_G59_Y").val();// == '' ? '0' : $("#txt_G59_Y").val();
+        var G59Z = $("#txt_G59_Z").val();// == '' ? '0' : $("#txt_G59_Z").val();
+
+        var dataG54 = {
+            G54X,
+            G54Y,
+            G54Z,
+            G55X,
+            G55Y,
+            G55Z,
+            G56X,
+            G56Y,
+            G56Z,
+            G57X,
+            G57Y,
+            G57Z,
+            G58X,
+            G58Y,
+            G58Z,
+            G59X,
+            G59Y,
+            G59Z
+            }
+
+        var key = partID +optionID +order +MachineId +Shift +Date;
+        var existed = 0;
+        for (var j = 0; j < arrayStock.length; j++) {
+            if (arrayStock[j][0] == key) {
+                existed = 1;
+                break;
+            }
+        }
+
+        if (existed == 0) {
+            var dataStock = [
+                key,
+                G54X,
+                G54Y,
+                G54Z,
+                G55X,
+                G55Y,
+                G55Z,
+                G56X,
+                G56Y,
+                G56Z,
+                G57X,
+                G57Y,
+                G57Z,
+                G58X,
+                G58Y,
+                G58Z,
+                G59X,
+                G59Y,
+                G59Z
+            ]
+
+            arrayStock.push(dataStock);
+        }
+        array.push(JSON.stringify(dataG54));
+        if(id == 1)
+        alert("OK!");
+    }
+</script>
+

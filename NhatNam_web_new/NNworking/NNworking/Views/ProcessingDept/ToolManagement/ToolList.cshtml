@@ -1,0 +1,44 @@
+﻿
+@{
+    
+}
+
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C333_Tool>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C333_ToolApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.ToolID);
+
+        columns.AddFor(m => m.ToolName);
+
+        columns.AddFor(m => m.MakerToolName);
+
+        columns.AddFor(m => m.Price);
+
+        columns.AddFor(m => m.FrequencyID);
+
+        columns.AddFor(m => m.ToolGroupID);
+
+        columns.AddFor(m => m.SafeQty);
+
+        columns.AddFor(m => m.MakerID);
+
+        columns.AddFor(m => m.CreateAt);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+)

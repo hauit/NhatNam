@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NNworking.Hubs;
 using NNworking.Models;
 using System;
 using System.Collections;
@@ -741,12 +740,6 @@ namespace NNworking.Controllers.ProcessingDept
                     db.C242_ToolBorrow.Remove(toolBorrow);
                     return Json(new { Status = "NG", Value = ex.Message }, JsonRequestBehavior.AllowGet);
                 }
-
-                ////TODO: Cần gửi thông báo cho bộ phận quản lý dao để họ xác nhận thông tin và trả lời
-                var context = GlobalHost.ConnectionManager.GetHubContext<TechnicalNotify>();
-                context.Clients.Group(notify.ToClient).messageToToolManagement(notify); //// alert message để người quản lý dao biết
-                context.Clients.Group(notify.ToClient).acceptNewNotify(notify); //// Điền thông báo lên hình cái chuông
-
                 //// Sau khi bộ phận quản lý dao trả lời thì thông báo lại cho nhân viên ở máy gia công
                 return Json(new { Status = "OK", Value = "" }, JsonRequestBehavior.AllowGet);
             }
@@ -1206,9 +1199,6 @@ namespace NNworking.Controllers.ProcessingDept
                 }
 
                 db.SaveChanges();
-                var context = GlobalHost.ConnectionManager.GetHubContext<TechnicalNotify>();
-                context.Clients.All.ReloadStandTimeManualChecking();
-
                 return Json(new { Status = "OK", Values = "" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

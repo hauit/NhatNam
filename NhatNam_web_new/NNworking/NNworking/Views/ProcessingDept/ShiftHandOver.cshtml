@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewBag.Title = "Bàn giao ca";
+}
+
+<section>
+    <div class="box box-body">
+        <table width="1000px">
+            <tr>
+                <td width="200px">
+                    &nbsp;&nbsp;&nbsp;Ngày:
+                    @(Html.DevExtreme().DateBox()
+                                    .Value(DateTime.Now)
+                                    .ID("fromDate")
+                                    .DisplayFormat("dd/MM/yyyy")
+                    )
+                </td>
+                <td>
+                    &nbsp;&nbsp;&nbsp;Ca:
+                    @(Html.DevExtreme().Lookup()
+                            .DataSource(d => d.WebApi()
+                                .RouteName("C222_ShiftApi")
+                                .LoadAction("Get")
+                                .Key("ID")
+                            )
+                            .ID("txtshift")
+                            .DisplayExpr("Shift")
+                            .ValueExpr("ID")
+                            .Width(200)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td width="200px">
+                    @(Html.DevExtreme().Button()
+                                    .Text("Bàn giao ca")
+                                    .ID("btnHandOver")
+                                    .Type(ButtonType.Normal)
+                                    .Width(150)
+                                    .OnClick("PrePareForHandOver")
+                    )
+                </td>
+                <td>
+                    &nbsp;&nbsp;&nbsp;Bàn giao cho:
+                    @(Html.DevExtreme().Lookup()
+                            .DataSource(d => d.WebApi()
+                                .RouteName("C222_StaffApi")
+                                .LoadAction("Get")
+                                .Key("StaffID")
+                            )
+                            .ID("txtRecipient")
+                            .DisplayExpr("StaffID")
+                            .ValueExpr("StaffID")
+                            .Width(200)
+                    )
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</section>
+@(Html.DevExtreme().Button()
+            .Text("Xác nhận bàn giao")
+            .ID("btnHandOverConfirmation")
+            .Type(ButtonType.Normal)
+            .Width(150)
+            .OnClick("HandOverConfirmation")
+)
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.View_242_ShiftHandOver>()
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C242_ShiftHandOverApi")
+            .LoadAction("Get").LoadParams(new { date = new JS("getFromDate"), shift = new JS("getShift") })
+            //.InsertAction("Post")
+            .UpdateAction("Put")
+            //.DeleteAction("Delete")
+            .Key("ID")
+        )
+        .ID("dxShiftHandOver")
+        .Paging(page => page.PageSize(15))
+        .Pager(pager => pager.ShowPageSizeSelector(true)
+            .ShowInfo(true)
+            .AllowedPageSizes(new List<int> { 15, 30, 50, 100, 200 })
+        )
+        .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+            .DescendingText("ID")
+        )
+        .ColumnAutoWidth(true)
+        .FilterRow(fil => fil.Visible(true))
+        .FilterPanel(fi => fi.Visible(true))
+        .SearchPanel(search => search.Visible(true)
+            .HighlightSearchText(true)
+            .Width(500)
+        )
+        //.HeaderFilter(headFil => headFil.Visible(true))
+        .ShowColumnHeaders(true)
+        .ShowRowLines(true)
+        .RemoteOperations(true)
+        .Columns(columns =>
+        {
+
+            columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+            columns.AddFor(m => m.Date).Caption("Ngày").AllowEditing(false);
+
+            columns.AddFor(m => m.Shift1).Caption("Ca làm việc").AllowEditing(false);
+
+            columns.AddFor(m => m.HandOverPersion).Caption("Người bàn giao").AllowEditing(false);
+
+            columns.AddFor(m => m.HandOverItem1).Caption("Chủ đề bàn giao").AllowEditing(false);
+
+            columns.AddFor(m => m.HandOverContent).Caption("Nội dung bàn giao");
+
+            columns.AddFor(m => m.HandOverRecipient).Caption("Người nhận bàn giao").AllowEditing(false);
+
+            columns.AddFor(m => m.HandOverRecipientConfirm).Caption("Xác nhận bàn giao").AllowEditing(false);
+        })
+        .Editing(e => e
+            //.AllowAdding(true)
+            .AllowUpdating(true)
+            .Mode(GridEditMode.Cell)
+        //.AllowDeleting(true)
+        )
+)
+
+<script>
+    function getShift() {
+        var a = $("#txtshift").dxLookup("instance").option("value");
+        return a;
+    }
+
+    function getFromDate() {
+        var a = $("#fromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getRecipient() {
+        var a = $("#txtRecipient").dxLookup("instance").option("value");
+        return a;
+    }
+
+    function PrePareForHandOver() {
+        var date = getFromDate();
+        var shift = getShift();//$("#txtshift").dxTextBox("instance").option("value");\
+        var repicient = getRecipient();
+
+        $.ajax({
+            url: '@Url.Action("PrePareForHandOver", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'date': date, 'shift': shift, 'repicient': repicient },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                $("#dxShiftHandOver").dxDataGrid("instance").refresh();
+            }
+        });
+    }
+
+    function HandOverConfirmation() {
+        var date = getFromDate();
+        var shift = getShift();//$("#txtshift").dxTextBox("instance").option("value");
+
+        $.ajax({
+            url: '@Url.Action("HandOverConfirmation", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'date': date, 'shift': shift },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                $("#dxShiftHandOver").dxDataGrid("instance").refresh();
+            }
+        });
+    }
+</script>

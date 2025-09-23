@@ -1,0 +1,407 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách kế hoạch gấp";
+}
+
+<section>
+    <div class="box box-body">
+        <div class="col-lg-4">
+            <table>
+                <tr>
+                    <td>
+                        Ngày:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateDate")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Nhóm")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("loadGroupMachine")
+                        )
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="MachineGroupButton" class="col-lg-8">
+            @*<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val+ '" name="" value="MachineGroupButton" onclick="MachineGroup()">*@
+        </div>
+    </div>
+
+
+    @*<div id="ShiftButton">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue('T1')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue('T2')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue('T3')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue('T1')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue('T2')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca HC" onclick="ShiftValue('T0')">
+        </div>
+
+        <div id="MachineGroupButton">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val+ '" name="" value="MachineGroupButton" onclick="MachineGroup()">
+        </div>*@
+
+    <div id="dataGrid">
+        @(Html.DevExtreme().DataGrid<NNworking.Models.sp_GetMachinePlanForFactory_TGTC_Result1>()
+            .DataSource(Url.Action("GetMachinePlanForFactory", "ProcessingDept", new { Shift = "", MachineID = "", date = DateTime.Now })//.LoadAction("GetMachinePlanForFactory").Controller("ProcessingDept")
+                                                                                                                                         //.LoadParams(new { Shift = new JS("getShift"), MachineID = new JS("getMachineID"), date = new JS("getDateValue") })
+                                                                                                                                         //.Controller("ProcessingDept")
+                                                                                                                                         //.LoadAction("GetMachinePlanForFactory")
+                                                                                                                                         //.LoadParams(new { Shift ="", MachineID = new JS("getMachineID"), date = new JS("getDateValue") })
+            )
+            .ID("dxDataGrid")
+            .Selection(select => select.Mode(SelectionMode.Multiple))
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("Máy_GC")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            //.HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+            .Columns(col =>
+            {
+                col.AddFor(m => m.TTGC).Width(40);
+                col.AddFor(m => m.Phoi).Caption("P").Width(40);
+                col.AddFor(m => m.Fille).Caption("CT").Width(40);
+                col.AddFor(m => m.Dao).Caption("D").Width(40);
+                col.AddFor(m => m.CBJig).Caption("J").Width(40);
+                col.AddFor(m => m.NG_Old).Caption("NG").Width(40);
+                col.AddFor(m => m.OK_Old).Caption("OK").Width(40);
+                col.AddFor(m => m.Fac_TTFile).Caption("TT File");
+                col.AddFor(m => m.TinhTrang).Caption("TT Phôi").Width(40);
+                col.AddFor(m => m.Fac_GCXong).Caption("GC xong");
+                col.AddFor(m => m.Fac_GCDo).Caption("GC dở");
+                col.AddFor(m => m.Note);
+                col.AddFor(m => m.K).Caption("Mã");
+                col.AddFor(m => m.Ký_hiệu_chi_tiết);
+                col.AddFor(m => m.Số_Order).Caption("Order");
+                col.AddFor(m => m.TTNC).Caption("NC");
+                col.AddFor(m => m.Slg_lệnh).Caption("SLL");
+                col.AddFor(m => m.ThoiHan1).Caption("Thời hạn").Visible(false);
+                col.AddFor(m => m.TGGC1).Caption("TGGC").Visible(false);
+                col.AddFor(m => m.TGGL1).Caption("TGGL").Visible(false);
+                col.AddFor(m => m.PJ61).Visible(false);
+                col.AddFor(m => m.PZE1).Visible(false);
+                col.AddFor(m => m.PBJ1).Visible(false);
+                col.AddFor(m => m.PU71).Visible(false);
+                col.AddFor(m => m.TgTotal).Caption("Tổng thời gian").Visible(false);
+                col.AddFor(m => m.TGTC).Visible(false);
+                col.AddFor(m => m.DK_may).Visible(false);
+                col.AddFor(m => m.Fac_NgayHTtheoKH1).Caption("Ngày HT theo KH").Visible(false);
+                col.AddFor(m => m.Fac_NGTruoc).Caption("NC trước").Visible(false);
+            })
+            .Editing(e => e
+                //.AllowAdding(true)
+                .AllowUpdating(true)
+                //.AllowDeleting(true)
+                .Mode(GridEditMode.Cell)
+            )
+            .OnRowValidating("ValidateRow")
+            .OnRowPrepared("onRowPrepared")
+        )
+
+
+    </div>
+</section>
+
+
+<div id="OpenMessage">
+
+</div>
+<script>
+</script>
+<script>
+    function onRowPrepared(rowElement) {
+        if (rowElement.rowType != "data") {
+            return;
+        }
+
+        if (rowElement.data.Note.indexOf("CAN GAP") != -1) {
+            rowElement.rowElement.css("background", "#93D7F4");
+        }
+    }
+
+    var visible = false;
+    function expandGrid(e) {
+        visible = visible == false ? true : false;
+        $('#dxDataGrid').dxDataGrid('columnOption', 'ThoiHan1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'TGGC1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'TGGL1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'PJ61', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'PZE1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'PBJ1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'PU71', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'TgTotal', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'TGTC', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'Fac_NgayHTtheoKH1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'Fac_NGTruoc', 'visible', visible);
+
+        if (visible == false) {
+            $('#btnExpand').dxButton('option', 'text', 'Mở rộng');
+
+        }
+        else {
+            $('#btnExpand').dxButton('option', 'text', 'Thu lại');
+        }
+    }
+
+    function ValidateRow(e) {
+        var dataGrid = e.component;
+        var rowIndex = dataGrid.getRowIndexByKey(e.key);
+        //alert(rowIndex);
+        //alert(e.key.ID1);
+        //dataGrid.getCellElement(rowIndex, "StaffID").find("input").css("border", "1px solid red");
+        var data1 = e.newData;
+        var object1 = new Array();
+        object1.push(JSON.stringify(data1));
+
+        var data = {
+            'ID': e.key.ID
+            , 'Số_Order': e.key.Số_Order
+            , 'Số_NC': e.key.Số_NC
+            , 'Máy_GC': e.key.Máy_GC
+            , 'Slg_lệnh': e.key.Slg_lệnh
+            , 'Bắt_đầu': e.key.Bắt_đầu
+            , 'Kết_thúc': e.key.Kết_thúc
+            , 'TGGL': e.key.TGGL
+            , 'Ký_hiệu_chi_tiết': e.key.Ký_hiệu_chi_tiết
+            , 'K': e.key.K
+            , 'date': e.key.date
+            , 'shift': e.key.shift
+            , 'ThoiHan': e.key.ThoiHan
+            , 'TinhTrang': e.key.TinhTrang
+            , 'DK_may': e.key.DK_may
+            , 'SoJig': e.key.SoJig
+            , 'TTNC': e.key.TTNC
+            , 'dept': e.key.dept
+            , 'Jig': e.key.Jig
+            , 'Note': e.key.Note
+            , 'RegisterDate': e.key.RegisterDate
+            , 'C10_': e.key.C10_
+            , 'C20_': e.key.C20_
+            , 'C80_': e.key.C80_
+            , 'Via_check1': e.key.Via_check1
+            , 'Via_check2': e.key.Via_check2
+            , 'Via_ghi_chu': e.key.Via_ghi_chu
+            , 'Fac_NgayHTtheoKH': e.key.Fac_NgayHTtheoKH
+            , 'Fac_TT': e.key.Fac_TT
+            , 'Fac_NGTruoc': e.key.Fac_NGTruoc
+            , 'Fac_TTFile': e.key.Fac_TTFile
+            , 'Fac_Phoi': e.key.Fac_Phoi
+            , 'Fac_File': e.key.Fac_File
+            , 'Fac_Dao': e.key.Fac_Dao
+            , 'Fac_Jig': e.key.Fac_Jig
+            , 'Fac_TTTH': e.key.Fac_TTTH
+            , 'Fac_DaChuanBi': e.key.Fac_DaChuanBi
+            , 'Fac_TTGC': e.key.Fac_TTGC
+            , 'Fac_DeXuat': e.key.Fac_DeXuat
+            , 'Fac_OK_Old': e.key.Fac_OK_Old
+            , 'Fac_NG_Old': e.key.Fac_NG_Old
+            , 'Fac_Dc': e.key.Fac_Dc
+            , 'Fac_MachineID': e.key.Fac_MachineID
+            , 'Fac_GCDo': e.key.Fac_GCDo
+            , 'Fac_GCXong': e.key.Fac_GCXong
+            , 'KT_Sup': e.key.KT_Sup
+            , 'KT_TGUKB1': e.key.KT_TGUKB1
+            , 'KT_TongTG': e.key.KT_TongTG
+            , 'KT_TTPhoi': e.key.KT_TTPhoi
+            , 'KT_GiaHang': e.key.KT_GiaHang
+            , 'KT_KHXN': e.key.KT_KHXN
+            , 'KT_LyDoKHTKH': e.key.KT_LyDoKHTKH
+            , 'KT_DgoiTay': e.key.KT_DgoiTay
+            , 'MachineStatus': e.key.MachineStatus
+            , 'TGGC1': e.key.TGGC1
+            , 'TGGL1': e.key.TGGL1
+            , 'Phoi': e.key.Phoi
+            , 'Fille': e.key.Fille
+            , 'Dao': e.key.Dao
+            , 'CBJig': e.key.CBJig
+            , 'DC': e.key.DC
+            , 'OK_Old': e.key.OK_Old
+            , 'NG_Old': e.key.NG_Old
+            , 'TTGC': e.key.TTGC
+            , 'PJ61': e.key.PJ61
+            , 'PBJ1': e.key.PBJ1
+            , 'PU71': e.key.PU71
+            , 'PZE1': e.key.PZE1
+            , 'TgTotal': e.key.TgTotal
+            , 'TGTC': e.key.TGTC
+            , 'ThoiHan1': e.key.ThoiHan1
+            , 'Fac_NgayHTtheoKH1': e.key.Fac_NgayHTtheoKH1
+            , 'lv': e.key.lv
+        };
+        var object = new Array();
+        object.push(JSON.stringify(data));
+
+        $.ajax({
+            url: '@Url.Action("MachinePlanningValidateRow", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'data': data, 'dataNew': object1 },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+            }
+        });
+    }
+</script>
+<script>
+    var Shift = '';
+    var MachineId = '';
+    DisplayChatBox('@Url.Action("SendMessageToOther", "AllDept")');
+    var group = 'MachineID';
+    GetUser(group, '@Url.Action("ListAvailableUser", "AllDept")');
+
+    $(document).ready(function () {
+        var popupStatus = 0;
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            //$("#banga").html('<td><b>Bàn gá:</b></td> <td>' + palet + '</td>');
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus == 1) {
+                $("#ShiftButton").fadeOut(200);
+                $("#MachineGroupButton").fadeOut(200);
+                $("#OptionIDButtonTotal").fadeOut(200);
+                $("#OptionIDButton").fadeOut(200);
+                $("#background-popup").fadeOut(200);
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadShiftPopup() {
+            if (popupStatus == 0) {
+                $("#ShiftButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadMachineGroupPopup() {
+            if (popupStatus == 0) {
+                $("#MachineGroupButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        /** các hàm gọi sự kiện click **/
+        $("#ShiftBT").click(function () {
+            loadShiftPopup();
+        });
+
+        $("#btnView").click(function () {
+            loadMachineGroupPopup();
+        });
+
+        // lấy lại kế hoạch sau 1 khoảng thời gian
+
+        //setInterval(function () {
+        //    if (MachineId != '') {
+        //        GetPlanOfMachine();
+        //    }
+        //}, 1000 * 30);
+    })
+
+    function loadGroupMachine() {
+        $.ajax({
+            url: '@Url.Action("ListMachineGroup", "ProcessingDept")',
+            dataType: 'Json',
+            type: 'GET',
+            data: '',
+            cache: false,
+            success: function (data) {
+                var GroupMachineBT = "";
+                $.each(data, function (i, val) {
+                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val + '" name=""  value="' + val + '" onclick="ListMachine(\'' + val + '\')"> ';
+                });
+                $("#MachineGroupButton").html(GroupMachineBT);
+            },
+        });
+    }
+
+    function getDateValue() {
+        var a = $("#dateDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function ListMachine(data) {
+        var group = data;
+        $("#MachineGroupButton").append("<br/>" + MachineId);
+        var Date = getDateValue();
+        var list_Shift = '';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue(\'T1\',\'' + group + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue(\'T2\',\'' + group + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue(\'T3\',\'' + group + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue(\'T1\',\'' + group + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue(\'T2\',\'' + group + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca HC" onclick="ShiftValue(\'T0\',\'' + group + '\')"> ';
+
+        $("#MachineGroupButton").html(list_Shift);
+    }
+    
+    function ShiftValue(data, group) {
+        GetPlanOfMachine(data, group);
+        $("#ShiftButton").append("<br/>" + Shift);
+    }
+
+    function GetPlanOfMachine(shift, group) {
+        var date = getDateValue();
+        $.ajax({
+            url: '@Url.Action("GetUrgentProcessingPlan", "ProcessingDept")',
+            data: { 'Shift': shift, 'group': group, 'date': date },
+            dataType: 'JSON',
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                $('#dxDataGrid').dxDataGrid('instance').option('dataSource', data.Values);
+            },
+        });
+
+
+    }
+</script>
+

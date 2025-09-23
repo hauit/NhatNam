@@ -77,7 +77,6 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_OptionData" Width="1.5" PointX="24.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_OrderType" Width="1.5" PointX="24.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_P_NhapOrderlapKHGC" Width="1.5" PointX="20.75" PointY="24.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_Part" Width="1.5" PointX="24.75" PointY="21.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_PartData" Width="1.5" PointX="16.75" PointY="25.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_PredictErrorCause" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ShiftHandOver" Width="1.5" PointX="2.75" PointY="26.75" IsExpanded="true" />
@@ -299,20 +298,21 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_MOOption" Width="1.5" PointX="54.75" PointY="51.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_Option" Width="1.5" PointX="2.75" PointY="55.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_OptionData" Width="1.5" PointX="8.75" PointY="55.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_Part" Width="1.5" PointX="34.75" PointY="55.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_PartData" Width="1.5" PointX="40.75" PointY="55.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_Planning" Width="1.5" PointX="56.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_ShiftHandOver" Width="1.5" PointX="56.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_WTS" Width="1.5" PointX="56.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKP" Width="1.5" PointX="56.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_ManualExcutionChecking_GetCurrent" Width="1.5" PointX="18.75" PointY="56.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_ManualExcutionChecking_GetTotal" Width="1.5" PointX="20.75" PointY="56.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_ToLenh" Width="1.5" PointX="56.75" PointY="22.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_Tracking_History" Width="1.5" PointX="56.75" PointY="26.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.Welfare_V_StaffProfile" Width="1.5" PointX="26.75" PointY="56.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" Width="1.5" PointX="5.375" PointY="55.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemStatus" Width="1.5" PointX="7.375" PointY="52.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" Width="1.5" PointX="5.375" PointY="55.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_View" Width="1.5" PointX="47.375" PointY="56.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKP" Width="1.5" PointX="55.375" PointY="56.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_Part" Width="1.5" PointX="35.375" PointY="55.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_Part" Width="1.5" PointX="11.375" PointY="57.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -191,6 +191,8 @@
                                         .ValueExpr("Code")
                                     ).ValidationRules(val => val.AddRequired());//2
 
+            columns.AddFor(m => m.Money).Caption("Số tiền phạt");
+
             columns.AddFor(m => m.StartDate).Caption("Ngày xử lý");
 
             columns.AddFor(m => m.Status).Caption("Trạng thái").Lookup(lup =>

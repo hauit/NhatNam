@@ -1,0 +1,408 @@
+﻿
+
+@{
+    ViewBag.Title = "Hạng mục ảnh hưởng TGTC";
+}
+
+<div class="row">
+    <!-- Left col -->
+    <section class="col-lg-12 connectedSortable">
+        <div class="box box-primary">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div id="Condition">Chọn thông tin để xem báo cáo</div>
+                <div>
+                    <table>
+                        <tr>
+                            <th>
+                                Từ ngày:
+                            </th>
+                            <th style="padding-left: 10px;">
+                                @(Html.DevExtreme().DateBox()
+                                .Value(DateTime.Now)
+                                .ID("dateFromDate")
+                                )
+                            </th>
+                            <th style="padding-left: 10px;">
+                                Đến ngày:
+                            </th>
+                            <th>
+                                @(Html.DevExtreme().DateBox()
+                                .Value(DateTime.Now)
+                                .ID("dateToDate")
+                                )
+                            </th>
+                            <td style="padding-left: 10px;width: 100px;">
+                                Máy:
+                            </td>
+                            <td style="padding-left: 10px;width: 150px;">
+                                <div id="MachineList"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">
+                                @(Html.DevExtreme().Button()
+                                    .Text("Xem")
+                                    .ID("btnView")
+                                    .Type(ButtonType.Normal)
+                                    .Width(90)
+                                    .OnClick("ViewReport")
+                                )
+                            </th>
+                            <td style="padding-left: 10px;width: 100px;">
+                                Nhóm máy:
+                            </td>
+                            <td style="padding-left: 10px;width: 150px;">
+                                <div id="GroupMachineList"></div>
+                            </td>
+                            <td style="padding-left: 10px;width: 100px;">
+                                Mã cv:
+                            </td>
+                            <td style="padding-left: 10px;width: 150px;">
+                                <div id="WorkIDList"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="row">
+    <section class="col-lg-5 connectedSortable">
+        <div class="box box-primary">
+            @(Html.DevExtreme().Chart()
+            .ID("chart")
+            .CommonSeriesSettings(s => s
+                .ArgumentField("WorkID")
+                .Type(SeriesType.StackedBar)
+            )
+            .Series(s =>
+            {
+                s.Add().ValueField("Number").Name("Số lần");
+            })
+            .Legend(l => l
+                .VerticalAlignment(VerticalEdge.Bottom)
+                .HorizontalAlignment(HorizontalAlignment.Center)
+                .ItemTextPosition(Position.Top)
+            )
+            .ValueAxis(a => a
+                .Add()
+                .Min(3)
+                //.Title(t => t.Text("Số lần"))
+                .Position(Position.Right)
+            )
+            .Title("Ảnh hưởng TGTC các mã")
+            //.Export(e => e.Enabled(true))
+            .OnPointClick("OnPointClick")
+            .Tooltip(t => t
+                .Enabled(true)
+                .Location(ChartTooltipLocation.Edge)
+                .CustomizeTooltip(@<text>
+                    function(arg) {
+                    return {
+                    text: arg.seriesName + " (h): " + arg.valueText
+                    };
+                    }
+                </text>)
+            )
+            .DataSource(Url.Action("GetDataOfStandTimeAffectation", "ProcessingDept", new { fromDate = DateTime.Now, toDate = DateTime.Now })
+            )
+            )
+
+        </div>
+    </section>
+    <section class="col-lg-7 connectedSortable">
+        <div class="box box-primary">
+            <div id="pie2"></div>
+        </div>
+    </section>
+</div>
+
+<div class="row">
+    <section class="col-lg-12 connectedSortable">
+        <div class="box box-primary">
+            <!-- /.box-header -->
+            <div class="box-body">
+                @(Html.DevExtreme().DataGrid<dynamic>()
+                    .ID("GridDetail")
+                    .DataSource(Url.Action("GetDataOfStandTimeAffectation", "ProcessingDept", new { fromDate = DateTime.Now, toDate = DateTime.Now })
+                    ).Selection(select => select.Mode(SelectionMode.Multiple))
+                    .Paging(page => page.PageSize(15))
+                    .Pager(pager => pager.ShowPageSizeSelector(true)
+                        .ShowInfo(true)
+                        .AllowedPageSizes(new List<int> { 15, 30, 50 })
+                    )
+                    .FilterRow(fil => fil.Visible(true))
+                    .FilterPanel(fi => fi.Visible(true))
+                    .SearchPanel(search => search.Visible(true)
+                        .HighlightSearchText(true)
+                        .Width(500)
+                    )
+                    .HeaderFilter(headFil => headFil.Visible(true))
+                    .ShowColumnHeaders(true)
+                    .ShowRowLines(true)
+                    .OnContextMenuPreparing("contextMenu")
+                    .Export(exp => exp.Enabled(true)
+                        .FileName("Exported data")
+                        .AllowExportSelectedData(true)
+                    )
+                    .RemoteOperations(true)
+                )
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+
+    function getToDateValue() {
+        var a = $("#dateToDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getFromDateValue() {
+        var a = $("#dateFromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function ViewReport(e) {
+        GetWTSTotal();
+    }
+
+    function GetWTSTotal() {
+        var fromdate = getFromDateValue();
+        var todate = getToDateValue();
+        var machineGroup = $("#GroupMachineList").dxAutocomplete("instance").option('value');
+        var machineID = $("#MachineList").dxAutocomplete("instance").option('value');
+        var workID = $("#WorkIDList").dxAutocomplete("instance").option('value');
+        $.ajax({
+            url: '@Url.Action("GetDataOfStandTimeAffectation", "ProcessingDept")',
+            dataType: 'JSON',
+            traditional: true,
+            data: { 'fromDate': fromdate, 'toDate': todate, 'machineGroup': machineGroup, 'machineID': machineID, 'workID': workID },
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data.Status == 'NG') {
+                    return;
+                }
+                $('#chart').dxChart('instance').option('dataSource', data.List);
+                $('#GridDetail').dxDataGrid('instance').option('dataSource', data.Detail);
+            }
+        });
+    }
+
+    function OnLegendClick(e) {
+        var arg = e.target;
+        includePie2(this.getAllSeries()[0].getPointsByArg(arg)[0], true);
+    }
+
+    function OnPointClick(e) {
+        includePie2(e, false);
+    }
+
+    function includePie2(e, isLegend) {
+        var secID = '';
+        if (isLegend) {
+            workID = e.data.WorkID;
+        }
+        else {
+            var arg = e.target;
+            workID = arg.data.WorkID;
+        }
+
+        var fromdate = getFromDateValue();
+        var todate = getToDateValue();
+        var machineGroup = $("#GroupMachineList").dxAutocomplete("instance").option('value');
+        var machineID = $("#MachineList").dxAutocomplete("instance").option('value');
+        //workID = $("#WorkIDList").dxAutocomplete("instance").option('value');
+        $.ajax({
+            url: '@Url.Action("sp_242_StandTimeManualChecking_GetTotalForReport_BySubGroup", "ProcessingDept")',
+            dataType: 'JSON',
+            traditional: true,
+            data: { 'fromDate': fromdate, 'toDate': todate, 'workID': workID, 'machineGroup': machineGroup, 'machineID': machineID },
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data.Status == 'NG') {
+                    return;
+                }
+
+                $('#GridDetail').dxDataGrid('instance').option('dataSource', data.Detail);
+                $("#pie2").dxChart({
+                    commonSeriesSettings: {
+                        argumentField: "state",
+                        type: "stackedBar"
+                    },
+                    palette: "bright",
+                    dataSource: data.List,
+                    id: '#pie2',
+                    series: [
+                        {
+                            argumentField: "Sub_WorkID",
+                            valueField: "Number",
+                            name: "Số lần",
+                            label: {
+                                visible: true,
+                                connector: {
+                                    visible: true,
+                                    width: 1
+                                }
+                            }
+                        }
+                    ],
+                    title: "Thống kế ảnh hưởng TGTC: " + workID,
+                    "export": {
+                        enabled: true
+                    },
+                    legend: {
+                        orientation: "horizontal",
+                        itemTextPosition: "right",
+                        horizontalAlignment: "center",
+                        verticalAlignment: "bottom",
+                        columnCount: 8
+                    },
+                    //valueAxis: {
+                    //    min:3,
+                    //},
+                    onPointClick: function (e) {
+                        var point = e.target;
+
+                        toggleVisibility(point);
+                    },
+                    onLegendClick: function (e) {
+                        var arg = e.target;
+
+                        toggleVisibility(this.getAllSeries()[0].getPointsByArg(arg)[0]);
+                    },
+                    customizeText: function (e) {
+                        var name = this.pointName, text;
+                        var pieChart = $("#pie2").dxChart('instance'), percentValue = (pieChart.getAllSeries()[0].getAllPoints()[this.pointIndex].percent * 100).toFixed(2);
+                        return this.pointName + " - " + percentValue + "%";
+                    }
+                });
+            }
+        });
+
+        //var arg = e.target;
+        //var b = arg.data.Country;
+        //alert(b);
+
+        function toggleVisibility(item) {
+            LoadTotalWTSByStaffid(item.data.Sub_Group);
+        }
+    }
+
+    function contextMenu(e) {
+        if (e.row.rowType === "data") {
+            e.items = [{
+                text: "Chi tiết",
+                onItemClick: function () {
+                    var subGroup = e.row.data.Sub_Group;
+                    LoadTotalWTSByStaffid(subGroup);
+                }
+            }];
+        }
+    }
+
+    function LoadTotalWTSByStaffid(subGroup) {
+        var fromdate = getFromDateValue();
+        var todate = getToDateValue();
+        $.ajax({
+            url: '@Url.Action("sp_222_GetWorkingTimeTotal_OVT_ByGroup", "Index")',
+            dataType: 'JSON',
+            traditional: true,
+            data: { 'fromDate': fromdate, 'toDate': todate, 'subGroup': subGroup },
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data == 'NG') {
+                    return;
+                }
+
+                $('#GridDetail').dxDataGrid('instance').option('dataSource', data);
+            }
+        });
+    }
+
+    var groupMachineList = new Array();
+    $.ajax({
+        url: '@Url.Action("ListMachineGroup", "ProcessingDept")',
+        dataType: 'Json',
+        type: 'GET',
+        data: '',
+        cache: false,
+        success: function (data) {
+            groupMachineList = data;
+            var groupMachine = $("#GroupMachineList").dxAutocomplete("instance");
+            if (groupMachine != null) {
+                groupMachine.option('dataSource', groupMachineList);
+            }
+        },
+    });
+
+    $(function () {
+        var workIDList = ['P1Z1',
+                            'PAN1',
+                            'PBJ1',
+                            'PBN1',
+                            'PC61',
+                            'PDZ1',
+                            'PEN1',
+                            'PFN1',
+                            'PIN1',
+                            'PJ61',
+                            'PKJ1',
+                            'PKN1',
+                            'PLJ1',
+                            'PLN1',
+                            'PMJ1',
+                            'PMN1',
+                            'PNN1',
+                            'PON1',
+                            'PPN1',
+                            'PQN1',
+                            'PRN1',
+                            'PSN1',
+                            'PTN1',
+                            'PU71',
+                            'PV61',
+                            'PZE1',
+                            'PZM1'
+        ]
+        $("#WorkIDList").dxAutocomplete({
+            dataSource: workIDList,
+            placeholder: "Mã cv"
+        });
+
+        $("#GroupMachineList").dxAutocomplete({
+            dataSource: groupMachineList,
+            placeholder: "Nhóm máy",
+            onValueChanged: function (data) {
+                group = data.value;
+                $.ajax({
+                    url: '@Url.Action("ListMachineByGroupInMachineList", "ProcessingDept")',
+                    data: { 'Group': group },
+                    dataType: 'JSON',
+                    type: 'POST',
+                    cache: false,
+                    success: function (data) {
+                        var machineList = new Array();
+                        $.each(data, function (i, val) {
+                            machineList.push(val.MachineID);
+                        });
+                        $("#MachineList").dxAutocomplete("instance").option('dataSource', machineList);
+                    },
+                });
+            }
+        });
+
+        $("#MachineList").dxAutocomplete({
+            dataSource: '',
+            placeholder: "Chọn Máy",
+            onValueChanged: function (data) {
+                MachineId = data.value;
+            }
+        });
+    });
+</script>

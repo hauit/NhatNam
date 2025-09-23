@@ -1,0 +1,157 @@
+﻿
+@{
+    
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ToolBorrow>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_ToolBorrowApi")
+        .LoadAction("Get")
+        .UpdateAction("Put")
+        .Key("ID")
+    )
+    .ID("ToolBorrowTotal")
+    .RemoteOperations(true)
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 30, 50})
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .Selection(select => select.Mode(SelectionMode.Single))
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .OnSelectionChanged("SelectedToolBorrow")
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+        columns.AddFor(m => m.Date).AllowEditing(false).Caption("Ngày").Width(90).Format("yyyyMMdd");
+
+        columns.AddFor(m => m.Shift).AllowEditing(false).Caption("Ca").Width(70);
+
+        columns.AddFor(m => m.MachineID).AllowEditing(false).Caption("Máy").Width(120);
+
+        columns.AddFor(m => m.PartNo).AllowEditing(false).Caption("Chi tiết");
+
+        columns.AddFor(m => m.OptionID).AllowEditing(false).Caption("NC").Width(70);
+
+        columns.AddFor(m => m.TimeNeedToGet).AllowEditing(false).Format("yyMMdd HH:mm").Caption("Thời điểm cần").Width(120);
+
+        columns.AddFor(m => m.InputDate).Visible(false).AllowEditing(false);
+
+        columns.AddFor(m => m.Acception).AllowEditing(true).Caption("Đồng ý").Width(80);
+
+        columns.AddFor(m => m.AvailableTime).AllowEditing(true).Format("yyMMdd HH:mm").Caption("Giờ có dao").Width(120).EditorOptions(new {
+            displayFormat = "yyMMdd HH:mm",
+            type = "time"
+        });
+
+        columns.AddFor(m => m.Gotten).AllowEditing(true).Caption("Đã mượn").Width(80);
+    })
+    .OnRowUpdating("CheckDataBeforeUpdate")
+    .OnRowUpdated("ClearDetailDataWhenUpdated")
+    .OnEditingStart("CheckEditToolBorrow")
+    .Editing(e => e
+        .AllowUpdating(true)
+    )
+)
+
+<span><h2>Chi tiết mượn dao</h2></span>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ToolBorrowDetail>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_ToolBorrowDetailApi")
+        .LoadAction("GetByBorrowNo").LoadParams(new { id = new JS("GetNewID") })
+        .UpdateAction("Put")
+        .Key("ID")
+    )
+    .ID("dxToolBorrowDetail")
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+        columns.AddFor(m => m.BorrowNo).AllowEditing(false).Caption("Số phiếu mượn");
+
+        columns.AddFor(m => m.BorrowNew).AllowEditing(false).Caption("Mượn mới");
+
+        columns.AddFor(m => m.BorrowMore).AllowEditing(false).Caption("Mượn thêm");
+
+        columns.AddFor(m => m.Quantity).AllowEditing(false).Caption("Số lượng");
+
+        columns.AddFor(m => m.Note).AllowEditing(false).Caption("Ghi chú");
+
+        columns.AddFor(m => m.ToolDataID).AllowEditing(true).Caption("Tên dao");
+
+        columns.AddFor(m => m.ToolName).AllowEditing(false).Caption("KH dao");
+
+        columns.AddFor(m => m.MakerToolName).AllowEditing(false).Caption("Tên dao của NCC");
+
+        columns.AddFor(m => m.Available).AllowEditing(true).Caption("Có dao");
+    })
+    .OnEditingStart("CheckEditToolBorrowDetail")
+    .Editing(e => e
+        //.AllowAdding(true)
+        .AllowUpdating(true)
+    //.AllowDeleting(true)
+    )
+)
+
+<script>
+    function GetNewID() {
+        return id;
+    }
+
+    var id = 0;
+    function SelectedToolBorrow(e) {
+        id = e.selectedRowsData[0].ID;
+        var gridDetail = $("#dxToolBorrowDetail").dxDataGrid("instance");
+        gridDetail.refresh();
+    }
+
+    function CheckDataBeforeUpdate(e) {
+        var gridDetail = $("#dxToolBorrowDetail").dxDataGrid("instance").option("dataSource");
+        for (var i = 0; i < gridDetail.length; i++) {
+            var toolID = gridDetail[i].ToolDataID;
+            if (toolID == null || toolID.trim() == '')
+            {
+                alert("Chưa xác nhận toolID cho dao " + gridDetail[i].ToolName);
+                cancelEditData();
+                return;
+            }
+        }
+    }
+
+    function CheckEditToolBorrow(e) {
+        var sub_group = '@Session["Group"].ToString()';
+        var staffID = '@Session["SecID"].ToString()';
+
+        if (e.data.MachineID != staffID || sub_group != '') {
+            e.cancel = true;
+        }
+    }
+
+    function CheckEditToolBorrowDetail(e) {
+        var sub_group = '@Session["Group"].ToString()';
+        var staffID = '@Session["SecID"].ToString()';
+        if(sub_group != '')
+        {
+            e.cancel = true;
+        }
+    }
+
+    function ClearDetailDataWhenUpdated(e) {
+        id = 0;
+        $("#dxToolBorrowDetail").dxDataGrid("instance").refresh();
+    }
+</script>

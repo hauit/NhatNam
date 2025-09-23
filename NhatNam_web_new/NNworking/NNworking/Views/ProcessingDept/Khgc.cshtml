@@ -1,0 +1,1297 @@
+﻿
+@{
+    ViewBag.Title = "Kế hoạch gia công";
+}
+
+<section>
+    <div class="box box-body">
+        <div class="col-lg-4">
+            <table>
+                <tr>
+                    <td>
+                        Ngày:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateDate")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Máy")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("loadGroupMachine")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Thu lại")
+                        .ID("btnExpand")
+                        .Type(ButtonType.Normal)
+                        .Width(100)
+                        .OnClick("expandGrid")
+                        )
+                    </td>
+                </tr>
+            </table>
+            <div id="ListPartNeedConfirmBy0194" style="color:red;"></div>
+        </div>
+
+        <div class="col-lg-5">
+            <div id="MachineGroupButton">
+                @*<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val+ '" name="" value="MachineGroupButton" onclick="MachineGroup()">*@
+            </div>
+            <div id="MachineGroupButtonHistory"></div>
+        </div>
+        <div class="col-lg-3 hidden" id="CheckThaoTac_Form">
+            <table style="width:300px;font-size: 14px;" class="table table-advance">
+                <tr>
+                    <td>Nhân viên:</td>
+                    <td><input type="text" id="CheckThaoTac_StaffID" /></td>
+                </tr>
+                <tr>
+                    <td>Mật khẩu:</td>
+                    <td><input type="password" id="CheckThaoTac_Pass" /></td>
+                </tr>
+                <tr>
+                    <td>Số chi tiết:</td>
+                    <td><input type="text" id="CheckThaoTac_NumberOfPart" /></td>
+                </tr>
+                <tr>
+                    <td><input class="btn VP" style="margin-top: 10px;" type="Button" tabindex="" id="Clear_CheckThaoTac" name="" value="Xóa" onclick="Clear_CheckThaoTac()"></td>
+                    <td><input class="btn VP" style="margin-top: 10px;" type="Button" tabindex="" id="Hide_CheckThaoTac" name="" value="Ẩn" onclick="Hide_CheckThaoTac()"></td>
+                </tr>
+            </table>
+        </div>
+        <input class="btn VP" style="margin-top: 10px;" type="Button" tabindex="" id="Show_CheckThaoTac" name="" value="Hiện" onclick="CheckThaoTac()">
+    </div>
+
+
+    @*<div id="ShiftButton">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue('T1')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue('T2')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue('T3')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue('T1')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue('T2')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca HC" onclick="ShiftValue('T0')">
+        </div>
+
+        <div id="MachineGroupButton">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val+ '" name="" value="MachineGroupButton" onclick="MachineGroup()">
+        </div>*@
+
+    <div id="dataGrid">
+        @(Html.DevExtreme().DataGrid<NNworking.Models.sp_GetMachinePlanForFactory_TGTC_Result>()
+            .DataSource(Url.Action("GetMachinePlanForFactory", "ProcessingDept", new { Shift = "", MachineID = "", date = DateTime.Now })//.LoadAction("GetMachinePlanForFactory").Controller("ProcessingDept")
+                                                                                                                                         //.LoadParams(new { Shift = new JS("getShift"), MachineID = new JS("getMachineID"), date = new JS("getDateValue") })
+                                                                                                                                         //.Controller("ProcessingDept")
+                                                                                                                                         //.LoadAction("GetMachinePlanForFactory")
+                                                                                                                                         //.LoadParams(new { Shift ="", MachineID = new JS("getMachineID"), date = new JS("getDateValue") })
+            )
+            .ID("dxDataGrid")
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("Máy_GC")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            //.HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+            .Columns(col =>
+            {
+                //col.AddFor(m => m.TTGC).Width(40);
+                col.AddFor(m => m.Phoi).Caption("P").Width(40).AllowEditing(false);
+                col.AddFor(m => m.Phoidd).Caption("P").Width(250).AllowEditing(false).Visible(false);
+                col.AddFor(m => m.Fille).Caption("CT").Width(40).AllowEditing(false);
+                col.AddFor(m => m.TTFileMem).Caption("File PKT").Width(70).AllowEditing(false);
+                col.AddFor(m => m.Dao).Caption("D").Width(40).AllowEditing(false);
+                col.AddFor(m => m.CBJig).Caption("J").Width(40).AllowEditing(false);
+                col.AddFor(m => m.NG_Old).Caption("NG").Width(40).AllowEditing(false);
+                col.AddFor(m => m.OK_Old).Caption("OK").Width(40).AllowEditing(false);
+                col.AddFor(m => m.TinhTrang).Caption("TT Phôi").Width(70).AllowEditing(false);
+                col.AddFor(m => m.Fac_GCXong).Caption("GC xong").Width(70).AllowEditing(false);
+                col.AddFor(m => m.Fac_GCDo).Caption("GC dở").Width(70).AllowEditing(false);
+                col.AddFor(m => m.K).Caption("Mã").Width(40).AllowEditing(false);/////////
+                col.AddFor(m => m.TenChiTiet).Width(200).AllowEditing(false).CellTemplate(new JS("FileHDGC")); ;
+                col.AddFor(m => m.Order).Caption("Order").Width(140).AllowEditing(false).CellTemplate(new JS("LinkToToLenh"));
+                col.AddFor(m => m.TTNC).Caption("NC").Width(40).AllowEditing(false);
+                col.AddFor(m => m.Slglenh).Caption("SLL").Width(40).AllowEditing(false);
+                col.AddFor(m => m.Note).AllowEditing(false);
+                //col.Add().Caption("Thao tác").AllowEditing(false).CellTemplate(new JS("ThaoTac"));
+                //col.Add().Caption("").AllowEditing(false).CellTemplate(new JS("MuonDao"));
+                //col.Add().Caption("").AllowEditing(false).CellTemplate(new JS("TraDao"));
+                ////col.Add().Caption("Đạt TGTC").AllowEditing(false).CellTemplate(new JS("StandTimeAffect"));
+                //col.Add().Caption("Đạt TGTC").AllowEditing(false).CellTemplate(new JS("StandTimeAffect"));
+                col.AddFor(m => m.ThoiHan1).Caption("Thời hạn").AllowEditing(false);
+                col.AddFor(m => m.TGGC1).Caption("TGGC").AllowEditing(false);
+                col.AddFor(m => m.TGGL1).Caption("TGGL").AllowEditing(false);
+                col.AddFor(m => m.PJ61).AllowEditing(false).CellTemplate(new JS("PJ61Affect"));
+                col.AddFor(m => m.PZE1).AllowEditing(false).CellTemplate(new JS("PZE1Affect"));
+                col.AddFor(m => m.PBJ1).AllowEditing(false).CellTemplate(new JS("PBJ1Affect")).Caption("PBJ1/PKJ1");
+                col.AddFor(m => m.PU71).AllowEditing(false).CellTemplate(new JS("PU71Affect"));
+                col.AddFor(m => m.TgTotal).Caption("Tổng thời gian").AllowEditing(false);
+                col.AddFor(m => m.TGTC).AllowEditing(false);
+                col.AddFor(m => m.DKmay).AllowEditing(false);
+                col.AddFor(m => m.Fac_NgayHTtheoKH1).Caption("Ngày HT theo KH").AllowEditing(false);
+                col.AddFor(m => m.PreviousOption).Caption("NC trước").AllowEditing(false).Width(150);
+            })
+            .Editing(e => e
+                //.AllowAdding(true)
+                .AllowUpdating(true)
+                //.AllowDeleting(true)
+                .Mode(GridEditMode.Cell)
+            )
+            .OnRowValidating("ValidateRow")
+            .OnRowPrepared("onRowPrepared")
+            .CustomizeColumns("onCustomizeColumns")
+        //.OnContextMenuPreparing("contextMenu")
+        )
+
+
+    </div>
+</section>
+<div id="ManualExcutionChecking"></div>
+<div id="ListDesDrawNumber">
+</div>
+<div id="ManualExcutionChecking1">
+    
+</div>
+
+<div id="OpenMessage">
+
+</div>
+
+<div id="background-popup"></div>
+
+<script>
+    var Shift = '';
+    var MachineId = '';
+    var Part = '';
+    var NC = '';
+</script>
+<script>
+    var newToolArray = new Array();
+    var toolList = new Array();
+    var toolListInfo = new Array();
+    var selectedTools = new Array();
+
+    $.ajax({
+        url: '@Url.Action("GetToolListForChoosing", "ProcessingDept")',
+        dataType: 'JSON',
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+            if (data.Status != "OK") {
+                alert("Không lấy được danh sách dao. Vui lòng liên hệ với NV PM. " + data.Value);
+                return;
+            }
+
+            toolList = data.ToolList;
+            toolListInfo = data.ToolListInfo;
+        },
+    });
+
+    function Test() {
+        var currentRow = '';
+        //currentRow += '<tr>                                    ';
+        //currentRow += '        <td>Tên dao</td>                ';
+        //currentRow += '        <td>Kí hiệu dao</td>            ';
+        //currentRow += '        <td>Dữ liệu</td>                ';
+        //currentRow += '        <td>Ô tích</td>                 ';
+        //currentRow += '        <td>Ô tích</td>                 ';
+        //currentRow += '        <td><input type="text" /></td>  ';
+        //currentRow += '    </tr>                               ';
+        var i = newToolArray.length;
+        currentRow += '    <tbody>                                                                                                                 ';
+        currentRow += '    <tr>                                                                                                                    ';
+        currentRow += '        <td><div id="TenDao_' + i + '"></div></td>                                                       ';
+        currentRow += '        <td><span id="KhDao_' + i + '"></span></td>                                                         ';
+        currentRow += '        <td><span id="DuLieu_' + i + '">Chưa có </span></td>                                                                ';
+        currentRow += '        <td><input type="checkbox" id="MuonMoi_' + i + '" value="" ></td>                                                   ';
+        currentRow += '        <td><input type="checkbox" id="MuonDB_' + i + '" value="" ></td>                                                    ';
+        currentRow += '        <td><input type="text" value="1" id="Quantity_' + i + '" /></td>                                                    ';
+        currentRow += '        <td><input type="text" id="Note_' + i + '"/></td>                                                                   ';
+        currentRow += '    </tr>                                                                                                                   ';
+        currentRow += '    </tbody>                                                                                                                ';
+
+        newToolArray[i] = i;
+        $("#TestTable").append(currentRow);
+        AddTextBoxAutocomplete(i);
+    }
+
+    function AddTextBoxAutocomplete(i) {
+        $("#TenDao_" + i).dxAutocomplete({
+            dataSource: toolList,
+            placeholder: "Tên dao...",
+            onValueChanged: function (data) {
+                firstName = data.value;
+                ChoiceTool(data.value,i);
+            }
+        });
+    }
+
+    function ChoiceTool(makerToolName, stt) {
+
+
+        for(var i =0; i < toolListInfo.length; i ++)
+        {
+            if (toolListInfo[i].MakerToolName != makerToolName)
+            {
+                continue;
+            }
+
+            $("#KhDao_" + stt).html(toolListInfo[i].ToolName);
+            $("#DuLieu_" + stt).html("Chưa có");
+            document.getElementById("MuonMoi_" + stt).checked = false;
+            document.getElementById("MuonDB_" + stt).checked = false;
+            document.getElementById("MuonDB_" + stt).disabled = true;
+
+            $.ajax({
+                url: '@Url.Action("GetExistedTool", "ProcessingDept")',
+                type: "POST", //JSON
+                dataType: "json",
+                cache: false,
+                data: { 'makerToolName': makerToolName, 'machineID': MachineId },
+                success: function (data) {
+                    if (data.Value.length > 0) {
+                        $("#DuLieu_" + stt).html("Đã có");
+                        document.getElementById("MuonMoi_" + stt).disabled = true;
+                        document.getElementById("MuonDB_" + stt).disabled = false;
+                    }
+
+                }
+            });
+            break;
+        }
+    }
+
+    function PJ61Affect(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var value = options.data.PJ61;
+        if (value == 0) {
+            value = '0';
+        }
+
+        $('<div id="dxButton_StandTimeAffect_PJ61_' + id + '" /><a href="#" onclick ="GenerateDataForCheckStandTime(' + id + ', \'PJ61\')">' + value + '</a></div>').appendTo(container);
+
+    }
+
+    function PZE1Affect(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var value = options.data.PZE1;
+        if (value == 0) {
+            value = '0';
+        }
+
+        $('<div id="dxButton_StandTimeAffect_PZE1_' + id + '" /><a href="#" onclick ="GenerateDataForCheckStandTime(' + id + ', \'PZE1\')">' + value + '</a></div>').appendTo(container);
+
+    }
+
+    function PBJ1Affect(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var value = options.data.PBJ1;
+        if (value == 0) {
+            value = '0';
+        }
+
+        $('<div id="dxButton_StandTimeAffect_PBJ1_' + id + '" /><a href="#" onclick ="GenerateDataForCheckStandTime(' + id + ', \'PBJ1\')">' + value + '</a></div>').appendTo(container);
+
+    }
+
+    function PU71Affect(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var value = options.data.PU71;
+        if (value == 0) {
+            value = '0';
+        }
+
+        $('<div id="dxButton_StandTimeAffect_PU71_' + id + '" /><a href="#" onclick ="GenerateDataForCheckStandTime(' + id + ', \'PU71\')">' + value + '</a></div>').appendTo(container);
+
+    }
+
+    var CheckList = new Array();
+    function GenerateDataForCheckStandTime(id, code) {
+        DisplayManualExcutionChecking();
+        CheckList = new Array();
+        $.ajax({
+            url: '@Url.Action("GetDataForCheckStandTime", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'plannID': id, 'wtsID': code },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+                var list = new Array();
+                CheckList = data.CheckList;
+                var htmlCode = data.Values + '<input class="btn VP" style="margin - top: 10px; " type="Button" tabindex="" id="Show_CheckThaoTac" name="" value="Xong" onclick="CheckStandTimeFinish(' + id + ')">';
+                $("#ManualExcutionChecking").html('');
+                $("#ManualExcutionChecking").html(htmlCode);
+            }
+        });
+    }
+
+    function CheckStandTimeFinish(plannID) {
+        var staffID = $("#CheckThaoTac_StaffID").val();
+        var pass = $("#CheckThaoTac_Pass").val();
+        var leader = $("#LeaderConfirm").val();
+        if (leader == '')
+        {
+            alert("Trưởng nhóm không được để trống");
+            return;
+        }
+
+        var expectedProcessingTime = $("#ExpectedProcessingTime").dxDateBox("instance").option('value');
+        var listResult = new Array();
+        for (var i = 0; i < CheckList.length; i++)
+        {
+            var value = $("#CheckingStandTime_" + CheckList[i].WorkID + "_" + CheckList[i].Sub_WorkID).is(":checked");
+            var data = [CheckList[i].WorkID, CheckList[i].Sub_WorkID, value.toString()];
+            listResult.push(JSON.stringify(data));
+        }
+
+        $.ajax({
+            url: '@Url.Action("CheckStandTimeFinish", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'plannID': plannID, 'listResult': listResult, 'leader': leader, 'expectedProcessingTime': expectedProcessingTime, 'staffID': staffID, 'pass': pass },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                HidenManualExcutionChecking();
+            }
+        });
+    }
+
+    function TTTraDao(container, options) {
+        var row = options.data;
+        var id = row.ID;
+        var ToolID = row.ToolDataID;
+        var ToolName = row.ToolName;
+        var ToolMakerName = row.MakerToolName;
+        var ReturnTool = row.ReturnTool;
+        var Quantity = row.Quantity;
+        var Acception = row.Acception;
+        var BorrowNo = row.BorrowNo;
+
+        $('<div id="dxButton_TraDao_' + id + '" /><a href="#" onclick ="SendReturnToolItem(' + id + ',\'' + ToolID + '\',\'' + ToolName + '\',\'' + ToolMakerName + '\',\'' + Quantity + '\',\'' + ReturnTool + '\',\'' + Acception + '\',\'' + BorrowNo + '\')">Trả dao</a></div>').appendTo(container);
+
+    }
+
+    function SendReturnToolItem(id, ToolID, ToolName, ToolMakerName, Quantity, ReturnTool, Acception, BorrowNo)
+    {
+        var data = {
+            ToolID: ToolID,
+            ToolName: ToolName,
+            ToolMakerName: ToolMakerName,
+            Quantity: Quantity,
+            ReturnTool: ReturnTool,
+            ReturnTime: null,
+            Acception: Acception,
+            AcceptTime: null,
+            BorrowNo: BorrowNo
+        };
+
+        $.ajax({
+            url: '@Url.Action("SendReturnToolItem", "ProcessingDept")',
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            data: { 'data': data },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert("Không lấy được danh sách dao. Vui lòng liên hệ với NV PM. " + data.Value);
+                    return;
+                }
+
+                alert("OK");
+            },
+        });
+    }
+
+    function TraDao(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var checkedNumber = options.data.CheckedNumber;
+        var checkingItemNumber = options.data.CheckingItemNumber;
+        var maxCheckingNumber = options.data.MaxNumber;
+        var part = options.data.TenChiTiet;
+        var nc = options.data.TTNC;
+        var optionID = options.data.Số_NC;
+
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $('<div id="dxButton_TraDao_' + id + '" /><a href="#" onclick ="GenerateDataForTraDao(' + id + ',\'' + part + '\',\'' + nc + '\',\'' + optionID + '\')">Trả dao</a></div>').appendTo(container);
+
+    }
+
+    function MuonDao(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var checkedNumber = options.data.CheckedNumber;
+        var checkingItemNumber = options.data.CheckingItemNumber;
+        var maxCheckingNumber = options.data.MaxNumber;
+        var part = options.data.TenChiTiet;
+        var nc = options.data.TTNC;
+        var optionID = options.data.Số_NC;
+
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $('<div id="dxButton_MuonDao_' + id + '" /><a href="#" onclick ="GenerateDataForMuonDao(' + id + ',\'' + part + '\',\'' + nc + '\',\'' + optionID + '\')">Mượn dao</a></div>').appendTo(container);
+
+    }
+
+    function FileHDGC(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var nc = options.data.NC;
+        var part = options.data.TenChiTiet;
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $('<div id="dxButton_FileHDGC_' + id + '" /><a href="#" onclick ="TimFileHDGC(\'' + part + '\',\'' + nc + '\')">' + part + '</a></div>').appendTo(container);
+
+    }
+
+    function TimFileHDGC(part, nc)
+    {
+        //var win = window.open('PdfViewer/' + part + '_' + nc + '.html', part);
+    }
+
+    function ThaoTac(container, options) {
+        var id = options.data.ID;
+        var row = options.data;
+        var checkedNumber = options.data.CheckedNumber;
+        var checkingItemNumber = options.data.CheckingItemNumber;
+        var maxCheckingNumber = options.data.MaxNumber;
+
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        if (options.data.GiaThanh == 1) {
+            if (checkedNumber > 0 && checkedNumber < maxCheckingNumber) {
+                $("<div id='dxButton_ThaoTac_" + id + "'/>").dxButton({
+                    text: 'Thao tác',
+                    stylingMode: "outlined",
+                    type: "danger",
+                    onClick: function () {
+                        GenerateDataForCheck(row, true);
+                    }
+                }).appendTo(container);
+
+                AddElementAttribute(id, "style", "background-color: #fff;color: #d43f3a;border: 1px solid #d43f3a;");
+                return;
+            }
+
+            if (checkedNumber >= maxCheckingNumber && maxCheckingNumber != 0) {
+                $("<div id='dxButton_ThaoTac_" + id + "'/>").dxButton({
+                    text: 'Thao tác',
+                    stylingMode: "text",
+                    type: "danger",
+                    onClick: function () {
+                        GenerateDataForCheck(row, true);
+                    }
+                }).appendTo(container);
+
+                AddElementAttribute(id, "style", "background-color: #fff;color: #d43f3a;border: 0px solid #d43f3a;");
+                return;
+            }
+
+            $("<div id='dxButton_ThaoTac_" + id + "'/>").dxButton({
+                text: 'Thao tác',
+                stylingMode: "contained",
+                type: "danger",
+                onClick: function () {
+                    GenerateDataForCheck(row, true);
+                }
+            }).appendTo(container);
+            return;
+        }
+
+        if (checkedNumber > 0 && checkedNumber < maxCheckingNumber) {
+            $("<div id='dxButton_ThaoTac_" + id + "'/>").dxButton({
+                text: 'Thao tác',
+                stylingMode: "outlined",
+                type: "success",
+                css: "outlined",///////
+                onClick: function () {
+                    GenerateDataForCheck(row, false);
+                }
+            }).appendTo(container);
+
+            AddElementAttribute(id, "style", "background-color: #fff;color: #5cb85c;border: 1px solid #398439;");
+            return;
+        }
+
+        if (checkedNumber >= maxCheckingNumber && maxCheckingNumber != 0) {
+            $("<div id='dxButton_ThaoTac_" + id + "'/>").dxButton({
+                text: 'Thao tác',
+                stylingMode: "text",
+                type: "success",
+                onClick: function () {
+                    GenerateDataForCheck(row, false);
+                }
+            }).appendTo(container);
+
+            AddElementAttribute(id, "style", "background-color: #fff;color: #5cb85c;border: 0px solid #398439;");
+            return;
+        }
+
+        $("<div id='dxButton_ThaoTac_" + id + "'/>").dxButton({
+            text: 'Thao tác',
+            stylingMode: "outlined",
+            type: "success",
+            onClick: function () {
+                GenerateDataForCheck(row, false);
+            }
+        }).appendTo(container);
+        return;
+    }
+
+    function AddElementAttribute(id, htmlTag, content) {
+        var element = document.getElementById("dxButton_ThaoTac_" + id);
+        element.setAttribute(htmlTag, content);
+    }
+
+    var listHtmlCode = new Array();
+    function DisplayManualExcutionChecking() {
+        $("#ManualExcutionChecking").fadeIn("200");
+        $("#background-popup").fadeIn("200");
+        popupStatus = 2;
+    }
+
+    function HidenManualExcutionChecking() {
+        $("#ManualExcutionChecking").fadeOut("200");
+        $("#background-popup").fadeOut("200");
+        popupStatus = 0;
+    }
+
+    function GenerateDataForTraDao(id, part, nc, optionID) {
+        $("#dxToolNeedToReturn").dxDataGrid("instance").refresh();
+        $("#ListDesDrawNumber").trigger("click");
+    }
+
+    function GenerateDataForMuonDao(id, part, nc, optionID)
+    {
+        Part = part;
+        NC = optionID;
+        DisplayManualExcutionChecking();
+        var html = '';
+        html += '<table id="TestTable" class="table table-bordered" style="background:#ccc">                                                           ';
+        html += '<thead style="text-align:center;">                                                                                                    ';
+        html += '    <tr>                                                                                                                              ';
+        html += '        <td colspan="7"><h3>Yêu cầu mượn dao</h3></td>                                                                                ';
+        html += '    </tr>                                                                                                                             ';
+        html += '    <tr>                                                                                                                              ';
+        html += '        <td>Tên chi tiết</td>                                                                                                         ';
+        html += '        <td colspan="2">' + part + '</td>                                                                                             ';
+        html += '        <td>NC</td>                                                                                                                   ';
+        html += '        <td colspan="3">' + nc + '</td>                                                                                               ';
+        html += '    </tr>                                                                                                                             ';
+        //html += '    <tr>                                                                                                                              ';
+        //html += '        <td colspan="3">Yêu cầu mượn dao</td>                                                                                         ';
+        //html += '        <td colspan="4">Tích để mượn</td>                                                                                             ';
+        //html += '    </tr>                                                                                                                             ';
+        html += '    <tr>                                                                                                                              ';
+        html += '        <td>Kí hiệu dao</td>                                                                                                              ';
+        html += '        <td>Tên dao</td>                                                                                                          ';
+        html += '        <td>Dữ liệu</td>                                                                                                              ';
+        html += '        <td>Mượn mới</td>                                                                                                             ';
+        html += '        <td colspan="1">Mượn thêm</td>                                                                             ';
+        html += '        <td>Số lượng</td>                                                                                                             ';
+        html += '        <td>Ghi chú</td>                                                                                                             ';
+        html += '    </tr>                                                                                                                             ';
+        html += '</thead>                                                                                                                              ';
+        html += '<tbody>                                                                                                                               ';
+        //html += '    <tr>                                                                                                                              ';
+        //html += '        <td>Tên dao</td>                                                                                                              ';
+        //html += '        <td>Kí hiệu dao</td>                                                                                                          ';
+        //html += '        <td>Dữ liệu</td>                                                                                                              ';
+        //html += '        <td><input type="checkbox" id="manualCheck_23_2" value="" onclick=""></td>                                                    ';
+        //html += '        <td><input type="checkbox" id="manualCheck_23_2" value="" onclick=""></td>                                                    ';
+        //html += '        <td><input type="text" /></td>                                                                                                ';
+        //html += '        <td><input type="text" value="1" /></td>                                                                                      ';
+        //html += '    </tr>                                                                                                                             ';
+        $.ajax({
+            url: '@Url.Action("GetToolListForPartProcessing", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'id': id },
+            success: function (data) {
+                if (data.Status != "OK")
+                {
+                    alert(data.Value);
+                    return;
+                }
+
+                $.each(data.Value, function (i, val) {
+                    html += '    <tr>                                                                                                                    ';
+                    html += '        <td><div id="TenDao_' + i + '" /></div></td>                                     ';
+                    html += '        <td><span id="KhDao_' + i + '">' + val.KHDao + '</span></td>                                        ';
+                    html += '        <td><Span id="DuLieu_' + i + '">Chưa có </Span></td>                                                                ';
+                    html += '        <td><input type="checkbox" id="MuonMoi_' + i + '" value="" ></td>                                                   ';
+                    html += '        <td><input type="checkbox" id="MuonDB_' + i + '" value="" ></td>                                                    ';
+                    html += '        <td><input type="text" value="1" id="Quantity_' + i + '" /></td>                                                    ';
+                    html += '        <td><input type="text" id="Note_' + i + '"/></td>                                                                   ';
+                    html += '    </tr>                                                                                                                   ';
+                    newToolArray[i] = i;
+                });
+                html += '</tbody>                                                                                                                              ';
+                html += '                                                                                                                                      ';
+                html += '</table>                                                                                                                              ';
+                html += '<div id="TimeMuon"></div>';
+                html += '<input class="btn VP" style="margin-top: 10px; " type="Button" tabindex="" id="Show_CheckThaoTac" name="" value="Gửi" onclick="SendListToolForBorrow()">     ';
+                html += '<input class="btn VP" style="margin-top: 10px; width:100px; " type="Button" tabindex="" id="Show_CheckThaoTac" name="" value="Thêm dao" onclick="Test()">     ';
+                $("#ManualExcutionChecking").html(html);
+                $.each(data.Value, function (i, val) {
+                    ChoiceTool(val.TenDao, i);
+                    AddTextBoxAutocomplete(i);
+                    $("#TenDao_" + i).dxAutocomplete("instance").option("value",val.TenDao);
+                });
+                AddTimeMuon('TimeMuon');
+            }
+        });
+    }
+
+    function SendListToolForBorrow()
+    {
+        var listTool = new Array();
+        var TimeNeedToGet = $("#TimeMuon").dxDateBox("instance").option("value").toISOString();
+        var borrowNoData = { MachineID: MachineId, PartNo: Part, OptionID: NC, Shift: Shift, TimeNeedToGet: TimeNeedToGet };
+        for(var i = 0; i < newToolArray.length; i ++)
+        {
+            var tenDao = $("#TenDao_" + i).dxAutocomplete("instance").option("value");// $("#TenDao_" + i).val();
+            var muonMoi = $("#MuonMoi_" + i).is(":checked");
+            var muonThem = $("#MuonDB_" + i).is(":checked");
+            var slg = $("#Quantity_" + i).val();
+            var note = $("#Note_" + i).val();
+            var KHDao = $("#KhDao_" + i).html();
+            if (tenDao == null || (muonMoi == false && muonThem == false))
+            {
+                continue;
+            }
+
+            if (slg <= 0 || !$.isNumeric(slg))
+            {
+                alert("Chưa nhập số lượng cho dao " + tenDao);
+                return;
+            }
+
+            if (muonThem == true && note == "")
+            {
+                alert(tenDao + " mượn thêm thì cần nhập ghi chú.");
+                return;
+            }
+
+            var tool = { MakerToolName: tenDao, ToolName: KHDao, BorrowNew: muonMoi, BorrowMore: muonThem, Quantity: slg, Note: note };
+            listTool.push(tool);
+        }
+
+        if (listTool.length == 0)
+        {
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("SendListToolForBorrow", "ProcessingDept")',
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            data: { 'toolBorrow': borrowNoData, 'listDetail': listTool },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert("Không lấy được danh sách dao. Vui lòng liên hệ với NV PM. " + data.Value);
+                    return;
+                }
+
+            },
+        });
+    }
+
+    function AddTimeMuon(idTag) {
+        var now = new Date();
+        $("#" + idTag).dxDateBox({
+            type: "datetime",
+            value: now
+        });
+    }
+
+    function GenerateDataForCheck(e, heightPrice) {
+        var id = e.ID;
+        DisplayManualExcutionChecking();
+        var number = $("#CheckThaoTac_NumberOfPart").val();
+        if (number == '') {
+            number = 1;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetDataForCheckExecution", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'heightPrice': heightPrice, 'planID': id, 'number': number },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+                var html = '';
+                html += '<div id="ShowDataForCheck_panel"></div>';
+                listHtmlCode = data.HtmlCodes;
+                var itemIndex = 0;
+                $.each(data.Values, function (i, val) {
+                    var start = itemIndex * number;
+                    //var finish = val.Index * number;
+                    if (i != start || itemIndex >= listHtmlCode.length) {
+                        return;
+                    }
+
+                    if (val.Key.Checked) {
+                        itemIndex += 1;
+                        return;
+                    }
+
+                    var caption = itemIndex + 1;
+                    if (number > 1) {
+                        caption = (itemIndex * number + 1) + '-' + ((itemIndex + 1) * number);
+                    }
+
+                    itemIndex += 1;
+                    if (val.Key.Checkednumber > 0) {
+                        html += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="CheckNumber_' + val.Index + '" name=""  value="' + caption + '" onclick="ShowDataForCheck(\'' + itemIndex + '\')"> ';
+                        return;
+                    }
+
+                    html += '<input class="btn btn-green" style="margin-top: 10px;background-color:#d9534f" type="Button" tabindex="" id="CheckNumber_' + val.Index + '" name=""  value="' + caption + '" onclick="ShowDataForCheck(\'' + itemIndex + '\')"> ';
+                });
+
+                if (html == '') {
+                    html = 'Đã check thao tác đủ cho tất cả các chi tiết';
+                }
+                //html += '<input class="btn VP" style="margin-top: 10px;" type="Button" tabindex="" id="CheckOK" name=""  value="Xong" onclick="InputManualChecking()"> ';
+                $("#ManualExcutionChecking").html(html);
+            }
+        });
+
+    }
+
+    function ShowDataForCheck(index) {
+        var html = listHtmlCode[index - 1];
+        $("#ShowDataForCheck_panel").html(html);
+    }
+
+    function ManualCheck(e, SLL, STT, id) {
+        var value = $("#manualCheck_" + SLL + "_" + STT).is(":checked");
+        if (!value) {
+            return;
+        }
+
+        var staffID = $("#CheckThaoTac_StaffID").val();
+        var pass = $("#CheckThaoTac_Pass").val();
+        var number = $("#CheckThaoTac_NumberOfPart").val();
+        if (number == '') {
+            number = 1;
+        }
+
+        $.ajax({
+            url: '@Url.Action("CheckingExecution", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'plannID': e, 'check': value, 'content': id, 'partIndex': SLL, 'staffID': staffID, 'pass': pass, 'numberOfPart': number, 'shift': Shift },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+                document.getElementById("manualCheck_" + SLL + "_" + STT).disabled = true;
+            }
+        });
+    }
+
+    function InputManualChecking() {
+        $("#ManualExcutionChecking").fadeOut("200");
+        SelectedMachine(MachineId);
+    }
+
+    function onCustomizeColumns(columns) {
+
+        for (var i = 0; i < columns.length; i++) {
+            var dataField = columns[i].dataField;
+            var mayDotDap = MachineId.toLowerCase().startsWith("tru") || MachineId.toLowerCase().startsWith("viadd");
+            switch (dataField) {
+                case "Phoi":
+                case "Fille":
+                case "Dao":
+                case "TTFileMem":
+                case "CBJig":
+                case "TinhTrang":
+                    if (mayDotDap) {
+                        columns[i].visible = false;
+                        break;
+                    }
+
+                    columns[i].visible = true;
+                case "Fac_GCXong":
+                case "Fac_GCDo":
+                    if (dataField == 'TTFileMem') {
+                        break;
+                    }
+
+                    if (MachineId == '@Session["StaffID"].ToString()') {
+                        columns[i].allowEditing = true;
+                    }
+                    break;
+                case "Phoidd":
+                case "Nesting":
+                    if (mayDotDap) {
+                        columns[i].visible = true;
+                        break;
+                    }
+
+                    columns[i].visible = false;
+                    break;
+            }
+
+        }
+    }
+
+    function onRowPrepared(rowElement) {
+        if (rowElement.rowType != "data") {
+            return;
+        }
+
+        var note = rowElement.data.Note.toLowerCase();
+        var canGap = note.indexOf("can") != -1 || note.indexOf("cần") != -1 || note.indexOf("gấp") != -1 || note.indexOf("gap") != -1 || note.indexOf("gâp") != -1;
+        if (canGap) {
+            rowElement.rowElement.css("background", "#93D7F4");
+        }
+    }
+
+    var visible = true;
+    function expandGrid(e) {
+        visible = visible == false ? true : false;
+        $('#dxDataGrid').dxDataGrid('columnOption', 'ThoiHan1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'TGGC1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'TGGL1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'PJ61', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'PZE1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'PBJ1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'PU71', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'TgTotal', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'TGTC', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'Fac_NgayHTtheoKH1', 'visible', visible);
+        $('#dxDataGrid').dxDataGrid('columnOption', 'Fac_NGTruoc', 'visible', visible);
+
+        if (visible == false) {
+            $('#btnExpand').dxButton('option', 'text', 'Mở rộng');
+
+        }
+        else {
+            $('#btnExpand').dxButton('option', 'text', 'Thu lại');
+        }
+    }
+
+    function contextMenu(e) {
+        if (e.row.rowType === "data") {
+            e.items = [
+            {
+                text: "Kiểm tra thao tác",
+                onItemClick: function () {
+                    $.ajax({
+                        url: '@Url.Action("NeedToMakeExcutionCheck", "ProcessingDept")',
+                        type: "POST",
+                        data: {
+                            'id': e.row.data.ID
+                        }, //JSON
+                        dataType: "json",
+                        cache: false,
+                        success: function (data) {
+                            if (data.Status == "OK") {
+                                $("#dxDataGrid").dxDataGrid("instance").refresh();
+                            }
+                            else {
+                                alert(data.Values);
+                            }
+                        }
+                    });
+                }
+            }];
+        }
+    }
+    function CheckThaoTac() {
+        $("#CheckThaoTac_Form").fadeIn(200);
+        $("#CheckThaoTac_Form").removeClass("hidden");
+        $("#Show_CheckThaoTac").fadeOut(200);
+    }
+
+    function ValidateRow(e) {
+        var dataGrid = e.component;
+        var rowIndex = dataGrid.getRowIndexByKey(e.key);
+        //alert(rowIndex);
+        //alert(e.key.ID1);
+        //dataGrid.getCellElement(rowIndex, "StaffID").find("input").css("border", "1px solid red");
+        var data1 = e.newData;
+        var object1 = new Array();
+        object1.push(JSON.stringify(data1));
+
+        var data = {
+            'ID': e.key.ID
+            , 'Order': e.key.Order
+            , 'Số_NC': e.key.Số_NC
+            , 'Máy_GC': e.key.Máy_GC
+            , 'Slglenh': e.key.Slglenh
+            , 'Bắt_đầu': e.key.Bắt_đầu
+            , 'Kết_thúc': e.key.Kết_thúc
+            , 'TGGL': e.key.TGGL
+            , 'TenChiTiet': e.key.TenChiTiet
+            , 'K': e.key.K
+            , 'date': e.key.date
+            , 'shift': e.key.shift
+            , 'ThoiHan': e.key.ThoiHan
+            , 'TinhTrang': e.key.TinhTrang
+            , 'DKmay': e.key.DKmay
+            , 'SoJig': e.key.SoJig
+            , 'TTNC': e.key.TTNC
+            , 'dept': e.key.dept
+            , 'Jig': e.key.Jig
+            , 'Note': e.key.Note
+            , 'RegisterDate': e.key.RegisterDate
+            , 'C10_': e.key.C10_
+            , 'C20_': e.key.C20_
+            , 'C80_': e.key.C80_
+            , 'Via_check1': e.key.Via_check1
+            , 'Via_check2': e.key.Via_check2
+            , 'Via_ghi_chu': e.key.Via_ghi_chu
+            , 'Fac_NgayHTtheoKH': e.key.Fac_NgayHTtheoKH
+            , 'Fac_TT': e.key.Fac_TT
+            , 'Fac_NGTruoc': e.key.Fac_NGTruoc
+            , 'Fac_TTFile': e.key.Fac_TTFile
+            , 'Fac_Phoi': e.key.Fac_Phoi
+            , 'Fac_File': e.key.Fac_File
+            , 'Fac_Dao': e.key.Fac_Dao
+            , 'Fac_Jig': e.key.Fac_Jig
+            , 'Fac_TTTH': e.key.Fac_TTTH
+            , 'Fac_DaChuanBi': e.key.Fac_DaChuanBi
+            , 'Fac_TTGC': e.key.Fac_TTGC
+            , 'Fac_DeXuat': e.key.Fac_DeXuat
+            , 'Fac_OK_Old': e.key.Fac_OK_Old
+            , 'Fac_NG_Old': e.key.Fac_NG_Old
+            , 'Fac_Dc': e.key.Fac_Dc
+            , 'Fac_MachineID': e.key.Fac_MachineID
+            , 'Fac_GCDo': e.key.Fac_GCDo
+            , 'Fac_GCXong': e.key.Fac_GCXong
+            , 'KT_Sup': e.key.KT_Sup
+            , 'KT_TGUKB1': e.key.KT_TGUKB1
+            , 'KT_TongTG': e.key.KT_TongTG
+            , 'KT_TTPhoi': e.key.KT_TTPhoi
+            , 'KT_GiaHang': e.key.KT_GiaHang
+            , 'KT_KHXN': e.key.KT_KHXN
+            , 'KT_LyDoKHTKH': e.key.KT_LyDoKHTKH
+            , 'KT_DgoiTay': e.key.KT_DgoiTay
+            , 'MachineStatus': e.key.MachineStatus
+            , 'TGGC1': e.key.TGGC1
+            , 'TGGL1': e.key.TGGL1
+            , 'Phoi': e.key.Phoi
+            , 'Fille': e.key.Fille
+            , 'Dao': e.key.Dao
+            , 'CBJig': e.key.CBJig
+            , 'DC': e.key.DC
+            , 'OK_Old': e.key.OK_Old
+            , 'NG_Old': e.key.NG_Old
+            , 'TTGC': e.key.TTGC
+            , 'PJ61': e.key.PJ61
+            , 'PBJ1': e.key.PBJ1
+            , 'PU71': e.key.PU71
+            , 'PZE1': e.key.PZE1
+            , 'TgTotal': e.key.TgTotal
+            , 'TGTC': e.key.TGTC
+            , 'ThoiHan1': e.key.ThoiHan1
+            , 'Fac_NgayHTtheoKH1': e.key.Fac_NgayHTtheoKH1
+            , 'lv': e.key.lv
+        };
+        //var object = new Array();
+        //object.push(JSON.stringify(data));
+
+        $.ajax({
+            url: '@Url.Action("MachinePlanningValidateRow", "ProcessingDept")',
+            type: "POST", //JSON
+            dataType: "json",
+            cache: false,
+            data: { 'data': data, 'dataNew': object1 },
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+            }
+        });
+    }
+</script>
+<script>
+
+    var popupStatus = 0;
+    $(document).ready(function () {
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            //$("#banga").html('<td><b>Bàn gá:</b></td> <td>' + palet + '</td>');
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus >= 1) {
+                $("#ShiftButton").fadeOut(200);
+                $("#MachineGroupButton").fadeOut(200);
+                $("#OptionIDButtonTotal").fadeOut(200);
+                $("#OptionIDButton").fadeOut(200);
+                $("#background-popup").fadeOut(200);
+                $("#ManualExcutionChecking").fadeOut(200);
+                $("#ListDesDrawNumber").fadeOut(200);
+                if (popupStatus == 2) {
+                    $("#CheckOK").trigger("click");
+                }
+
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadShiftPopup() {
+            if (popupStatus == 0) {
+                $("#ShiftButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadListDesDrawNumber() {
+            if (popupStatus == 0) {
+                $("#ListDesDrawNumber").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadMachineGroupPopup() {
+            if (popupStatus == 0) {
+                $("#MachineGroupButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        /** các hàm gọi sự kiện click **/
+        $("#ShiftBT").click(function () {
+            loadShiftPopup();
+        });
+
+        $("#btnView").click(function () {
+            loadMachineGroupPopup();
+        });
+
+        $("#ListDesDrawNumber").click(function () {
+            loadListDesDrawNumber();
+        });
+        // lấy lại kế hoạch sau 1 khoảng thời gian
+
+        //setInterval(function () {
+        //    if (MachineId != '') {
+        //        GetPlanOfMachine();
+        //    }
+        //}, 1000 * 30);
+    })
+
+    function loadGroupMachine() {
+        $.ajax({
+            url: '@Url.Action("ListMachineGroup", "ProcessingDept")',
+            dataType: 'Json',
+            type: 'GET',
+            data: '',
+            cache: false,
+            success: function (data) {
+                var GroupMachineBT = "";
+                $.each(data, function (i, val) {
+                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val + '" name=""  value="' + val + '" onclick="ListMachine(\'' + val + '\')"> ';
+                });
+                $("#MachineGroupButton").html(GroupMachineBT);
+            },
+        });
+    }
+
+    function LinkToToLenh(container, options) {
+        var order = options.data.Order;
+        var id = options.data.ID;
+        var grid = $("dxDataGrid").dxDataGrid("instance");
+        $('<div id="dxButton_LinkToToLenh_' + id + '" /><a href="#" onclick ="OpentoLenh(\'' + order + '\')">' + order + '</a></div>').appendTo(container);
+
+    }
+
+    function OpentoLenh(order) {
+        var win = window.open('@Url.Action("ToLenh", "Planning")/?order=' + order, order);
+    }
+
+    function getDateValue() {
+        var a = $("#dateDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getShift() {
+        return "T1";
+    }
+
+    function getMachineID() {
+        return MachineId;
+    }
+
+    function ListMachine(data) {
+        var list_Shift = '';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue(\'T1\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue(\'T2\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue(\'T3\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue(\'T1\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue(\'T2\',\'' + data + '\')"> ';
+        list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca HC" onclick="ShiftValue(\'T0\',\'' + data + '\')"> ';
+        $("#MachineGroupButton").html(list_Shift);
+
+    }
+
+    function ShiftValue(data, group) {
+        Shift = data;
+        $("#ShiftButton").append("<br/>" + Shift);
+        $.ajax({
+            url: '@Url.Action("ListMachineByGroup", "ProcessingDept")',
+            data: { 'Group': group, 'shift': Shift },
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                var a = '';
+                if (data != null) {
+                    $.each(data, function (i, val) {
+                        if (val.HavePlan == true) {
+                            a += '<input class="btn btn-green" style="margin-top: 10px;background-color: red;" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick="SelectedMachine(\'' + val.MachineID + '\')"> ';
+                            return;
+                        }
+
+                        a += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick="SelectedMachine(\'' + val.MachineID + '\')"> ';
+                    });
+                    $("#MachineGroupButton").html(a);
+                }
+                else {
+                    $("#MachineGroupButton").html(nulldata);
+                }
+            },
+        });
+
+    }
+
+
+    function SelectedMachine(data) {
+        MachineId = data;
+        GetPlanOfMachine();
+        var msg = '<h3><span style="color:red;">Bạn đang xem kế hoạch của máy: ' + MachineId + '</span></h3>';
+        $("#MachineGroupButtonHistory").html(msg);
+    }
+
+    function Clear_CheckThaoTac(data) {
+        $("#CheckThaoTac_StaffID").val('');
+        $("#CheckThaoTac_Pass").val('');
+    }
+
+    function Hide_CheckThaoTac(data) {
+        $("#CheckThaoTac_Form").fadeOut(200);
+        $("#Show_CheckThaoTac").fadeIn(200);
+    }
+
+    function GetPlanOfMachine() {
+        var date = getDateValue();
+        var url = '@Url.Action("GetMachinePlanForFactory", "ProcessingDept")' + "?Shift=" + Shift + "&MachineID=" + MachineId + "&date=" + date;
+        $.ajax({
+            url: '@Url.Action("GetMachinePlanForFactory", "ProcessingDept")',
+            data: { 'Shift': Shift, 'MachineID': MachineId, 'date': date },
+            dataType: 'JSON',
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                var a = $('#dxDataGrid').dxDataGrid('instance');
+                a.option('dataSource', data);
+            },
+        });
+
+        $.ajax({
+            url: '@Url.Action("GetPartNeedConfirmBy0194", "ProcessingDept")',
+            data: { 'Shift': Shift, 'MachineID': MachineId, 'date': date },
+            dataType: 'JSON',
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                var html = '';
+                if (data.length == 0) {
+                    $("#ListPartNeedConfirmBy0194").html(html);
+                    return;
+                }
+
+                html += '     <table>                                    ';
+                html += '     <tr>                                       ';
+                html += '         <td colspan="2" style="padding-left: 10px;">       ';
+                html += ' Danh sách chi tiết cần kiểm soát việc gãy dao endchip25. Đề nghị báo lại cho trưởng nhóm và Mr.Thái 0194 trước khi gia công ';
+                html += '         </td>                                  ';
+                html += '     </tr>                                      ';
+
+                html += '     <tr>                                       ';
+                html += '         <td style="padding-left: 10px;">       ';
+                html += ' Chi tiết ';
+                html += '         </td>                                  ';
+                html += '         <td style="padding-left: 10px;">       ';
+                html += ' Nguyên công ';
+                html += '         </td>                                  ';
+                html += '     </tr>                                      ';
+
+                $.each(data, function (i, val) {
+                    html += '     <tr>                                       ';
+                    html += '         <td style="padding-left: 10px;">       ';
+                    html += val.PartID;
+                    html += '         </td>                                  ';
+                    html += '         <td style="padding-left: 10px;">       ';
+                    html += val.OptionID;
+                    html += '         </td>                                  ';
+                    html += '     </tr>                                      ';
+                });
+                html += ' </table>                                       ';
+                $("#ListPartNeedConfirmBy0194").html(html);
+            },
+        });
+    }
+</script>
+

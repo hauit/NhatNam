@@ -895,6 +895,7 @@ warning 6002: The table/view 'NN_Database.dbo.242_Dulieudonhangmoi' does not hav
           <Property Name="UpdateStaff" Type="nvarchar" MaxLength="50" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="Status" Type="int" />
+          <Property Name="Money" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="242_ErrorItemStatus">
           <Key>
@@ -1424,6 +1425,7 @@ warning 6002: The table/view 'NN_Database.dbo.242_OptionData2' does not have a p
           <Property Name="File_HD" Type="bit" />
           <Property Name="Dao" Type="bit" />
           <Property Name="Jig" Type="bit" />
+          <Property Name="PartNoRRC" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="242_PartData">
           <Key>
@@ -5212,6 +5214,7 @@ warning 6002: The table/view 'NN_Database.dbo.242_ErrorItemNotify_View' does not
           <Property Name="UpdateStaff" Type="nvarchar" MaxLength="50" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="Status" Type="int" />
+          <Property Name="Money" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.242_MachinePlanning_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6121,6 +6124,7 @@ warning 6002: The table/view 'NN_Database.dbo.View_242_Part' does not have a pri
           <Property Name="MotGio" Type="float" />
           <Property Name="TachNC" Type="float" />
           <Property Name="DoGa" Type="float" />
+          <Property Name="PartNoRRC" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.View_242_PartData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -10082,7 +10086,8 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
     [242_ErrorItemNotify_View].[Deleted] AS [Deleted], 
     [242_ErrorItemNotify_View].[UpdateStaff] AS [UpdateStaff], 
     [242_ErrorItemNotify_View].[StartDate] AS [StartDate], 
-    [242_ErrorItemNotify_View].[Status] AS [Status]
+    [242_ErrorItemNotify_View].[Status] AS [Status], 
+    [242_ErrorItemNotify_View].[Money] AS [Money]
     FROM [dbo].[242_ErrorItemNotify_View] AS [242_ErrorItemNotify_View]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="242_MachinePlanning_view" EntityType="Self.242_MachinePlanning_view" store:Type="Views" store:Schema="dbo">
@@ -10757,7 +10762,8 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
     [View_242_Part].[VanChuyen] AS [VanChuyen], 
     [View_242_Part].[MotGio] AS [MotGio], 
     [View_242_Part].[TachNC] AS [TachNC], 
-    [View_242_Part].[DoGa] AS [DoGa]
+    [View_242_Part].[DoGa] AS [DoGa], 
+    [View_242_Part].[PartNoRRC] AS [PartNoRRC]
     FROM [dbo].[View_242_Part] AS [View_242_Part]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_242_PartData" EntityType="Self.View_242_PartData" store:Type="Views" store:Schema="dbo">
@@ -12041,32 +12047,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="Date" Type="DateTime" Precision="3" />
           <Property Name="MONumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="C242_Part">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PartNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PartName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SupplierID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UpQty" Type="Int32" />
-          <Property Name="CatID" Type="Int32" Nullable="false" />
-          <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsTool" Type="Boolean" Nullable="false" />
-          <Property Name="GiaThanh" Type="Int32" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="NVL" Type="Double" />
-          <Property Name="LoiNhuan" Type="Double" />
-          <Property Name="VanChuyen" Type="Double" />
-          <Property Name="MotGio" Type="Double" />
-          <Property Name="TachNC" Type="Double" />
-          <Property Name="DoGa" Type="Double" />
-          <Property Name="Phoi" Type="Boolean" />
-          <Property Name="File_HD" Type="Boolean" />
-          <Property Name="Dao" Type="Boolean" />
-          <Property Name="Jig" Type="Boolean" />
         </EntityType>
         <EntityType Name="C242_PartData">
           <Key>
@@ -16527,35 +16507,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="STT" Type="Int64" />
         </EntityType>
-        <EntityType Name="View_242_Part">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="PartNo" />
-            <PropertyRef Name="CustomerID" />
-            <PropertyRef Name="SupplierID" />
-            <PropertyRef Name="CatID" />
-            <PropertyRef Name="Unit" />
-            <PropertyRef Name="IsTool" />
-            <PropertyRef Name="Deleted" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PartNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PartName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SupplierID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UpQty" Type="Int32" />
-          <Property Name="CatID" Type="Int32" Nullable="false" />
-          <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IsTool" Type="Boolean" Nullable="false" />
-          <Property Name="GiaThanh" Type="Int32" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="NVL" Type="Double" />
-          <Property Name="LoiNhuan" Type="Double" />
-          <Property Name="VanChuyen" Type="Double" />
-          <Property Name="MotGio" Type="Double" />
-          <Property Name="TachNC" Type="Double" />
-          <Property Name="DoGa" Type="Double" />
-        </EntityType>
         <EntityType Name="View_242_PartData">
           <Key>
             <PropertyRef Name="ID" />
@@ -16676,28 +16627,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="NGBuoc" Type="Int32" />
           <Property Name="NGNCTruoc" Type="Int32" />
           <Property Name="WorkWhilePLJ1" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="View_242_YCKP">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <Property Name="OrderNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="OptionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MachineID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateYCKP" Type="DateTime" Precision="3" />
-          <Property Name="YCKPContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SolutionContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateYCKPDeadline" Type="DateTime" Precision="3" />
-          <Property Name="YCKPProcessTime" Type="DateTime" Precision="3" />
-          <Property Name="InputStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProcessStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="UpdateStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PartID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Deadline" Type="DateTime" Precision="3" />
-          <Property Name="RaiseDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="View_ManualExcutionChecking_GetCurrent">
           <Key>
@@ -16883,7 +16812,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="C242_OptionData" EntityType="Self.C242_OptionData" />
           <EntitySet Name="C242_OrderType" EntityType="Self.C242_OrderType" />
           <EntitySet Name="C242_P_NhapOrderlapKHGC" EntityType="Self.C242_P_NhapOrderlapKHGC" />
-          <EntitySet Name="C242_Part" EntityType="Self.C242_Part" />
           <EntitySet Name="C242_PartData" EntityType="Self.C242_PartData" />
           <EntitySet Name="C242_PredictErrorCause" EntityType="Self.C242_PredictErrorCause" />
           <EntitySet Name="C242_ShiftHandOver" EntityType="Self.C242_ShiftHandOver" />
@@ -17105,12 +17033,10 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="View_242_MOOption" EntityType="Self.View_242_MOOption" />
           <EntitySet Name="View_242_Option" EntityType="Self.View_242_Option" />
           <EntitySet Name="View_242_OptionData" EntityType="Self.View_242_OptionData" />
-          <EntitySet Name="View_242_Part" EntityType="Self.View_242_Part" />
           <EntitySet Name="View_242_PartData" EntityType="Self.View_242_PartData" />
           <EntitySet Name="View_242_Planning" EntityType="Self.View_242_Planning" />
           <EntitySet Name="View_242_ShiftHandOver" EntityType="Self.View_242_ShiftHandOver" />
           <EntitySet Name="View_242_WTS" EntityType="Self.View_242_WTS" />
-          <EntitySet Name="View_242_YCKP" EntityType="Self.View_242_YCKP" />
           <EntitySet Name="View_ManualExcutionChecking_GetCurrent" EntityType="Self.View_ManualExcutionChecking_GetCurrent" />
           <EntitySet Name="View_ManualExcutionChecking_GetTotal" EntityType="Self.View_ManualExcutionChecking_GetTotal" />
           <EntitySet Name="View_ToLenh" EntityType="Self.View_ToLenh" />
@@ -17676,9 +17602,12 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="PartID" Mode="In" Type="String" />
             <Parameter Name="MONo" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="C242_ErrorItemNotify_New" EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" />
           <EntitySet Name="C242_ErrorItemStatus" EntityType="NN_DatabaseModel.C242_ErrorItemStatus" />
+          <EntitySet Name="C242_ErrorItemNotify_New" EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" />
           <EntitySet Name="C242_ErrorItemNotify_View" EntityType="NN_DatabaseModel.C242_ErrorItemNotify_View" />
+          <EntitySet Name="View_242_YCKP" EntityType="NN_DatabaseModel.View_242_YCKP" />
+          <EntitySet Name="C242_Part" EntityType="NN_DatabaseModel.C242_Part" />
+          <EntitySet Name="View_242_Part" EntityType="NN_DatabaseModel.View_242_Part" />
         </EntityContainer>
         <ComplexType Name="sp_222_AcquireNotifications_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -19103,6 +19032,13 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Type="Int32" Name="CurrentQty" Nullable="true" />
           <Property Type="Int32" Name="MOQty" Nullable="false" />
         </ComplexType>
+        <EntityType Name="C242_ErrorItemStatus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="C242_ErrorItemNotify_New">
           <Key>
             <PropertyRef Name="ID" />
@@ -19148,13 +19084,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="UpdateStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="Status" Type="Int32" />
-        </EntityType>
-        <EntityType Name="C242_ErrorItemStatus">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Status" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Money" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="C242_ErrorItemNotify_View">
           <Key>
@@ -19228,6 +19158,86 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="UpdateStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="Status" Type="Int32" />
+          <Property Name="Money" Type="Decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="View_242_YCKP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="OrderNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OptionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MachineID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateYCKP" Type="DateTime" Precision="3" />
+          <Property Name="YCKPContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SolutionContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateYCKPDeadline" Type="DateTime" Precision="3" />
+          <Property Name="YCKPProcessTime" Type="DateTime" Precision="3" />
+          <Property Name="InputStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="UpdateStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PartID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="RaiseDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="C242_Part">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UpQty" Type="Int32" />
+          <Property Name="CatID" Type="Int32" Nullable="false" />
+          <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsTool" Type="Boolean" Nullable="false" />
+          <Property Name="GiaThanh" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="NVL" Type="Double" />
+          <Property Name="LoiNhuan" Type="Double" />
+          <Property Name="VanChuyen" Type="Double" />
+          <Property Name="MotGio" Type="Double" />
+          <Property Name="TachNC" Type="Double" />
+          <Property Name="DoGa" Type="Double" />
+          <Property Name="Phoi" Type="Boolean" />
+          <Property Name="File_HD" Type="Boolean" />
+          <Property Name="Dao" Type="Boolean" />
+          <Property Name="Jig" Type="Boolean" />
+          <Property Name="PartNoRRC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_242_Part">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="PartNo" />
+            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="SupplierID" />
+            <PropertyRef Name="CatID" />
+            <PropertyRef Name="Unit" />
+            <PropertyRef Name="IsTool" />
+            <PropertyRef Name="Deleted" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UpQty" Type="Int32" />
+          <Property Name="CatID" Type="Int32" Nullable="false" />
+          <Property Name="Unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsTool" Type="Boolean" Nullable="false" />
+          <Property Name="GiaThanh" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="NVL" Type="Double" />
+          <Property Name="LoiNhuan" Type="Double" />
+          <Property Name="VanChuyen" Type="Double" />
+          <Property Name="MotGio" Type="Double" />
+          <Property Name="TachNC" Type="Double" />
+          <Property Name="DoGa" Type="Double" />
+          <Property Name="PartNoRRC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -20356,33 +20366,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="MONumber" ColumnName="MONumber" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="C242_Part">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_Part">
-              <MappingFragment StoreEntitySet="242_Part">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="PartNo" ColumnName="PartNo" />
-                <ScalarProperty Name="PartName" ColumnName="PartName" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
-                <ScalarProperty Name="UpQty" ColumnName="UpQty" />
-                <ScalarProperty Name="CatID" ColumnName="CatID" />
-                <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="IsTool" ColumnName="IsTool" />
-                <ScalarProperty Name="GiaThanh" ColumnName="GiaThanh" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="NVL" ColumnName="NVL" />
-                <ScalarProperty Name="LoiNhuan" ColumnName="LoiNhuan" />
-                <ScalarProperty Name="VanChuyen" ColumnName="VanChuyen" />
-                <ScalarProperty Name="MotGio" ColumnName="MotGio" />
-                <ScalarProperty Name="TachNC" ColumnName="TachNC" />
-                <ScalarProperty Name="DoGa" ColumnName="DoGa" />
-                <ScalarProperty Name="Phoi" ColumnName="Phoi" />
-                <ScalarProperty Name="File_HD" ColumnName="File_HD" />
-                <ScalarProperty Name="Dao" ColumnName="Dao" />
-                <ScalarProperty Name="Jig" ColumnName="Jig" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -24689,29 +24672,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_242_Part">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_Part">
-              <MappingFragment StoreEntitySet="View_242_Part">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="PartNo" ColumnName="PartNo" />
-                <ScalarProperty Name="PartName" ColumnName="PartName" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
-                <ScalarProperty Name="UpQty" ColumnName="UpQty" />
-                <ScalarProperty Name="CatID" ColumnName="CatID" />
-                <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="IsTool" ColumnName="IsTool" />
-                <ScalarProperty Name="GiaThanh" ColumnName="GiaThanh" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="NVL" ColumnName="NVL" />
-                <ScalarProperty Name="LoiNhuan" ColumnName="LoiNhuan" />
-                <ScalarProperty Name="VanChuyen" ColumnName="VanChuyen" />
-                <ScalarProperty Name="MotGio" ColumnName="MotGio" />
-                <ScalarProperty Name="TachNC" ColumnName="TachNC" />
-                <ScalarProperty Name="DoGa" ColumnName="DoGa" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="View_242_PartData">
             <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_PartData">
               <MappingFragment StoreEntitySet="View_242_PartData">
@@ -24826,29 +24786,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
                 <ScalarProperty Name="NGBuoc" ColumnName="NGBuoc" />
                 <ScalarProperty Name="NGNCTruoc" ColumnName="NGNCTruoc" />
                 <ScalarProperty Name="WorkWhilePLJ1" ColumnName="WorkWhilePLJ1" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="View_242_YCKP">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_YCKP">
-              <MappingFragment StoreEntitySet="View_242_YCKP">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
-                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
-                <ScalarProperty Name="DateYCKP" ColumnName="DateYCKP" />
-                <ScalarProperty Name="YCKPContent" ColumnName="YCKPContent" />
-                <ScalarProperty Name="SolutionContent" ColumnName="SolutionContent" />
-                <ScalarProperty Name="DateYCKPDeadline" ColumnName="DateYCKPDeadline" />
-                <ScalarProperty Name="YCKPProcessTime" ColumnName="YCKPProcessTime" />
-                <ScalarProperty Name="InputStaff" ColumnName="InputStaff" />
-                <ScalarProperty Name="ProcessStaff" ColumnName="ProcessStaff" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
-                <ScalarProperty Name="RaiseDept" ColumnName="RaiseDept" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -26727,9 +26664,18 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="C242_ErrorItemStatus">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemStatus">
+              <MappingFragment StoreEntitySet="242_ErrorItemStatus">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="C242_ErrorItemNotify_New">
             <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemNotify_New">
               <MappingFragment StoreEntitySet="242_ErrorItemNotify_New">
+                <ScalarProperty Name="Money" ColumnName="Money" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
@@ -26774,17 +26720,10 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="C242_ErrorItemStatus">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemStatus">
-              <MappingFragment StoreEntitySet="242_ErrorItemStatus">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="C242_ErrorItemNotify_View">
             <EntityTypeMapping TypeName="NN_DatabaseModel.C242_ErrorItemNotify_View">
               <MappingFragment StoreEntitySet="242_ErrorItemNotify_View">
+                <ScalarProperty Name="Money" ColumnName="Money" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
@@ -26826,6 +26765,81 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
                 <ScalarProperty Name="DateWrite" ColumnName="DateWrite" />
                 <ScalarProperty Name="DateRaiseErr" ColumnName="DateRaiseErr" />
                 <ScalarProperty Name="ErrorNo" ColumnName="ErrorNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_242_YCKP">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_YCKP">
+              <MappingFragment StoreEntitySet="View_242_YCKP">
+                <ScalarProperty Name="RaiseDept" ColumnName="RaiseDept" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="ProcessStaff" ColumnName="ProcessStaff" />
+                <ScalarProperty Name="InputStaff" ColumnName="InputStaff" />
+                <ScalarProperty Name="YCKPProcessTime" ColumnName="YCKPProcessTime" />
+                <ScalarProperty Name="DateYCKPDeadline" ColumnName="DateYCKPDeadline" />
+                <ScalarProperty Name="SolutionContent" ColumnName="SolutionContent" />
+                <ScalarProperty Name="YCKPContent" ColumnName="YCKPContent" />
+                <ScalarProperty Name="DateYCKP" ColumnName="DateYCKP" />
+                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C242_Part">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_Part">
+              <MappingFragment StoreEntitySet="242_Part">
+                <ScalarProperty Name="PartNoRRC" ColumnName="PartNoRRC" />
+                <ScalarProperty Name="Jig" ColumnName="Jig" />
+                <ScalarProperty Name="Dao" ColumnName="Dao" />
+                <ScalarProperty Name="File_HD" ColumnName="File_HD" />
+                <ScalarProperty Name="Phoi" ColumnName="Phoi" />
+                <ScalarProperty Name="DoGa" ColumnName="DoGa" />
+                <ScalarProperty Name="TachNC" ColumnName="TachNC" />
+                <ScalarProperty Name="MotGio" ColumnName="MotGio" />
+                <ScalarProperty Name="VanChuyen" ColumnName="VanChuyen" />
+                <ScalarProperty Name="LoiNhuan" ColumnName="LoiNhuan" />
+                <ScalarProperty Name="NVL" ColumnName="NVL" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="GiaThanh" ColumnName="GiaThanh" />
+                <ScalarProperty Name="IsTool" ColumnName="IsTool" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="UpQty" ColumnName="UpQty" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="PartName" ColumnName="PartName" />
+                <ScalarProperty Name="PartNo" ColumnName="PartNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_242_Part">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_Part">
+              <MappingFragment StoreEntitySet="View_242_Part">
+                <ScalarProperty Name="PartNoRRC" ColumnName="PartNoRRC" />
+                <ScalarProperty Name="DoGa" ColumnName="DoGa" />
+                <ScalarProperty Name="TachNC" ColumnName="TachNC" />
+                <ScalarProperty Name="MotGio" ColumnName="MotGio" />
+                <ScalarProperty Name="VanChuyen" ColumnName="VanChuyen" />
+                <ScalarProperty Name="LoiNhuan" ColumnName="LoiNhuan" />
+                <ScalarProperty Name="NVL" ColumnName="NVL" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="GiaThanh" ColumnName="GiaThanh" />
+                <ScalarProperty Name="IsTool" ColumnName="IsTool" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="UpQty" ColumnName="UpQty" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="PartName" ColumnName="PartName" />
+                <ScalarProperty Name="PartNo" ColumnName="PartNo" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

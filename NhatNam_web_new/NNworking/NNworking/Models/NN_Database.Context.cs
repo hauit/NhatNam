@@ -99,7 +99,6 @@ namespace NNworking.Models
         public virtual DbSet<C242_OptionData> C242_OptionData { get; set; }
         public virtual DbSet<C242_OrderType> C242_OrderType { get; set; }
         public virtual DbSet<C242_P_NhapOrderlapKHGC> C242_P_NhapOrderlapKHGC { get; set; }
-        public virtual DbSet<C242_Part> C242_Part { get; set; }
         public virtual DbSet<C242_PartData> C242_PartData { get; set; }
         public virtual DbSet<C242_PredictErrorCause> C242_PredictErrorCause { get; set; }
         public virtual DbSet<C242_ShiftHandOver> C242_ShiftHandOver { get; set; }
@@ -321,20 +320,21 @@ namespace NNworking.Models
         public virtual DbSet<View_242_MOOption> View_242_MOOption { get; set; }
         public virtual DbSet<View_242_Option> View_242_Option { get; set; }
         public virtual DbSet<View_242_OptionData> View_242_OptionData { get; set; }
-        public virtual DbSet<View_242_Part> View_242_Part { get; set; }
         public virtual DbSet<View_242_PartData> View_242_PartData { get; set; }
         public virtual DbSet<View_242_Planning> View_242_Planning { get; set; }
         public virtual DbSet<View_242_ShiftHandOver> View_242_ShiftHandOver { get; set; }
         public virtual DbSet<View_242_WTS> View_242_WTS { get; set; }
-        public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
         public virtual DbSet<View_ManualExcutionChecking_GetCurrent> View_ManualExcutionChecking_GetCurrent { get; set; }
         public virtual DbSet<View_ManualExcutionChecking_GetTotal> View_ManualExcutionChecking_GetTotal { get; set; }
         public virtual DbSet<View_ToLenh> View_ToLenh { get; set; }
         public virtual DbSet<View_Tracking_History> View_Tracking_History { get; set; }
         public virtual DbSet<Welfare_V_StaffProfile> Welfare_V_StaffProfile { get; set; }
-        public virtual DbSet<C242_ErrorItemNotify_New> C242_ErrorItemNotify_New { get; set; }
         public virtual DbSet<C242_ErrorItemStatus> C242_ErrorItemStatus { get; set; }
+        public virtual DbSet<C242_ErrorItemNotify_New> C242_ErrorItemNotify_New { get; set; }
         public virtual DbSet<C242_ErrorItemNotify_View> C242_ErrorItemNotify_View { get; set; }
+        public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
+        public virtual DbSet<C242_Part> C242_Part { get; set; }
+        public virtual DbSet<View_242_Part> View_242_Part { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {

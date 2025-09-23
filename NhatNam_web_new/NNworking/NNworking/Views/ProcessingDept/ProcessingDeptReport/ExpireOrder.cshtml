@@ -1,0 +1,53 @@
+﻿
+@(Html.DevExtreme().DataGrid<NNworking.Models.View_242_BusOder>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_PartApi")
+        .LoadAction("GetExpireOrder")
+        .Key("BOderNo")
+    )
+    .RemoteOperations(true)
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 30, 50, 100 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("BOderNo")
+    )
+    //.Export(e => e.Enabled(true).FileName("DonHangQuaHan").AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .Selection(select => select.Mode(SelectionMode.Single))
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.PartID);
+
+        columns.AddFor(m => m.Deadline);
+
+        columns.AddFor(m => m.MONo);
+
+        columns.AddFor(m => m.MOQty);
+
+        columns.AddFor(m => m.QM_CUA);
+
+        columns.AddFor(m => m.XUONG_KCS);
+
+        columns.AddFor(m => m.DONGOI_KHOTP);
+
+        columns.AddFor(m => m.KHOTP_QM);
+
+        columns.AddFor(m => m.QM_TRA);
+
+        columns.AddFor(m => m.TRA_PHOI);
+
+        columns.AddFor(m => m.CONLAI);
+    })
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+)

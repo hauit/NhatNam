@@ -4687,7 +4687,6 @@
     <Content Include="Views\AllDept\Meeting\Detail\_MeetingDetail.cshtml" />
     <Content Include="Views\AllDept\Meeting\Page\MeetingDetail.cshtml" />
     <Content Include="Views\AllDept\Meeting\Page\MeetingList.cshtml" />
-    <Content Include="Views\AllDept\OvertimeRegister.cshtml" />
     <Content Include="Views\AllDept\Partner\Partner.cshtml" />
     <Content Include="Views\AllDept\Partner\PartnerType.cshtml" />
     <Content Include="Views\AllDept\Permission\FunctionalList.cshtml" />
@@ -4742,6 +4741,25 @@
     <Content Include="Views\Tool\InventoryImport.cshtml" />
     <Content Include="Views\Tool\InventoryPlaceOfItem.cshtml" />
     <Content Include="Views\Tool\TrackingHistory.cshtml" />
+    <Content Include="Views\ProcessingDept\ChatBetweenMachineAndPlan.cshtml" />
+    <Content Include="Views\ProcessingDept\Confirm0194.cshtml" />
+    <Content Include="Views\ProcessingDept\DanhGiaThucTeGC.cshtml" />
+    <Content Include="Views\ProcessingDept\FactoryEvaluationOverview.cshtml" />
+    <Content Include="Views\ProcessingDept\Khgc.cshtml" />
+    <Content Include="Views\ProcessingDept\MachinePlanning.cshtml" />
+    <Content Include="Views\ProcessingDept\ProcessingDeptReport\ExpireOrder.cshtml" />
+    <Content Include="Views\ProcessingDept\ProcessingDeptReport\KadouStatistic.cshtml" />
+    <Content Include="Views\ProcessingDept\ProcessingDeptReport\ProcessingDeptReport.cshtml" />
+    <Content Include="Views\ProcessingDept\ProcessingDeptReport\ProcessingStatistic.cshtml" />
+    <Content Include="Views\ProcessingDept\ProcessingDeptReport\StandTimeAffectation.cshtml" />
+    <Content Include="Views\ProcessingDept\ShiftHandOver.cshtml" />
+    <Content Include="Views\ProcessingDept\Technical\TechnicalWarningList.cshtml" />
+    <Content Include="Views\ProcessingDept\ToolManagement\ToolBorrow.cshtml" />
+    <Content Include="Views\ProcessingDept\ToolManagement\ToolList.cshtml" />
+    <Content Include="Views\ProcessingDept\ToolManagement\ToolReturn.cshtml" />
+    <Content Include="Views\ProcessingDept\UrgentProcessingPlan.cshtml" />
+    <Content Include="Views\ProcessingDept\YCKP.cshtml" />
+    <Content Include="Views\Planning\PartList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4770,6 +4788,8 @@
     <Compile Include="Controllers\MaterialStockController.cs" />
     <Compile Include="Controllers\PayrollController.cs" />
     <Compile Include="Controllers\PlanningController.cs" />
+    <Compile Include="Controllers\ProcessingDept\ProcessingAPIControllerController.cs" />
+    <Compile Include="Controllers\ProcessingDept\ProcessingDeptController.cs" />
     <Compile Include="Controllers\SampleDataController.cs" />
     <Compile Include="Controllers\StockerController.cs" />
     <Compile Include="Controllers\TableAPI\C222_CarRegisterController.cs" />
@@ -5482,6 +5502,7 @@
     <Compile Include="Models\Import\ImportMaterialStockInput.cs" />
     <Compile Include="Models\Import\ImportMaterialStockOutput.cs" />
     <Compile Include="Models\Import\ImportNNDS.cs" />
+    <Compile Include="Models\Import\ImportPartList.cs" />
     <Compile Include="Models\Import\ImportPlanPreparation.cs" />
     <Compile Include="Models\Import\ImportShiftRegister.cs" />
     <Compile Include="Models\Import\ImportStaffList.cs" />
@@ -6068,6 +6089,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controllers\ProcessingDept\ToolManagement\" />
     <Folder Include="Files\" />
   </ItemGroup>
   <PropertyGroup>

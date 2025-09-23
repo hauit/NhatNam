@@ -20,19 +20,7 @@ namespace NNworking.Models.Controllers
 
         [HttpGet]
         public HttpResponseMessage Get(DataSourceLoadOptions loadOptions) {
-            var c242_part = _context.C242_Part.Select(i => new {
-                i.ID,
-                i.PartNo,
-                i.PartName,
-                i.CustomerID,
-                i.SupplierID,
-                i.UpQty,
-                i.GiaThanh,
-                i.Deleted,
-                i.CatID,
-                i.Unit,
-                i.IsTool
-            });
+            var c242_part = _context.C242_Part.Where(a => a.Deleted != true).ToList();
             return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
         }
 

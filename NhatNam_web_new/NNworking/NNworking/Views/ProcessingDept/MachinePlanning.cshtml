@@ -1,0 +1,324 @@
+﻿
+@{
+    ViewBag.Title = "Kế hoạch làm việc các bộ phận gián tiếp";
+}
+
+<div class="box box-body">
+    <div class="col-lg-5">
+        <table>
+            <tr>
+                <td>
+                    Từ ngày:
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateFromDate")
+                    )
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().Button()
+                        .Text("Xem")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("ViewData")
+                    )
+                </td>
+                <td style="padding-left: 10px;">
+                    Bộ phận:
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().SelectBox()
+                        .ID("cbDept")
+                        .DataSource(new[] { "", "Xưởng", "Via", "Kiểm tra", "Cưa", "Khoan tay", "Hàn", "Mạ", "Đánh bóng", "Đánh bóng", "Rửa dầu", "F3", "In ép", "Đóng số" })
+                        .SearchEnabled(true)
+                        .Width(200)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Đến ngày:
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateToDate")
+                    )
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().Button()
+                        .Text("Import")
+                        .ID("btnImport")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                    )
+                </td>
+                <td style="padding-left: 10px;">
+                    Ca:
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().SelectBox()
+                        .ID("cbShift")
+                        .DataSource(new[] { "", "Ca 1", "Ca 1", "Ca 2", "Ca 3", "Ca HC", "Ca ngày", "Ca đêm" })
+                        .SearchEnabled(true)
+                        .Width(200)
+                    )
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="col-lg-7">
+        <ul>
+            <li>
+                <a href="#">Đăng kí thời gian làm via</a>
+            </li>
+            <li>
+                <a href="@Url.Action("UrgentProcessingPlan", "ProcessingDept")">Danh sách hàng cần gấp</a>
+            </li>
+        </ul>
+    </div>
+</div>
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_MachinePlanning>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_MachinePlanningApi")
+        .LoadAction("Get").LoadParams(new { fromDate = new JS("getFromDateValue"), toDate = new JS("getToDateValue") })
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("gridView")
+    .Selection(select => select.Mode(SelectionMode.Multiple))
+    .Paging(page => page.PageSize(15))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 15, 30, 50 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ColumnAutoWidth(true)
+    .HeaderFilter(headFil => headFil.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.ID).Visible(false);
+
+        columns.AddFor(m => m.Date).Caption("Ngày nhập");
+
+        columns.AddFor(m => m.Shift).Caption("Ca");
+
+        columns.AddFor(m => m.TenChiTiet).Caption("Tên chi tiết");
+
+        columns.AddFor(m => m.MayGC).Caption("Máy GC");
+
+        columns.AddFor(m => m.NC).Caption("Số NC");
+
+        columns.AddFor(m => m.Order).Caption("Số Order");
+
+        columns.AddFor(m => m.Slglenh).Caption("Slg lệnh");
+
+        columns.AddFor(m => m.Via_check2).Caption("Code chuẩn bị");
+
+        columns.AddFor(m => m.C20_).Caption("Slg chuẩn bị");
+
+        columns.AddFor(m => m.Via_ghi_chu).Caption("TG chuẩn bị");
+
+        columns.AddFor(m => m.C10_).Caption("Trạng thái CB");
+
+        columns.AddFor(m => m.TGGC).Caption("Thời gian gia công");
+
+        columns.AddFor(m => m.TGGL).Caption("Thời gian gá lắp");
+
+        columns.AddFor(m => m.BatDau).Caption("Bắt đầu");
+
+        columns.AddFor(m => m.KetThuc).Caption("Kết thúc");
+
+        columns.AddFor(m => m.K).Caption("Thứ tự gia công");
+
+        columns.AddFor(m => m.TinhTrang).Caption("Tình trạng phôi");
+
+        columns.AddFor(m => m.ThoiHan).Caption("Thời hạn");
+
+        columns.AddFor(m => m.SoJig).Caption("Số jig");
+
+        columns.AddFor(m => m.Jig).Caption("Máy");
+
+        columns.AddFor(m => m.Dept).Caption("Bộ phận");
+
+        columns.AddFor(m => m.TTNC).Visible(false);
+
+        columns.AddFor(m => m.DKmay).Visible(false);
+
+        columns.AddFor(m => m.Note).Visible(false);
+
+        columns.AddFor(m => m.RegisterDate).Visible(false);
+
+        columns.AddFor(m => m.C80_).Visible(false);
+
+        columns.AddFor(m => m.Via_check1).Visible(false);
+
+        columns.AddFor(m => m.Fac_NgayHTtheoKH).Visible(false);
+
+        columns.AddFor(m => m.Fac_TT).Visible(false);
+
+        columns.AddFor(m => m.Fac_NGTruoc).Visible(false);
+
+        columns.AddFor(m => m.Fac_TTFile).Visible(false);
+
+        columns.AddFor(m => m.Fac_Phoi).Visible(false);
+
+        columns.AddFor(m => m.Fac_File).Visible(false);
+
+        columns.AddFor(m => m.Fac_Dao).Visible(false);
+
+        columns.AddFor(m => m.Fac_Jig).Visible(false);
+
+        columns.AddFor(m => m.Fac_TTTH).Visible(false);
+
+        columns.AddFor(m => m.Fac_DaChuanBi).Visible(false);
+
+        columns.AddFor(m => m.Fac_TTGC).Visible(false);
+
+        columns.AddFor(m => m.Fac_DeXuat).Visible(false);
+
+        columns.AddFor(m => m.Fac_OK_Old).Visible(false);
+
+        columns.AddFor(m => m.Fac_NG_Old).Visible(false);
+
+        columns.AddFor(m => m.Fac_Dc).Visible(false);
+
+        columns.AddFor(m => m.Fac_MachineID).Visible(false);
+
+        columns.AddFor(m => m.KT_Sup).Visible(false);
+
+        columns.AddFor(m => m.KT_TGUKB1).Visible(false);
+
+        columns.AddFor(m => m.KT_TongTG).Visible(false);
+
+        columns.AddFor(m => m.KT_TTPhoi).Visible(false);
+
+        columns.AddFor(m => m.KT_GiaHang).Visible(false);
+
+        columns.AddFor(m => m.KT_KHXN).Visible(false);
+
+        columns.AddFor(m => m.KT_LyDoKHTKH).Visible(false);
+
+        columns.AddFor(m => m.KT_DgoiTay).Visible(false);
+
+        columns.AddFor(m => m.MachineStatus).Visible(false);
+
+        columns.AddFor(m => m.Cua_GCTime).Visible(false);
+
+        columns.AddFor(m => m.Cua_Factory).Visible(false);
+
+        columns.AddFor(m => m.Cua_TotalTime).Visible(false);
+
+        columns.AddFor(m => m.Cua_Plantime).Visible(false);
+
+        columns.AddFor(m => m.Cua_PrepareDate).Visible(false);
+
+        columns.AddFor(m => m.Cua_MachineGroup).Visible(false);
+
+        columns.AddFor(m => m.Cua_State).Visible(false);
+
+        columns.AddFor(m => m.Cua_Size).Visible(false);
+
+        columns.AddFor(m => m.Cua_PrepareState).Visible(false);
+
+        columns.AddFor(m => m.LastOption).Visible(false);
+
+        columns.AddFor(m => m.Pre_State).Visible(false);
+
+        columns.AddFor(m => m.Pre_ConfirmDate).Visible(false);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .Mode(GridEditMode.Form)
+    )
+    //.OnRowValidating("ValidateRow")
+)
+
+<input id="File1" type="file" name="file" class="hide" onchange="ChoiceFile()" />
+<script>
+    DisplayChatBox('@Url.Action("SendMessageToOther", "AllDept")');
+    var group = 'MachineID';
+    GetUser(group, '@Url.Action("ListAvailableUser", "AllDept")');
+
+    function ValidateRow(e) {
+        var dataGrid = e.component;
+        var rowIndex = dataGrid.getRowIndexByKey(e.key);
+        dataGrid.getCellElement(rowIndex, "shift").find("input").css("border", "1px solid blue");
+    }
+
+    function ViewData() {
+        var a = $("#gridView").dxDataGrid("instance").refresh();
+    }
+
+    function getToDateValue() {
+        var a = $("#dateToDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getFromDateValue() {
+        var a = $("#dateFromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+</script>
+
+<script>
+    $(document).on('click', '#btnImport', function () {
+        $('#File1').trigger('click');
+    });
+
+    function ChoiceFile() {
+        var shift = $("#cbShift").dxSelectBox("instance").option("value");
+        var dept = $("#cbDept").dxSelectBox("instance").option("value");
+        var date = getFromDateValue();
+        var file = $('#File1').get(0);
+        var alo = file.files;
+        if (alo.length == 0)
+        {
+            return;
+        }
+
+        var form = new FormData();
+        form.append(alo[0].name, alo[0]);
+        form.append('dept', dept);
+        form.append('shift', shift);
+        form.append('date', date);
+        //$("#loader").fadeIn(200);
+        $.ajax({
+            url: '@Url.Action("Upload", "ProcessingDept")',
+            type: "POST",
+            contentType: false,
+            processData: false,
+            dataType: 'JSON',
+            data: form,
+            Success: function (data) {
+                //$("#loader").fadeOut(200);
+                if (data.Status != "OK") {
+                    alert(data.Value);
+                    return;
+                }
+
+                alert(data.Status);
+            },
+        });
+
+        $('#File1').val('');
+    }
+</script>

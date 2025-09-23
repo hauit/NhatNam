@@ -19,6 +19,12 @@ namespace NNworking.Controllers
             return View();
         }
 
+        [Route("Danh-sach-chi-tiet.html")]
+        public ActionResult PartList()
+        {
+            return View();
+        }
+
         //[Route("Thong-tin-san-xuat-don-hang-{order}.html")]
         public ActionResult ToLenh(string order)
         {

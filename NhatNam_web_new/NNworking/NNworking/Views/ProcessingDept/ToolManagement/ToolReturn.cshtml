@@ -1,0 +1,34 @@
+﻿@(Html.DevExtreme().DataGrid<NNworking.Models.C242_ToolReturn>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C242_ToolReturnApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.ToolID);
+
+        columns.AddFor(m => m.ToolName);
+
+        columns.AddFor(m => m.ToolMakerName);
+
+        columns.AddFor(m => m.Quantity);
+
+        columns.AddFor(m => m.ReturnTime);
+
+        columns.AddFor(m => m.Acception);
+
+        columns.AddFor(m => m.AcceptTime);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+)

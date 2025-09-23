@@ -1,0 +1,47 @@
+﻿
+@{
+    
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_PartIDNeedContactTo0194>()
+    .DataSource(ds => ds.WebApi()
+		.RouteName("C242_PartIDNeedContactTo0194Api")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("ID")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            //.HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.PartID).AllowEditing(false);
+
+        columns.AddFor(m => m.OptionID).AllowEditing(false);
+
+        columns.AddFor(m => m.Status);
+    })
+    .Editing(e => e
+        .AllowUpdating(true)
+    )
+)

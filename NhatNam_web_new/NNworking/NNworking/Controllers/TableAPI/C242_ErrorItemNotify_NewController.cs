@@ -185,6 +185,7 @@ namespace NNworking.Models.Controllers
             string Completed = nameof(C242_ErrorItemNotify_New.Completed);
             string StartDate = nameof(C242_ErrorItemNotify_New.StartDate);
             string Status = nameof(C242_ErrorItemNotify_New.Status);
+            string Money = nameof(C242_ErrorItemNotify_New.Money);
 
             if (values.Contains(ID)) {
                 model.ID = Convert.ToInt32(values[ID]);
@@ -318,6 +319,11 @@ namespace NNworking.Models.Controllers
             if (values.Contains(Status))
             {
                 model.Status = Convert.ToInt32(values[Status]);
+            }
+
+            if (values.Contains(Money))
+            {
+                model.Money = Convert.ToDecimal(values[Money]);
             }
         }
 

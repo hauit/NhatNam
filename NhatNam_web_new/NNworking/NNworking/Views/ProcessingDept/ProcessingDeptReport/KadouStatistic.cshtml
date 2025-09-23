@@ -1,0 +1,568 @@
+﻿
+
+
+<div class="box box-body">
+    <div class="col-lg-6">
+        <table>
+            <tr>
+                <td style="padding-left: 10px;width: 100px;">
+                    Từ Ngày:
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateFromDate")
+                    )
+                </td>
+                <td style="padding-left: 10px;width: 100px;">
+                    Nhóm máy:
+                </td>
+                <td style="padding-left: 10px;width: 150px;">
+                    <div id="GroupMachineList"></div>
+                </td>
+                <td style="padding-left: 10px;width: 100px;">
+                    Máy:
+                </td>
+                <td style="padding-left: 10px;width: 150px;">
+                    <div id="MachineList"></div>
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().Button()
+                        .Text("Xem")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("GetPlanOfMachine")
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;width: 100px;">
+                    Đến Ngày:
+                </td>
+                <td style="padding-left: 10px;">
+                    @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateToDate")
+                    )
+                </td>
+                <td style="padding-left: 10px;width: 100px;">
+                    Ca:
+                </td>
+                <td style="padding-left: 10px;width: 150px;">
+                    <div id="ShiftList"></div>
+                </td>
+                <td style="padding-left: 10px;width: 100px;">
+                    Mã cv:
+                </td>
+                <td style="padding-left: 10px;width: 150px;">
+                    <div id="WorkIDList"></div>
+                </td>
+                <td style="padding-left: 10px;"></td>
+            </tr>
+        </table>
+    </div>
+    <div id="MachineGroupButton"></div>
+    <div id="chart">
+
+    </div>
+    <div id="dxDataGrid">
+
+    </div>
+    <script>
+        var popupStatus = 0;
+        $(document).ready(function () {
+            /** các hàm dùng chug cho popup**/
+            $(this).keydown(function (event) {
+                if (event.which == 27) {
+                    disablePopup();
+                }
+            });
+
+            $("#background-popup").click(function () {
+                //$("#banga").html('<td><b>Bàn gá:</b></td> <td>' + palet + '</td>');
+                disablePopup();
+            });
+
+            function loadBackgroundToPopup() {
+                $("#background-popup").css("opacity", "0.2");
+                $("#background-popup").fadeIn(200);
+            }
+
+            function disablePopup() {
+                if (popupStatus >= 1) {
+                    $("#ShiftButton").fadeOut(200);
+                    $("#MachineGroupButton").fadeOut(200);
+                    $("#OptionIDButtonTotal").fadeOut(200);
+                    $("#OptionIDButton").fadeOut(200);
+                    $("#background-popup").fadeOut(200);
+                    $("#ManualExcutionChecking").fadeOut(200);
+                    if (popupStatus == 2) {
+                        $("#CheckOK").trigger("click");
+                    }
+
+                    popupStatus = 0;
+                }
+            }
+
+            /** load các popup của các phần **/
+            function loadShiftPopup() {
+                if (popupStatus == 0) {
+                    $("#ShiftButton").fadeIn(200);
+                    loadBackgroundToPopup();
+                    popupStatus = 1;
+                }
+            }
+
+            function loadMachineGroupPopup() {
+                if (popupStatus == 0) {
+                    $("#MachineGroupButton").fadeIn(200);
+                    loadBackgroundToPopup();
+                    popupStatus = 1;
+                }
+            }
+
+            /** các hàm gọi sự kiện click **/
+            $("#ShiftBT").click(function () {
+                loadShiftPopup();
+            });
+
+            $("#btnView").click(function () {
+                //loadMachineGroupPopup();
+            });
+
+            // lấy lại kế hoạch sau 1 khoảng thời gian
+
+            //setInterval(function () {
+            //    if (MachineId != '') {
+            //        GetPlanOfMachine();
+            //    }
+            //}, 1000 * 30);
+        })
+
+        //$(function () {
+        //    var colorByState = {
+        //        ALARM: "#fb7764",
+        //        RUNNING: "#73d47f",
+        //        STOP: "#fed85e"
+        //    };
+
+        //    $("#chart").dxChart({
+        //        rotated: true,
+        //        palette: "violet",
+        //        title: "So sánh WTS với Kadou",
+        //        dataSource: dataSource,
+
+        //        commonSeriesSettings: {
+        //            argumentField: "device",
+        //            type: "rangeBar",
+        //            ignoreEmptyPoints: true
+        //        },
+        //        size: {
+        //            height: 200
+        //        },
+        //        customizePoint: function (arg) {
+        //            return {
+        //                color: colorByState[arg.data.state]
+        //            };
+        //        },
+        //        series: [
+        //          {
+        //              rangeValue1Field: "start",
+        //              rangeValue2Field: "end",
+        //              name: "Real",
+        //              showInLegend: false
+        //          }
+        //        ],
+        //        legend: {
+        //            verticalAlignment: "bottom",
+        //            horizontalAlignment: "center"
+        //        }
+        //    });
+        //});
+
+        var shiftList = new Array();
+        var groupMachineList = new Array();
+        $.ajax({
+            url: '@Url.Action("ListMachineGroup", "ProcessingDept")',
+            dataType: 'Json',
+            type: 'GET',
+            data: '',
+            cache: false,
+            success: function (data) {
+                groupMachineList = data;
+                var groupMachine = $("#GroupMachineList").dxAutocomplete("instance");
+                if(groupMachine != null)
+                {
+                    groupMachine.option('dataSource', groupMachineList);
+                }
+            },
+        });
+
+        $(function () {
+            shiftList = ["T1", "T2", "T3", "T0"];
+            $("#ShiftList").dxAutocomplete({
+                dataSource: shiftList,
+                placeholder: "Chọn ca",
+                onValueChanged: function (data) {
+                    Shift = data.value;
+                }
+            });
+
+            $("#GroupMachineList").dxAutocomplete({
+                dataSource: groupMachineList,
+                placeholder: "Nhóm máy",
+                onValueChanged: function (data) {
+                    group = data.value;
+                    $.ajax({
+                        url: '@Url.Action("ListMachineByGroup", "ProcessingDept")',
+                        data: { 'Group': group, 'shift': Shift },
+                        dataType: 'JSON',
+                        type: 'POST',
+                        cache: false,
+                        success: function (data) {
+                            var machineList = new Array();
+                            $.each(data, function (i, val) {
+                                machineList.push(val.MachineID);
+                            });
+                            $("#MachineList").dxAutocomplete("instance").option('dataSource', machineList);
+                        },
+                    });
+                }
+            });
+
+            $("#MachineList").dxAutocomplete({
+                dataSource: '',
+                placeholder: "Chọn Máy",
+                onValueChanged: function (data) {
+                    MachineId = data.value;
+                }
+            });
+
+            var workIDList = ['P1Z1',
+                                'PAN1',
+                                'PBJ1',
+                                'PBN1',
+                                'PC61',
+                                'PDZ1',
+                                'PEN1',
+                                'PFN1',
+                                'PIN1',
+                                'PJ61',
+                                'PKJ1',
+                                'PKN1',
+                                'PLJ1',
+                                'PLN1',
+                                'PMJ1',
+                                'PMN1',
+                                'PNN1',
+                                'PON1',
+                                'PPN1',
+                                'PQN1',
+                                'PRN1',
+                                'PSN1',
+                                'PTN1',
+                                'PU71',
+                                'PV61',
+                                'PZE1',
+                                'PZM1'
+            ]
+            $("#WorkIDList").dxAutocomplete({
+                dataSource: workIDList,
+                placeholder: "Mã cv"
+            });
+        });
+        var dataSource = new Array();
+
+        function CreateUser() {
+            dataSource = [
+                { device: "WTS", start: new Date(2020, 4, 7, 6, 0, 0), end: new Date(2020, 4, 7, 6, 27, 0), state: "RUNNING" },
+                { device: "WTS", start: new Date(2020, 4, 7, 6, 27, 0), end: new Date(2020, 4, 7, 6, 32, 2), state: "STOP" },
+                { device: "WTS", start: new Date(2020, 4, 7, 6, 32, 2), end: new Date(2020, 4, 7, 6, 35, 12), state: "RUNNING" },
+                { device: "WTS", start: new Date(2020, 4, 7, 6, 35, 12), end: new Date(2020, 4, 7, 6, 37, 12), state: "STOP" },
+                { device: "WTS", start: new Date(2020, 4, 7, 6, 37, 12), end: new Date(2020, 4, 7, 6, 41, 12), state: "RUNNING" },
+                { device: "WTS", start: new Date(2020, 4, 7, 6, 41, 12), end: new Date(2020, 4, 7, 6, 41, 20), state: "STOP" },
+                { device: "WTS", start: new Date(2020, 4, 7, 6, 41, 20), end: new Date(2020, 4, 7, 6, 55, 20), state: "RUNNING" },
+                { device: "WTS", start: new Date(2020, 4, 7, 6, 55, 20), end: new Date(2020, 4, 7, 18), state: "STOP" },
+
+                { device: "Kadou", start: new Date(2020, 4, 7, 6, 0, 0), end: new Date(2020, 4, 7, 6, 27, 0), state: "RUNNING" },
+                { device: "Kadou", start: new Date(2020, 4, 7, 6, 27, 0), end: new Date(2020, 4, 7, 6, 32, 2), state: "STOP" },
+                { device: "Kadou", start: new Date(2020, 4, 7, 6, 32, 2), end: new Date(2020, 4, 7, 6, 35, 12), state: "RUNNING" },
+                { device: "Kadou", start: new Date(2020, 4, 7, 6, 35, 12), end: new Date(2020, 4, 7, 6, 37, 12), state: "STOP" },
+                { device: "Kadou", start: new Date(2020, 4, 7, 6, 37, 12), end: new Date(2020, 4, 7, 6, 41, 12), state: "RUNNING" },
+                { device: "Kadou", start: new Date(2020, 4, 7, 6, 41, 12), end: new Date(2020, 4, 7, 6, 41, 20), state: "STOP" },
+                { device: "Kadou", start: new Date(2020, 4, 7, 6, 41, 20), end: new Date(2020, 4, 7, 6, 55, 20), state: "RUNNING" },
+                { device: "Kadou", start: new Date(2020, 4, 7, 6, 55, 20), end: new Date(2020, 4, 7, 18), state: "STOP" }
+            ];
+            var chart = $("#chart").dxChart("instance");
+            chart.option('dataSource', dataSource);
+        }
+
+        function ListMachine(data) {
+            var list_Shift = '';
+            list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue(\'T1\',\'' + data + '\')"> ';
+            list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue(\'T2\',\'' + data + '\')"> ';
+            list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue(\'T3\',\'' + data + '\')"> ';
+            list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue(\'T1\',\'' + data + '\')"> ';
+            list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue(\'T2\',\'' + data + '\')"> ';
+            list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca HC" onclick="ShiftValue(\'T0\',\'' + data + '\')"> ';
+            list_Shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="All" onclick="ShiftValue(\'\',\'' + data + '\')"> ';
+            $("#MachineGroupButton").html(list_Shift);
+
+        }
+
+        function loadGroupMachine() {
+            $.ajax({
+                url: '@Url.Action("ListMachineGroup", "ProcessingDept")',
+                dataType: 'Json',
+                type: 'GET',
+                data: '',
+                cache: false,
+                success: function (data) {
+                    var GroupMachineBT = "";
+                    $.each(data, function (i, val) {
+                        GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val + '" name=""  value="' + val + '" onclick="ListMachine(\'' + val + '\')"> ';
+                    });
+                    $("#MachineGroupButton").html(GroupMachineBT);
+                },
+            });
+        }
+
+
+        var MachineId = '';
+        var Shift = '';
+        var group = '';
+        function ShiftValue(data, group) {
+            Shift = data;
+            $("#ShiftButton").append("<br/>" + Shift);
+            $.ajax({
+                url: '@Url.Action("ListMachineByGroup", "ProcessingDept")',
+                data: { 'Group': group, 'shift': Shift },
+                dataType: 'JSON',
+                type: 'POST',
+                cache: false,
+                success: function (data) {
+                    var a = '';
+                    if (data != null) {
+                        $.each(data, function (i, val) {
+                            if (val.HavePlan == true) {
+                                a += '<input class="btn btn-green" style="margin-top: 10px;background-color: red;" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick="SelectedMachine(\'' + val.MachineID + '\')"> ';
+                                return;
+                            }
+
+                            a += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick="SelectedMachine(\'' + val.MachineID + '\')"> ';
+                        });
+                        $("#MachineGroupButton").html(a);
+                    }
+                    else {
+                        $("#MachineGroupButton").html(nulldata);
+                    }
+                },
+            });
+        }
+        function SelectedMachine(data) {
+            MachineId = data;
+            GetPlanOfMachine();
+            var msg = '<h3><span style="color:red;">Bạn đang xem kế hoạch của máy: ' + MachineId + '</span></h3>';
+            $("#MachineGroupButtonHistory").html(msg);
+        }
+
+        function GetPlanOfMachine() {
+            var fromDate = getFromDateValue();
+            var toDate = getToDateValue();
+            var selectedMachine = $("#MachineList").dxAutocomplete("instance").option('value');
+            if (selectedMachine == null || selectedMachine == '')
+            {
+                MachineId = group;
+            }
+
+            var workID = $("#WorkIDList").dxAutocomplete("instance").option('value');
+            $.ajax({
+                url: '@Url.Action("GetKadouTimeTotal", "ProcessingDept")',
+                data: { 'Shift': Shift, 'MachineID': MachineId, 'fromDate': fromDate, 'toDate': toDate, 'workID': workID },
+                dataType: 'JSON',
+                type: 'GET',
+                cache: false,
+                success: function (data) {
+                    if (data.Status != "OK")
+                    {
+                        alert(data.Values);
+                        return;
+                    }
+
+                    DrawChart(data);
+                    BindDataToGrid(data);
+                },
+            });
+        }
+
+        function BindDataToGrid(data) {
+            var tile = {
+                S_Host: "Tile(%)",
+                RunningTime: (data.KadouTime[1].RunningTime * 100 / data.KadouTime[0].RunningTime).toFixed(2),
+                StopTime: (data.KadouTime[1].StopTime * 100 / data.KadouTime[0].StopTime).toFixed(2),
+                ALRMTime: (data.KadouTime[1].ALRMTime * 100 / data.KadouTime[0].ALRMTime).toFixed(2)
+            };
+            data.KadouTime.push(tile);
+            $("#dxDataGrid").dxDataGrid({
+                dataSource: data.KadouTime,
+                showBorders: true,
+                paging: {
+                    pageSize: 20
+                },
+                pager: {
+                    showPageSizeSelector: true,
+                    allowedPageSizes: [5, 10, 20],
+                    showInfo: true
+                },
+                export: {
+                    enabled: true,
+                    fileName: "ExportedData",
+                    allowExportSelectedData: true
+                },
+            });
+        }
+
+        function DrawChart(data) {
+            $("#chart").dxChart({
+                dataSource: data.KadouTime,
+                title: "So sánh WTS với Kadou máy " + MachineId,
+                commonSeriesSettings: {
+                    argumentField: "S_Host",
+                    type: "bar",
+                    hoverMode: "allArgumentPoints",
+                    selectionMode: "allArgumentPoints",
+                    label: {
+                        visible: true,
+                        format: {
+                            type: "fixedPoint",
+                            precision: 0
+                        }
+                    }
+                },
+                series: [
+                    { valueField: "ALRMTime", name: "ALRM" },
+                    { valueField: "RunningTime", name: "Running" },
+                    { valueField: "StopTime", name: "Stop" }
+                ],
+                legend: {
+                    verticalAlignment: "bottom",
+                    horizontalAlignment: "center"
+                },
+                "export": {
+                    enabled: true
+                },
+                onPointClick: function (e) {
+                    e.target.select();
+                }
+            });
+        }
+
+        function getFromDateValue() {
+            var a = $("#dateFromDate").dxDateBox("instance").option("value");
+            return a;
+        }
+
+        function getToDateValue() {
+            var a = $("#dateToDate").dxDateBox("instance").option("value");
+            return a;
+        }
+    </script>
+
+
+
+    @*<div id="chart-demo">
+            @(Html.DevExtreme().Chart()
+                .ID("chart1")
+                .CommonSeriesSettings(s => s
+                    .ArgumentField("Monarch")
+                    .Type(SeriesType.RangeBar)
+                    .RangeValue1Field("Start")
+                    .RangeValue2Field("End")
+                    .DashStyle(DashStyle.Dot)
+                    .ShowInLegend(false)
+                )
+                .BarGroupPadding(0)
+                .Rotated(true)
+                .ArgumentAxis(a => a
+                    .Tick(t => t.Visible(true))
+                    .Categories(new[] { "Royal Houses", "Royal Houses1" })
+                )
+                .Size(s => s.Height(150))
+                .Legend(l => l
+                    //.Title("Royal Houses")
+                    .VerticalAlignment(VerticalEdge.Bottom)
+                    .HorizontalAlignment(HorizontalAlignment.Center)
+                )
+                .Animation(a => a.Enabled(false))
+                .SeriesTemplate(s => s.NameField("House"))
+                .DataSource(new[] {
+                    new {
+                        Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,6,0,0),
+                        House="ALARM",
+                        End=new DateTime(2020, 4, 7,6,0,0),
+                    },
+                    new {
+                        Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,6,0,0),
+                        House="Running",
+                        End=new DateTime(2020, 4, 7,6,0,0),
+                    },
+                    new {
+                        Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,6,0,0),
+                        House="Stop",
+                        End=new DateTime(2020, 4, 7,6,0,0),
+                    },
+                    new {
+                        Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,6,0,0),
+                        House="Running",
+                        End=new DateTime(2020, 4, 7,6,27,0),
+                    },
+                    new {
+                        Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,6,27,0),
+                        House="Stop",
+                        End=new DateTime(2020, 4, 7,6,32,0),
+                    },
+                    new {
+                        Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,6,32,0),
+                         House="Running",
+                        End=new DateTime(2020, 4, 7,6,55,0),
+                    },
+                    new {
+                         Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,6,55,0),
+                         House="Running",
+                        End=new DateTime(2020, 4, 7,7,30,0),
+                    },
+                    new {
+                         Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,7,30,0),
+                         House="Running",
+                        End=new DateTime(2020, 4, 7,8,03,0),
+                    },
+                    new {
+                         Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,8,03,0),
+                        House="ALARM",
+                        End=new DateTime(2020, 4, 7,9,20,0),
+                    },
+                    new {
+                         Monarch="Royal Houses",
+                        Start=new DateTime(2020, 4, 7,9,20,0),
+                         House="Running",
+                        End=new DateTime(2020, 4, 7,18,0,0),
+                    },
+                    new {
+                         Monarch="Royal Houses1",
+                        Start=new DateTime(2020, 4, 7,9,20,0),
+                         House="Running",
+                        End=new DateTime(2020, 4, 7,18,0,0),
+                    }
+                })
+            )
+        </div>*@

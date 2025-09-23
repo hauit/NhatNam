@@ -35,5 +35,6 @@ namespace NNworking.Models
         public Nullable<bool> File_HD { get; set; }
         public Nullable<bool> Dao { get; set; }
         public Nullable<bool> Jig { get; set; }
+        public string PartNoRRC { get; set; }
     }
 }

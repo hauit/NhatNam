@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "YCKP";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.View_242_YCKP>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_YCKPApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .OnBeforeSend("hau_test")
+        .Key("ID")
+    )
+    .ID("dxYCKP")
+    .Paging(page => page.PageSize(15))
+    .Export(e=>e.Enabled(true))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 15, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
+
+        columns.AddFor(m => m.Date).Caption("Ngày");
+
+        columns.AddFor(m => m.OrderNo).Caption("Đơn hàng");
+
+        columns.AddFor(m => m.PartID).Caption("Tên chi tiết").AllowEditing(false);
+
+        columns.AddFor(m => m.Deadline).Caption("TH đơn hàng").AllowEditing(false);
+
+        columns.AddFor(m => m.OptionID).Caption("Nguyên công").Lookup(lup =>
+            lup.DataSource(d => d.WebApi()
+                .RouteName("C242_OptionApi")
+                .LoadAction("Get")
+                .Key("OptionID")
+            )
+            .DisplayExpr("OptionID")
+            .ValueExpr("OptionID")
+        );
+
+        columns.AddFor(m => m.MachineID).Caption("Máy GC").Lookup(lup =>
+            lup.DataSource(d => d.WebApi()
+                .RouteName("C222_MachineApi")
+                .LoadAction("Get")
+                .Key("MachineID")
+            )
+            .DisplayExpr("MachineID")
+            .ValueExpr("MachineID")
+        );
+
+        columns.AddFor(m => m.DateYCKP).Caption("NGày YCKP").DataType( GridColumnDataType.DateTime);
+
+        columns.AddFor(m => m.YCKPContent).Caption("Nội dung YCKP");
+
+        columns.AddFor(m => m.SolutionContent).Caption("Nội dung xử lý");
+
+        columns.AddFor(m => m.DateYCKPDeadline).Caption("Thời hạn YCKP");
+
+        columns.AddFor(m => m.YCKPProcessTime).Caption("Thời gian xử lý YCKP").DataType(GridColumnDataType.DateTime);
+
+        columns.AddFor(m => m.RaiseDept).Caption("Bộ phận gây lỗi").Lookup(lup =>
+            lup.DataSource(d => d.WebApi()
+                .RouteName("C222_DepartmentApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("DeptName")
+            .ValueExpr("DeptCode")
+        );
+
+        columns.AddFor(m => m.InputStaff).Caption("Người nhập").Lookup(lup =>
+            lup.DataSource(d => d.WebApi()
+                .RouteName("C222_StaffApi")
+                .LoadAction("Get")
+                .Key("StaffID")
+            )
+            .DisplayExpr("StaffID")
+            .ValueExpr("StaffID")
+        );
+
+        columns.AddFor(m => m.ProcessStaff).Caption("Người xử lý YCKP").Lookup(lup =>
+            lup.DataSource(d => d.WebApi()
+                .RouteName("C222_StaffApi")
+                .LoadAction("Get")
+                .Key("StaffID")
+            )
+            .DisplayExpr("StaffID")
+            .ValueExpr("StaffID")
+        );
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .Mode( GridEditMode.Form)
+    )
+    .OnInitNewRow("onInitNewRow")
+    //.OnRowRemoving("CheckBeforeUpdate")
+)
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+    }
+
+    function CheckBeforeUpdate(e) {
+        e.data.UpdateStaff = '@Session["StaffID"].ToString()';
+    }
+
+    function hau_test(type, data) {
+        if (type != "delete") {
+            return;
+        }
+
+        data.data.extraParam = '@Session["StaffID"].ToString()';
+        //e.data.UpdateStaff = '@Session["StaffID"].ToString()';
+    }
+</script>

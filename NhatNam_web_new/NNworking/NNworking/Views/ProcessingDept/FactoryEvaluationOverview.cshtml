@@ -1,0 +1,210 @@
+﻿
+@{
+    ViewBag.Title = "Tổng quan biểu đánh giá";
+}
+
+<section>
+    <div class="box box-body">
+        <div class="col-lg-4">
+            <table>
+                <tr>
+                    <td>
+                        Ngày:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateDate")
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().Button()
+                        .Text("Xem")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("loadGroupMachine")
+                        )
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Ca:
+                    </td>
+                    <td style="padding-left: 10px;">
+                        @(Html.DevExtreme().SelectBox()
+                        .ID("cbShift")
+                        .DataSource(new[] { "", "Ca 1", "Ca 2", "Ca 3", "Ca HC", "Ca ngày", "Ca đêm" })
+                        .SearchEnabled(true)
+                        .Width(200)
+                        )
+                    </td>
+                    <td style="padding-left: 10px;">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="MachineGroupButton" class="col-lg-8">
+            @*<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val+ '" name="" value="MachineGroupButton" onclick="MachineGroup()">*@
+        </div>
+    </div>
+
+
+    @*<div id="ShiftButton">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue('T1')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue('T2')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue('T3')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue('T1')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue('T2')">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca HC" onclick="ShiftValue('T0')">
+        </div>
+
+        <div id="MachineGroupButton">
+            <input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val+ '" name="" value="MachineGroupButton" onclick="MachineGroup()">
+        </div>*@
+
+    <div id="dataGrid">
+        @(Html.DevExtreme().DataGrid<NNworking.Models.sp_242_MachinePlanning_GetValuationOverview_Result>()
+            .DataSource(Url.Action("GetFactoryEvaluationOverview", "ProcessingDept", new { shift = "", machine = "", date = DateTime.Now })
+            )
+            .ID("dxDataGrid")
+            .Selection(select => select.Mode(SelectionMode.Multiple))
+            .Paging(page => page.PageSize(100))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 30,50,100 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("Máy_GC")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            //.HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+        )
+
+
+    </div>
+</section>
+
+
+<div id="OpenMessage">
+
+</div>
+<script>
+    var Shift = '';
+    var MachineId = '';
+    DisplayChatBox('@Url.Action("SendMessageToOther", "AllDept")');
+    var group = 'MachineID';
+    GetUser(group,'@Url.Action("ListAvailableUser", "AllDept")');
+
+    $(document).ready(function () {
+        var popupStatus = 0;
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            //$("#banga").html('<td><b>Bàn gá:</b></td> <td>' + palet + '</td>');
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus == 1) {
+                $("#ShiftButton").fadeOut(200);
+                $("#MachineGroupButton").fadeOut(200);
+                $("#OptionIDButtonTotal").fadeOut(200);
+                $("#OptionIDButton").fadeOut(200);
+                $("#background-popup").fadeOut(200);
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadShiftPopup() {
+            if (popupStatus == 0) {
+                $("#ShiftButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadMachineGroupPopup() {
+            if (popupStatus == 0) {
+                $("#MachineGroupButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        /** các hàm gọi sự kiện click **/
+        $("#ShiftBT").click(function () {
+            loadShiftPopup();
+        });
+
+        $("#btnView").click(function () {
+            //loadMachineGroupPopup();
+        });
+
+        // lấy lại kế hoạch sau 1 khoảng thời gian
+
+        //setInterval(function () {
+        //    if (MachineId != '') {
+        //        GetPlanOfMachine();
+        //    }
+        //}, 1000 * 30);
+    })
+
+    function loadGroupMachine() {
+        var date = getDateValue();
+        Shift = $("#cbShift").dxSelectBox("instance").option("value");
+        switch(Shift)
+        {
+            case "Ca đêm": Shift = "T2"; break;
+            case "Ca ngày": Shift = "T1"; break;
+            case "Ca HC": Shift = "T0"; break;
+            case "Ca 1": Shift = "T1"; break;
+            case "Ca 2": Shift = "T2"; break;
+            case "Ca 3": Shift = "T3"; break;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetFactoryEvaluationOverview", "ProcessingDept")',
+            data: { 'shift': Shift, 'machine': MachineId, 'date': date },
+            dataType: 'JSON',
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK")
+                {
+                    alert(data.Values);
+                    return;
+                }
+
+                $('#dxDataGrid').dxDataGrid('instance').option('dataSource', data.Values);
+            },
+        });
+    }
+
+    function getDateValue() {
+        var a = $("#dateDate").dxDateBox("instance").option("value");
+        return a;
+    }
+</script>
+

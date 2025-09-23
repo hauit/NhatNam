@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Thống kê, báo cáo";
+}
+
+<div class="row">
+    <!-- Left col -->
+    <section class="col-lg-3 connectedSortable">
+        <div class="box box-primary">
+            <div class="box-header">
+                <i class="ion ion-clipboard"></i>
+                <h3 class="box-title">Thống kê thao tác chạy máy</h3>
+            </div>
+            <div class="box-footer clearfix no-border">
+                <a href="@Url.Action("ProcessingStatistic", "ProcessingDept")">Xem toàn bộ thông báo</a>
+            </div>
+        </div>
+    </section>
+    <section class="col-lg-5 connectedSortable">
+        <div class="box box-primary">
+            <div class="box-header">
+                <i class="ion ion-clipboard"></i>
+                <h3 class="box-title">Thống kê ảnh hưởng TGTC</h3>
+            </div>
+            <div class="box-footer clearfix no-border">
+                <a href="@Url.Action("StandTimeAffectation", "ProcessingDept")">Xem toàn bộ thông báo</a>
+            </div>
+        </div>
+    </section>
+    <section class="col-lg-4 connectedSortable">
+        <div class="box box-primary">
+            <div class="box-header">
+                <i class="ion ion-clipboard"></i>
+                <h3 class="box-title">Thống kê các vấn đề liên quan đến Kadou</h3>
+            </div>
+            <div class="box-footer clearfix no-border">
+                <a href="@Url.Action("KadouStatistic","ProcessingDept")">Xem toàn bộ thông báo</a>
+            </div>
+        </div>
+    </section>
+</div>

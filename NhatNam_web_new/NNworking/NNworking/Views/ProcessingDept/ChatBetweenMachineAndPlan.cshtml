@@ -1,0 +1,290 @@
+﻿
+@{
+
+}
+
+<section>
+    <div class="row">
+        <div class="box box-body">
+            <div class="col-lg-3">
+                <table>
+                    <tr>
+                        <td>
+                            Ngày:
+                        </td>
+                        <td style="padding-left: 10px;">
+                            @(Html.DevExtreme().DateBox()
+                        .Value(DateTime.Now)
+                        .ID("dateDate")
+                            )
+                        </td>
+                        <td style="padding-left: 10px;">
+                            @(Html.DevExtreme().Button()
+                        .Text("Máy")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("loadGroupMachine")
+                            )
+
+                            @(Html.DevExtreme().Button()
+                        .Text("Ca")
+                        .ID("btnShift")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("loadShift")
+                            )
+                        </td>
+                    </tr>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="MachineGroupButton" class="col-lg-9">
+                @*<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val+ '" name="" value="MachineGroupButton" onclick="MachineGroup()">*@
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Lịch sử giao tiếp</h3>
+                </div>
+                <div name="MsgHistory" id="MsgHistory" Style="background-color:#CCC;height:auto;min-height:225px;overflow:scroll">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            @(Html.DevExtreme().DataGrid<NNworking.Models.sp_GetMachinePlanForFactory_TGTC_Result>()
+            .DataSource(Url.Action("GetMachinePlanForFactory", "ProcessingDept", new { Shift = "", MachineID = "", date = DateTime.Now })//.LoadAction("GetMachinePlanForFactory").Controller("ProcessingDept")
+                                                                                                                                         //.LoadParams(new { Shift = new JS("getShift"), MachineID = new JS("getMachineID"), date = new JS("getDateValue") })
+                                                                                                                                         //.Controller("ProcessingDept")
+                                                                                                                                         //.LoadAction("GetMachinePlanForFactory")
+                                                                                                                                         //.LoadParams(new { Shift ="", MachineID = new JS("getMachineID"), date = new JS("getDateValue") })
+            )
+            .ID("dxDataGrid")
+            .Selection(select => select.Mode(SelectionMode.Multiple))
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("Máy_GC")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            //.HeaderFilter(headFil => headFil.Visible(true))
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+            .Columns(col =>
+            {
+                col.AddFor(m => m.TTGC).Width(40);
+                col.AddFor(m => m.Phoi).Caption("P").Width(40);
+                col.AddFor(m => m.Fille).Caption("F").Width(40);
+                col.AddFor(m => m.Dao).Caption("D").Width(40);
+                col.AddFor(m => m.Jig).Caption("J").Width(40);
+                col.AddFor(m => m.NG_Old).Caption("NG").Width(40);
+                col.AddFor(m => m.OK_Old).Caption("OK").Width(40);
+                col.AddFor(m => m.Fac_TTFile).Caption("TT File");
+                col.AddFor(m => m.TinhTrang).Caption("Phôi").Width(40);
+                col.AddFor(m => m.Fac_TTTH).Caption("Thứ tự TH");
+                col.AddFor(m => m.Fac_DeXuat).Caption("Đề xuất");
+                col.AddFor(m => m.K).Caption("Mã");
+                col.AddFor(m => m.TenChiTiet);
+                col.AddFor(m => m.Order).Caption("Order");
+                col.AddFor(m => m.TTNC);
+                col.AddFor(m => m.Slglenh).Caption("SLL");
+                col.AddFor(m => m.ThoiHan1).Caption("Thời hạn");
+                col.AddFor(m => m.TGGC);
+                col.AddFor(m => m.TGGL);
+                col.AddFor(m => m.PJ61);
+                col.AddFor(m => m.PZE1);
+                col.AddFor(m => m.PBJ1);
+                col.AddFor(m => m.PU71);
+                col.AddFor(m => m.TgTotal).Caption("Tổng thời gian");
+                col.AddFor(m => m.TGTC);
+                col.AddFor(m => m.DKmay);
+                col.AddFor(m => m.Fac_NgayHTtheoKH1).Caption("Ngày HT theo KH");
+                col.AddFor(m => m.Note);
+                col.AddFor(m => m.Fac_NGTruoc).Caption("NC trước");
+            })
+            )
+        </div>
+    </div>
+</section>
+
+
+<script>
+    var Shift = '';
+    $(document).ready(function () {
+        var popupStatus = 0;
+        /** các hàm dùng chug cho popup**/
+        $(this).keydown(function (event) {
+            if (event.which == 27) {
+                disablePopup();
+            }
+        });
+
+        $("#background-popup").click(function () {
+            //$("#banga").html('<td><b>Bàn gá:</b></td> <td>' + palet + '</td>');
+            disablePopup();
+        });
+
+        function loadBackgroundToPopup() {
+            $("#background-popup").css("opacity", "0.2");
+            $("#background-popup").fadeIn(200);
+        }
+
+        function disablePopup() {
+            if (popupStatus == 1) {
+                $("#ShiftButton").fadeOut(200);
+                $("#MachineGroupButton").fadeOut(200);
+                $("#OptionIDButtonTotal").fadeOut(200);
+                $("#OptionIDButton").fadeOut(200);
+                $("#background-popup").fadeOut(200);
+                popupStatus = 0;
+            }
+        }
+
+        /** load các popup của các phần **/
+        function loadShiftPopup() {
+            if (popupStatus == 0) {
+                $("#ShiftButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        function loadMachineGroupPopup() {
+            if (popupStatus == 0) {
+                $("#MachineGroupButton").fadeIn(200);
+                loadBackgroundToPopup();
+                popupStatus = 1;
+            }
+        }
+
+        /** các hàm gọi sự kiện click **/
+        $("#ShiftBT").click(function () {
+            loadShiftPopup();
+        });
+
+        $("#btnView").click(function () {
+            loadMachineGroupPopup();
+        });
+
+    })
+
+    function loadGroupMachine() {
+        $.ajax({
+            url: '@Url.Action("ListMachineGroup", "ProcessingDept")',
+            dataType: 'Json',
+            type: 'GET',
+            data: '',
+            cache: false,
+            success: function (data) {
+                var GroupMachineBT = "";
+                $.each(data, function (i, val) {
+                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val + '" name=""  value="' + val + '" onclick="ListMachine(\'' + val + '\')"> ';
+                });
+                $("#MachineGroupButton").html(GroupMachineBT);
+            },
+        });
+    }
+
+    function loadShift() {
+        var shift = '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 1" onclick="ShiftValue(\'T1\')">';
+        shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 2" onclick="ShiftValue(\'T2\')">';
+        shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca 3" onclick="ShiftValue(\'T3\')">';
+        shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca ngày" onclick="ShiftValue(\'T1\')">';
+        shift += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="Shift" name="" value="Ca đêm" onclick="ShiftValue(\'T2\')">';
+        $("#MachineGroupButton").html(shift);
+    }
+
+    function ShiftValue(data) {
+        Shift = data;
+    }
+
+    function ListMachine(data) {
+        $.ajax({
+            url: '@Url.Action("ListMachineHaveChatHistoryByGroup", "ProcessingDept")',
+            data: { 'Group': data },
+            dataType: 'JSON',
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                var a = '';
+                if (data != null) {
+                    $.each(data, function (i, val) {
+                        if (val.Status == true) {
+                            a += '<input class="btn btn-green" style="background-color:red;margin-top: 10px;" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick="SelectedMachine(\'' + val.MachineID + '\')"> ';
+                        }
+                        else {
+                            a += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val.MachineID + '" name=""  value="' + val.MachineID + '" onclick="SelectedMachine(\'' + val.MachineID + '\')"> ';
+                        }
+                    });
+                    $("#MachineGroupButton").html(a);
+                }
+                else {
+                    $("#MachineGroupButton").html(nulldata);
+                }
+            },
+        });
+    }
+
+    function SelectedMachine(data) {
+        MachineId = data;
+        //$("#MachineGroupButton").append("<br/>" + MachineId);
+        var Date = getDateValue();
+        GetChatHistory(MachineId, Date);
+    }
+
+    function GetChatHistory(MachineId, Date) {
+        $.ajax({
+            url: '@Url.Action("GetMachineChatHistory", "ProcessingDept")',
+            data: { 'machineID': MachineId, 'date': Date },
+            dataType: 'JSON',
+            type: 'Get',
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK") {
+                    alert(data.Values);
+                    return;
+                }
+
+                var msg = '';
+                $.each(data.Values, function (i, val) {
+                    var re = /-?\d+/;
+                    var m = re.exec(val.NotifyTime);
+                    var d = new window.Date(parseInt(m));
+                    msg += d.getDate() + '/' + (d.getMonth()+1) + ' ' + d.getHours() + ':' + d.getMinutes() + ' ' + val.FromClient + ' -> ' + val.ToClient + ': ' + val.NotifyContent + '</br>';
+                });
+                $("#MsgHistory").html(msg);
+            },
+        });
+
+        var url = '@Url.Action("GetMachinePlanForFactory", "ProcessingDept")' + "?Shift=" + Shift + "&MachineID=" + MachineId + "&date=" + Date;
+        $.ajax({
+            url: '@Url.Action("GetMachinePlanForFactory", "ProcessingDept")',
+            data: { 'Shift': Shift, 'MachineID': MachineId, 'date': Date },
+            dataType: 'JSON',
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                $('#dxDataGrid').dxDataGrid('instance').option('dataSource', data);
+            },
+        });
+    }
+
+    function getDateValue() {
+        var a = $("#dateDate").dxDateBox("instance").option("value");
+        return a;
+    }
+</script>

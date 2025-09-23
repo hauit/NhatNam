@@ -31,5 +31,6 @@ namespace NNworking.Models
         public Nullable<double> MotGio { get; set; }
         public Nullable<double> TachNC { get; set; }
         public Nullable<double> DoGa { get; set; }
+        public string PartNoRRC { get; set; }
     }
 }
