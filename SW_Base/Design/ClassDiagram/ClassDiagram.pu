@@ -1,0 +1,84 @@
+@startuml
+/'
+abstract        abstract
+abstract class  "abstract class"
+annotation      annotation
+circle          circle
+()              circle_short_form
+class           class
+class           class_stereo  <<stereotype>>
+diamond         diamond
+<>              diamond_short_form
+entity          entity
+enum            enum
+exception       exception
+interface       interface
+metaclass       metaclass
+protocol        protocol
+stereotype      stereotype
+struct          struct
+'/
+
+package DataExecution {
+
+package Source{
+
+interface IDatabaseBase<T>{
+	List<T> LoadGridByStr<T>(string sqlQuery) where T : new();
+	List<T> LoadGridByStr<T,U>(string sqlQuery, U[] parameter) where T : new();
+	List<T> LoadGridByStore<T, U>(string store, U[] parameter) where T : new();
+	List<T> LoadGridByStore<T>(string store) where T : new();
+	int ExecuteQuery(string sql);
+	int ExecuteQuery<T,U>(string sql, U[] parameter);
+	int ExecuteStore<T, U>(string store, U[] parameter);
+	int ExecuteStore<T>(string store);
+}
+interface IDatabaseWrapper<T>
+interface IDatabaseExecution<T>
+class SQLDatabaseExecution<SqlConnection>
+class SQLiteDatabaseExecution<SQLiteConnection>
+
+IDatabaseExecution -u-|> IDatabaseBase
+IDatabaseWrapper -u-|> IDatabaseBase
+SQLDatabaseExecution -u--|> IDatabaseExecution
+SQLiteDatabaseExecution -u--|> IDatabaseExecution
+}
+
+/'
+package DI{
+
+interface IServiceCollection{
+ +AddTransient()
+ +BuildServiceProvider()
+}
+class ServiceCollection
+
+interface IServiceCollection
+class ServiceProvider
+
+ServiceProvider -d-|> IServiceProvider
+ServiceCollection -u--|> IServiceCollection
+
+ServiceProvider -r-> IServiceCollection
+}
+DI -r-> Source.IDatabaseExecution
+'/
+
+package DatabaseInfor{
+ class DataFile
+ class ServerSQL
+}
+
+class DataExecutionWrapper{
+ - IServiceProvider serviceProvider
+ + DataExecutionWrapper(DataFile)
+ + DataExecutionWrapper(ServerSQL)
+}
+
+DataExecutionWrapper -u-|> Source.IDatabaseWrapper
+DataExecutionWrapper --> Source.IDatabaseExecution
+DataExecutionWrapper -d-> DatabaseInfor
+/' DataExecutionWrapper -r-> DI.IServiceProvider '/
+
+}
+@enduml

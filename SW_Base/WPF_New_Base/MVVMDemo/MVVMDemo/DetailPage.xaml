@@ -1,0 +1,12 @@
+﻿<Window x:Class="MVVMDemo.DetailPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVMDemo"
+        mc:Ignorable="d"
+        Title="DetailPage" Height="450" Width="800">
+    <Grid>
+        <Image Source="C:\Users\USERLC\Pictures\Screenshots\Screenshot 2024-03-22 214449.png" Width="200" Height="150" />
+    </Grid>
+</Window>
