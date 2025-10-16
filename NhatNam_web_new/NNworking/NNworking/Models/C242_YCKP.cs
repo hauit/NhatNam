@@ -29,5 +29,6 @@ namespace NNworking.Models
         public string ProcessStaff { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public string UpdateStaff { get; set; }
+        public string ProcessDept { get; set; }
     }
 }

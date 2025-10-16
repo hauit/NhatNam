@@ -494,6 +494,49 @@ namespace NNworking.Controllers.AllDept
         }
 
         [HttpPost]
+        public JsonResult ImportBusOderList(string staffID)
+        {
+            // Checking no of files injected in Request object  
+            if (Request.Files.Count == 0)
+            {
+                return Json(new { Status = "NG", Values = "Chưa chọn file import." });
+            }
+
+            List<clsError> Error = new List<clsError>();
+            try
+            {
+                HttpFileCollectionBase files = Request.Files;
+                for (int i = 0; i < files.Count; i++)
+                {
+                    HttpPostedFileBase file = files[i];
+                    string fname;
+
+                    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                    {
+                        string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                        fname = testfiles[testfiles.Length - 1];
+                    }
+                    else
+                    {
+                        fname = file.FileName;
+                    }
+
+                    fname = Path.Combine(Server.MapPath("~/Files/"), fname);
+                    file.SaveAs(fname);
+                    string name = ChangeName(fname);
+                    System.IO.File.Move(fname, name);
+                    IImport import = new ImportBusOderList();
+                    import.ImportData(name, staffID, out Error);
+                }
+                return Json(new { Status = "OK", Values = "Import xong!", Errors = Error });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Status = "NG", Values = "Error occurred. Error details: " + ex.Message, Errors = Error });
+            }
+        }
+
+        [HttpPost]
         public JsonResult ImportStaff()
         {
             // Checking no of files injected in Request object  

@@ -6,7 +6,7 @@
     //.Key("VoucherID")
     )
     .ID("dxTrackingHistory")
-    //.OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
+    .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
     .Paging(page => page.PageSize(10))
     .Pager(pager => pager.ShowPageSizeSelector(true)
         .ShowInfo(true)

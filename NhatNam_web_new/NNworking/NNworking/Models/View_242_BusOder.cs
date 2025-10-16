@@ -20,6 +20,7 @@ namespace NNworking.Models
         public Nullable<System.DateTime> Date { get; set; }
         public string PlanNo { get; set; }
         public string PartID { get; set; }
+        public string PartNoRRC { get; set; }
         public Nullable<int> Qty { get; set; }
         public Nullable<System.DateTime> Deadline { get; set; }
         public Nullable<int> RawQty { get; set; }

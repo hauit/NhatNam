@@ -25,6 +25,12 @@ namespace NNworking.Controllers
             return View();
         }
 
+        [Route("Danh-sach-don-hang.html")]
+        public ActionResult BusOderList()
+        {
+            return View();
+        }
+
         //[Route("Thong-tin-san-xuat-don-hang-{order}.html")]
         public ActionResult ToLenh(string order)
         {

@@ -4760,6 +4760,7 @@
     <Content Include="Views\ProcessingDept\UrgentProcessingPlan.cshtml" />
     <Content Include="Views\ProcessingDept\YCKP.cshtml" />
     <Content Include="Views\Planning\PartList.cshtml" />
+    <Content Include="Views\Planning\BusOderList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4779,6 +4780,7 @@
     <Compile Include="Controllers\AllDept\AllDeptController.cs" />
     <Compile Include="Controllers\AllDept\StaffManagementController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\C242_BusOderController.cs" />
     <Compile Include="Controllers\C242_ErrorItemStatusController.cs" />
     <Compile Include="Controllers\EmailConfigurationController.cs" />
     <Compile Include="Controllers\HubController.cs" />
@@ -4832,7 +4834,6 @@
     <Compile Include="Controllers\TableAPI\C222_WebPermissionController.cs" />
     <Compile Include="Controllers\TableAPI\C222_WebUrlController.cs" />
     <Compile Include="Controllers\TableAPI\C222_WorkingDayController.cs" />
-    <Compile Include="Controllers\TableAPI\C242_BusOderController.cs" />
     <Compile Include="Controllers\TableAPI\C242_BusOder_ActualQtyController.cs" />
     <Compile Include="Controllers\TableAPI\C242_DeceidedTimeController.cs" />
     <Compile Include="Controllers\TableAPI\C242_ErrorContentController.cs" />
@@ -5497,6 +5498,7 @@
     <Compile Include="Models\Import\IImport.cs" />
     <Compile Include="Models\Import\ImportBaoLoi.cs" />
     <Compile Include="Models\Import\ImportBaoLoi_New.cs" />
+    <Compile Include="Models\Import\ImportBusOderList.cs" />
     <Compile Include="Models\Import\ImportBusOrder.cs" />
     <Compile Include="Models\Import\ImportMaterial.cs" />
     <Compile Include="Models\Import\ImportMaterialStockInput.cs" />
@@ -5708,6 +5710,12 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_242_BusOder_GetByMonth_Result.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_242_BusOder_GetTHPhoi2_Result.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_242_BusOder_GetTHPhoi_Result.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_242_BusOder_HangThieu_Result.cs">

@@ -4,14 +4,18 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
+using NNworking.Models;
 
-namespace NNworking.Models.Controllers
+namespace NNworking.Controllers
 {
     [Route("api/C242_BusOder/{action}", Name = "C242_BusOderApi")]
     public class C242_BusOderController : ApiController
@@ -19,49 +23,19 @@ namespace NNworking.Models.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public HttpResponseMessage Get(DataSourceLoadOptions loadOptions) {
-            var c242_busoder = _context.View_242_BusOder.Select(i => new {
-                i.ID,
-                i.BOderNo,
-                i.Date,
-                i.PlanNo,
-                i.PartID,
-                i.Qty,
-                i.Deadline,
-                i.RawQty,
-                i.HelisertQty,
-                i.BlastQty,
-                i.MONo,
-                i.MOQty,
-                i.Started,
-                i.Finished,
-                i.FinishDate,
-                i.Change,
-                i.ChangeDate,
-                i.Imported,
-                i.ImportFrom,
-                i.Note,
-                i.CuttingOrder,
-                i.CuttingStatus,
-                i.Deleted,
-                i.OrderGoc,
-                i.OrderCat
-            });
-            return Request.CreateResponse(DataSourceLoader.Load(c242_busoder, loadOptions));
-        }
+        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
+            var c242_busoder = _context.View_242_BusOder.Where(m => m.Deleted == false);
+            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
+            // This can make SQL execution plans more efficient.
+            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
+            // loadOptions.PrimaryKey = new[] { "ID" };
+            // loadOptions.PaginateViaPrimaryKey = true;
 
-        [HttpGet]
-        public HttpResponseMessage GetByMonth(DataSourceLoadOptions loadOptions)
-        {
-            var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
-            string month = queryParams["month"];
-
-            var c242_busoder = _context.sp_242_BusOder_GetByMonth(month).ToList();
-            return Request.CreateResponse(DataSourceLoader.Load(c242_busoder, loadOptions));
+            return Request.CreateResponse(await DataSourceLoader.LoadAsync(c242_busoder, loadOptions));
         }
 
         [HttpPost]
-        public HttpResponseMessage Post(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Post(FormDataCollection form) {
             var model = new C242_BusOder();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -71,17 +45,17 @@ namespace NNworking.Models.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, GetFullErrorMessage(ModelState));
 
             var result = _context.C242_BusOder.Add(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return Request.CreateResponse(HttpStatusCode.Created, result.ID);
+            return Request.CreateResponse(HttpStatusCode.Created, new { result.ID });
         }
 
         [HttpPut]
-        public HttpResponseMessage Put(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Put(FormDataCollection form) {
             var key = Convert.ToInt32(form.Get("key"));
-            var model = _context.C242_BusOder.FirstOrDefault(item => item.ID == key);
+            var model = await _context.C242_BusOder.FirstOrDefaultAsync(item => item.ID == key);
             if(model == null)
-                return Request.CreateResponse(HttpStatusCode.Conflict, "C242_BusOder not found");
+                return Request.CreateResponse(HttpStatusCode.Conflict, "Object not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -90,24 +64,26 @@ namespace NNworking.Models.Controllers
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, GetFullErrorMessage(ModelState));
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [HttpDelete]
-        public void Delete(FormDataCollection form) {
+        public async Task Delete(FormDataCollection form) {
             var key = Convert.ToInt32(form.Get("key"));
-            var model = _context.C242_BusOder.FirstOrDefault(item => item.ID == key);
+            var model = await _context.C242_BusOder.FirstOrDefaultAsync(item => item.ID == key);
 
             _context.C242_BusOder.Remove(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
 
         private void PopulateModel(C242_BusOder model, IDictionary values) {
             string ID = nameof(C242_BusOder.ID);
             string BODER_NO = nameof(C242_BusOder.BOderNo);
+            string TEMP_ORDER = nameof(C242_BusOder.TempOrder);
+            string ODER_TYPE = nameof(C242_BusOder.OderType);
             string DATE = nameof(C242_BusOder.Date);
             string PLAN_NO = nameof(C242_BusOder.PlanNo);
             string PART_ID = nameof(C242_BusOder.PartID);
@@ -131,6 +107,12 @@ namespace NNworking.Models.Controllers
             string DELETED = nameof(C242_BusOder.Deleted);
             string ORDER_GOC = nameof(C242_BusOder.OrderGoc);
             string ORDER_CAT = nameof(C242_BusOder.OrderCat);
+            string NOI_CAT = nameof(C242_BusOder.NoiCat);
+            string THVAT_LIEU = nameof(C242_BusOder.THVatLieu);
+            string THPHOI = nameof(C242_BusOder.THPhoi);
+            string STATUS = nameof(C242_BusOder.Status);
+            string PAID = nameof(C242_BusOder.Paid);
+            string PAY_DATE = nameof(C242_BusOder.PayDate);
 
             if(values.Contains(ID)) {
                 model.ID = Convert.ToInt32(values[ID]);
@@ -140,8 +122,16 @@ namespace NNworking.Models.Controllers
                 model.BOderNo = Convert.ToString(values[BODER_NO]);
             }
 
+            if(values.Contains(TEMP_ORDER)) {
+                model.TempOrder = values[TEMP_ORDER] != null ? Convert.ToBoolean(values[TEMP_ORDER]) : (bool?)null;
+            }
+
+            if(values.Contains(ODER_TYPE)) {
+                model.OderType = values[ODER_TYPE] != null ? Convert.ToInt32(values[ODER_TYPE]) : (int?)null;
+            }
+
             if(values.Contains(DATE)) {
-                model.Date = Convert.ToDateTime(values[DATE]);
+                model.Date = values[DATE] != null ? Convert.ToDateTime(values[DATE]) : (DateTime?)null;
             }
 
             if(values.Contains(PLAN_NO)) {
@@ -153,23 +143,23 @@ namespace NNworking.Models.Controllers
             }
 
             if(values.Contains(QTY)) {
-                model.Qty = Convert.ToInt32(values[QTY]);
+                model.Qty = values[QTY] != null ? Convert.ToInt32(values[QTY]) : (int?)null;
             }
 
             if(values.Contains(DEADLINE)) {
-                model.Deadline = Convert.ToDateTime(values[DEADLINE]);
+                model.Deadline = values[DEADLINE] != null ? Convert.ToDateTime(values[DEADLINE]) : (DateTime?)null;
             }
 
             if(values.Contains(RAW_QTY)) {
-                model.RawQty = Convert.ToInt32(values[RAW_QTY]);
+                model.RawQty = values[RAW_QTY] != null ? Convert.ToInt32(values[RAW_QTY]) : (int?)null;
             }
 
             if(values.Contains(HELISERT_QTY)) {
-                model.HelisertQty = Convert.ToInt32(values[HELISERT_QTY]);
+                model.HelisertQty = values[HELISERT_QTY] != null ? Convert.ToInt32(values[HELISERT_QTY]) : (int?)null;
             }
 
             if(values.Contains(BLAST_QTY)) {
-                model.BlastQty = Convert.ToInt32(values[BLAST_QTY]);
+                model.BlastQty = values[BLAST_QTY] != null ? Convert.ToInt32(values[BLAST_QTY]) : (int?)null;
             }
 
             if(values.Contains(MONO)) {
@@ -177,19 +167,19 @@ namespace NNworking.Models.Controllers
             }
 
             if(values.Contains(MOQTY)) {
-                model.MOQty = Convert.ToInt32(values[MOQTY]);
+                model.MOQty = values[MOQTY] != null ? Convert.ToInt32(values[MOQTY]) : (int?)null;
             }
 
             if(values.Contains(STARTED)) {
-                model.Started = Convert.ToBoolean(values[STARTED]);
+                model.Started = values[STARTED] != null ? Convert.ToBoolean(values[STARTED]) : (bool?)null;
             }
 
             if(values.Contains(FINISHED)) {
-                model.Finished = Convert.ToBoolean(values[FINISHED]);
+                model.Finished = values[FINISHED] != null ? Convert.ToBoolean(values[FINISHED]) : (bool?)null;
             }
 
             if(values.Contains(FINISH_DATE)) {
-                model.FinishDate = Convert.ToDateTime(values[FINISH_DATE]);
+                model.FinishDate = values[FINISH_DATE] != null ? Convert.ToDateTime(values[FINISH_DATE]) : (DateTime?)null;
             }
 
             if(values.Contains(CHANGE)) {
@@ -197,11 +187,11 @@ namespace NNworking.Models.Controllers
             }
 
             if(values.Contains(CHANGE_DATE)) {
-                model.ChangeDate = Convert.ToDateTime(values[CHANGE_DATE]);
+                model.ChangeDate = values[CHANGE_DATE] != null ? Convert.ToDateTime(values[CHANGE_DATE]) : (DateTime?)null;
             }
 
             if(values.Contains(IMPORTED)) {
-                model.Imported = Convert.ToBoolean(values[IMPORTED]);
+                model.Imported = values[IMPORTED] != null ? Convert.ToBoolean(values[IMPORTED]) : (bool?)null;
             }
 
             if(values.Contains(IMPORT_FROM)) {
@@ -217,7 +207,7 @@ namespace NNworking.Models.Controllers
             }
 
             if(values.Contains(CUTTING_STATUS)) {
-                model.CuttingStatus = Convert.ToBoolean(values[CUTTING_STATUS]);
+                model.CuttingStatus = values[CUTTING_STATUS] != null ? Convert.ToBoolean(values[CUTTING_STATUS]) : (bool?)null;
             }
 
             if(values.Contains(DELETED)) {
@@ -230,6 +220,30 @@ namespace NNworking.Models.Controllers
 
             if(values.Contains(ORDER_CAT)) {
                 model.OrderCat = Convert.ToString(values[ORDER_CAT]);
+            }
+
+            if(values.Contains(NOI_CAT)) {
+                model.NoiCat = Convert.ToString(values[NOI_CAT]);
+            }
+
+            if(values.Contains(THVAT_LIEU)) {
+                model.THVatLieu = values[THVAT_LIEU] != null ? Convert.ToDateTime(values[THVAT_LIEU]) : (DateTime?)null;
+            }
+
+            if(values.Contains(THPHOI)) {
+                model.THPhoi = values[THPHOI] != null ? Convert.ToDateTime(values[THPHOI]) : (DateTime?)null;
+            }
+
+            if(values.Contains(STATUS)) {
+                model.Status = Convert.ToString(values[STATUS]);
+            }
+
+            if(values.Contains(PAID)) {
+                model.Paid = values[PAID] != null ? Convert.ToBoolean(values[PAID]) : (bool?)null;
+            }
+
+            if(values.Contains(PAY_DATE)) {
+                model.PayDate = values[PAY_DATE] != null ? Convert.ToDateTime(values[PAY_DATE]) : (DateTime?)null;
             }
         }
 

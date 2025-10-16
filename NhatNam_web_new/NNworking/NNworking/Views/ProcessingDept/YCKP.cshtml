@@ -85,6 +85,16 @@
             .ValueExpr("DeptCode")
         );
 
+        columns.AddFor(m => m.ProcessDept).Caption("Bộ phận xử lý YCKP").Lookup(lup =>
+            lup.DataSource(d => d.WebApi()
+                .RouteName("C222_DepartmentApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("DeptName")
+            .ValueExpr("DeptCode")
+        );
+
         columns.AddFor(m => m.InputStaff).Caption("Người nhập").Lookup(lup =>
             lup.DataSource(d => d.WebApi()
                 .RouteName("C222_StaffApi")

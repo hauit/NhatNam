@@ -1837,6 +1837,7 @@ warning 6002: The table/view 'NN_Database.dbo.242_TrackingViTri' does not have a
           <Property Name="ProcessStaff" Type="nvarchar" MaxLength="50" />
           <Property Name="Deleted" Type="bit" />
           <Property Name="UpdateStaff" Type="nvarchar" MaxLength="250" />
+          <Property Name="ProcessDept" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.333_Borrow' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5801,6 +5802,7 @@ warning 6002: The table/view 'NN_Database.dbo.View_242_BusOder' does not have a 
           <Property Name="Date" Type="datetime" />
           <Property Name="PlanNo" Type="nvarchar" MaxLength="50" />
           <Property Name="PartID" Type="nvarchar" MaxLength="50" />
+          <Property Name="PartNoRRC" Type="nvarchar" MaxLength="50" />
           <Property Name="Qty" Type="int" />
           <Property Name="Deadline" Type="datetime" />
           <Property Name="RawQty" Type="int" />
@@ -6278,6 +6280,7 @@ warning 6002: The table/view 'NN_Database.dbo.View_242_YCKP' does not have a pri
           <Property Name="PartID" Type="nvarchar" MaxLength="50" />
           <Property Name="Deadline" Type="datetime" />
           <Property Name="RaiseDept" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProcessDept" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NN_Database.dbo.View_ManualExcutionChecking_GetCurrent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6440,6 +6443,10 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
         </Function>
         <Function Name="sp_242_BusOder_GetByMonth" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Month" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_242_BusOder_GetTHPhoi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="partID" Type="nvarchar" Mode="In" />
+          <Parameter Name="mono" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_242_BusOder_HangThieu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fromDate" Type="datetime" Mode="In" />
@@ -10532,6 +10539,7 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
     [View_242_BusOder].[Date] AS [Date], 
     [View_242_BusOder].[PlanNo] AS [PlanNo], 
     [View_242_BusOder].[PartID] AS [PartID], 
+    [View_242_BusOder].[PartNoRRC] AS [PartNoRRC], 
     [View_242_BusOder].[Qty] AS [Qty], 
     [View_242_BusOder].[Deadline] AS [Deadline], 
     [View_242_BusOder].[RawQty] AS [RawQty], 
@@ -10893,7 +10901,8 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
     [View_242_YCKP].[UpdateStaff] AS [UpdateStaff], 
     [View_242_YCKP].[PartID] AS [PartID], 
     [View_242_YCKP].[Deadline] AS [Deadline], 
-    [View_242_YCKP].[RaiseDept] AS [RaiseDept]
+    [View_242_YCKP].[RaiseDept] AS [RaiseDept], 
+    [View_242_YCKP].[ProcessDept] AS [ProcessDept]
     FROM [dbo].[View_242_YCKP] AS [View_242_YCKP]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_ManualExcutionChecking_GetCurrent" EntityType="Self.View_ManualExcutionChecking_GetCurrent" store:Type="Views" store:Schema="dbo">
@@ -11595,44 +11604,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="DeptCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="SortingNumber" Type="Int32" />
         </EntityType>
-        <EntityType Name="C242_BusOder">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BOderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TempOrder" Type="Boolean" />
-          <Property Name="OderType" Type="Int32" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <Property Name="PlanNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PartID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Qty" Type="Int32" />
-          <Property Name="Deadline" Type="DateTime" Precision="3" />
-          <Property Name="RawQty" Type="Int32" />
-          <Property Name="HelisertQty" Type="Int32" />
-          <Property Name="BlastQty" Type="Int32" />
-          <Property Name="MONo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MOQty" Type="Int32" />
-          <Property Name="Started" Type="Boolean" />
-          <Property Name="Finished" Type="Boolean" />
-          <Property Name="FinishDate" Type="DateTime" Precision="3" />
-          <Property Name="Change" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ChangeDate" Type="DateTime" Precision="3" />
-          <Property Name="Imported" Type="Boolean" />
-          <Property Name="ImportFrom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CuttingOrder" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CuttingStatus" Type="Boolean" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="OrderGoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OrderCat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NoiCat" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="THVatLieu" Type="DateTime" Precision="3" />
-          <Property Name="THPhoi" Type="DateTime" Precision="3" />
-          <Property Name="Status" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Paid" Type="Boolean" />
-          <Property Name="PayDate" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="C242_BusOder_ActualQty">
           <Key>
             <PropertyRef Name="ID" />
@@ -12249,26 +12220,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="NGBuoc" Type="Int32" />
           <Property Name="NGNCTruoc" Type="Int32" />
           <Property Name="WorkWhilePLJ1" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="C242_YCKP">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <Property Name="OrderNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="OptionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MachineID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateYCKP" Type="DateTime" Precision="3" />
-          <Property Name="YCKPContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SolutionContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateYCKPDeadline" Type="DateTime" Precision="3" />
-          <Property Name="YCKPProcessTime" Type="DateTime" Precision="3" />
-          <Property Name="RaiseDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InputStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProcessStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="UpdateStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="C222_PathOfSofware">
           <Key>
@@ -16222,54 +16173,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="LocalPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="View_242_BusOder">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="BOderNo" />
-            <PropertyRef Name="Deleted" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="BOderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TempOrder" Type="Boolean" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <Property Name="PlanNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PartID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Qty" Type="Int32" />
-          <Property Name="Deadline" Type="DateTime" Precision="3" />
-          <Property Name="RawQty" Type="Int32" />
-          <Property Name="HelisertQty" Type="Int32" />
-          <Property Name="BlastQty" Type="Int32" />
-          <Property Name="MONo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MOQty" Type="Int32" />
-          <Property Name="Started" Type="Boolean" />
-          <Property Name="Finished" Type="Boolean" />
-          <Property Name="FinishDate" Type="DateTime" Precision="3" />
-          <Property Name="Change" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ChangeDate" Type="DateTime" Precision="3" />
-          <Property Name="Imported" Type="Boolean" />
-          <Property Name="ImportFrom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NoiCat" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="THVatLieu" Type="DateTime" Precision="3" />
-          <Property Name="THPhoi" Type="DateTime" Precision="3" />
-          <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OrderCat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OrderGoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OrderType" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CuttingOrder" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CuttingStatus" Type="Boolean" />
-          <Property Name="Status" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Paid" Type="Boolean" />
-          <Property Name="PayDate" Type="DateTime" Precision="3" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="QM_CUA" Type="Int32" />
-          <Property Name="XUONG_KCS" Type="Int32" />
-          <Property Name="DONGOI_KHOTP" Type="Int32" />
-          <Property Name="KHOTP_QM" Type="Int32" />
-          <Property Name="QM_TRA" Type="Int32" />
-          <Property Name="TRA_PHOI" Type="Int32" />
-          <Property Name="CONLAI" Type="Int32" />
-          <Property Name="XACNHAN" Type="Int32" />
-        </EntityType>
         <EntityType Name="View_242_ErrorItemNotify">
           <Key>
             <PropertyRef Name="ID" />
@@ -16786,7 +16689,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="C222_WebPermission" EntityType="Self.C222_WebPermission" />
           <EntitySet Name="C222_WebUrl" EntityType="Self.C222_WebUrl" />
           <EntitySet Name="C222_Work" EntityType="Self.C222_Work" />
-          <EntitySet Name="C242_BusOder" EntityType="Self.C242_BusOder" />
           <EntitySet Name="C242_BusOder_ActualQty" EntityType="Self.C242_BusOder_ActualQty" />
           <EntitySet Name="C242_DeceidedTime" EntityType="Self.C242_DeceidedTime" />
           <EntitySet Name="C242_ErrorContent" EntityType="Self.C242_ErrorContent" />
@@ -16822,7 +16724,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="C242_ToolBorrowDetail" EntityType="Self.C242_ToolBorrowDetail" />
           <EntitySet Name="C242_Work" EntityType="Self.C242_Work" />
           <EntitySet Name="C242_WTS" EntityType="Self.C242_WTS" />
-          <EntitySet Name="C242_YCKP" EntityType="Self.C242_YCKP" />
           <EntitySet Name="C222_PathOfSofware" EntityType="Self.C222_PathOfSofware" />
           <EntitySet Name="C222_RootPath" EntityType="Self.C222_RootPath" />
           <EntitySet Name="C222_StaffShift" EntityType="Self.C222_StaffShift" />
@@ -17022,7 +16923,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="View_222_TimeCardDetail" EntityType="Self.View_222_TimeCardDetail" />
           <EntitySet Name="View_222_Users" EntityType="Self.View_222_Users" />
           <EntitySet Name="View_222_WebPermission" EntityType="Self.View_222_WebPermission" />
-          <EntitySet Name="View_242_BusOder" EntityType="Self.View_242_BusOder" />
           <EntitySet Name="View_242_ErrorItemNotify" EntityType="Self.View_242_ErrorItemNotify" />
           <EntitySet Name="View_242_InventoryData" EntityType="Self.View_242_InventoryData" />
           <EntitySet Name="View_242_InventoryExport" EntityType="Self.View_242_InventoryExport" />
@@ -17605,9 +17505,16 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="C242_ErrorItemStatus" EntityType="NN_DatabaseModel.C242_ErrorItemStatus" />
           <EntitySet Name="C242_ErrorItemNotify_New" EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" />
           <EntitySet Name="C242_ErrorItemNotify_View" EntityType="NN_DatabaseModel.C242_ErrorItemNotify_View" />
-          <EntitySet Name="View_242_YCKP" EntityType="NN_DatabaseModel.View_242_YCKP" />
           <EntitySet Name="C242_Part" EntityType="NN_DatabaseModel.C242_Part" />
           <EntitySet Name="View_242_Part" EntityType="NN_DatabaseModel.View_242_Part" />
+          <EntitySet Name="C242_BusOder" EntityType="NN_DatabaseModel.C242_BusOder" />
+          <EntitySet Name="View_242_BusOder" EntityType="NN_DatabaseModel.View_242_BusOder" />
+          <FunctionImport Name="sp_242_BusOder_GetTHPhoi" ReturnType="Collection(NN_DatabaseModel.sp_242_BusOder_GetTHPhoi_Result)">
+            <Parameter Name="partID" Mode="In" Type="String" />
+            <Parameter Name="mono" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="C242_YCKP" EntityType="NN_DatabaseModel.C242_YCKP" />
+          <EntitySet Name="View_242_YCKP" EntityType="NN_DatabaseModel.View_242_YCKP" />
         </EntityContainer>
         <ComplexType Name="sp_222_AcquireNotifications_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -19160,28 +19067,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="Status" Type="Int32" />
           <Property Name="Money" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
-        <EntityType Name="View_242_YCKP">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <Property Name="OrderNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="OptionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MachineID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateYCKP" Type="DateTime" Precision="3" />
-          <Property Name="YCKPContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SolutionContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateYCKPDeadline" Type="DateTime" Precision="3" />
-          <Property Name="YCKPProcessTime" Type="DateTime" Precision="3" />
-          <Property Name="InputStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProcessStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="UpdateStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PartID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Deadline" Type="DateTime" Precision="3" />
-          <Property Name="RaiseDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="C242_Part">
           <Key>
             <PropertyRef Name="ID" />
@@ -19238,6 +19123,145 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="TachNC" Type="Double" />
           <Property Name="DoGa" Type="Double" />
           <Property Name="PartNoRRC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="C242_BusOder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BOderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TempOrder" Type="Boolean" />
+          <Property Name="OderType" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="PlanNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="RawQty" Type="Int32" />
+          <Property Name="HelisertQty" Type="Int32" />
+          <Property Name="BlastQty" Type="Int32" />
+          <Property Name="MONo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MOQty" Type="Int32" />
+          <Property Name="Started" Type="Boolean" />
+          <Property Name="Finished" Type="Boolean" />
+          <Property Name="FinishDate" Type="DateTime" Precision="3" />
+          <Property Name="Change" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChangeDate" Type="DateTime" Precision="3" />
+          <Property Name="Imported" Type="Boolean" />
+          <Property Name="ImportFrom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CuttingOrder" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CuttingStatus" Type="Boolean" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="OrderGoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderCat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoiCat" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="THVatLieu" Type="DateTime" Precision="3" />
+          <Property Name="THPhoi" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Paid" Type="Boolean" />
+          <Property Name="PayDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="View_242_BusOder">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="BOderNo" />
+            <PropertyRef Name="Deleted" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="BOderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TempOrder" Type="Boolean" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="PlanNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartNoRRC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="RawQty" Type="Int32" />
+          <Property Name="HelisertQty" Type="Int32" />
+          <Property Name="BlastQty" Type="Int32" />
+          <Property Name="MONo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MOQty" Type="Int32" />
+          <Property Name="Started" Type="Boolean" />
+          <Property Name="Finished" Type="Boolean" />
+          <Property Name="FinishDate" Type="DateTime" Precision="3" />
+          <Property Name="Change" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChangeDate" Type="DateTime" Precision="3" />
+          <Property Name="Imported" Type="Boolean" />
+          <Property Name="ImportFrom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoiCat" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="THVatLieu" Type="DateTime" Precision="3" />
+          <Property Name="THPhoi" Type="DateTime" Precision="3" />
+          <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderCat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderGoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderType" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CuttingOrder" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CuttingStatus" Type="Boolean" />
+          <Property Name="Status" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Paid" Type="Boolean" />
+          <Property Name="PayDate" Type="DateTime" Precision="3" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="QM_CUA" Type="Int32" />
+          <Property Name="XUONG_KCS" Type="Int32" />
+          <Property Name="DONGOI_KHOTP" Type="Int32" />
+          <Property Name="KHOTP_QM" Type="Int32" />
+          <Property Name="QM_TRA" Type="Int32" />
+          <Property Name="TRA_PHOI" Type="Int32" />
+          <Property Name="CONLAI" Type="Int32" />
+          <Property Name="XACNHAN" Type="Int32" />
+        </EntityType>
+        <ComplexType Name="sp_242_BusOder_GetTHPhoi2_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_242_BusOder_GetTHPhoi_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="C242_YCKP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="OrderNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OptionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MachineID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateYCKP" Type="DateTime" Precision="3" />
+          <Property Name="YCKPContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SolutionContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateYCKPDeadline" Type="DateTime" Precision="3" />
+          <Property Name="YCKPProcessTime" Type="DateTime" Precision="3" />
+          <Property Name="RaiseDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InputStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="UpdateStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessDept" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_242_YCKP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="OrderNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OptionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MachineID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateYCKP" Type="DateTime" Precision="3" />
+          <Property Name="YCKPContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SolutionContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateYCKPDeadline" Type="DateTime" Precision="3" />
+          <Property Name="YCKPProcessTime" Type="DateTime" Precision="3" />
+          <Property Name="InputStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="UpdateStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PartID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="RaiseDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessDept" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -19890,45 +19914,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="C242_BusOder">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_BusOder">
-              <MappingFragment StoreEntitySet="242_BusOder">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BOderNo" ColumnName="BOderNo" />
-                <ScalarProperty Name="TempOrder" ColumnName="TempOrder" />
-                <ScalarProperty Name="OderType" ColumnName="OderType" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="PlanNo" ColumnName="PlanNo" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
-                <ScalarProperty Name="RawQty" ColumnName="RawQty" />
-                <ScalarProperty Name="HelisertQty" ColumnName="HelisertQty" />
-                <ScalarProperty Name="BlastQty" ColumnName="BlastQty" />
-                <ScalarProperty Name="MONo" ColumnName="MONo" />
-                <ScalarProperty Name="MOQty" ColumnName="MOQty" />
-                <ScalarProperty Name="Started" ColumnName="Started" />
-                <ScalarProperty Name="Finished" ColumnName="Finished" />
-                <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
-                <ScalarProperty Name="Change" ColumnName="Change" />
-                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
-                <ScalarProperty Name="Imported" ColumnName="Imported" />
-                <ScalarProperty Name="ImportFrom" ColumnName="ImportFrom" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="CuttingOrder" ColumnName="CuttingOrder" />
-                <ScalarProperty Name="CuttingStatus" ColumnName="CuttingStatus" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="OrderGoc" ColumnName="OrderGoc" />
-                <ScalarProperty Name="OrderCat" ColumnName="OrderCat" />
-                <ScalarProperty Name="NoiCat" ColumnName="NoiCat" />
-                <ScalarProperty Name="THVatLieu" ColumnName="THVatLieu" />
-                <ScalarProperty Name="THPhoi" ColumnName="THPhoi" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Paid" ColumnName="Paid" />
-                <ScalarProperty Name="PayDate" ColumnName="PayDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="C242_BusOder_ActualQty">
             <EntityTypeMapping TypeName="NN_DatabaseModel.C242_BusOder_ActualQty">
               <MappingFragment StoreEntitySet="242_BusOder_ActualQty">
@@ -20578,27 +20563,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
                 <ScalarProperty Name="NGBuoc" ColumnName="NGBuoc" />
                 <ScalarProperty Name="NGNCTruoc" ColumnName="NGNCTruoc" />
                 <ScalarProperty Name="WorkWhilePLJ1" ColumnName="WorkWhilePLJ1" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="C242_YCKP">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_YCKP">
-              <MappingFragment StoreEntitySet="242_YCKP">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
-                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
-                <ScalarProperty Name="DateYCKP" ColumnName="DateYCKP" />
-                <ScalarProperty Name="YCKPContent" ColumnName="YCKPContent" />
-                <ScalarProperty Name="SolutionContent" ColumnName="SolutionContent" />
-                <ScalarProperty Name="DateYCKPDeadline" ColumnName="DateYCKPDeadline" />
-                <ScalarProperty Name="YCKPProcessTime" ColumnName="YCKPProcessTime" />
-                <ScalarProperty Name="RaiseDept" ColumnName="RaiseDept" />
-                <ScalarProperty Name="InputStaff" ColumnName="InputStaff" />
-                <ScalarProperty Name="ProcessStaff" ColumnName="ProcessStaff" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -24430,53 +24394,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_242_BusOder">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_BusOder">
-              <MappingFragment StoreEntitySet="View_242_BusOder">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BOderNo" ColumnName="BOderNo" />
-                <ScalarProperty Name="TempOrder" ColumnName="TempOrder" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="PlanNo" ColumnName="PlanNo" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
-                <ScalarProperty Name="RawQty" ColumnName="RawQty" />
-                <ScalarProperty Name="HelisertQty" ColumnName="HelisertQty" />
-                <ScalarProperty Name="BlastQty" ColumnName="BlastQty" />
-                <ScalarProperty Name="MONo" ColumnName="MONo" />
-                <ScalarProperty Name="MOQty" ColumnName="MOQty" />
-                <ScalarProperty Name="Started" ColumnName="Started" />
-                <ScalarProperty Name="Finished" ColumnName="Finished" />
-                <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
-                <ScalarProperty Name="Change" ColumnName="Change" />
-                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
-                <ScalarProperty Name="Imported" ColumnName="Imported" />
-                <ScalarProperty Name="ImportFrom" ColumnName="ImportFrom" />
-                <ScalarProperty Name="NoiCat" ColumnName="NoiCat" />
-                <ScalarProperty Name="THVatLieu" ColumnName="THVatLieu" />
-                <ScalarProperty Name="THPhoi" ColumnName="THPhoi" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="OrderCat" ColumnName="OrderCat" />
-                <ScalarProperty Name="OrderGoc" ColumnName="OrderGoc" />
-                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
-                <ScalarProperty Name="CuttingOrder" ColumnName="CuttingOrder" />
-                <ScalarProperty Name="CuttingStatus" ColumnName="CuttingStatus" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Paid" ColumnName="Paid" />
-                <ScalarProperty Name="PayDate" ColumnName="PayDate" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="QM_CUA" ColumnName="QM-CUA" />
-                <ScalarProperty Name="XUONG_KCS" ColumnName="XUONG-KCS" />
-                <ScalarProperty Name="DONGOI_KHOTP" ColumnName="DONGOI-KHOTP" />
-                <ScalarProperty Name="KHOTP_QM" ColumnName="KHOTP-QM" />
-                <ScalarProperty Name="QM_TRA" ColumnName="QM-TRA" />
-                <ScalarProperty Name="TRA_PHOI" ColumnName="TRA-PHOI" />
-                <ScalarProperty Name="CONLAI" ColumnName="CONLAI" />
-                <ScalarProperty Name="XACNHAN" ColumnName="XACNHAN" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="View_242_ErrorItemNotify">
             <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_ErrorItemNotify">
               <MappingFragment StoreEntitySet="View_242_ErrorItemNotify">
@@ -26769,29 +26686,6 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_242_YCKP">
-            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_YCKP">
-              <MappingFragment StoreEntitySet="View_242_YCKP">
-                <ScalarProperty Name="RaiseDept" ColumnName="RaiseDept" />
-                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="ProcessStaff" ColumnName="ProcessStaff" />
-                <ScalarProperty Name="InputStaff" ColumnName="InputStaff" />
-                <ScalarProperty Name="YCKPProcessTime" ColumnName="YCKPProcessTime" />
-                <ScalarProperty Name="DateYCKPDeadline" ColumnName="DateYCKPDeadline" />
-                <ScalarProperty Name="SolutionContent" ColumnName="SolutionContent" />
-                <ScalarProperty Name="YCKPContent" ColumnName="YCKPContent" />
-                <ScalarProperty Name="DateYCKP" ColumnName="DateYCKP" />
-                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
-                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
-                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="C242_Part">
             <EntityTypeMapping TypeName="NN_DatabaseModel.C242_Part">
               <MappingFragment StoreEntitySet="242_Part">
@@ -26840,6 +26734,147 @@ warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not h
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="PartName" ColumnName="PartName" />
                 <ScalarProperty Name="PartNo" ColumnName="PartNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C242_BusOder">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_BusOder">
+              <MappingFragment StoreEntitySet="242_BusOder">
+                <ScalarProperty Name="PayDate" ColumnName="PayDate" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="THPhoi" ColumnName="THPhoi" />
+                <ScalarProperty Name="THVatLieu" ColumnName="THVatLieu" />
+                <ScalarProperty Name="NoiCat" ColumnName="NoiCat" />
+                <ScalarProperty Name="OrderCat" ColumnName="OrderCat" />
+                <ScalarProperty Name="OrderGoc" ColumnName="OrderGoc" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CuttingStatus" ColumnName="CuttingStatus" />
+                <ScalarProperty Name="CuttingOrder" ColumnName="CuttingOrder" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="ImportFrom" ColumnName="ImportFrom" />
+                <ScalarProperty Name="Imported" ColumnName="Imported" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="Change" ColumnName="Change" />
+                <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
+                <ScalarProperty Name="Finished" ColumnName="Finished" />
+                <ScalarProperty Name="Started" ColumnName="Started" />
+                <ScalarProperty Name="MOQty" ColumnName="MOQty" />
+                <ScalarProperty Name="MONo" ColumnName="MONo" />
+                <ScalarProperty Name="BlastQty" ColumnName="BlastQty" />
+                <ScalarProperty Name="HelisertQty" ColumnName="HelisertQty" />
+                <ScalarProperty Name="RawQty" ColumnName="RawQty" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="PlanNo" ColumnName="PlanNo" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="OderType" ColumnName="OderType" />
+                <ScalarProperty Name="TempOrder" ColumnName="TempOrder" />
+                <ScalarProperty Name="BOderNo" ColumnName="BOderNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_242_BusOder">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_BusOder">
+              <MappingFragment StoreEntitySet="View_242_BusOder">
+                <ScalarProperty Name="XACNHAN" ColumnName="XACNHAN" />
+                <ScalarProperty Name="CONLAI" ColumnName="CONLAI" />
+                <ScalarProperty Name="TRA_PHOI" ColumnName="TRA-PHOI" />
+                <ScalarProperty Name="QM_TRA" ColumnName="QM-TRA" />
+                <ScalarProperty Name="KHOTP_QM" ColumnName="KHOTP-QM" />
+                <ScalarProperty Name="DONGOI_KHOTP" ColumnName="DONGOI-KHOTP" />
+                <ScalarProperty Name="XUONG_KCS" ColumnName="XUONG-KCS" />
+                <ScalarProperty Name="QM_CUA" ColumnName="QM-CUA" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="PayDate" ColumnName="PayDate" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CuttingStatus" ColumnName="CuttingStatus" />
+                <ScalarProperty Name="CuttingOrder" ColumnName="CuttingOrder" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="OrderGoc" ColumnName="OrderGoc" />
+                <ScalarProperty Name="OrderCat" ColumnName="OrderCat" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="THPhoi" ColumnName="THPhoi" />
+                <ScalarProperty Name="THVatLieu" ColumnName="THVatLieu" />
+                <ScalarProperty Name="NoiCat" ColumnName="NoiCat" />
+                <ScalarProperty Name="ImportFrom" ColumnName="ImportFrom" />
+                <ScalarProperty Name="Imported" ColumnName="Imported" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="Change" ColumnName="Change" />
+                <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
+                <ScalarProperty Name="Finished" ColumnName="Finished" />
+                <ScalarProperty Name="Started" ColumnName="Started" />
+                <ScalarProperty Name="MOQty" ColumnName="MOQty" />
+                <ScalarProperty Name="MONo" ColumnName="MONo" />
+                <ScalarProperty Name="BlastQty" ColumnName="BlastQty" />
+                <ScalarProperty Name="HelisertQty" ColumnName="HelisertQty" />
+                <ScalarProperty Name="RawQty" ColumnName="RawQty" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartNoRRC" ColumnName="PartNoRRC" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="PlanNo" ColumnName="PlanNo" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TempOrder" ColumnName="TempOrder" />
+                <ScalarProperty Name="BOderNo" ColumnName="BOderNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_242_BusOder_GetTHPhoi" FunctionName="NN_DatabaseModel.Store.sp_242_BusOder_GetTHPhoi">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NN_DatabaseModel.sp_242_BusOder_GetTHPhoi_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="C242_YCKP">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_YCKP">
+              <MappingFragment StoreEntitySet="242_YCKP">
+                <ScalarProperty Name="ProcessDept" ColumnName="ProcessDept" />
+                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="ProcessStaff" ColumnName="ProcessStaff" />
+                <ScalarProperty Name="InputStaff" ColumnName="InputStaff" />
+                <ScalarProperty Name="RaiseDept" ColumnName="RaiseDept" />
+                <ScalarProperty Name="YCKPProcessTime" ColumnName="YCKPProcessTime" />
+                <ScalarProperty Name="DateYCKPDeadline" ColumnName="DateYCKPDeadline" />
+                <ScalarProperty Name="SolutionContent" ColumnName="SolutionContent" />
+                <ScalarProperty Name="YCKPContent" ColumnName="YCKPContent" />
+                <ScalarProperty Name="DateYCKP" ColumnName="DateYCKP" />
+                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_242_YCKP">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_YCKP">
+              <MappingFragment StoreEntitySet="View_242_YCKP">
+                <ScalarProperty Name="ProcessDept" ColumnName="ProcessDept" />
+                <ScalarProperty Name="RaiseDept" ColumnName="RaiseDept" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="UpdateStaff" ColumnName="UpdateStaff" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="ProcessStaff" ColumnName="ProcessStaff" />
+                <ScalarProperty Name="InputStaff" ColumnName="InputStaff" />
+                <ScalarProperty Name="YCKPProcessTime" ColumnName="YCKPProcessTime" />
+                <ScalarProperty Name="DateYCKPDeadline" ColumnName="DateYCKPDeadline" />
+                <ScalarProperty Name="SolutionContent" ColumnName="SolutionContent" />
+                <ScalarProperty Name="YCKPContent" ColumnName="YCKPContent" />
+                <ScalarProperty Name="DateYCKP" ColumnName="DateYCKP" />
+                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

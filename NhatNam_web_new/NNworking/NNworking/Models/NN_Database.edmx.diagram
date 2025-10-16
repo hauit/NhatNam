@@ -51,7 +51,6 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_WebPermission" Width="1.5" PointX="18.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_WebUrl" Width="1.5" PointX="18.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_Work" Width="1.5" PointX="18.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_BusOder" Width="1.5" PointX="18.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_BusOder_ActualQty" Width="1.5" PointX="14.75" PointY="19.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_DeceidedTime" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorContent" Width="1.5" PointX="0.75" PointY="20.75" IsExpanded="true" />
@@ -87,7 +86,6 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ToolBorrowDetail" Width="1.5" PointX="26.75" PointY="21.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_Work" Width="1.5" PointX="26.75" PointY="25.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_WTS" Width="1.5" PointX="8.75" PointY="27.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP" Width="1.5" PointX="18.75" PointY="27.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_PathOfSofware" Width="1.5" PointX="20.75" PointY="27.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_RootPath" Width="1.5" PointX="22.75" PointY="27.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_StaffShift" Width="1.5" PointX="28.75" PointY="0.75" IsExpanded="true" />
@@ -287,7 +285,6 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.View_222_TimeCardDetail" Width="1.5" PointX="54.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_222_Users" Width="1.5" PointX="54.75" PointY="19.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_222_WebPermission" Width="1.5" PointX="54.75" PointY="22.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_BusOder" Width="1.5" PointX="24.75" PointY="54.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_ErrorItemNotify" Width="1.5" PointX="54.75" PointY="25.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_InventoryData" Width="1.5" PointX="30.75" PointY="54.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_InventoryExport" Width="1.5" PointX="32.75" PointY="54.75" IsExpanded="true" />
@@ -310,9 +307,12 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemStatus" Width="1.5" PointX="7.375" PointY="52.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" Width="1.5" PointX="5.375" PointY="55.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_View" Width="1.5" PointX="47.375" PointY="56.75" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKP" Width="1.5" PointX="55.375" PointY="56.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_Part" Width="1.5" PointX="35.375" PointY="55.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_Part" Width="1.5" PointX="11.375" PointY="57.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_BusOder" Width="1.5" PointX="23.375" PointY="55.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_BusOder" Width="1.5" PointX="13.375" PointY="57.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP" Width="1.5" PointX="17.375" PointY="19.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKP" Width="1.5" PointX="55.375" PointY="56.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

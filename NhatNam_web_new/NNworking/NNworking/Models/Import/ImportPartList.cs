@@ -25,8 +25,6 @@ namespace NNworking.Models.Import
                     line++;
                     try
                     {
-                        //var MONo = item.Cells["A" + line].Value == null ? string.Empty : item.Cells["A" + line].Value.ToString().Trim();
-                        line++;
                         C242_Part part = new C242_Part();
                         part.PartNo = item.Cells["A" + line].Value == null ? string.Empty : item.Cells["A" + line].Value.ToString().Trim();
                         if (string.IsNullOrEmpty(part.PartNo))
@@ -34,17 +32,11 @@ namespace NNworking.Models.Import
                             continue;
                         }
 
-                        if (CheckExistedOrder(part.PartNo))
-                        {
-                            throw new ArgumentException($@"Tên chi tiết {part.PartNo} đã tồn tại trong dữ liệu");
-                        }
-
-                        //part.PartNoRRC = item.Cells["B" + line].Value == null ? string.Empty : item.Cells["B" + line].Value.ToString().Trim();
                         CheckPartNo(part);
+                        bool isExist = CheckExistedOrder(db,ref part);
                         part.PartName = item.Cells["B" + line].Value == null ? string.Empty : item.Cells["B" + line].Value.ToString().Trim();
                         part.CustomerID = item.Cells["C" + line].Value == null ? string.Empty : item.Cells["C" + line].Value.ToString().Trim();
                         part.SupplierID = item.Cells["D" + line].Value == null ? string.Empty : item.Cells["D" + line].Value.ToString().Trim();
-                        //part.Unit = item.Cells["F" + line].Value == null ? string.Empty : item.Cells["F" + line].Value.ToString().Trim();   
                         string qty = item.Cells["E" + line].Value == null ? string.Empty : item.Cells["E" + line].Value.ToString().Trim();
                         int upQty;
                         if (!int.TryParse(qty, out upQty))
@@ -53,15 +45,10 @@ namespace NNworking.Models.Import
                         }
 
                         part.UpQty = upQty;
-                        //string gia = item.Cells["H" + line].Value == null ? string.Empty : item.Cells["H" + line].Value.ToString().Trim();
-                        //int giaThanh;
-                        //if (!int.TryParse(gia, out giaThanh))
-                        //{
-                        //    giaThanh = 0;
-                        //    //throw new ArgumentException("Giá thành phải là kiểu số. Vui lòng kiểm tra lại dữ liệu.");
-                        //}
-                        //part.GiaThanh = giaThanh;
-                        db.C242_Part.Add(part);
+                        if (!isExist)
+                        {
+                            db.C242_Part.Add(part);
+                        }
                         db.SaveChanges();
                     }
                     catch (Exception ex)
@@ -96,13 +83,19 @@ namespace NNworking.Models.Import
             }   
         }
 
-        private bool CheckExistedOrder(string partNo)
+        private bool CheckExistedOrder(NN_DatabaseEntities db,ref C242_Part part)
         {
-            using (NN_DatabaseEntities db = new NN_DatabaseEntities())
+            string partNo = part.PartNo.ToUpper();
+            var data = db.C242_Part.Where(m => m.PartNo.ToUpper() == partNo).FirstOrDefault();
+            if(data != null)
             {
-                var data = db.C242_Part.Where(m => m.PartNo == partNo).Any();
-                return data;   
-            }    
+                string rrcPart = part.PartNoRRC;
+                part = data;
+                part.PartNoRRC = rrcPart;
+                return true;
+            }
+
+            return false;   
 
         }
     }

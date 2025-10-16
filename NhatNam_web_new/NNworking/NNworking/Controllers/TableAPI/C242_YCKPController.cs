@@ -86,8 +86,9 @@ namespace NNworking.Models.Controllers
             string UpdateStaff = nameof(C242_YCKP.UpdateStaff);
             string Deleted = nameof(C242_YCKP.Deleted);
             string RaiseDept = nameof(C242_YCKP.RaiseDept);
+            string ProcessDept = nameof(C242_YCKP.ProcessDept);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID)) {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
@@ -135,7 +136,12 @@ namespace NNworking.Models.Controllers
                 model.RaiseDept = Convert.ToString(values[RaiseDept]);
             }
 
-            if(values.Contains(PROCESS_STAFF)) {
+            if (values.Contains(ProcessDept))
+            {
+                model.ProcessDept = Convert.ToString(values[ProcessDept]);
+            }
+
+            if (values.Contains(PROCESS_STAFF)) {
                 model.ProcessStaff = Convert.ToString(values[PROCESS_STAFF]);
             }
 

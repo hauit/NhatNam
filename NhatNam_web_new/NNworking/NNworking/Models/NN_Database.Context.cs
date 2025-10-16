@@ -73,7 +73,6 @@ namespace NNworking.Models
         public virtual DbSet<C222_WebPermission> C222_WebPermission { get; set; }
         public virtual DbSet<C222_WebUrl> C222_WebUrl { get; set; }
         public virtual DbSet<C222_Work> C222_Work { get; set; }
-        public virtual DbSet<C242_BusOder> C242_BusOder { get; set; }
         public virtual DbSet<C242_BusOder_ActualQty> C242_BusOder_ActualQty { get; set; }
         public virtual DbSet<C242_DeceidedTime> C242_DeceidedTime { get; set; }
         public virtual DbSet<C242_ErrorContent> C242_ErrorContent { get; set; }
@@ -109,7 +108,6 @@ namespace NNworking.Models
         public virtual DbSet<C242_ToolBorrowDetail> C242_ToolBorrowDetail { get; set; }
         public virtual DbSet<C242_Work> C242_Work { get; set; }
         public virtual DbSet<C242_WTS> C242_WTS { get; set; }
-        public virtual DbSet<C242_YCKP> C242_YCKP { get; set; }
         public virtual DbSet<C222_PathOfSofware> C222_PathOfSofware { get; set; }
         public virtual DbSet<C222_RootPath> C222_RootPath { get; set; }
         public virtual DbSet<C222_StaffShift> C222_StaffShift { get; set; }
@@ -309,7 +307,6 @@ namespace NNworking.Models
         public virtual DbSet<View_222_TimeCardDetail> View_222_TimeCardDetail { get; set; }
         public virtual DbSet<View_222_Users> View_222_Users { get; set; }
         public virtual DbSet<View_222_WebPermission> View_222_WebPermission { get; set; }
-        public virtual DbSet<View_242_BusOder> View_242_BusOder { get; set; }
         public virtual DbSet<View_242_ErrorItemNotify> View_242_ErrorItemNotify { get; set; }
         public virtual DbSet<View_242_InventoryData> View_242_InventoryData { get; set; }
         public virtual DbSet<View_242_InventoryExport> View_242_InventoryExport { get; set; }
@@ -332,9 +329,12 @@ namespace NNworking.Models
         public virtual DbSet<C242_ErrorItemStatus> C242_ErrorItemStatus { get; set; }
         public virtual DbSet<C242_ErrorItemNotify_New> C242_ErrorItemNotify_New { get; set; }
         public virtual DbSet<C242_ErrorItemNotify_View> C242_ErrorItemNotify_View { get; set; }
-        public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
         public virtual DbSet<C242_Part> C242_Part { get; set; }
         public virtual DbSet<View_242_Part> View_242_Part { get; set; }
+        public virtual DbSet<C242_BusOder> C242_BusOder { get; set; }
+        public virtual DbSet<View_242_BusOder> View_242_BusOder { get; set; }
+        public virtual DbSet<C242_YCKP> C242_YCKP { get; set; }
+        public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {
@@ -2341,6 +2341,19 @@ namespace NNworking.Models
                 new ObjectParameter("MONo", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_WTS_CompareQtyWithMOQty_Result>("sp_WTS_CompareQtyWithMOQty", optionIDParameter, partIDParameter, mONoParameter);
+        }
+    
+        public virtual ObjectResult<sp_242_BusOder_GetTHPhoi_Result> sp_242_BusOder_GetTHPhoi(string partID, string mono)
+        {
+            var partIDParameter = partID != null ?
+                new ObjectParameter("partID", partID) :
+                new ObjectParameter("partID", typeof(string));
+    
+            var monoParameter = mono != null ?
+                new ObjectParameter("mono", mono) :
+                new ObjectParameter("mono", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_242_BusOder_GetTHPhoi_Result>("sp_242_BusOder_GetTHPhoi", partIDParameter, monoParameter);
         }
     }
 }
