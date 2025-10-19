@@ -32,5 +32,6 @@ namespace NNworking.Models
         public Nullable<System.DateTime> Deadline { get; set; }
         public string RaiseDept { get; set; }
         public string ProcessDept { get; set; }
+        public string DeptCode { get; set; }
     }
 }

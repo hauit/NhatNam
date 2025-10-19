@@ -60,8 +60,6 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorProcess" Width="1.5" PointX="10.75" PointY="20.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorType" Width="1.5" PointX="20.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_HandOverItem" Width="1.5" PointX="20.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_InventoryExportHistory" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_InventoryInputHistory" Width="1.5" PointX="22.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_InventoryReceived" Width="1.5" PointX="22.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_InventoryReceivedDetail" Width="1.5" PointX="22.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_MachinePlan_Preparation" Width="1.5" PointX="12.75" PointY="22.75" IsExpanded="true" />
@@ -313,6 +311,8 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_BusOder" Width="1.5" PointX="13.375" PointY="57.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP" Width="1.5" PointX="17.375" PointY="19.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKP" Width="1.5" PointX="55.375" PointY="56.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_InventoryExportHistory" Width="1.5" PointX="23.375" PointY="24.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_InventoryInputHistory" Width="1.5" PointX="57.375" PointY="16.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

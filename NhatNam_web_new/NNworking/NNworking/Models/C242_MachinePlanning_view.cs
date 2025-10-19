@@ -88,7 +88,7 @@ namespace NNworking.Models
         public string TongTG { get; set; }
         public string Phoidd { get; set; }
         public string Nesting { get; set; }
-        public Nullable<bool> ProcessInFreely { get; set; }
+        public bool ProcessInFreely { get; set; }
         public string ViTriGia { get; set; }
         public bool Deleted { get; set; }
     }
