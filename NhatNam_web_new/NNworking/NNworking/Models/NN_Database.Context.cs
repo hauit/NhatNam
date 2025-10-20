@@ -82,8 +82,6 @@ namespace NNworking.Models
         public virtual DbSet<C242_ErrorProcess> C242_ErrorProcess { get; set; }
         public virtual DbSet<C242_ErrorType> C242_ErrorType { get; set; }
         public virtual DbSet<C242_HandOverItem> C242_HandOverItem { get; set; }
-        public virtual DbSet<C242_InventoryExportHistory> C242_InventoryExportHistory { get; set; }
-        public virtual DbSet<C242_InventoryInputHistory> C242_InventoryInputHistory { get; set; }
         public virtual DbSet<C242_InventoryReceived> C242_InventoryReceived { get; set; }
         public virtual DbSet<C242_InventoryReceivedDetail> C242_InventoryReceivedDetail { get; set; }
         public virtual DbSet<C242_MachinePlan_Preparation> C242_MachinePlan_Preparation { get; set; }
@@ -335,6 +333,8 @@ namespace NNworking.Models
         public virtual DbSet<View_242_BusOder> View_242_BusOder { get; set; }
         public virtual DbSet<C242_YCKP> C242_YCKP { get; set; }
         public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
+        public virtual DbSet<C242_InventoryExportHistory> C242_InventoryExportHistory { get; set; }
+        public virtual DbSet<C242_InventoryInputHistory> C242_InventoryInputHistory { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {
@@ -2354,6 +2354,19 @@ namespace NNworking.Models
                 new ObjectParameter("mono", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_242_BusOder_GetTHPhoi_Result>("sp_242_BusOder_GetTHPhoi", partIDParameter, monoParameter);
+        }
+    
+        public virtual ObjectResult<sp_Get_MachineCapability_Result> sp_Get_MachineCapability(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_MachineCapability_Result>("sp_Get_MachineCapability", fromDateParameter, toDateParameter);
         }
     }
 }

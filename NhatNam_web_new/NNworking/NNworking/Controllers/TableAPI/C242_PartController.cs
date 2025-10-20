@@ -42,7 +42,7 @@ namespace NNworking.Models.Controllers
             var todate = DateTime.ParseExact(queryParams["todate"].Substring(0, 24),
                               "ddd MMM d yyyy HH:mm:ss",
                               System.Globalization.CultureInfo.InvariantCulture).Date;
-            var c242_part = _context.sp_242_WTS_DirectWorkPercen(fromdate, todate).ToList();
+            var c242_part = _context.sp_Get_MachineCapability(fromdate, todate).ToList();
             return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
         }
 

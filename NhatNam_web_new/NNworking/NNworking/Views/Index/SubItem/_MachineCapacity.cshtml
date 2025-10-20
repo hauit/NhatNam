@@ -1,0 +1,143 @@
+﻿<table>
+    <tr>
+        <td>Từ ngày:</td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().DateBox()
+                .Type(DateBoxType.Date)
+                .Value(DateTime.Now)
+                .ID("fromDate"))
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().Button()
+                .Text("Xem")
+                .ID("btnView")
+                .Type(ButtonType.Normal)
+                .Width(90)
+                .OnClick("ViewData"))
+        </td>
+    </tr>
+    <tr>
+        <td>Đến ngày:</td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().DateBox()
+                .Type(DateBoxType.Date)
+                .Value(DateTime.Now)
+                .ID("toDate"))
+        </td>
+    </tr>
+</table>
+
+<div id="empty-chart">
+    @(Html.DevExtreme().Chart()
+        .ID("capacityChart")
+        .Title("Biểu đồ cột theo Mã máy")
+        .CommonSeriesSettings(s => s
+            .ArgumentField("MachineID")
+            .Type(SeriesType.Bar)
+        )
+        .Series(series =>
+        {
+            series.Add().ValueField("C_tghl").Name("%TGHL").Color("#1976d2");
+            series.Add().ValueField("C_tgct").Name("%TGCT").Color("#2e7d32");
+            series.Add().ValueField("C_tgdm").Name("%Dừng máy").Color("#d32f2f");
+        })
+        .Legend(l => l.Visible(true))
+        .Tooltip(t => t.Enabled(true))
+    )
+</div>
+
+<div id="charts-container" style="display: none;">
+    <h3>Line 1:</h3>
+    <div id="chartLine1"></div>
+
+    <h3>Line 2:</h3>
+    <div id="chartLine2"></div>
+
+    <h3>Line 3:</h3>
+    <div id="chartLine3"></div>
+
+    <h3>Line 4:</h3>
+    <div id="chartLine4"></div>
+
+    <h3>Line 5:</h3>
+    <div id="chartLine5"></div>
+</div>
+
+<script>
+    function getFromDate() {
+        return $("#fromDate").dxDateBox("instance").option("value");
+    }
+
+    function getToDate() {
+        return $("#toDate").dxDateBox("instance").option("value");
+    }
+
+    function ViewData() {
+        const fromDate = getFromDate();
+        const toDate = getToDate();
+
+        $.ajax({
+            url: '@Url.Action("sp_242_WTS_DirectWorkPercen", "api/C242_Part")',
+            data: { fromdate: fromDate, todate: toDate },
+            dataType: 'json',
+            success: function (res) {
+                renderCharts(res.data || res);
+            },
+            error: function (err) {
+                console.error(err);
+            }
+        });
+    }
+
+    function renderCharts(data) {
+        $('#empty-chart').hide();
+        $('#charts-container').show();
+        
+        const line1Order = ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15", "P16", "P17", "P18"];
+        const line2Order = ["P19", "P20", "P21", "P22", "P23", "P24", "P40", "P43", "P44", "P45", "P46", "P47", "P48"];
+        const line3Order = ["P26", "P27", "P28", "P29", "P30", "P31", "P32", "P33", "P34", "P35", "P36", "P37", "P38", "P39", "P50", "P51", "P52", "P53", "P54", "P55", "Phay Cơ"];
+        const line4Order = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12", "T13", "T14", "T15", "T16", "T17", "T18", "T19", "T20"];
+        const line5Order = ["P56", "P57", "P58", "P59", "P60", "P61", "P62", "P63", "P64", "P65", "P66", "P67", "P68", "P69", "P70", "P71", "P72", "P73", "P74", "P75"];
+
+        const line1 = data.filter(x => line1Order.includes(x.MachineID));
+        const line2 = data.filter(x => line2Order.includes(x.MachineID));
+        const line3 = data.filter(x => line3Order.includes(x.MachineID));
+        const line4 = data.filter(x => line4Order.includes(x.MachineID));
+        const line5 = data.filter(x => line5Order.includes(x.MachineID));
+
+        const sortByOrder = (arr, orderList) =>
+            arr.sort((a, b) => orderList.indexOf(a.MachineID) - orderList.indexOf(b.MachineID));
+
+        sortByOrder(line1, line1Order);
+        sortByOrder(line2, line2Order);
+        sortByOrder(line3, line3Order);
+        sortByOrder(line4, line4Order);
+        sortByOrder(line5, line5Order);
+
+        renderSingleChart("#chartLine1", line1, "Line 1");
+        renderSingleChart("#chartLine2", line2, "Line 2");
+        renderSingleChart("#chartLine3", line3, "Line 3");
+        renderSingleChart("#chartLine4", line4, "Line 4");
+        renderSingleChart("#chartLine5", line5, "Line 5");
+    }
+
+    function renderSingleChart(selector, data, title) {
+        $(selector).dxChart({
+            dataSource: data,
+            title: title,
+            commonSeriesSettings: {
+                argumentField: "MachineID",
+                type: "bar"
+            },
+            series: [
+                { valueField: "C_tghl", name: "%TGHL", color: "#1976d2" },
+                { valueField: "C_tgct", name: "%TGCT", color: "#2e7d32" },
+                { valueField: "C_tgdm", name: "%Dừng máy", color: "#d32f2f" }
+            ],
+            legend: { visible: true },
+            tooltip: { enabled: true },
+            size: { height: 400 },
+            adaptiveLayout: { keepLabels: true }
+        });
+    }
+</script>

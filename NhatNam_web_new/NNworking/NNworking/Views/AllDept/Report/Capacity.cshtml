@@ -1,7 +1,7 @@
 ﻿
 
 
-<h2> Công suất người và máy </h2>
+<h2> Công suất máy </h2>
 <table>
     <tr>
         <td>
@@ -40,7 +40,7 @@
     </tr>
 </table>
 
-@(Html.DevExtreme().DataGrid<NNworking.Models.sp_242_WTS_DirectWorkPercen_Result>()
+@(Html.DevExtreme().DataGrid<NNworking.Models.sp_Get_MachineCapability_Result>()
     .DataSource(ds => ds.WebApi()
         .RouteName("C242_PartApi")
         .LoadAction("sp_242_WTS_DirectWorkPercen").LoadParams(new { fromdate = new JS("getFromDate"), todate = new JS("getToDate") })
@@ -57,7 +57,8 @@
     .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
         //.FileName("BaoCaoCongSuat")
         .AllowExportSelectedData(true))
-    .ColumnAutoWidth(true)
+    .ColumnAutoWidth(false)
+    .WordWrapEnabled(true)
     .FilterRow(fil => fil.Visible(true))
     .FilterPanel(fi => fi.Visible(true))
     .SearchPanel(search => search.Visible(true)
@@ -66,29 +67,45 @@
     )
     .Columns(columns =>
     {
-        columns.AddFor(m => m.Date).Caption("Ngày");
+        columns.AddFor(m => m.Date).Caption("Ngày").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.StaffID).Caption("Nhân viên");
+        columns.AddFor(m => m.MachineID).Caption("Mã máy").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.StaffName).Caption("Tên nhân viên");
+        columns.AddFor(m => m.tghl).Caption("TGHL (PLJ1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.TotalTime).Caption("Tổng thời gian");
+        columns.AddFor(m => m.tgct).Caption("TGCT (PBJ1, PBN1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.DirectTime).Caption("Thời gian TT");
+        columns.AddFor(m => m.tgdm).Caption("TG dừng máy").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.MassTime).Caption("Thời gian PL");
+        columns.AddFor(m => m.tgyckp).Caption("Dừng máy do YCKP (PIN1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.InspecTime).Caption("Thời gian PB");
+        columns.AddFor(m => m.dmkns).Caption("Thiếu Nhân sự (PON1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.StopTime).Caption("Thời gian Dừng máy");
+        columns.AddFor(m => m.dmmcvm).Caption("Công việc khác (LZZ1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.TiLe).Caption("Tỉ lệ TT/Tổng(%)");
+        columns.AddFor(m => m.dmdsc).Caption("Sự cố máy (PFN1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.TiLeMassTime).Caption("Tỉ lệ PL/Tổng(%)");
+        columns.AddFor(m => m.dmdkct).Caption("Không chạy thử (PSN1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.TiLeInspecTime).Caption("Tỉ lệ PB/Tổng(%)");
+        columns.AddFor(m => m.dmdkcp).Caption("Thiếu phôi (PTN1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.TiLeStopTime).Caption("Tỉ lệ Dừng/Tổng(%)");
+        columns.AddFor(m => m.C_tghl).Caption("%TGHL").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_tgct).Caption("%TGCT").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_tgdm).Caption("%Dừng máy").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_tgyckp).Caption("%YCKP").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_dmkns).Caption("%Thiếu nhân sự").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_dmmcvm).Caption("%Công việc khác").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_dmdsc).Caption("%Máy sự cố").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_dmdkct).Caption("%Thiếu chạy thử").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_dmdkcp).Caption("%Thiếu phôi").Alignment(HorizontalAlignment.Center);
     })
     .ShowColumnHeaders(true)
     .ShowRowLines(true)
