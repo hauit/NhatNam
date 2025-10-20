@@ -4761,6 +4761,7 @@
     <Content Include="Views\ProcessingDept\YCKP.cshtml" />
     <Content Include="Views\Planning\PartList.cshtml" />
     <Content Include="Views\Planning\BusOderList.cshtml" />
+    <Content Include="Views\Index\SubItem\_MachineCapacity.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
