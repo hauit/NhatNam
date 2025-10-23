@@ -15,13 +15,13 @@ namespace NNworking.Models
     {
         public string manv { get; set; }
         public Nullable<decimal> ttg { get; set; }
-        public Nullable<double> ttgpljtnv { get; set; }
+        public Nullable<decimal> ttgpljtnv { get; set; }
         public Nullable<double> ttgpljttc { get; set; }
         public Nullable<double> ttgpbjpbn { get; set; }
         public Nullable<double> ttgpbjttc { get; set; }
         public Nullable<decimal> ttgk { get; set; }
         public Nullable<double> C_B1 { get; set; }
-        public Nullable<double> C_C1 { get; set; }
+        public Nullable<decimal> C_C1 { get; set; }
         public Nullable<double> C_D1 { get; set; }
         public Nullable<double> C_E1 { get; set; }
         public Nullable<double> C_G1 { get; set; }

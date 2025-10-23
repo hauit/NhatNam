@@ -6920,8 +6920,8 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Parameter Name="toDate" Type="datetime" Mode="In" />
         </Function>
         <Function Name="sp_Get_StaffCapability" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="FromDate" Type="date" Mode="In" />
-          <Parameter Name="ToDate" Type="date" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
         </Function>
         <Function Name="sp_GetAllMachineWWTS_Cache" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fromdate" Type="datetime" Mode="In" />
@@ -19321,13 +19321,13 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
         <ComplexType Name="sp_Get_StaffCapability_Result">
           <Property Type="String" Name="manv" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="ttg" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Double" Name="ttgpljtnv" Nullable="true" />
+          <Property Type="Decimal" Name="ttgpljtnv" Nullable="true" Precision="38" Scale="0" />
           <Property Type="Double" Name="ttgpljttc" Nullable="true" />
           <Property Type="Double" Name="ttgpbjpbn" Nullable="true" />
           <Property Type="Double" Name="ttgpbjttc" Nullable="true" />
           <Property Type="Decimal" Name="ttgk" Nullable="true" Precision="38" Scale="0" />
           <Property Type="Double" Name="C_B1" Nullable="true" />
-          <Property Type="Double" Name="C_C1" Nullable="true" />
+          <Property Type="Decimal" Name="C_C1" Nullable="true" Precision="38" Scale="11" />
           <Property Type="Double" Name="C_D1" Nullable="true" />
           <Property Type="Double" Name="C_E1" Nullable="true" />
           <Property Type="Double" Name="C_G1" Nullable="true" />
