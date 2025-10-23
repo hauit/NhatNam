@@ -4782,6 +4782,7 @@
     <Compile Include="Controllers\AllDept\AllDeptController.cs" />
     <Compile Include="Controllers\AllDept\StaffManagementController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\C222_PartnerTypeController.cs" />
     <Compile Include="Controllers\C242_BusOderController.cs" />
     <Compile Include="Controllers\C242_ErrorItemStatusController.cs" />
     <Compile Include="Controllers\EmailConfigurationController.cs" />

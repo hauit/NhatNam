@@ -14,13 +14,10 @@
         .HighlightSearchText(true)
         .Width(500)
     )
+    .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
     .ShowColumnHeaders(true)
     .ShowRowLines(true)
     .RemoteOperations(true)
-    .Export(exp => exp.Enabled(true)
-        .FileName("Exported data")
-        .AllowExportSelectedData(true)
-    )
     .Columns(columns =>
     {
 
@@ -50,6 +47,29 @@
     )
     .OnInitNewRow("onInitNewRow")
 )
+
+@*@(Html.DevExtreme().DataGrid<NNworking.Models.C222_PartnerType>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_PartnerTypeApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.Note);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+)*@
 
 <script>
     function onInitNewRow(e){
