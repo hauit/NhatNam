@@ -47,6 +47,20 @@ namespace NNworking.Models.Controllers
         }
 
         [HttpGet]
+        public HttpResponseMessage sp_242_WTS_DirectWorkPercen2(DataSourceLoadOptions loadOptions)
+        {
+            var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+            var fromdate = DateTime.ParseExact(queryParams["fromdate"].Substring(0, 24),
+                              "ddd MMM d yyyy HH:mm:ss",
+                              System.Globalization.CultureInfo.InvariantCulture).Date;
+            var todate = DateTime.ParseExact(queryParams["todate"].Substring(0, 24),
+                              "ddd MMM d yyyy HH:mm:ss",
+                              System.Globalization.CultureInfo.InvariantCulture).Date;
+            var c242_part = _context.sp_Get_StaffCapability(fromdate, todate).ToList();
+            return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
+        }
+
+        [HttpGet]
         public HttpResponseMessage sp_242_WTS_StandTimeWorkPercen(DataSourceLoadOptions loadOptions)
         {
             var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);

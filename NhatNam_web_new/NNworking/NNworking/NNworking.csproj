@@ -4762,6 +4762,7 @@
     <Content Include="Views\Planning\PartList.cshtml" />
     <Content Include="Views\Planning\BusOderList.cshtml" />
     <Content Include="Views\Index\SubItem\_MachineCapacity.cshtml" />
+    <Content Include="Views\AllDept\Report\Staff_Capacity.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5912,6 +5913,9 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_Get_MachineCapability_Result.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_Get_StaffCapability_Result.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_P_LayNCLam_KH_Result.cs">

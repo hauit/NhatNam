@@ -6919,6 +6919,10 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Parameter Name="fromDate" Type="datetime" Mode="In" />
           <Parameter Name="toDate" Type="datetime" Mode="In" />
         </Function>
+        <Function Name="sp_Get_StaffCapability" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FromDate" Type="date" Mode="In" />
+          <Parameter Name="ToDate" Type="date" Mode="In" />
+        </Function>
         <Function Name="sp_GetAllMachineWWTS_Cache" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fromdate" Type="datetime" Mode="In" />
           <Parameter Name="todate" Type="datetime" Mode="In" />
@@ -17512,6 +17516,10 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           </FunctionImport>
           <EntitySet Name="C242_InventoryExportHistory" EntityType="NN_DatabaseModel.C242_InventoryExportHistory" />
           <EntitySet Name="C242_InventoryInputHistory" EntityType="NN_DatabaseModel.C242_InventoryInputHistory" />
+          <FunctionImport Name="sp_Get_StaffCapability" ReturnType="Collection(NN_DatabaseModel.sp_Get_StaffCapability_Result)">
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_222_AcquireNotifications_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -19310,6 +19318,20 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="GiaDe" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <ComplexType Name="sp_Get_StaffCapability_Result">
+          <Property Type="String" Name="manv" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="ttg" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Double" Name="ttgpljtnv" Nullable="true" />
+          <Property Type="Double" Name="ttgpljttc" Nullable="true" />
+          <Property Type="Double" Name="ttgpbjpbn" Nullable="true" />
+          <Property Type="Double" Name="ttgpbjttc" Nullable="true" />
+          <Property Type="Decimal" Name="ttgk" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Double" Name="C_B1" Nullable="true" />
+          <Property Type="Double" Name="C_C1" Nullable="true" />
+          <Property Type="Double" Name="C_D1" Nullable="true" />
+          <Property Type="Double" Name="C_E1" Nullable="true" />
+          <Property Type="Double" Name="C_G1" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -26958,6 +26980,24 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_Get_StaffCapability" FunctionName="NN_DatabaseModel.Store.sp_Get_StaffCapability">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NN_DatabaseModel.sp_Get_StaffCapability_Result">
+                <ScalarProperty Name="manv" ColumnName="manv" />
+                <ScalarProperty Name="ttg" ColumnName="ttg" />
+                <ScalarProperty Name="ttgpljtnv" ColumnName="ttgpljtnv" />
+                <ScalarProperty Name="ttgpljttc" ColumnName="ttgpljttc" />
+                <ScalarProperty Name="ttgpbjpbn" ColumnName="ttgpbjpbn" />
+                <ScalarProperty Name="ttgpbjttc" ColumnName="ttgpbjttc" />
+                <ScalarProperty Name="ttgk" ColumnName="ttgk" />
+                <ScalarProperty Name="C_B1" ColumnName="%B1" />
+                <ScalarProperty Name="C_C1" ColumnName="%C1" />
+                <ScalarProperty Name="C_D1" ColumnName="%D1" />
+                <ScalarProperty Name="C_E1" ColumnName="%E1" />
+                <ScalarProperty Name="C_G1" ColumnName="%G1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

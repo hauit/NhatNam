@@ -2368,5 +2368,18 @@ namespace NNworking.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_MachineCapability_Result>("sp_Get_MachineCapability", fromDateParameter, toDateParameter);
         }
+    
+        public virtual ObjectResult<sp_Get_StaffCapability_Result> sp_Get_StaffCapability(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_StaffCapability_Result>("sp_Get_StaffCapability", fromDateParameter, toDateParameter);
+        }
     }
 }

@@ -222,6 +222,14 @@ namespace NNworking.Controllers.AllDept
             return View("~/Views/AllDept/Report/Capacity2.cshtml");
 
         }
+
+        [Route("cong-suat-nguoi.html")]
+        public ActionResult StaffCapacity()
+        {
+            CheckPermissAndRedirect();
+            return View("~/Views/AllDept/Report/Staff_Capacity.cshtml");
+        }
+
         [Route("dang-ki-ca-hang-ngay.html")]
         public ActionResult StaffShift()
         {

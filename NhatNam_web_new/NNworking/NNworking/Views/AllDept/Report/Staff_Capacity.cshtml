@@ -1,0 +1,171 @@
+﻿
+
+
+<h2> Công suất người </h2>
+<table>
+    <tr>
+        <td>
+            Từ ngày:
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().DateBox()
+                        .Type(DateBoxType.Date)
+                        .Value(DateTime.Now)
+                        .ID("fromDate")
+            )
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().Button()
+                        .Text("Xem")
+                        .ID("btnView")
+                        .Type(ButtonType.Normal)
+                        .Width(90)
+                        .OnClick("ViewData")
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Đến ngày:
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().DateBox()
+                        .Type(DateBoxType.Date)
+                        .Value(DateTime.Now)
+                        .ID("toDate")
+            )
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.sp_Get_StaffCapability_Result>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_PartApi")
+        .LoadAction("sp_242_WTS_DirectWorkPercen2").LoadParams(new { fromdate = new JS("getFromDate"), todate = new JS("getToDate") })
+    )
+    .ID("dxWTSGetCapacity2")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("Date")
+    )
+    .OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true)
+        //.FileName("BaoCaoCongSuat")
+        .AllowExportSelectedData(true))
+    .ColumnAutoWidth(false)
+    .WordWrapEnabled(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.manv).Caption("Mã NV").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.ttg).Caption("Tổng thời gian (trừ PLJ1, Nghỉ)").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.ttgpljtnv).Caption("Tổng TG PLJ1 theo NV").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.ttgpljttc).Caption("Tổng TG PLJ1 theo Option").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.ttgpbjpbn).Caption("Tổng TG PBJ1&PBN1").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.ttgpbjttc).Caption("Tổng TG PBJ1 theo option").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.ttgk).Caption("Tổng TG khác(LZZ1)").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_B1).Caption("%B1/Ca").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_C1).Caption("%C1/Ca").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_D1).Caption("%D1/Ca").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_E1).Caption("%E1/Ca").Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.C_G1).Caption("%G1/Ca").Alignment(HorizontalAlignment.Center);
+    })
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .MasterDetail(md =>
+    {
+        md.Enabled(true);
+        md.Template(@<text>
+        <div class="master-detail-caption"> Chi tiết WTS</div>
+        @(Html.DevExtreme().DataGrid<NNworking.Models.View_242_WTS>()
+            .DataSource(ds => ds.WebApi()
+                .RouteName("C242_WTSApi")
+                .LoadAction("DetailWTS")
+                .LoadParams(new { staffName = new JS("data.StaffName"), staffID = new JS("data.StaffID"), date = new JS("data.Date") })
+            )
+            .ID("dxDetailWTS")
+            .Paging(page => page.PageSize(10))
+            .Pager(pager => pager.ShowPageSizeSelector(true)
+                .ShowInfo(true)
+                .AllowedPageSizes(new List<int> { 10, 20, 30 })
+            )
+            .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+                .DescendingText("StaffID")
+            )
+            .ColumnAutoWidth(true)
+            .FilterRow(fil => fil.Visible(true))
+            .FilterPanel(fi => fi.Visible(true))
+            .SearchPanel(search => search.Visible(true)
+                .HighlightSearchText(true)
+                .Width(500)
+            )
+            .ShowColumnHeaders(true)
+            .ShowRowLines(true)
+            .RemoteOperations(true)
+            .Columns(columns =>
+            {
+                columns.AddFor(m => m.StaffID).Caption("nhân viên");
+
+                columns.AddFor(m => m.Date).Caption("Ngày");
+
+                columns.AddFor(m => m.Shift).Caption("Ca");
+
+                columns.AddFor(m => m.MachineID).Caption("Máy");
+
+                columns.AddFor(m => m.MONo).Caption("Đơn hàng");
+
+                columns.AddFor(m => m.OptionID).Caption("Nguyên công");
+
+                columns.AddFor(m => m.PartID).Caption("Tên chi tiết");
+
+                columns.AddFor(m => m.WorkID).Caption("Mã CV");
+
+                columns.AddFor(m => m.Time).Caption("Thời gian");
+
+                columns.AddFor(m => m.OKQty).Caption("Slg OK");
+
+                columns.AddFor(m => m.NGQty).Caption("Slg NG");
+            })
+        )
+        </text>);
+    })
+)
+
+<script>
+    function getToDate() {
+        var a = $("#toDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function getFromDate() {
+        var a = $("#fromDate").dxDateBox("instance").option("value");
+        return a;
+    }
+
+    function ViewData() {
+        $("#dxWTSGetCapacity").dxDataGrid("instance").refresh();
+    }
+
+</script>
