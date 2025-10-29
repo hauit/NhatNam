@@ -328,13 +328,13 @@ namespace NNworking.Models
         public virtual DbSet<C242_ErrorItemNotify_New> C242_ErrorItemNotify_New { get; set; }
         public virtual DbSet<C242_ErrorItemNotify_View> C242_ErrorItemNotify_View { get; set; }
         public virtual DbSet<C242_Part> C242_Part { get; set; }
-        public virtual DbSet<View_242_Part> View_242_Part { get; set; }
         public virtual DbSet<C242_BusOder> C242_BusOder { get; set; }
         public virtual DbSet<View_242_BusOder> View_242_BusOder { get; set; }
         public virtual DbSet<C242_YCKP> C242_YCKP { get; set; }
-        public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
         public virtual DbSet<C242_InventoryExportHistory> C242_InventoryExportHistory { get; set; }
         public virtual DbSet<C242_InventoryInputHistory> C242_InventoryInputHistory { get; set; }
+        public virtual DbSet<View_242_Part> View_242_Part { get; set; }
+        public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {

@@ -34,21 +34,30 @@ namespace NNworking.Controllers
         //[Route("Thong-tin-san-xuat-don-hang-{order}.html")]
         public ActionResult ToLenh(string order)
         {
-            ViewBag.Order = order;
-            NN_DatabaseEntities db = new NN_DatabaseEntities();
-            var data = db.C242_MachinePlanning_view.Where(x=>x.Order.ToLower() == order.ToLower() && x.BatDau != null).FirstOrDefault();
-            //ViewBag.PartNote = string.Empty;
-            if (data != null)
+            ViewBag.Error = string.Empty;
+            try
             {
-                var partList = db.C242_Part.Where(x => x.PartNo.ToLower() == data.TenChiTiet.ToLower()).FirstOrDefault();
-                string customer = partList == null ? string.Empty : partList.CustomerID;
-                ViewBag.GiaThanh = GetGiaThanh(data.TenChiTiet);
-                ViewBag.PathsCT = GetCTGCFilePath(customer,data.TenChiTiet);
-                ViewBag.Paths = GetHDGCFilePath(customer,data.TenChiTiet);
-                ViewBag.PathsDraw = GetDrawPath(customer,data.TenChiTiet);
+                ViewBag.Order = order;
+                NN_DatabaseEntities db = new NN_DatabaseEntities();
+                var data = db.C242_MachinePlanning_view.Where(x => x.Order.ToLower() == order.ToLower() && x.BatDau != null).FirstOrDefault();
+                //ViewBag.PartNote = string.Empty;
+                if (data != null)
+                {
+                    var partList = db.C242_Part.Where(x => x.PartNo.ToLower() == data.TenChiTiet.ToLower()).FirstOrDefault();
+                    ViewBag.Error = $@" tên chi tiết: {data.TenChiTiet} - ";
+                    string customer = partList == null ? string.Empty : partList.CustomerID;
+                    ViewBag.GiaThanh = GetGiaThanh(data.TenChiTiet);
+                    ViewBag.PathsCT = GetCTGCFilePath(customer, data.TenChiTiet);
+                    ViewBag.Paths = GetHDGCFilePath(customer, data.TenChiTiet);
+                    ViewBag.PathsDraw = GetDrawPath(customer, data.TenChiTiet);
 
-                ViewBag.PartNote = GetPartNote(data.TenChiTiet);
-                ViewBag.OrderNote = GetOrderNote(order);
+                    ViewBag.PartNote = GetPartNote(data.TenChiTiet);
+                    ViewBag.OrderNote = GetOrderNote(order);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error += ex.Message;
             }
 
             return View();
@@ -74,9 +83,18 @@ namespace NNworking.Controllers
 
         private string GetGiaThanh(string tenChiTiet)
         {
+            if (string.IsNullOrEmpty(tenChiTiet))
+            {
+                throw new ArgumentException("Tên chi tiết bị null hoặc empty");
+            }
+
             NN_DatabaseEntities db = new NN_DatabaseEntities();
             var data = db.View_242_Part.Where(x => x.PartNo.ToLower() == tenChiTiet.ToLower()).FirstOrDefault();
-            return data == null ? string.Empty : (data.GiaThanh.ToString() == "1" ? "Đắt" : "Rẻ");
+            if (data != null)
+            {
+                return data.GiaThanh.ToString() == "1" ? "Đắt" : "Rẻ";
+            }
+            return string.Empty;
         }
 
         private string GetOrderNote(string order)
@@ -99,7 +117,7 @@ namespace NNworking.Controllers
             try
             {
                 NN_DatabaseEntities db = new NN_DatabaseEntities();
-                var data = db.View_ToLenh.Where(x=>x.BOderNo.ToLower() == order.ToLower()).ToList();
+                var data = db.View_ToLenh.Where(x => x.BOderNo.ToLower() == order.ToLower()).ToList();
                 return Json(new { Status = "OK", Values = data });
             }
             catch (Exception ex)
@@ -180,25 +198,25 @@ namespace NNworking.Controllers
                 foreach (var item in files)
                 {
                     var fileName = Path.GetFileName(item);
-                    if(fileName.ToLower().IndexOf(part.ToLower()) == -1)
+                    if (fileName.ToLower().IndexOf(part.ToLower()) == -1)
                     {
                         continue;
                     }
                     listFile.Add($@"{customer}\{part}\{fileName}", nameof(RoodPathCTGC));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-            if(listFile.Count == 0)
+            if (listFile.Count == 0)
             {
                 listFile.Add(string.Empty, string.Empty);
             }
             return listFile;
         }
 
-        private Dictionary<string,string> GetHDGCFilePath(string customer, string part)
+        private Dictionary<string, string> GetHDGCFilePath(string customer, string part)
         {
             Dictionary<string, string> listFile = new Dictionary<string, string>();
             try
@@ -214,7 +232,7 @@ namespace NNworking.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
             }
 
@@ -225,7 +243,7 @@ namespace NNworking.Controllers
             return listFile;
         }
 
-        private Dictionary<string,string> GetDrawPath(string customer, string part)
+        private Dictionary<string, string> GetDrawPath(string customer, string part)
         {
             Dictionary<string, string> listFile = new Dictionary<string, string>();
             try
@@ -241,7 +259,7 @@ namespace NNworking.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -270,7 +288,7 @@ namespace NNworking.Controllers
                 var date = DateTime.ParseExact(Request.Form.AllKeys[1].Substring(0, 24),
                               "ddd MMM d yyyy HH:mm:ss",
                               System.Globalization.CultureInfo.InvariantCulture);
-                if(string.IsNullOrEmpty(shift))
+                if (string.IsNullOrEmpty(shift))
                 {
                     throw new ArgumentException("chưa chọn ca để import!");
                 }
@@ -360,8 +378,8 @@ namespace NNworking.Controllers
             {
                 string name = UploadImportFiles(Request.Files);
                 IImport import = new ImportBusOrder();
-                import.ImportData(name, Session["StaffID"].ToString(), out Error,(int)ImportBOderType.ImportTDTK);
-                if(Error.Count > 0)
+                import.ImportData(name, Session["StaffID"].ToString(), out Error, (int)ImportBOderType.ImportTDTK);
+                if (Error.Count > 0)
                 {
                     throw new ArgumentException("Có lỗi trong quá trình import. Vui lòng xem chi tiết lỗi ở từng dòng! ");
                 }
@@ -382,7 +400,7 @@ namespace NNworking.Controllers
             return newName;
         }
 
-        private bool ImportData(string fname, out List<clsError> Error,string shift,DateTime date)
+        private bool ImportData(string fname, out List<clsError> Error, string shift, DateTime date)
         {
             Error = new List<clsError>();
             OleDbDataReader dReader;
@@ -428,7 +446,7 @@ namespace NNworking.Controllers
                         {
                             continue;
                         }
-                        
+
                         Oder = dReader["Số Order"].ToString().Trim();
                         TTNC = dReader["Số NC"].ToString().Trim();
                         NC = dReader["NC"].ToString().Trim();
@@ -509,10 +527,10 @@ namespace NNworking.Controllers
 
                         tablePlanning.Fac_NGTruoc = string.Empty;
 
-                        var inserted = listInserted.Where(x => x.Order == tablePlanning.Order 
-                            && x.Date == tablePlanning.Date 
-                            && x.NC == tablePlanning.NC 
-                            && x.TenChiTiet == tablePlanning.TenChiTiet 
+                        var inserted = listInserted.Where(x => x.Order == tablePlanning.Order
+                            && x.Date == tablePlanning.Date
+                            && x.NC == tablePlanning.NC
+                            && x.TenChiTiet == tablePlanning.TenChiTiet
                             && x.Shift == tablePlanning.Shift).Any();
                         if (inserted)
                         {

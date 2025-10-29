@@ -306,13 +306,13 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_New" Width="1.5" PointX="5.375" PointY="55.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_ErrorItemNotify_View" Width="1.5" PointX="47.375" PointY="56.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_Part" Width="1.5" PointX="35.375" PointY="55.75" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_Part" Width="1.5" PointX="11.375" PointY="57.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_BusOder" Width="1.5" PointX="23.375" PointY="55.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_BusOder" Width="1.5" PointX="13.375" PointY="57.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP" Width="1.5" PointX="17.375" PointY="19.75" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKP" Width="1.5" PointX="55.375" PointY="56.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_InventoryExportHistory" Width="1.5" PointX="23.375" PointY="24.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_InventoryInputHistory" Width="1.5" PointX="57.375" PointY="16.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_Part" Width="1.5" PointX="57.375" PointY="32.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKP" Width="1.5" PointX="55.375" PointY="56.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
