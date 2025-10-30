@@ -21,10 +21,10 @@ namespace NNworking.Models
         public Nullable<decimal> dmdkct { get; set; }
         public Nullable<decimal> dmdkcp { get; set; }
         public Nullable<decimal> dmmcvm { get; set; }
+        public Nullable<decimal> tgyckp { get; set; }
         public Nullable<decimal> tgdm { get; set; }
         public Nullable<decimal> tghl { get; set; }
         public Nullable<decimal> tgct { get; set; }
-        public Nullable<decimal> tgyckp { get; set; }
         public Nullable<decimal> C_dmkns { get; set; }
         public Nullable<decimal> C_dmdsc { get; set; }
         public Nullable<decimal> C_dmdkct { get; set; }

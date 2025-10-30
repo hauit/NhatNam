@@ -69,7 +69,7 @@
     {
         columns.AddFor(m => m.manv).Caption("Mã NV").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.ttg).Caption("Tổng thời gian (trừ PLJ1, Nghỉ)").Alignment(HorizontalAlignment.Center);
+        columns.AddFor(m => m.ttg).Caption("Tổng thời gian (trừ PLJ1, PON1, PSN1, Nghỉ)").Alignment(HorizontalAlignment.Center);
 
         columns.AddFor(m => m.ttgpljtnv).Caption("Tổng TG PLJ1 theo NV").Alignment(HorizontalAlignment.Center);
 
@@ -81,15 +81,15 @@
 
         columns.AddFor(m => m.ttgk).Caption("Tổng TG khác(LZZ1)").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.C_B1).Caption("%B1/Ca").Alignment(HorizontalAlignment.Center);
+        columns.AddFor(m => m.C_B1).Caption("%(Tổng thời gian)/Ca").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.C_C1).Caption("%C1/Ca").Alignment(HorizontalAlignment.Center);
+        columns.AddFor(m => m.C_C1).Caption("%(Tổng TG PLJ1 theo NV)/Ca").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.C_D1).Caption("%D1/Ca").Alignment(HorizontalAlignment.Center);
+        columns.AddFor(m => m.C_D1).Caption("%(Tổng TG PLJ1 theo Option)/Ca").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.C_E1).Caption("%E1/Ca").Alignment(HorizontalAlignment.Center);
+        columns.AddFor(m => m.C_E1).Caption("%(Tổng TG PBJ1&PBN1)/Ca").Alignment(HorizontalAlignment.Center);
 
-        columns.AddFor(m => m.C_G1).Caption("%G1/Ca").Alignment(HorizontalAlignment.Center);
+        columns.AddFor(m => m.C_G1).Caption("%(Tổng TG khác(LZZ1))/Ca").Alignment(HorizontalAlignment.Center);
     })
     .ShowColumnHeaders(true)
     .ShowRowLines(true)

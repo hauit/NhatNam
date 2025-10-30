@@ -15,6 +15,19 @@
             )
         </td>
         <td style="padding-left: 10px;">
+            @(Html.DevExtreme().SelectBox()
+                .ID("shiftSelect")
+                .DataSource(new[] {
+                    new { value = "", text = "Tất cả ca" },
+                    new { value = "T1", text = "Ca Sáng" },
+                    new { value = "T2", text = "Ca Tối" }
+                })
+                .ValueExpr("value")
+                .DisplayExpr("text")
+                .Value("")
+            )
+        </td>
+        <td style="padding-left: 10px;">
             @(Html.DevExtreme().Button()
                         .Text("Xem")
                         .ID("btnView")
@@ -43,7 +56,7 @@
 @(Html.DevExtreme().DataGrid<NNworking.Models.sp_Get_MachineCapability_Result>()
     .DataSource(ds => ds.WebApi()
         .RouteName("C242_PartApi")
-        .LoadAction("sp_242_WTS_DirectWorkPercen").LoadParams(new { fromdate = new JS("getFromDate"), todate = new JS("getToDate") })
+        .LoadAction("sp_242_WTS_DirectWorkPercen").LoadParams(new { fromdate = new JS("getFromDate"), todate = new JS("getToDate"), shift = new JS("getSelectedShift") })
     )
     .ID("dxWTSGetCapacity")
     .Paging(page => page.PageSize(10))
@@ -178,6 +191,10 @@
     function getFromDate() {
         var a = $("#fromDate").dxDateBox("instance").option("value");
         return a;
+    }
+    function getSelectedShift() {
+        const shiftSelect = $("#shiftSelect").dxSelectBox("instance");
+        return shiftSelect.option("value");
     }
 
     function ViewData() {

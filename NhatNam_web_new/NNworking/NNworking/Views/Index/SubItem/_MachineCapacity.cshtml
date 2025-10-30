@@ -8,6 +8,19 @@
                 .ID("fromDate"))
         </td>
         <td style="padding-left: 10px;">
+            @(Html.DevExtreme().SelectBox()
+                .ID("shiftSelect")
+                .DataSource(new[] {
+                    new { value = "", text = "Tất cả ca" },
+                    new { value = "T1", text = "Ca Sáng" },
+                    new { value = "T2", text = "Ca Tối" }
+                })
+                .ValueExpr("value")
+                .DisplayExpr("text")
+                .Value("")
+            )
+        </td>
+        <td style="padding-left: 10px;">
             @(Html.DevExtreme().Button()
                 .Text("Xem")
                 .ID("btnView")
@@ -28,19 +41,14 @@
 </table>
 
 <div id="charts-container">
-    <h3>Line 1:</h3>
     <div id="chartLine1"></div>
 
-    <h3>Line 2:</h3>
     <div id="chartLine2"></div>
 
-    <h3>Line 3:</h3>
     <div id="chartLine3"></div>
 
-    <h3>Line 4:</h3>
     <div id="chartLine4"></div>
 
-    <h3>Line 5:</h3>
     <div id="chartLine5"></div>
 </div>
 
@@ -57,48 +65,70 @@
         return $("#toDate").dxDateBox("instance").option("value");
     }
 
+    function getSelectedShift() {
+        const shiftSelect = $("#shiftSelect").dxSelectBox("instance");
+        return shiftSelect.option("value");
+    }
+
     function ViewData() {
         const fromDate = getFromDate();
         const toDate = getToDate();
+        const shift = getSelectedShift();
 
-        $.ajax({
-            url: '@Url.Action("sp_242_WTS_DirectWorkPercen", "api/C242_Part")',
-            data: { fromdate: fromDate, todate: toDate },
-            dataType: 'json',
-            success: function (res) {
-                renderCharts(res.data || res);
-            },
-            error: function (err) {
-                console.error(err);
-            }
+        $.when(
+            $.ajax({
+                url: '@Url.Action("sp_242_WTS_DirectWorkPercen", "api/C242_Part")',
+                data: { fromdate: fromDate, todate: toDate, shift: shift },
+                dataType: 'json'
+            }),
+            $.ajax({
+                url: '@Url.Action("Get", "api/C222_Machine")',
+                dataType: 'json'
+            })
+        ).done(function ([chartResponse], [errorMachinesResponse]) {
+            const errorMachines = errorMachinesResponse.data || errorMachinesResponse;
+
+            const errorMachineIds = Array.isArray(errorMachines)
+                ? errorMachines
+                    .filter(m => m.Active)
+                    .map(m => m.MachineID)
+                : [];
+
+            renderCharts(chartResponse.data || chartResponse, errorMachineIds);
+        }).fail(function (err) {
+            console.error("Lỗi khi tải dữ liệu:", err);
         });
     }
 
-    function renderCharts(data) {
-        
+    function renderCharts(data, errorMachineIds = []) {
+
         const line1Order = ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15", "P16", "P17", "P18"];
         const line2Order = ["P19", "P20", "P21", "P22", "P23", "P24", "P40", "P43", "P44", "P45", "P46", "P47", "P48"];
         const line3Order = ["P26", "P27", "P28", "P29", "P30", "P31", "P32", "P33", "P34", "P35", "P36", "P37", "P38", "P39", "P50", "P51", "P52", "P53", "P54", "P55", "Phay Cơ"];
-        const line4Order = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12", "T13", "T14", "T15", "T16", "T17", "T18", "T19", "T20"];
+        const line4Order = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12", "T14", "T15", "T16", "T17", "T18", "T19", "T20"];
         const line5Order = ["P56", "P57", "P58", "P59", "P60", "P61", "P62", "P63", "P64", "P65", "P66", "P67", "P68", "P69", "P70", "P71", "P72", "P73", "P74", "P75"];
 
-        const ensureAllMachines = (machineOrder, data) => {
+        const ensureAllMachines = (machineOrder, data, errorMachines) => {
             return machineOrder.map(machineId => {
                 const existingData = data.find(item => item.MachineID === machineId);
-                return existingData || {
-                    MachineID: machineId,
-                    C_tghl: 0,
-                    C_tgct: 0,
-                    C_tgdm: 0
+                const isError = errorMachineIds.includes(machineId);
+                return {
+                    ...(existingData || {
+                        MachineID: machineId,
+                        C_tghl: 0,
+                        C_tgct: 0,
+                        C_tgdm: 0
+                    }),
+                    errorValue: isError ? 100 : 0
                 };
             });
         };
 
-        const line1 = ensureAllMachines(line1Order, data.filter(x => line1Order.includes(x.MachineID)));
-        const line2 = ensureAllMachines(line2Order, data.filter(x => line2Order.includes(x.MachineID)));
-        const line3 = ensureAllMachines(line3Order, data.filter(x => line3Order.includes(x.MachineID)));
-        const line4 = ensureAllMachines(line4Order, data.filter(x => line4Order.includes(x.MachineID)));
-        const line5 = ensureAllMachines(line5Order, data.filter(x => line5Order.includes(x.MachineID)));
+        const line1 = ensureAllMachines(line1Order, data.filter(x => line1Order.includes(x.MachineID)), errorMachineIds);
+        const line2 = ensureAllMachines(line2Order, data.filter(x => line2Order.includes(x.MachineID)), errorMachineIds);
+        const line3 = ensureAllMachines(line3Order, data.filter(x => line3Order.includes(x.MachineID)), errorMachineIds);
+        const line4 = ensureAllMachines(line4Order, data.filter(x => line4Order.includes(x.MachineID)), errorMachineIds);
+        const line5 = ensureAllMachines(line5Order, data.filter(x => line5Order.includes(x.MachineID)), errorMachineIds);
 
         const sortByOrder = (arr, orderList) =>
             arr.sort((a, b) => orderList.indexOf(a.MachineID) - orderList.indexOf(b.MachineID));
@@ -127,7 +157,12 @@
             series: [
                 { valueField: "C_tghl", name: "%TGHL", color: "#1976d2" },
                 { valueField: "C_tgct", name: "%TGCT", color: "#2e7d32" },
-                { valueField: "C_tgdm", name: "%Dừng máy", color: "#d32f2f" }
+                { valueField: "C_tgdm", name: "%Dừng máy", color: "#d32f2f" },
+                {
+                    valueField: "errorValue",
+                    name: "Máy sự cố",
+                    color: "#ffd700",
+                }
             ],
             legend: { visible: true },
             tooltip: { enabled: true },

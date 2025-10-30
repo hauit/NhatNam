@@ -1,4 +1,4 @@
-using DevExtreme.AspNet.Data;
+﻿using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -42,7 +42,8 @@ namespace NNworking.Models.Controllers
             var todate = DateTime.ParseExact(queryParams["todate"].Substring(0, 24),
                               "ddd MMM d yyyy HH:mm:ss",
                               System.Globalization.CultureInfo.InvariantCulture).Date;
-            var c242_part = _context.sp_Get_MachineCapability(fromdate, todate).ToList();
+            string shift = queryParams.ContainsKey("shift") ? queryParams["shift"] : "";
+            var c242_part = _context.sp_Get_MachineCapability(fromdate, todate, shift).ToList();
             return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
         }
 
