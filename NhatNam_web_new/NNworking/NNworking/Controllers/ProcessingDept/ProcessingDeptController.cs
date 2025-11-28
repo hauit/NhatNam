@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NNworking.Models;
@@ -63,6 +63,27 @@ namespace NNworking.Controllers.ProcessingDept
 
         [Route("yeu-cau-khac-phuc.html")]
         public ActionResult YCKP()
+        {
+            CheckPermissAndRedirect();
+            return View();
+        }
+
+        [Route("yeu-cau-khac-phuc-new.html")]
+        public ActionResult YCKPNEW()
+        {
+            CheckPermissAndRedirect();
+            return View();
+        }
+
+        [Route("yeu-cau-khac-phuc-cho-xu-ly.html")]
+        public ActionResult YCKPXL()
+        {
+            CheckPermissAndRedirect();
+            return View();
+        }
+
+        [Route("yeu-cau-khac-phuc-da-xu-ly.html")]
+        public ActionResult YCKPDXL()
         {
             CheckPermissAndRedirect();
             return View();
@@ -167,13 +188,13 @@ namespace NNworking.Controllers.ProcessingDept
                               "ddd MMM d yyyy HH:mm:ss",
                               System.Globalization.CultureInfo.InvariantCulture).Date;
                 }
-                
+
                 NN_DatabaseEntities db = new NN_DatabaseEntities();
                 string handOverPersion = Session["StaffID"].ToString();
                 var existed = db.C242_ShiftHandOver.Where(x => x.Date == from && x.Shift == shift && x.HandOverPersion == handOverPersion).ToList();
-                if(existed.Count > 0)
+                if (existed.Count > 0)
                 {
-                    for(int i = 0; i < existed.Count; i++)
+                    for (int i = 0; i < existed.Count; i++)
                     {
                         db.C242_ShiftHandOver.Remove(existed[i]);
                     }
@@ -182,7 +203,7 @@ namespace NNworking.Controllers.ProcessingDept
                 }
 
                 var items = db.C242_HandOverItem.ToList();
-                foreach(var item in items)
+                foreach (var item in items)
                 {
                     var obj = new C242_ShiftHandOver();
                     obj.Date = from;
@@ -216,16 +237,16 @@ namespace NNworking.Controllers.ProcessingDept
                               "ddd MMM d yyyy HH:mm:ss",
                               System.Globalization.CultureInfo.InvariantCulture).Date;
                 }
-                
+
                 NN_DatabaseEntities db = new NN_DatabaseEntities();
                 string confirm = Session["StaffID"].ToString();
                 var existed = db.C242_ShiftHandOver.Where(x => x.Date == from && x.Shift == shift && x.HandOverRecipient == confirm).ToList();
-                if(existed.Count == 0)
+                if (existed.Count == 0)
                 {
                     throw new ArgumentException("Không tìm thấy thông tin bàn giao ca. Vui lòng liên hệ quản lý ca trước!");
                 }
-                
-                foreach(var item in existed)
+
+                foreach (var item in existed)
                 {
                     item.HandOverRecipientConfirm = true;
                 }
@@ -281,7 +302,7 @@ namespace NNworking.Controllers.ProcessingDept
                 }
 
                 NN_DatabaseEntities db = new NN_DatabaseEntities();
-                var data = db.sp_242_StandTimeManualChecking_GetTotalForReport_BySubGroup_Detail(from,to).ToList();
+                var data = db.sp_242_StandTimeManualChecking_GetTotalForReport_BySubGroup_Detail(from, to).ToList();
                 if (!string.IsNullOrEmpty(workID))
                 {
                     data = data.Where(x => x.WorkID.ToUpper() == workID.ToUpper()).ToList();
@@ -420,13 +441,13 @@ namespace NNworking.Controllers.ProcessingDept
                 //NN123456
                 NN_DatabaseEntities db = new NN_DatabaseEntities();
                 var existedUser = db.C222_Users.Where(x => x.UserName.ToLower() == machineID.ToLower()).Any();
-                if(existedUser)
+                if (existedUser)
                 {
                     throw new ArgumentException("Đã có user, không thể tạo mới.");
                 }
 
                 var existedStaff = db.C222_Staff.Where(x => x.StaffID.ToLower() == machineID.ToLower()).Any();
-                if(!existedStaff)
+                if (!existedStaff)
                 {
                     var staff = new C222_Staff();
                     staff.StaffID = machineID;
@@ -447,7 +468,7 @@ namespace NNworking.Controllers.ProcessingDept
                 user.Password = "m2macBU5Vc45n1fQY3YEGA==";
                 db.C222_Users.Add(user);
                 db.SaveChanges();
-                return Json(new { Status = "OK", Values = "OK"}, JsonRequestBehavior.AllowGet);
+                return Json(new { Status = "OK", Values = "OK" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -467,7 +488,7 @@ namespace NNworking.Controllers.ProcessingDept
 
                 //// Lấy machineid từ số phiếu mượn
                 var borroNo = db.C242_ToolBorrow.Where(x => x.ID == data.BorrowNo).FirstOrDefault();
-                if(borroNo != null)
+                if (borroNo != null)
                 {
                     ////Thêm thông báo yêu cầu mượn dao
                     var notify = new WorkingNotifycation();
@@ -1271,7 +1292,7 @@ namespace NNworking.Controllers.ProcessingDept
         public JsonResult ListMachineByGroupInMachineList(string Group)
         {
             NN_DatabaseEntities db = new NN_DatabaseEntities();
-            var ListMachine1 = db.C222_Machine.Where(x=>x.MachineGroup.ToLower() == Group.ToLower()).ToList();
+            var ListMachine1 = db.C222_Machine.Where(x => x.MachineGroup.ToLower() == Group.ToLower()).ToList();
             return Json(ListMachine1, JsonRequestBehavior.AllowGet);
         }
 

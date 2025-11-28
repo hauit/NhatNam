@@ -156,7 +156,20 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("ShiftHandOver","ProcessingDept")"><i class="fa fa-circle-o"></i>Bàn giao ca</a></li>
-                    <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("YCKP","ProcessingDept")"><i class="fa fa-circle-o"></i>Yêu cầu khắc phục</a></li>
+                    @*<li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("YCKP","ProcessingDept")"><i class="fa fa-circle-o"></i>Yêu cầu khắc phục</a></li>*@
+                    <li class="treeview" style="height: auto;">
+                        <a href="#">
+                            <i class="fa fa-coffee"></i> Yêu cầu khắc phục
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("YCKPNEW","ProcessingDept")"><i class="fa fa-circle-o"></i>Danh sách</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("YCKPXL","ProcessingDept")"><i class="fa fa-circle-o"></i>Chờ xử lý</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("YCKPDXL","ProcessingDept")"><i class="fa fa-circle-o"></i>Đã xử lý</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </ul>

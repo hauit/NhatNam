@@ -4763,6 +4763,9 @@
     <Content Include="Views\Planning\BusOderList.cshtml" />
     <Content Include="Views\Index\SubItem\_MachineCapacity.cshtml" />
     <Content Include="Views\AllDept\Report\Staff_Capacity.cshtml" />
+    <Content Include="Views\ProcessingDept\YCKPNEW.cshtml" />
+    <Content Include="Views\ProcessingDept\YCKPXL.cshtml" />
+    <Content Include="Views\ProcessingDept\YCKPDXL.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4868,6 +4871,9 @@
     <Compile Include="Controllers\TableAPI\C242_WorkController.cs" />
     <Compile Include="Controllers\TableAPI\C242_WTSController.cs" />
     <Compile Include="Controllers\TableAPI\C242_YCKPController.cs" />
+    <Compile Include="Controllers\TableAPI\C242_YCKP_FilesController.cs" />
+    <Compile Include="Controllers\TableAPI\C242_YCKP_NewController.cs" />
+    <Compile Include="Controllers\TableAPI\C242_YCKP_ResponseController.cs" />
     <Compile Include="Controllers\TableAPI\C333_ToolController.cs" />
     <Compile Include="Controllers\ToolController.cs" />
     <Compile Include="Controllers\View_ToLenhController.cs" />
@@ -5199,6 +5205,15 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C242_YCKP.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_YCKP_Files.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_YCKP_New.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_YCKP_Response.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C333_Borrow.cs">
@@ -6061,6 +6076,9 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_242_YCKP.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\View_242_YCKPXL.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_ManualExcutionChecking_GetCurrent.cs">

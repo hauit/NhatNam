@@ -1,0 +1,609 @@
+﻿
+<div style="padding: 20px;">
+    <h2>Danh Sách Yêu Cầu Khắc Phục</h2>
+    
+    <div id="cardsContainer" class="cards-container"></div>
+</div>
+
+<style>
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card-status {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-medium { background: #e3f2fd; color: #1976d2; }
+    .status-hard { background: #fff3e0; color: #f57c00; }
+    .status-low { background: #e8f5e9; color: #388e3c; }
+
+    .card-body p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .card-body strong {
+        color: #333;
+    }
+
+    #responseForm .dx-radiogroup .dx-collection {
+        gap: 20px;
+    }
+
+    #responseForm .dx-radiogroup .dx-item {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 15px 20px;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        min-width: 80px;
+    }
+
+    #responseForm .dx-radiogroup .dx-radiobutton-icon {
+        width: 24px;
+        height: 24px;
+        border-width: 2px;
+    }
+
+    #responseForm .dx-radiogroup .dx-radiobutton-text {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    #responseForm .dx-radiogroup .dx-item .dx-radiobutton-text,
+    #responseForm .dx-radiogroup .dx-item-content .dx-radiobutton-text,
+    #responseForm .dx-radiogroup .dx-radiobutton .dx-radiobutton-text,
+    #responseForm .dx-radiogroup .dx-item *,
+    #responseForm .dx-radiogroup .dx-item span {
+        color: white !important;
+    }
+
+    #responseForm .dx-radiogroup .dx-item:nth-child(1) {
+        background-color: #00b0b7;
+        border-color: #00b0b7;
+    }
+
+    #responseForm .dx-radiogroup .dx-item:nth-child(2) {
+        background-color: #f41b35;
+        border-color: #f41b35;
+    }
+
+    #responseForm .dx-radiogroup .dx-item:nth-child(3) {
+        background-color: #f41b35;
+        border-color: #f41b35;
+    }
+
+    #responseForm .dx-radiogroup .dx-item:nth-child(4) {
+        background-color: #00a94e;
+        border-color: #00a94e;
+    }
+</style>
+
+@(Html.DevExtreme().Popup()
+    .ID("responsePopup")
+    .Title("Cập Nhật Phản Hồi YCKP")
+    .Width("85%")
+    .Height("85%")
+    .ShowTitle(true)
+    .DragEnabled(true)
+    .Visible(false)
+    .Content(@<text>
+        <div id="sendedImagesContainer" style="padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px; max-height: 300px; overflow-y: auto;">
+        </div>
+        @(Html.DevExtreme().Form<NNworking.Models.C242_YCKP_Response>()
+            .ID("responseForm")
+            .ShowColonAfterLabel(true)
+            .Items(items => {
+                items.AddGroup()
+                    .Items(groupItems => {
+                        groupItems.AddSimple()
+                            .DataField("StatusChoice")
+                            .Name("StatusRadio")
+                            .Label(l => l.Text("Trạng thái"))
+                            .Editor(e => e.RadioGroup()
+                                .Items(new[] { "OK", "NG", "Cancel", "NEXT" })
+                                .Layout(DevExtreme.AspNet.Mvc.Orientation.Horizontal)
+                                .OnValueChanged("onStatusChange")
+                            )
+                            .IsRequired(true);
+
+                        groupItems.AddSimple()
+                            .DataField("ProcessDept")
+                            .Name("ProcessDeptField")
+                            .Label(l => l.Text("Phòng ban xử lý"))
+                            .Editor(e => e.SelectBox()
+                                .ID("ProcessDeptSelect")
+                                .DataSource(d => d.WebApi()
+                                    .RouteName("C222_DepartmentApi")
+                                    .LoadAction("Get")
+                                    .Key("ID")
+                                )
+                                .DisplayExpr("DeptName")
+                                .ValueExpr("DeptCode")
+                                .OnValueChanged("onProcessDeptChanged")
+                                .Placeholder("Chọn phòng ban xử lý")
+                                .SearchEnabled(true)
+                                .ShowClearButton(true)
+                                .Width("100%")
+                            )
+                            .Visible(false);
+
+                        groupItems.AddSimple()
+                            .DataField("ProcessStaff")
+                            .Name("ProcessStaffField")
+                            .Label(l => l.Text("Người xử lý"))
+                            .Editor(e => e.SelectBox()
+                                .ID("ProcessStaffSelect")
+                                .DisplayExpr("DisplayName")
+                                .ValueExpr("StaffID")
+                                .Placeholder("Chọn người xử lý")
+                                .SearchEnabled(true)
+                                .ShowClearButton(true)
+                                .Width("100%")
+                            )
+                            .Visible(false);
+                    });
+
+                items.AddGroup()
+                    .ColCount(2)
+                    .Items(groupItems => {
+                        groupItems.AddSimpleFor(m => m.UpdatedResponse)
+                            .Label(l => l.Text("Phản hồi").Location(FormLabelLocation.Top))
+                            .Editor(e => e.TextArea().Height(80))
+                            .IsRequired(true)
+                            .ColSpan(2);
+
+                        groupItems.AddSimpleFor(m => m.UpdatedReason)
+                            .Label(l => l.Text("Nguyên nhân").Location(FormLabelLocation.Top))
+                            .Editor(e => e.TextArea().Height(80))
+                            .IsRequired(true);
+
+                        groupItems.AddSimpleFor(m => m.UpdatedSolution)
+                            .Label(l => l.Text("Giải pháp").Location(FormLabelLocation.Top))
+                            .Editor(e => e.TextArea().Height(80))
+                            .IsRequired(true);
+                    });
+
+                items.AddGroup()
+                    .ColCount(2)
+                    .Items(groupItems => {
+                        groupItems.AddButton()
+                            .HorizontalAlignment(HorizontalAlignment.Right)
+                            .ButtonOptions(b => b
+                                .Text("Lưu")
+                                .Type(ButtonType.Success)
+                                .UseSubmitBehavior(false)
+                                .OnClick("onSaveResponse")
+                            );
+
+                        groupItems.AddButton()
+                            .HorizontalAlignment(HorizontalAlignment.Left)
+                            .ButtonOptions(b => b
+                                .Text("Hủy")
+                                .OnClick("onCancelResponse")
+                            );
+                    });
+            })
+        )
+    </text>)
+)
+
+<script>
+    let yckpData = [];
+    let currentYckpItem = null;
+
+    $(function() {
+        loadYCKPData();
+    });
+
+    function loadYCKPData() {
+        $.ajax({
+            url: '@Url.Action("GetYCKPXL", "api/C242_YCKP_New")',
+            method: 'GET',
+            data: {
+                Department: '@Session["Department"].ToString()'
+            },
+            success: function(response) {
+                yckpData = response || [];
+                renderCards();
+            },
+            error: function(xhr) {
+                console.error('Lỗi khi tải dữ liệu YCKP:', xhr.responseText);
+                renderCards();
+            }
+        });
+    }
+
+    function renderCards() {
+        const container = $('#cardsContainer');
+        container.empty();
+
+        if (yckpData.length === 0) {
+            container.html('<p style="text-align:center; color:#999;">Không có dữ liệu</p>');
+            return;
+        }
+
+        yckpData.forEach(item => {
+            const statusClass = item.RankLevel === 'nhẹ' ? 'status-low' :
+                item.RankLevel === 'gấp' ? 'status-hard' : 'status-medium';
+
+            const card = $(`
+                <div class="card" data-id="${item.ID}">
+                    <div class="card-header">
+                        <span class="card-title">Số Order: ${item.OrderNo || 'N/A'}</span>
+                        <span class="card-status ${statusClass}">${item.RankLevel || 'N/A'}</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Tên chi tiết:</strong> ${item.PartId || 'N/A'}</p>
+                        <p><strong>Máy gc:</strong> ${item.MachineID || 'N/A'}</p>
+                        <p><strong>Nguyên công:</strong> ${item.OptionID || 'N/A'}</p>
+                        <p><strong>Số sp gc:</strong> ${item.ProcessProduct || 'N/A'}</p>
+                        <p><strong>Số lần yckp:</strong> ${item.YCKPTimes || 'N/A'}</p>
+                        <p><strong>Tình trạng gc:</strong> ${item.ProcessStatus || 'N/A'}</p>
+                        <p><strong>Nội dung:</strong> ${item.YCKPContent || 'N/A'}</p>
+                        <p><strong>Dự đoán:</strong> ${item.CauseContent || 'N/A'}</p>
+                        <p><strong>Đề xuất:</strong> ${item.SolutionContent || 'N/A'}</p>
+                        <p><strong>Người yêu cầu:</strong> ${item.InputStaff || 'N/A'}</p>
+                        <p><strong>Deadline:</strong> ${item.YCKPDeadline ? new Date(item.YCKPDeadline).toLocaleDateString('vi-VN') : 'N/A'}</p>
+                    </div>
+                </div>
+            `);
+
+            card.on('click', function() {
+                openResponsePopup(item);
+            });
+
+            container.append(card);
+        });
+    }
+
+    function openResponsePopup(yckpItem) {
+        currentYckpItem = yckpItem;
+
+        try {
+            const popup = $('#responsePopup').dxPopup('instance');
+            const form = $('#responseForm').dxForm('instance');
+
+            if (form) {
+                form.resetValues();
+            }
+
+            popup.show();
+            loadImages1(yckpItem.OrderNo, yckpItem.InputStaff, yckpItem.YCKPDate);
+        } catch (error) {
+            console.error('Error opening popup:', error);
+            alert('Lỗi khi mở popup: ' + error.message);
+        }
+    }
+
+    function loadImages1(orderNo, staffId, yckpDate) {
+        var container = $("#sendedImagesContainer");
+        container.empty();
+
+        $.ajax({
+            url: '@Url.Action("GetByOrderNoDateStaff", "api/C242_YCKP_Files")',
+            type: 'GET',
+            data: {
+                OrderNo: orderNo,
+                StaffId: staffId,
+                Date: yckpDate
+            },
+            success: function(response) {
+                if (!response || response.length === 0) {
+                    container.html('<p>Không có hình ảnh nào được tìm thấy.</p>');
+                    return;
+                }
+
+                response.forEach(function(file) {
+                    if (file.Path) {
+                        var relativePath = file.Path.replace(/^.*[\\/]Files[\\/]/, 'Files/');
+                        var imageUrl = '/' + relativePath.replace(/\\/g, '/');
+
+                        var imageContainer = $('<div>').css({
+                            width: '200px',
+                            marginBottom: '15px',
+                            border: '1px solid #eee',
+                            borderRadius: '4px',
+                            overflow: 'hidden',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        });
+
+                        var img = $('<img>').attr({
+                            'src': imageUrl,
+                            'alt': 'Hình ảnh đính kèm',
+                            'style': 'width: 100%; height: auto; display: block;'
+                        }).on('click', function() {
+                            window.open(imageUrl, '_blank');
+                        }).css('cursor', 'pointer');
+
+                        imageContainer.append(img);
+                        container.append(imageContainer);
+                    }
+                });
+            },
+            error: function(error) {
+                console.error('Lỗi khi tải hình ảnh:', error);
+                container.html('<p style="color: red;">Đã xảy ra lỗi khi tải hình ảnh.</p>');
+            }
+        });
+    }
+
+    function onSaveResponse() {
+        const form = $('#responseForm').dxForm('instance');
+        const formData = form.option('formData');
+
+        const now = new Date();
+        const options = {
+            timeZone: 'Asia/Ho_Chi_Minh',
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false
+        };
+        const currentDateTime = new Intl.DateTimeFormat('sv-SE', options).format(now).replace(/\//g, '-');
+
+        switch (formData.StatusChoice) {
+            case "OK":
+            case "Cancel":
+                $.ajax({
+                    url: '/api/C242_YCKP_Response/Post',
+                    method: 'POST',
+                    data: {
+                        values: JSON.stringify({
+                            UpdatedStaff: '@Session["StaffID"].ToString()',
+                            UpdatedDept: '@Session["Department"].ToString()',
+                            Date: currentDateTime,
+                            Status: formData.StatusChoice,
+                            UpdatedResponse: formData.UpdatedResponse,
+                            UpdatedReason: formData.UpdatedReason,
+                            UpdatedSolution: formData.UpdatedSolution
+                        })
+                    },
+                    success: function(responseData) {
+                        $.ajax({
+                            url: '/api/C242_YCKP_New/Put',
+                            method: 'PUT',
+                            data: {
+                                key: currentYckpItem.ID,
+                                values: JSON.stringify({
+                                    ResponseId: responseData.ID.toString(),
+                                    Status: formData.Status,
+                                    YCKPProcessTime: currentDateTime
+                                })
+                            },
+                            success: function() {
+                                $('#responsePopup').dxPopup('instance').hide();
+                                loadYCKPData();
+                            },
+                            error: function(xhr) {
+                                console.error('Lỗi khi cập nhật YCKP:', xhr.responseText);
+                                DevExpress.ui.notify('Lỗi khi cập nhật YCKP: ' + xhr.responseText, 'error', 5000);
+                            }
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error('Lỗi khi tạo Response:', xhr.responseText);
+                        DevExpress.ui.notify('Lỗi khi tạo phản hồi: ' + xhr.responseText, 'error', 5000);
+                    }
+                });
+                break;
+            case "NG":
+            case "NEXT":
+                const processDeptSelect = $("#ProcessDeptSelect").dxSelectBox("instance");
+                const processStaffSelect = $("#ProcessStaffSelect").dxSelectBox("instance");
+
+                let finalProcessDept, finalProcessStaff;
+
+                if (formData.StatusChoice === "NG") {
+                    finalProcessDept = formData.ProcessDept;
+                    finalProcessStaff = formData.ProcessStaff;
+                } else {
+                    finalProcessDept = processDeptSelect ? processDeptSelect.option("value") : null;
+                    finalProcessStaff = processStaffSelect ? processStaffSelect.option("value") : null;
+                }
+
+                if (!finalProcessDept || finalProcessDept.toString().trim() === '') {
+                    DevExpress.ui.notify('Phòng ban xử lý không hợp lệ', 'error', 3000);
+                    return;
+                }
+
+                if (!finalProcessStaff || finalProcessStaff.toString().trim() === '') {
+                    DevExpress.ui.notify('Người xử lý không hợp lệ', 'error', 3000);
+                    return;
+                }
+
+                $.ajax({
+                    url: '/api/C242_YCKP_Response/Post',
+                    method: 'POST',
+                    data: {
+                        values: JSON.stringify({
+                            UpdatedStaff: '@Session["StaffID"].ToString()',
+                            UpdatedDept: '@Session["Department"].ToString()',
+                            Date: currentDateTime,
+                            Status: formData.StatusChoice,
+                            UpdatedResponse: formData.UpdatedResponse,
+                            UpdatedReason: formData.UpdatedReason,
+                            UpdatedSolution: formData.UpdatedSolution
+                        })
+                    },
+                    success: function (responseData) {
+                        $.ajax({
+                            url: '/api/C242_YCKP_New/Put',
+                            method: 'PUT',
+                            data: {
+                                key: currentYckpItem.ID,
+                                values: JSON.stringify({
+                                    ResponseId: responseData.ID.toString()
+                                })
+                            },
+                            success: function () {
+                                $('#responsePopup').dxPopup('instance').hide();
+                                loadYCKPData();
+                            },
+                            error: function (xhr) {
+                                console.error('Lỗi khi cập nhật YCKP:', xhr.responseText);
+                                DevExpress.ui.notify('Lỗi khi cập nhật YCKP: ' + xhr.responseText, 'error', 5000);
+                            }
+                        });
+                        $.ajax({
+                            url: '/api/C242_YCKP_New/Post',
+                            method: 'POST',
+                            data: {
+                                values: JSON.stringify({
+                                    OrderNo: currentYckpItem.OrderNo,
+                                    OptionID: currentYckpItem.OptionID,
+                                    MachineID: currentYckpItem.MachineID,
+                                    PartId: currentYckpItem.PartId,
+                                    Deadline: currentYckpItem.Deadline,
+                                    RankLevel: currentYckpItem.RankLevel,
+                                    ProcessProduct: currentYckpItem.ProcessProduct,
+                                    YCKPTimes: currentYckpItem.YCKPTimes,
+                                    ProcessStatus: currentYckpItem.ProcessStatus,
+                                    YCKPContent: currentYckpItem.YCKPContent,
+                                    CauseContent: currentYckpItem.CauseContent,
+                                    SolutionContent: currentYckpItem.SolutionContent,
+                                    YCKPDate: currentYckpItem.YCKPDate,
+                                    YCKPDeadline: currentYckpItem.YCKPDeadline,
+                                    YCKPProcessTime: currentDateTime,
+                                    InputStaff: currentYckpItem.InputStaff,
+                                    InputDept: currentYckpItem.InputDept,
+                                    ProcessStaff: finalProcessStaff,
+                                    ProcessDept: finalProcessDept,
+                                    ResponseId: null,
+                                    Status: currentYckpItem.Status,
+                                    Deleted: false
+                                })
+                            },
+                            success: function() {
+                                $('#responsePopup').dxPopup('instance').hide();
+                                loadYCKPData();
+                            },
+                            error: function(xhr) {
+                                console.error('Lỗi khi tạo YCKP mới:', xhr.responseText);
+                                DevExpress.ui.notify('Lỗi khi tạo YCKP mới: ' + xhr.responseText, 'error', 5000);
+                            }
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error('Lỗi khi tạo Response:', xhr.responseText);
+                        DevExpress.ui.notify('Lỗi khi tạo phản hồi: ' + xhr.responseText, 'error', 5000);
+                    }
+                });
+                break;
+        }
+    }
+
+    function onCancelResponse() {
+        $('#responsePopup').dxPopup('instance').hide();
+    }
+
+    function onStatusChange(e) {
+        const form = $('#responseForm').dxForm('instance');
+
+        if (!form) {
+            console.warn("Form chưa sẵn sàng");
+            return;
+        }
+
+        let newStatus = "";
+        let processDept;
+        let processStaff;
+
+        switch (e.value) {
+            case "OK":
+                newStatus = "Hoàn thành";
+                break;
+            case "NG":
+                newStatus = "Đang xử lý";
+                processDept = currentYckpItem.UpdatedDept || currentYckpItem.InputDept;
+                processStaff = currentYckpItem.UpdatedStaff || currentYckpItem.InputStaff;
+                break;
+            case "NEXT":
+                newStatus = "Đang xử lý";
+                break;
+            case "Cancel":
+                newStatus = "Đã huỷ";
+                break;
+        }
+
+        const formData = form.option('formData');
+        formData.StatusChoice = e.value;
+        formData.Status = newStatus;
+        formData.ProcessDept = processDept;
+        formData.ProcessStaff = processStaff;
+        form.option('formData', formData);
+
+        const showSelects = (e.value === "NEXT");
+
+        form.itemOption("ProcessDeptField", "visible", showSelects);
+        form.itemOption("ProcessStaffField", "visible", showSelects);
+    }
+
+    function onProcessDeptChanged(e) {
+        var deptCode = e.value;
+        var staffSelect = $("#ProcessStaffSelect").dxSelectBox("instance");
+
+        if (!deptCode) {
+            staffSelect.option("dataSource", []);
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetByDept", "api/C222_Staff")',
+            data: { DeptCode: deptCode },
+            dataType: 'json',
+            cache: false,
+            success: function (response) {
+                if (response && response.data && response.data.length > 0) {
+                    staffSelect.option("dataSource", response.data);
+                } else {
+                    staffSelect.option("dataSource", []);
+                }
+            },
+            error: function (err) {
+                console.error(err);
+                staffSelect.option("dataSource", []);
+                alert("Lỗi khi tải danh sách nhân viên!");
+            }
+        });
+    }
+
+</script>

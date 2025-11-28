@@ -335,6 +335,10 @@ namespace NNworking.Models
         public virtual DbSet<C242_InventoryInputHistory> C242_InventoryInputHistory { get; set; }
         public virtual DbSet<View_242_Part> View_242_Part { get; set; }
         public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
+        public virtual DbSet<C242_YCKP_Files> C242_YCKP_Files { get; set; }
+        public virtual DbSet<C242_YCKP_New> C242_YCKP_New { get; set; }
+        public virtual DbSet<C242_YCKP_Response> C242_YCKP_Response { get; set; }
+        public virtual DbSet<View_242_YCKPXL> View_242_YCKPXL { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {
@@ -2356,19 +2360,6 @@ namespace NNworking.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_242_BusOder_GetTHPhoi_Result>("sp_242_BusOder_GetTHPhoi", partIDParameter, monoParameter);
         }
     
-        public virtual ObjectResult<sp_Get_StaffCapability_Result> sp_Get_StaffCapability(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("FromDate", fromDate) :
-                new ObjectParameter("FromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("ToDate", toDate) :
-                new ObjectParameter("ToDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_StaffCapability_Result>("sp_Get_StaffCapability", fromDateParameter, toDateParameter);
-        }
-    
         public virtual ObjectResult<sp_Get_MachineCapability_Result> sp_Get_MachineCapability(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string shift)
         {
             var fromDateParameter = fromDate.HasValue ?
@@ -2384,6 +2375,19 @@ namespace NNworking.Models
                 new ObjectParameter("shift", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_MachineCapability_Result>("sp_Get_MachineCapability", fromDateParameter, toDateParameter, shiftParameter);
+        }
+    
+        public virtual ObjectResult<sp_Get_StaffCapability_Result> sp_Get_StaffCapability(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_StaffCapability_Result>("sp_Get_StaffCapability", fromDateParameter, toDateParameter);
         }
     }
 }

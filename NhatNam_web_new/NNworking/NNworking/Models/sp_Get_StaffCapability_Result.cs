@@ -20,10 +20,10 @@ namespace NNworking.Models
         public Nullable<double> ttgpbjpbn { get; set; }
         public Nullable<double> ttgpbjttc { get; set; }
         public Nullable<decimal> ttgk { get; set; }
-        public Nullable<double> C_B1 { get; set; }
+        public Nullable<decimal> C_B1 { get; set; }
         public Nullable<decimal> C_C1 { get; set; }
         public Nullable<double> C_D1 { get; set; }
         public Nullable<double> C_E1 { get; set; }
-        public Nullable<double> C_G1 { get; set; }
+        public Nullable<decimal> C_G1 { get; set; }
     }
 }

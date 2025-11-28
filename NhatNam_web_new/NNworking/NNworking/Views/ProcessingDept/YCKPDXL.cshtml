@@ -1,0 +1,262 @@
+﻿
+<div style="padding: 20px;">
+    <h2>Danh Sách Yêu Cầu Khắc Phục Đã Xử Lý</h2>
+    
+    <div id="cardsContainer" class="cards-container"></div>
+</div>
+
+<style>
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card-status {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-medium { background: #e3f2fd; color: #1976d2; }
+    .status-hard { background: #fff3e0; color: #f57c00; }
+    .status-low { background: #e8f5e9; color: #388e3c; }
+
+    .card-body p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .card-body strong {
+        color: #333;
+    }
+</style>
+
+@(Html.DevExtreme().Popup()
+    .ID("detailPopup")
+    .Title("Chi Tiết YCKP Đã Xử Lý")
+    .Width("85%")
+    .Height("85%")
+    .ShowTitle(true)
+    .DragEnabled(true)
+    .Visible(false)
+    .Content(@<text>
+        <div id="sendedImagesContainer" style="padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px; max-height: 300px; overflow-y: auto;">
+        </div>
+        <div id="detailContent" style="padding: 20px;">
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">📝 Thông tin xử lý</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <p style="margin: 8px 0;"><strong>Người yêu cầu:</strong> <span id="detail-InputStaff"></span></p>
+                        <p style="margin: 8px 0;"><strong>Phòng ban yêu cầu:</strong> <span id="detail-InputDept"></span></p>
+                    </div>
+                    <div>
+                        <p style="margin: 8px 0;"><strong>Người xử lý:</strong> <span id="detail-UpdatedStaff"></span></p>
+                        <p style="margin: 8px 0;"><strong>Phòng ban xử lý:</strong> <span id="detail-UpdatedDept"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 15px;">
+                <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Phản hồi xử lý</h4>
+                <p id="detail-UpdatedResponse" style="white-space: pre-wrap; color: #495057; line-height: 1.6;"></p>
+            </div>
+
+            <div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 15px;">
+                <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Nguyên nhân</h4>
+                <p id="detail-UpdatedReason" style="white-space: pre-wrap; color: #495057; line-height: 1.6;"></p>
+            </div>
+
+            <div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Giải pháp đã áp dụng</h4>
+                <p id="detail-UpdatedSolution" style="white-space: pre-wrap; color: #495057; line-height: 1.6;"></p>
+            </div>
+        </div>
+    </text>)
+)
+
+<script>
+    let yckpData = [];
+    let currentYckpItem = null;
+
+    $(function() {
+        loadYCKPData();
+    });
+
+    function loadYCKPData() {
+        $.ajax({
+            url: '@Url.Action("GetYCKPDXL", "api/C242_YCKP_New")',
+            method: 'GET',
+            data: {
+                StaffID: '@Session["StaffID"].ToString()'
+            },
+            success: function(response) {
+                yckpData = response || [];
+                renderCards();
+            },
+            error: function(xhr) {
+                console.error('Lỗi khi tải dữ liệu YCKP:', xhr.responseText);
+                renderCards();
+            }
+        });
+    }
+
+    function renderCards() {
+        const container = $('#cardsContainer');
+        container.empty();
+
+        if (yckpData.length === 0) {
+            container.html('<p style="text-align:center; color:#999;">Không có dữ liệu</p>');
+            return;
+        }
+
+        yckpData.forEach(item => {
+            const statusClass = item.RankLevel === 'nhẹ' ? 'status-low' :
+                item.RankLevel === 'gấp' ? 'status-hard' : 'status-medium';
+
+            const card = $(`
+                <div class="card" data-id="${item.ID}">
+                    <div class="card-header">
+                        <span class="card-title">Số Order: ${item.OrderNo || 'N/A'}</span>
+                        <span class="card-status ${statusClass}">${item.RankLevel || 'N/A'}</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Tên máy:</strong> ${item.MachineID || 'N/A'}</p>
+                        <p><strong>Tên chi tiết:</strong> ${item.PartId || 'N/A'}</p>
+                        <p><strong>Máy gc:</strong> ${item.MachineID || 'N/A'}</p>
+                        <p><strong>Nguyên công:</strong> ${item.OptionID || 'N/A'}</p>
+                        <p><strong>Số sp gc:</strong> ${item.ProcessProduct || 'N/A'}</p>
+                        <p><strong>Số lần yckp:</strong> ${item.YCKPTimes || 'N/A'}</p>
+                        <p><strong>Tình trạng gc:</strong> ${item.ProcessStatus || 'N/A'}</p>
+                        <p><strong>Nội dung:</strong> ${item.YCKPContent || 'N/A'}</p>
+                        <p><strong>Dự đoán:</strong> ${item.CauseContent || 'N/A'}</p>
+                        <p><strong>Đề xuất:</strong> ${item.SolutionContent || 'N/A'}</p>
+                        <p><strong>Người yêu cầu:</strong> ${item.InputStaff || 'N/A'}</p>
+                        <p><strong>Deadline:</strong> ${item.YCKPDeadline ? new Date(item.YCKPDeadline).toLocaleDateString('vi-VN') : 'N/A'}</p>
+                    </div>
+                </div>
+            `);
+
+            card.on('click', function() {
+                openDetailPopup(item);
+            });
+
+            container.append(card);
+        });
+    }
+
+    function openDetailPopup(yckpItem) {
+        currentYckpItem = yckpItem;
+
+        try {
+            const popup = $('#detailPopup').dxPopup('instance');
+            
+            if (!popup) {
+                console.error('Popup instance not found');
+                return;
+            }
+
+            popup.show();
+
+            $('#detail-InputStaff').text(yckpItem.InputStaff || 'N/A');
+            $('#detail-InputDept').text(yckpItem.InputDept || 'N/A');
+            $('#detail-UpdatedStaff').text(yckpItem.UpdatedStaff || 'N/A');
+            $('#detail-UpdatedDept').text(yckpItem.UpdatedDept || 'N/A');
+            $('#detail-UpdatedResponse').text(yckpItem.UpdatedResponse || 'N/A');
+            $('#detail-UpdatedReason').text(yckpItem.UpdatedReason || 'N/A');
+            $('#detail-UpdatedSolution').text(yckpItem.UpdatedSolution || 'N/A');
+
+            loadImages1(yckpItem.OrderNo, yckpItem.InputStaff, yckpItem.YCKPDate);
+            
+        } catch (error) {
+            console.error('Error opening popup:', error);
+            alert('Lỗi khi mở popup: ' + error.message);
+        }
+    }
+
+    function loadImages1(orderNo, staffId, yckpDate) {
+        var container = $("#sendedImagesContainer");
+        container.empty();
+
+        $.ajax({
+            url: '@Url.Action("GetByOrderNoDateStaff", "api/C242_YCKP_Files")',
+            type: 'GET',
+            data: {
+                OrderNo: orderNo,
+                StaffId: staffId,
+                Date: yckpDate
+            },
+            success: function(response) {
+                if (!response || response.length === 0) {
+                    container.html('<p>Không có hình ảnh nào được tìm thấy.</p>');
+                    return;
+                }
+
+                response.forEach(function(file) {
+                    if (file.Path) {
+                        var relativePath = file.Path.replace(/^.*[\\/]Files[\\/]/, 'Files/');
+                        var imageUrl = '/' + relativePath.replace(/\\/g, '/');
+
+                        var imageContainer = $('<div>').css({
+                            width: '200px',
+                            marginBottom: '15px',
+                            border: '1px solid #eee',
+                            borderRadius: '4px',
+                            overflow: 'hidden',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                            display: 'inline-block',
+                            marginRight: '15px'
+                        });
+
+                        var img = $('<img>').attr({
+                            'src': imageUrl,
+                            'alt': 'Hình ảnh đính kèm',
+                            'style': 'width: 100%; height: auto; display: block;'
+                        }).on('click', function() {
+                            window.open(imageUrl, '_blank');
+                        }).css('cursor', 'pointer');
+
+                        imageContainer.append(img);
+                        container.append(imageContainer);
+                    }
+                });
+            },
+            error: function(error) {
+                console.error('Lỗi khi tải hình ảnh:', error);
+                container.html('<p style="color: red;">Đã xảy ra lỗi khi tải hình ảnh.</p>');
+            }
+        });
+    }
+
+</script>

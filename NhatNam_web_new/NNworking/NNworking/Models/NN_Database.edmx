@@ -1839,6 +1839,58 @@ warning 6002: The table/view 'NT_Database.dbo.242_TrackingViTri' does not have a
           <Property Name="UpdateStaff" Type="nvarchar" MaxLength="250" />
           <Property Name="ProcessDept" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <EntityType Name="242_YCKP_Files">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderNo" Type="nvarchar" MaxLength="250" />
+          <Property Name="ResponseId" Type="nvarchar" MaxLength="250" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="StaffId" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Path" Type="nvarchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="242_YCKP_New">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderNo" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="OptionID" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="MachineID" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="PartId" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Deadline" Type="datetime" Nullable="false" />
+          <Property Name="RankLevel" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ProcessProduct" Type="int" Nullable="false" />
+          <Property Name="YCKPTimes" Type="int" Nullable="false" />
+          <Property Name="ProcessStatus" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="YCKPContent" Type="nvarchar(max)" />
+          <Property Name="CauseContent" Type="nvarchar(max)" />
+          <Property Name="SolutionContent" Type="nvarchar(max)" />
+          <Property Name="YCKPDate" Type="datetime" Nullable="false" />
+          <Property Name="YCKPDeadline" Type="datetime" Nullable="false" />
+          <Property Name="YCKPProcessTime" Type="datetime" Nullable="false" />
+          <Property Name="InputStaff" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="InputDept" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ProcessStaff" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ProcessDept" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ResponseId" Type="nvarchar" MaxLength="250" />
+          <Property Name="Status" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="242_YCKP_Response">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UpdatedStaff" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="UpdatedDept" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UpdatedResponse" Type="nvarchar" MaxLength="250" />
+          <Property Name="UpdatedReason" Type="nvarchar" MaxLength="250" />
+          <Property Name="UpdatedSolution" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NT_Database.dbo.333_Borrow' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="333_Borrow">
@@ -6288,6 +6340,59 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_YCKP' does not have a pri
           <Property Name="ProcessDept" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'NT_Database.dbo.View_242_YCKPXL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_242_YCKPXL">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="OrderNo" />
+            <PropertyRef Name="OptionID" />
+            <PropertyRef Name="MachineID" />
+            <PropertyRef Name="PartId" />
+            <PropertyRef Name="Deadline" />
+            <PropertyRef Name="RankLevel" />
+            <PropertyRef Name="ProcessProduct" />
+            <PropertyRef Name="YCKPTimes" />
+            <PropertyRef Name="ProcessStatus" />
+            <PropertyRef Name="YCKPDate" />
+            <PropertyRef Name="YCKPDeadline" />
+            <PropertyRef Name="YCKPProcessTime" />
+            <PropertyRef Name="InputStaff" />
+            <PropertyRef Name="InputDept" />
+            <PropertyRef Name="ProcessStaff" />
+            <PropertyRef Name="ProcessDept" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="Deleted" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="OrderNo" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="OptionID" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="MachineID" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="PartId" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Deadline" Type="datetime" Nullable="false" />
+          <Property Name="RankLevel" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ProcessProduct" Type="int" Nullable="false" />
+          <Property Name="YCKPTimes" Type="int" Nullable="false" />
+          <Property Name="ProcessStatus" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="YCKPContent" Type="nvarchar(max)" />
+          <Property Name="CauseContent" Type="nvarchar(max)" />
+          <Property Name="SolutionContent" Type="nvarchar(max)" />
+          <Property Name="YCKPDate" Type="datetime" Nullable="false" />
+          <Property Name="YCKPDeadline" Type="datetime" Nullable="false" />
+          <Property Name="YCKPProcessTime" Type="datetime" Nullable="false" />
+          <Property Name="InputStaff" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="InputDept" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ProcessStaff" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ProcessDept" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ResponseId" Type="nvarchar" MaxLength="250" />
+          <Property Name="Status" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="UpdatedStaff" Type="nvarchar" MaxLength="250" />
+          <Property Name="UpdatedDept" Type="nvarchar" MaxLength="250" />
+          <Property Name="UpdatedResponse" Type="nvarchar" MaxLength="250" />
+          <Property Name="UpdatedReason" Type="nvarchar" MaxLength="250" />
+          <Property Name="UpdatedSolution" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'NT_Database.dbo.View_ManualExcutionChecking_GetCurrent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_ManualExcutionChecking_GetCurrent">
           <Key>
@@ -7068,6 +7173,9 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="242_Work" EntityType="Self.242_Work" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="242_WTS" EntityType="Self.242_WTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="242_YCKP" EntityType="Self.242_YCKP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="242_YCKP_Files" EntityType="Self.242_YCKP_Files" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="242_YCKP_New" EntityType="Self.242_YCKP_New" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="242_YCKP_Response" EntityType="Self.242_YCKP_Response" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="222_PathOfSofware" EntityType="Self.222_PathOfSofware" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [222_PathOfSofware].[ID] AS [ID], 
@@ -10923,6 +11031,38 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
     [View_242_YCKP].[DeptCode] AS [DeptCode], 
     [View_242_YCKP].[ProcessDept] AS [ProcessDept]
     FROM [dbo].[View_242_YCKP] AS [View_242_YCKP]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_242_YCKPXL" EntityType="Self.View_242_YCKPXL" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_242_YCKPXL].[ID] AS [ID], 
+    [View_242_YCKPXL].[OrderNo] AS [OrderNo], 
+    [View_242_YCKPXL].[OptionID] AS [OptionID], 
+    [View_242_YCKPXL].[MachineID] AS [MachineID], 
+    [View_242_YCKPXL].[PartId] AS [PartId], 
+    [View_242_YCKPXL].[Deadline] AS [Deadline], 
+    [View_242_YCKPXL].[RankLevel] AS [RankLevel], 
+    [View_242_YCKPXL].[ProcessProduct] AS [ProcessProduct], 
+    [View_242_YCKPXL].[YCKPTimes] AS [YCKPTimes], 
+    [View_242_YCKPXL].[ProcessStatus] AS [ProcessStatus], 
+    [View_242_YCKPXL].[YCKPContent] AS [YCKPContent], 
+    [View_242_YCKPXL].[CauseContent] AS [CauseContent], 
+    [View_242_YCKPXL].[SolutionContent] AS [SolutionContent], 
+    [View_242_YCKPXL].[YCKPDate] AS [YCKPDate], 
+    [View_242_YCKPXL].[YCKPDeadline] AS [YCKPDeadline], 
+    [View_242_YCKPXL].[YCKPProcessTime] AS [YCKPProcessTime], 
+    [View_242_YCKPXL].[InputStaff] AS [InputStaff], 
+    [View_242_YCKPXL].[InputDept] AS [InputDept], 
+    [View_242_YCKPXL].[ProcessStaff] AS [ProcessStaff], 
+    [View_242_YCKPXL].[ProcessDept] AS [ProcessDept], 
+    [View_242_YCKPXL].[ResponseId] AS [ResponseId], 
+    [View_242_YCKPXL].[Status] AS [Status], 
+    [View_242_YCKPXL].[Deleted] AS [Deleted], 
+    [View_242_YCKPXL].[UpdatedStaff] AS [UpdatedStaff], 
+    [View_242_YCKPXL].[UpdatedDept] AS [UpdatedDept], 
+    [View_242_YCKPXL].[UpdatedResponse] AS [UpdatedResponse], 
+    [View_242_YCKPXL].[UpdatedReason] AS [UpdatedReason], 
+    [View_242_YCKPXL].[UpdatedSolution] AS [UpdatedSolution]
+    FROM [dbo].[View_242_YCKPXL] AS [View_242_YCKPXL]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_ManualExcutionChecking_GetCurrent" EntityType="Self.View_ManualExcutionChecking_GetCurrent" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -17510,10 +17650,6 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="C242_YCKP" EntityType="NN_DatabaseModel.C242_YCKP" />
           <EntitySet Name="C242_InventoryExportHistory" EntityType="NN_DatabaseModel.C242_InventoryExportHistory" />
           <EntitySet Name="C242_InventoryInputHistory" EntityType="NN_DatabaseModel.C242_InventoryInputHistory" />
-          <FunctionImport Name="sp_Get_StaffCapability" ReturnType="Collection(NN_DatabaseModel.sp_Get_StaffCapability_Result)">
-            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
-            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <EntitySet Name="View_242_Part" EntityType="NN_DatabaseModel.View_242_Part" />
           <EntitySet Name="View_242_YCKP" EntityType="NN_DatabaseModel.View_242_YCKP" />
           <FunctionImport Name="sp_Get_MachineCapability" ReturnType="Collection(NN_DatabaseModel.sp_Get_MachineCapability_Result)">
@@ -17521,6 +17657,14 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
             <Parameter Name="shift" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="C242_YCKP_Files" EntityType="NN_DatabaseModel.C242_YCKP_Files" />
+          <EntitySet Name="C242_YCKP_New" EntityType="NN_DatabaseModel.C242_YCKP_New" />
+          <EntitySet Name="C242_YCKP_Response" EntityType="NN_DatabaseModel.C242_YCKP_Response" />
+          <FunctionImport Name="sp_Get_StaffCapability" ReturnType="Collection(NN_DatabaseModel.sp_Get_StaffCapability_Result)">
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="View_242_YCKPXL" EntityType="NN_DatabaseModel.View_242_YCKPXL" />
         </EntityContainer>
         <ComplexType Name="sp_222_AcquireNotifications_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -19238,20 +19382,6 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="GiaDe" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <ComplexType Name="sp_Get_StaffCapability_Result">
-          <Property Type="String" Name="manv" Nullable="true" MaxLength="50" />
-          <Property Type="Decimal" Name="ttg" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="ttgpljtnv" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Double" Name="ttgpljttc" Nullable="true" />
-          <Property Type="Double" Name="ttgpbjpbn" Nullable="true" />
-          <Property Type="Double" Name="ttgpbjttc" Nullable="true" />
-          <Property Type="Decimal" Name="ttgk" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Double" Name="C_B1" Nullable="true" />
-          <Property Type="Decimal" Name="C_C1" Nullable="true" Precision="38" Scale="11" />
-          <Property Type="Double" Name="C_D1" Nullable="true" />
-          <Property Type="Double" Name="C_E1" Nullable="true" />
-          <Property Type="Double" Name="C_G1" Nullable="true" />
-        </ComplexType>
         <EntityType Name="View_242_Part">
           <Key>
             <PropertyRef Name="ID" />
@@ -19332,6 +19462,123 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Type="Decimal" Name="C_tgct" Nullable="true" Precision="38" Scale="6" />
           <Property Type="Decimal" Name="C_tgyckp" Nullable="true" Precision="38" Scale="6" />
         </ComplexType>
+        <EntityType Name="C242_YCKP_Files">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StaffId" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Path" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="C242_YCKP_New">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OptionID" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MachineID" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PartId" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RankLevel" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessProduct" Type="Int32" Nullable="false" />
+          <Property Name="YCKPTimes" Type="Int32" Nullable="false" />
+          <Property Name="ProcessStatus" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="YCKPContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CauseContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SolutionContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="YCKPDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="YCKPDeadline" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="YCKPProcessTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InputStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="InputDept" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessDept" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="C242_YCKP_Response">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UpdatedStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDept" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedResponse" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedReason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedSolution" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="sp_Get_StaffCapability_Result">
+          <Property Type="String" Name="manv" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="ttg" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ttgpljtnv" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Double" Name="ttgpljttc" Nullable="true" />
+          <Property Type="Double" Name="ttgpbjpbn" Nullable="true" />
+          <Property Type="Double" Name="ttgpbjttc" Nullable="true" />
+          <Property Type="Decimal" Name="ttgk" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="C_B1" Nullable="true" Precision="38" Scale="11" />
+          <Property Type="Decimal" Name="C_C1" Nullable="true" Precision="38" Scale="11" />
+          <Property Type="Double" Name="C_D1" Nullable="true" />
+          <Property Type="Double" Name="C_E1" Nullable="true" />
+          <Property Type="Decimal" Name="C_G1" Nullable="true" Precision="38" Scale="11" />
+        </ComplexType>
+        <EntityType Name="View_242_YCKPXL">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="OrderNo" />
+            <PropertyRef Name="OptionID" />
+            <PropertyRef Name="MachineID" />
+            <PropertyRef Name="PartId" />
+            <PropertyRef Name="Deadline" />
+            <PropertyRef Name="RankLevel" />
+            <PropertyRef Name="ProcessProduct" />
+            <PropertyRef Name="YCKPTimes" />
+            <PropertyRef Name="ProcessStatus" />
+            <PropertyRef Name="YCKPDate" />
+            <PropertyRef Name="YCKPDeadline" />
+            <PropertyRef Name="YCKPProcessTime" />
+            <PropertyRef Name="InputStaff" />
+            <PropertyRef Name="InputDept" />
+            <PropertyRef Name="ProcessStaff" />
+            <PropertyRef Name="ProcessDept" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="Deleted" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OptionID" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MachineID" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PartId" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RankLevel" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessProduct" Type="Int32" Nullable="false" />
+          <Property Name="YCKPTimes" Type="Int32" Nullable="false" />
+          <Property Name="ProcessStatus" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="YCKPContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CauseContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SolutionContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="YCKPDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="YCKPDeadline" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="YCKPProcessTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InputStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="InputDept" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessDept" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="UpdatedStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDept" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedResponse" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedReason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedSolution" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -26980,6 +27227,113 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="C242_YCKP_Files">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_YCKP_Files">
+              <MappingFragment StoreEntitySet="242_YCKP_Files">
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ResponseId" ColumnName="ResponseId" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C242_YCKP_New">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_YCKP_New">
+              <MappingFragment StoreEntitySet="242_YCKP_New">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ResponseId" ColumnName="ResponseId" />
+                <ScalarProperty Name="ProcessDept" ColumnName="ProcessDept" />
+                <ScalarProperty Name="ProcessStaff" ColumnName="ProcessStaff" />
+                <ScalarProperty Name="InputDept" ColumnName="InputDept" />
+                <ScalarProperty Name="InputStaff" ColumnName="InputStaff" />
+                <ScalarProperty Name="YCKPProcessTime" ColumnName="YCKPProcessTime" />
+                <ScalarProperty Name="YCKPDeadline" ColumnName="YCKPDeadline" />
+                <ScalarProperty Name="YCKPDate" ColumnName="YCKPDate" />
+                <ScalarProperty Name="SolutionContent" ColumnName="SolutionContent" />
+                <ScalarProperty Name="CauseContent" ColumnName="CauseContent" />
+                <ScalarProperty Name="YCKPContent" ColumnName="YCKPContent" />
+                <ScalarProperty Name="ProcessStatus" ColumnName="ProcessStatus" />
+                <ScalarProperty Name="YCKPTimes" ColumnName="YCKPTimes" />
+                <ScalarProperty Name="ProcessProduct" ColumnName="ProcessProduct" />
+                <ScalarProperty Name="RankLevel" ColumnName="RankLevel" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C242_YCKP_Response">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.C242_YCKP_Response">
+              <MappingFragment StoreEntitySet="242_YCKP_Response">
+                <ScalarProperty Name="UpdatedSolution" ColumnName="UpdatedSolution" />
+                <ScalarProperty Name="UpdatedReason" ColumnName="UpdatedReason" />
+                <ScalarProperty Name="UpdatedResponse" ColumnName="UpdatedResponse" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UpdatedDept" ColumnName="UpdatedDept" />
+                <ScalarProperty Name="UpdatedStaff" ColumnName="UpdatedStaff" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_Get_StaffCapability" FunctionName="NN_DatabaseModel.Store.sp_Get_StaffCapability">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NN_DatabaseModel.sp_Get_StaffCapability_Result">
+                <ScalarProperty Name="manv" ColumnName="manv" />
+                <ScalarProperty Name="ttg" ColumnName="ttg" />
+                <ScalarProperty Name="ttgpljtnv" ColumnName="ttgpljtnv" />
+                <ScalarProperty Name="ttgpljttc" ColumnName="ttgpljttc" />
+                <ScalarProperty Name="ttgpbjpbn" ColumnName="ttgpbjpbn" />
+                <ScalarProperty Name="ttgpbjttc" ColumnName="ttgpbjttc" />
+                <ScalarProperty Name="ttgk" ColumnName="ttgk" />
+                <ScalarProperty Name="C_B1" ColumnName="%B1" />
+                <ScalarProperty Name="C_C1" ColumnName="%C1" />
+                <ScalarProperty Name="C_D1" ColumnName="%D1" />
+                <ScalarProperty Name="C_E1" ColumnName="%E1" />
+                <ScalarProperty Name="C_G1" ColumnName="%G1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="View_242_YCKPXL">
+            <EntityTypeMapping TypeName="NN_DatabaseModel.View_242_YCKPXL">
+              <MappingFragment StoreEntitySet="View_242_YCKPXL">
+                <ScalarProperty Name="UpdatedSolution" ColumnName="UpdatedSolution" />
+                <ScalarProperty Name="UpdatedReason" ColumnName="UpdatedReason" />
+                <ScalarProperty Name="UpdatedResponse" ColumnName="UpdatedResponse" />
+                <ScalarProperty Name="UpdatedDept" ColumnName="UpdatedDept" />
+                <ScalarProperty Name="UpdatedStaff" ColumnName="UpdatedStaff" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ResponseId" ColumnName="ResponseId" />
+                <ScalarProperty Name="ProcessDept" ColumnName="ProcessDept" />
+                <ScalarProperty Name="ProcessStaff" ColumnName="ProcessStaff" />
+                <ScalarProperty Name="InputDept" ColumnName="InputDept" />
+                <ScalarProperty Name="InputStaff" ColumnName="InputStaff" />
+                <ScalarProperty Name="YCKPProcessTime" ColumnName="YCKPProcessTime" />
+                <ScalarProperty Name="YCKPDeadline" ColumnName="YCKPDeadline" />
+                <ScalarProperty Name="YCKPDate" ColumnName="YCKPDate" />
+                <ScalarProperty Name="SolutionContent" ColumnName="SolutionContent" />
+                <ScalarProperty Name="CauseContent" ColumnName="CauseContent" />
+                <ScalarProperty Name="YCKPContent" ColumnName="YCKPContent" />
+                <ScalarProperty Name="ProcessStatus" ColumnName="ProcessStatus" />
+                <ScalarProperty Name="YCKPTimes" ColumnName="YCKPTimes" />
+                <ScalarProperty Name="ProcessProduct" ColumnName="ProcessProduct" />
+                <ScalarProperty Name="RankLevel" ColumnName="RankLevel" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1,0 +1,932 @@
+﻿@{
+    ViewBag.Title = "YCKP";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_YCKP_New>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_YCKP_NewApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxYCKPNEW")
+    .Paging(page => page.PageSize(15))
+    .Export(e => e.Enabled(true))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 15, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Single)
+    )
+    .ColumnAutoWidth(false)
+    .WordWrapEnabled(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID)
+                .AllowEditing(false)
+                .Visible(false)
+                .FormItem(formItem => formItem.Visible(false));
+
+        columns.AddFor(m => m.OrderNo)
+                .Caption("Số Order")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(
+                    formItem => formItem.IsRequired(true)
+                                .Template(@<text>
+                                    <div style="display:flex; width:100%">
+                                       @(Html.DevExtreme().TextBox()
+                                            .Value((string)@ViewData.TemplateInfo.FormattedModelValue)
+                                            .ID("OrderNoTextBox")
+                                            .OnValueChanged("function(e){ window.currentOrderNo = e.value; }")
+                                            .Width("100%")
+                                        )
+                                        <button type="button" onclick="onGetOrderNo()" style="margin-left: 5px; flex-shrink: 0; padding: 0 10px;">Lấy Order</button>
+                                    </div>
+                                </text>)
+                );
+
+        columns.AddFor(m => m.RankLevel)
+                .Caption("Mức độ")
+                .Alignment(HorizontalAlignment.Center)
+                .Lookup(lookup => lookup
+                .DataSource(new[] {
+                        new { Text = "Nhẹ", Value = "nhẹ" },
+                        new { Text = "Ưu tiên", Value = "ưu tiên" },
+                        new { Text = "Gấp", Value = "gấp" }
+                    })
+                    .DisplayExpr("Text")
+                    .ValueExpr("Value")
+                )
+                .FormItem(formItem => formItem.IsRequired(true));
+
+        columns.AddFor(m => m.PartId)
+                .Caption("Tên")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem => {
+                    formItem.IsRequired(true);
+                    formItem.Editor(o => o.TextBox()
+                                    .Placeholder("(Được lấy tự động...)")
+                                    .Disabled(true)
+                    );
+                });
+
+        columns.AddFor(m => m.Deadline)
+                .Caption("Deadline")
+                .DataType(GridColumnDataType.DateTime)
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem =>
+                {
+                    formItem.IsRequired(true);
+                    formItem.Editor(o => o.DateBox()
+                                    .DisplayFormat("dd/MM/yyyy HH:mm")
+                                    .Placeholder("(Được lấy tự động...)")
+                                    .Disabled(true)
+                    );
+                });
+
+        columns.AddFor(m => m.MachineID)
+                .Caption("Máy gc")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem => formItem.IsRequired(true));
+
+        columns.AddFor(m => m.OptionID)
+                .Caption("Nguyên công")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem => formItem.IsRequired(true));
+
+        columns.AddFor(m => m.ProcessProduct)
+                .Caption("Số sp gc")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem => formItem.IsRequired(true))
+                .FormItem(formItem =>
+                {
+                    formItem.IsRequired(true);
+                    formItem.Editor(e => e.NumberBox()
+                        .Min(0)
+                        .ShowSpinButtons(true)
+                        .Format("#")
+                    );
+                });
+
+        columns.AddFor(m => m.YCKPTimes)
+                .Caption("Số lần yckp")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem => formItem.IsRequired(true))
+                .FormItem(formItem =>
+                {
+                    formItem.IsRequired(true);
+                    formItem.Editor(e => e.NumberBox()
+                        .Min(0)
+                        .ShowSpinButtons(true)
+                        .Format("#")
+                    );
+                });
+
+        columns.AddFor(m => m.ProcessStatus)
+                .Caption("Tình trạng gc")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem => formItem
+                    .IsRequired(true)
+                    .Template(@<text>
+                        <div>
+                            @(Html.DevExtreme().RadioGroup()
+                                .ID("rgProcessStatus")
+                                .Items(new[] {
+                                    "Trước khi gc",
+                                    "Trong khi gc",
+                                    "Sau khi gc",
+                                    "Khác"
+                                })
+                                .Value((string)ViewData.TemplateInfo.FormattedModelValue)
+                                .Layout(DevExtreme.AspNet.Mvc.Orientation.Horizontal)
+                                .OnValueChanged("onProcessStatusChanged")
+                            )
+                            <div id="otherStatusContainer" style="margin-top:10px; display:none;">
+                                @(Html.DevExtreme().TextBox()
+                                    .ID("txtOtherStatus")
+                                    .Placeholder("Nhập tình trạng khác...")
+                                    .Width("100%")
+                                )
+                            </div>
+                        </div>
+                    </text>)
+                );
+
+        columns.AddFor(m => m.YCKPDeadline)
+                .Caption("Hạn xử lý")
+                .DataType(GridColumnDataType.DateTime)
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem => formItem.IsRequired(true));
+
+        columns.AddFor(m => m.YCKPContent)
+                .Caption("Nội dung")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem =>
+                {
+                    formItem.Editor(e => e.TextArea()
+                        .Height(80)
+                    );
+                });
+
+        columns.AddFor(m => m.CauseContent)
+                .Caption("Dự đoán")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem =>
+                {
+                    formItem.Editor(e => e.TextArea()
+                        .Height(80)
+                    );
+                });
+
+        columns.AddFor(m => m.SolutionContent)
+                .Caption("Đề xuất")
+                .Alignment(HorizontalAlignment.Center)
+                .FormItem(formItem =>
+                {
+                    formItem.ColSpan(2);
+                    formItem.Editor(e => e.TextArea()
+                        .Height(100)
+                    );
+                });;
+
+        columns.AddFor(m => m.YCKPDate)
+                .AllowEditing(false)
+                .Visible(false)
+                .DataType(GridColumnDataType.DateTime)
+                .FormItem(formItem => formItem.Visible(false));
+
+        columns.AddFor(m => m.YCKPProcessTime)
+                .AllowEditing(false)
+                .Visible(false)
+                .DataType(GridColumnDataType.DateTime)
+                .FormItem(formItem => formItem.Visible(false))
+                .SortOrder(SortOrder.Desc);
+
+        columns.AddFor(m => m.InputStaff)
+                .Visible(false)
+                .FormItem(formItem =>
+                {
+                    formItem.Visible(false);
+                });
+
+        columns.AddFor(m => m.InputDept)
+                .AllowEditing(false)
+                .Visible(false)
+                .FormItem(formItem => formItem.Visible(false));
+
+        columns.AddFor(m => m.ProcessDept)
+                .Caption("Phòng ban xl")
+                .Visible(false)
+                .FormItem(formItem => formItem.IsRequired(true)
+                                        .Template(@<text>
+                                            @(Html.DevExtreme().SelectBox()
+                                                .ID("ProcessDeptSelect")
+                                                .DataSource(d => d.WebApi()
+                                                    .RouteName("C222_DepartmentApi")
+                                                    .LoadAction("Get")
+                                                    .Key("ID")
+                                                )
+                                                .DisplayExpr("DeptName")
+                                                .ValueExpr("DeptCode")
+                                                .OnValueChanged("onProcessDeptChanged")
+                                                .Placeholder("Chọn phòng ban xử lý")
+                                                .SearchEnabled(true)
+                                                .ShowClearButton(true)
+                                                .Width("100%")
+                                            )
+                                        </text>)
+                );
+
+        columns.AddFor(m => m.ProcessStaff)
+                .Caption("Người xl")
+                .Visible(false)
+                .FormItem(formItem => formItem.IsRequired(true)
+                                        .Template(@<text>
+                                            @(Html.DevExtreme().SelectBox()
+                                                .ID("ProcessStaffSelect")
+                                                .DisplayExpr("DisplayName")
+                                                .ValueExpr("StaffID")
+                                                .Placeholder("Chọn người xử lý")
+                                                .SearchEnabled(true)
+                                                .ShowClearButton(true)
+                                                .Width("100%")
+                                            )
+                                        </text>)
+            );
+
+        columns.AddFor(m => m.Status)
+                    .Caption("Trạng thái")
+                    .AllowEditing(false)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Lookup(lookup => lookup
+                        .DataSource(new[] {
+                            new { Text = "Đang xử lý", Value = "Đang xử lý" },
+                            new { Text = "Hoàn thành", Value = "Hoàn thành" },
+                            new { Text = "Đã huỷ", Value = "Đã huỷ" }
+                        })
+                        .DisplayExpr("Text")
+                        .ValueExpr("Value")
+                    )
+                    .CellTemplate(@<text>
+                        <span class="status-icon" style="display: flex; justify-content: center; align-items: center">
+                            <% if (data.Status === "Đã huỷ") { %>
+                                ❌
+                            <% } else if (data.Status === "Đang xử lý") { %>
+                                ⏳
+                            <% } else if (data.Status === "Hoàn thành") { %>
+                                ✅
+                            <% } else { %>
+                                <%= data.Status %>
+                            <% } %>
+                        </span>
+                    </text>)
+                    .FormItem(formItem => formItem.Visible(false));
+
+        columns.Add()
+                .Caption("File đính kèm")
+                .Visible(false)
+                .AllowEditing(false)
+                .FormItem(formItem => formItem.Template(@<text>
+                        <div id="fileUploadContainer" style="width:100%">
+                            <input type="file" id="YCKPFileInput" multiple accept=".jpg,.png" />
+                            <ul id="YCKPFileList" style="list-style:none; padding-left:0; margin-top:5px;"></ul>
+                        </div>
+
+                        <script>
+                            var filesArray = [];
+
+                            $("#YCKPFileInput").on("change", function(e) {
+                                for (const file of e.target.files) {
+                                    filesArray.push(file);
+                                }
+                                renderFileList();
+                            });
+
+                            function renderFileList() {
+                                var fileList = $("#YCKPFileList");
+                                fileList.empty();
+                                filesArray.forEach((file, index) => {
+                                    var li = $("<li>").text(file.name + " ");
+                                    var removeBtn = $("<button>").text("Xóa").css({"margin-left":"5px"}).on("click", function() {
+                                        filesArray.splice(index, 1);
+                                        $("#YCKPFileInput").val('');
+                                        renderFileList();
+                                    });
+                                    li.append(removeBtn);
+                                    fileList.append(li);
+                                });
+                            }
+
+                            window.getYCKPFiles = function() {
+                                return filesArray;
+                            }
+                        </script>
+                    </text>));
+    })
+    .Editing(e => e
+        .Mode(GridEditMode.Form)
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+    .OnRowInserting("onRowInserting")
+    .OnRowClick("onRowClick")
+)
+
+<div id="detail" style="display:flex; flex-direction: column;">
+    <div id="detailContainer" style="display: flex; gap: 20px;">
+        <div id="timelineWrapper" style="flex: 1; display: flex; flex-direction: column;">
+            <h3>Lịch sử</h3>
+            <div id="yckpTimelinePanel" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; overflow-y: auto;">
+            </div>
+        </div>
+
+        <div id="detailsWrapper" style="flex: 2; display: flex; flex-direction: column;">
+            <h3>Chi tiết</h3>
+            <div id="responsePanel" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; overflow-y: auto;">
+                <div id="responseContainer" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="sendedImagesPanel" style="margin-top: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
+    <h3>Hình ảnh đã gửi</h3>
+    <div id="sendedImagesContainer" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+    </div>
+</div>
+
+<style>
+    #dxYCKPNEW tr[data-selected="true"] {
+        background-color: #f0f0f0 !important;
+    }
+</style>
+
+<script>
+    function onInitNewRow(e){
+        e.data.ID = 0;
+        e.data.InputStaff = '@Session["StaffID"].ToString()';
+        e.data.InputDept = '@Session["Department"].ToString()';
+        e.data.RankLevel = "nhẹ";
+        e.data.Status = "Đang xử lý";
+
+        const now = new Date();
+        const options = {
+            timeZone: 'Asia/Ho_Chi_Minh',
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false
+        };
+        const currentDateTime = new Intl.DateTimeFormat('sv-SE', options).format(now).replace(/\//g, '-');
+
+        e.data.YCKPDate = currentDateTime;
+        e.data.YCKPProcessTime = currentDateTime;
+    }
+
+    function onGetOrderNo() {
+        var orderNo = window.currentOrderNo;
+        var grid = $("#dxYCKPNEW").dxDataGrid("instance");
+        var editRowKey = grid.option("editing.editRowKey");
+        var editRowIndex = grid.getRowIndexByKey(editRowKey);
+
+        if (!orderNo) {
+            alert("Vui lòng nhập OrderNo trước khi lấy dữ liệu!");
+            if (editRowIndex >= 0) {
+                grid.cellValue(editRowIndex, "PartId", null);
+                grid.cellValue(editRowIndex, "Deadline", null);
+            }
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetByOrderNo", "api/C242_BusOder")',
+            data: { OrderNo: orderNo },
+            dataType: 'json',
+            cache: false,
+            success: function (response) {
+                if (editRowIndex < 0) return;
+
+                if (response && response.data && response.data.length > 0) {
+                    var firstItem = response.data[0];
+                    grid.cellValue(editRowIndex, "PartId", firstItem.PartID);
+                    grid.cellValue(editRowIndex, "Deadline", firstItem.Deadline);
+                    grid.cellValue(editRowIndex, "OrderNo", orderNo);
+
+                    var orderNoTextbox = $("#OrderNoTextBox").dxTextBox("instance");
+                    if (orderNoTextbox) orderNoTextbox.option("value", orderNo);
+                } else {
+                    grid.cellValue(editRowIndex, "PartId", null);
+                    grid.cellValue(editRowIndex, "Deadline", null);
+                    alert("Không tìm thấy dữ liệu cho OrderNo này!");
+                }
+            },
+            error: function (err) {
+                console.error(err);
+                if (editRowIndex >= 0) {
+                    grid.cellValue(editRowIndex, "PartId", null);
+                    grid.cellValue(editRowIndex, "Deadline", null);
+                }
+                alert("Lỗi khi gọi API!");
+            }
+        });
+    }
+
+    function onProcessDeptChanged(e) {
+        var deptCode = e.value;
+        var staffSelect = $("#ProcessStaffSelect").dxSelectBox("instance");
+
+        if (!deptCode) {
+            staffSelect.option("dataSource", []);
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetByDept", "api/C222_Staff")',
+            data: { DeptCode: deptCode },
+            dataType: 'json',
+            cache: false,
+            success: function (response) {
+                if (response && response.data && response.data.length > 0) {
+                    staffSelect.option("dataSource", response.data);
+                } else {
+                    staffSelect.option("dataSource", []);
+                }
+            },
+            error: function (err) {
+                console.error(err);
+                staffSelect.option("dataSource", []);
+                alert("Lỗi khi tải danh sách nhân viên!");
+            }
+        });
+    }
+
+    function onRowInserting(e) {
+        e.data.ProcessDept = $("#ProcessDeptSelect").dxSelectBox("instance").option("value");
+        e.data.ProcessStaff = $("#ProcessStaffSelect").dxSelectBox("instance").option("value");
+
+        function toVietnamTimeISO(dateValue) {
+            if (!dateValue) return null;
+            var date = new Date(dateValue);
+            date.setHours(date.getHours() + 7);
+            return date.toISOString();
+        }
+
+        e.data.YCKPDate = toVietnamTimeISO(e.data.YCKPDate);
+        e.data.YCKPProcessTime = toVietnamTimeISO(e.data.YCKPProcessTime);
+        e.data.YCKPDeadline = toVietnamTimeISO(e.data.YCKPDeadline);
+        e.data.Deleted = false;
+
+        var rg = $("#rgProcessStatus").dxRadioGroup("instance");
+        var value = rg.option("value");
+
+        if (value === "Khác") {
+            var txt = $("#txtOtherStatus").dxTextBox("instance").option("value");
+            e.data.ProcessStatus = txt ? txt : "";
+        } else {
+            e.data.ProcessStatus = value;
+        }
+
+        var files = window.getYCKPFiles();
+        if (files && files.length > 0) {
+            var formData = new FormData();
+            files.forEach(f => formData.append("files", f));
+
+            formData.append("OrderNo", e.data.OrderNo);
+            formData.append("StaffId", e.data.InputStaff);
+            formData.append("YCKPDate", e.data.YCKPDate);
+
+            $.ajax({
+                url: '@Url.Action("UploadFiles", "api/C242_YCKP_Files")',
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                async: false,
+                success: function(response) {
+                    console.log("Files uploaded");
+                },
+                error: function(err) {
+                    console.error("Upload file thất bại", err);
+                }
+            });
+        }
+
+        //console.log(JSON.stringify(e.data, null, 2));
+        //e.cancel = true;
+    }
+
+    function onRowClick(e) {
+        $("#dxYCKPNEW").find("tr.dx-data-row").attr("data-selected", null);
+
+        var row = e.rowElement;
+        if (row) {
+            $(row).attr("data-selected", "true");
+        }
+
+        var data = e.data;
+        if (!data) return;
+
+        $('#responseContainer').empty();
+
+        var gridContainer = $('<div>').css({
+            'display': 'grid',
+            'grid-template-columns': '1fr 1fr',
+            'gap': '10px',                  
+            'width': '100%'
+        });
+
+        var fields = [
+            { label: 'Số Order', value: data.OrderNo },
+            { label: 'Mức độ', value: data.RankLevel },
+            { label: 'Tên chi tiết', value: data.PartId },
+            { label: 'Deadline', value: data.Deadline ? new Date(data.Deadline).toLocaleString('vi-VN') : '' },
+            { label: 'Máy gia công', value: data.MachineID },
+            { label: 'Nguyên công', value: data.OptionID },
+            { label: 'Số SP gia công', value: data.ProcessProduct },
+            { label: 'Số lần YCKP', value: data.YCKPTimes },
+            { label: 'Tình trạng GC', value: data.ProcessStatus },
+            { label: 'Hạn xử lý', value: data.YCKPDeadline ? new Date(data.YCKPDeadline).toLocaleString('vi-VN') : '' },
+            { label: 'Người yêu cầu', value: data.InputStaff },
+            { label: 'Phòng ban YC', value: data.InputDept },
+            { label: 'Phòng ban XL', value: data.ProcessDept },
+            { label: 'Người xử lý', value: data.ProcessStaff },
+            { label: 'Trạng thái', value: data.Status },
+            { label: 'Ngày tạo', value: data.YCKPDate ? new Date(data.YCKPDate).toLocaleString('vi-VN') : '' },
+
+            { label: 'Nội dung YCKP', value: data.YCKPContent, fullWidth: true },
+            { label: 'Dự đoán nguyên nhân', value: data.CauseContent, fullWidth: true },
+            { label: 'Đề xuất giải pháp', value: data.SolutionContent, fullWidth: true }
+        ];
+
+        fields.forEach(function (field) {
+            if (field.value !== null && field.value !== undefined && field.value !== '') {
+                var detailItem = $('<div>').addClass('detail-item').css({
+                    'border': '1px solid #eee',
+                    'padding': '8px',
+                    'background-color': '#fafafa',
+                    'border-radius': '4px',
+                    'display': 'flex',
+                    'flex-direction': 'column'
+                });
+
+                if (field.fullWidth) {
+                    detailItem.css('grid-column', 'span 2');
+                    detailItem.css('background-color', '#fff');
+                }
+
+                var label = $('<div>').addClass('detail-label').text(field.label + ':')
+                    .css({
+                        'font-weight': 'bold',
+                        'margin-bottom': '4px',
+                        'color': '#333',
+                        'font-size': '12px'
+                    });
+
+                var value = $('<div>').addClass('detail-value').text(field.value)
+                    .css({
+                        'white-space': 'pre-wrap',
+                        'word-break': 'break-word',
+                        'color': '#555',
+                        'font-size': '13px'
+                    });
+
+                detailItem.append(label).append(value);
+                gridContainer.append(detailItem);
+            }
+        });
+
+        $('#responseContainer').append(gridContainer);
+
+        loadTimeline(data.OrderNo, data.InputStaff, data.YCKPDate);
+        loadImages1(data.OrderNo, data.InputStaff, data.YCKPDate);
+    }
+
+    function loadTimeline(orderNo, inputStaff, yckpDate) {
+        $.ajax({
+            url: '@Url.Action("GetList", "api/C242_YCKP_New")',
+            data: { OrderNo: orderNo, InputStaff: inputStaff, YCKPDate: yckpDate },
+            success: function(res) {
+                renderTimeline(res);
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    }
+
+    function loadImages1(orderNo, staffId, yckpDate) {
+        var container = $("#sendedImagesContainer");
+        container.empty();
+
+        $.ajax({
+            url: '@Url.Action("GetByOrderNoDateStaff", "api/C242_YCKP_Files")',
+            type: 'GET',
+            data: {
+                OrderNo: orderNo,
+                StaffId: staffId,
+                Date: yckpDate
+            },
+            success: function(response) {
+                container.empty();
+
+                if (!response || response.length === 0) {
+                    container.html('<p>Không có hình ảnh nào được tìm thấy.</p>');
+                    return;
+                }
+
+                response.forEach(function(file) {
+                    if (file.Path) {
+                        var relativePath = file.Path.replace(/^.*[\\/]Files[\\/]/, 'Files/');
+                        var imageUrl = '/' + relativePath.replace(/\\/g, '/');
+
+                        var imageContainer = $('<div>').css({
+                            width: '200px',
+                            marginBottom: '15px',
+                            border: '1px solid #eee',
+                            borderRadius: '4px',
+                            overflow: 'hidden',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        });
+
+                        var img = $('<img>').attr({
+                            'src': imageUrl,
+                            'alt': 'Hình ảnh đính kèm',
+                            'style': 'width: 100%; height: auto; display: block;'
+                        }).on('click', function() {
+                            window.open(imageUrl, '_blank');
+                        }).css('cursor', 'pointer');
+
+                        imageContainer.append(img);
+                        container.append(imageContainer);
+                    }
+                });
+            },
+            error: function(error) {
+                console.error('Lỗi khi tải hình ảnh:', error);
+                container.html('<p style="color: red;">Đã xảy ra lỗi khi tải hình ảnh.</p>');
+            }
+        });
+    }
+
+    function loadResponseDetails(responseId) {
+        $('#responseContainer').empty();
+
+        if (responseId) {
+            $.ajax({
+                url: '@Url.Action("GetById", "api/C242_YCKP_Response")',
+                type: 'GET',
+                data: { id: responseId },
+                success: function (response) {
+                    var details = [
+                        { label: 'Nội dung', value: response.UpdatedResponse || 'N/A' },
+                        { label: 'Lý do', value: response.UpdatedReason || 'N/A' },
+                        { label: 'Giải pháp', value: response.UpdatedSolution || 'N/A' }
+                    ];
+
+                    details.forEach(function (detail) {
+                        var detailItem = $('<div>').addClass('detail-item').css({
+                            'border-bottom': '1px solid #eee',
+                            'width': '100%'
+                        });
+
+                        var label = $('<div>').addClass('detail-label').text(detail.label + ':')
+                            .css({
+                                'font-weight': 'bold',
+                                'margin-bottom': '5px',
+                                'color': '#333'
+                            });
+
+                        var value = $('<div>').addClass('detail-value').text(detail.value)
+                            .css({
+                                'padding-left': '10px',
+                                'white-space': 'pre-wrap',
+                                'word-break': 'break-word'
+                            });
+
+                        detailItem.append(label).append(value);
+                        $('#responseContainer').append(detailItem);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading response details:', error);
+                }
+            });
+        }
+    }
+
+    function renderTimeline(data) {
+        if (!data || data.length === 0) {
+            return;
+        }
+
+        var container = $("#yckpTimelinePanel");
+        if (!container.length) {
+            console.error("Container timeline không tồn tại trong DOM");
+            return;
+        }
+        container.empty();
+
+        var timeline = $("<div>").css({
+            display: "flex",
+            flexDirection: "column",
+            padding: "10px",
+            position: "relative"
+        });
+
+        var beginItem = $("<div>").css({
+            display: "flex",
+            alignItems: "flex-start",
+            marginBottom: "15px",
+            position: "relative",
+            paddingLeft: "40px",
+            height: "30px"
+        });
+
+        var beginDot = $("<div>").text("B")
+            .css({
+                position: "absolute",
+                left: "0",
+                top: "0",
+                width: "30px",
+                height: "30px",
+                borderRadius: "50%",
+                backgroundColor: "#52c41a",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "white",
+                fontWeight: "bold",
+                cursor: "default",
+                boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                zIndex: "2"
+            });
+
+        beginItem.append(beginDot);
+
+        if (data.length > 0) {
+            var line = $("<div>").css({
+                position: "absolute",
+                left: "15px",
+                top: "30px",
+                bottom: "-15px",
+                width: "2px",
+                backgroundColor: "#d9d9d9",
+                zIndex: "1"
+            });
+            beginItem.append(line);
+        }
+
+        timeline.append(beginItem);
+
+        var lastIndex = data.length - 1;
+
+        data.forEach((item, index) => {
+            var timelineItem = $("<div>").css({
+                display: "flex",
+                alignItems: "flex-start",
+                marginBottom: "15px",
+                position: "relative",
+                paddingLeft: "40px"
+            });
+
+            var isLastItem = index === lastIndex;
+            var isCompleted = item.Status && item.Status.trim() === "Hoàn thành";
+            var isCancelled = item.Status && item.Status.trim() === "Đã huỷ";
+            var dotText = (isLastItem && (isCompleted || isCancelled)) ? 'E' : '0';
+            var dotColor = isLastItem
+                ? (isCompleted ? "#52c41a" : "#ff4d4f")
+                : "#52c41a";
+
+            var dot = $("<div>").text(dotText)
+                .attr("title", `${item.ProcessStaff || 'N/A'}\n${new Date(item.YCKPProcessTime).toLocaleString()}`)
+                .css({
+                    position: "absolute",
+                    left: "0",
+                    top: "0",
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "50%",
+                    backgroundColor: dotColor,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    color: "white",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                    zIndex: "2"
+                });
+
+            var infoContainer = $("<div>").css({
+                marginLeft: "15px",
+                padding: "5px 10px",
+                backgroundColor: "#f5f5f5",
+                borderRadius: "4px",
+                borderLeft: "3px solid " + dotColor
+            });
+
+            var headerRow = $("<div>").css({
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "4px",
+                width: "100%"
+            });
+
+            var staffName = $("<div>").text(item.ProcessStaff || 'N/A')
+                .css({
+                    fontWeight: "bold"
+                });
+
+            var deptElement = $("<div>").text(item.ProcessDept || 'N/A')
+                .css({
+                    color: "#666",
+                    fontSize: "11px"
+                });
+
+            var processDate = new Date(item.YCKPProcessTime);
+            var dateString = processDate.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+
+            var dateElement = $("<div>").text(dateString)
+                .css({
+                    color: "#666",
+                    fontSize: "11px",
+                    marginTop: "4px"
+                });
+
+            headerRow.append(staffName, deptElement);
+            infoContainer.append(headerRow)
+                .append(dateElement);
+
+            var detailLink = $("<a>")
+                .text("Phản hồi")
+                .css({
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginLeft: "10px",
+                    color: "#1890ff",
+                    cursor: "pointer",
+                    fontSize: "12px",
+                    textDecoration: "underline",
+                })
+                .on("click", function() {
+                    var responseId = item.ResponseId;
+                    loadResponseDetails(responseId);
+                });
+
+            var rightSide = $("<div>").css({
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start"
+            }).append(infoContainer).append(detailLink);
+
+            timelineItem.append(dot).append(rightSide);
+
+            timeline.append(timelineItem);
+
+            if (index < lastIndex) {
+                var line = $("<div>").css({
+                    position: "absolute",
+                    left: "15px",
+                    top: "30px",
+                    bottom: "-15px",
+                    width: "2px",
+                    backgroundColor: "#d9d9d9",
+                    zIndex: "1"
+                });
+                timelineItem.append(line);
+            }
+        });
+
+        container.append(timeline);
+    }
+
+    function onProcessStatusChanged(e) {
+        if (e.value === "Khác") {
+            $("#otherStatusContainer").show();
+        } else {
+            $("#otherStatusContainer").hide();
+        }
+    }
+
+</script>

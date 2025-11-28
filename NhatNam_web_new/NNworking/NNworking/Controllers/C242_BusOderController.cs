@@ -34,6 +34,15 @@ namespace NNworking.Controllers
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c242_busoder, loadOptions));
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetByOrderNo(DataSourceLoadOptions loadOptions)
+        {
+            var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+            string order = queryParams.ContainsKey("OrderNo") ? queryParams["OrderNo"] : "";
+            var c242_part = _context.View_242_BusOder.Where(x => x.BOderNo == order).Select(i => new { i.BOderNo, i.PartID, i.Deadline }).ToList();
+            return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
+        }
+
         [HttpPost]
         public async Task<HttpResponseMessage> Post(FormDataCollection form) {
             var model = new C242_BusOder();
