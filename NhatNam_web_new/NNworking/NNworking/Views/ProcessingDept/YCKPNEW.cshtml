@@ -13,7 +13,10 @@
     )
     .ID("dxYCKPNEW")
     .Paging(page => page.PageSize(15))
-    .Export(e => e.Enabled(true))
+    .OnExporting("onExportingYCKP")
+    .Export(e => e.Enabled(true)
+        .AllowExportSelectedData(true)
+    )
     .Pager(pager => pager.ShowPageSizeSelector(true)
         .ShowInfo(true)
         .AllowedPageSizes(new List<int> { 15, 30, 50, 100, 200 })
@@ -21,7 +24,6 @@
     .Sorting(sort => sort.Mode(GridSortingMode.Single)
     )
     .ColumnAutoWidth(false)
-    .WordWrapEnabled(true)
     .FilterRow(fil => fil.Visible(true))
     .FilterPanel(fi => fi.Visible(true))
     .SearchPanel(search => search.Visible(true)
@@ -343,6 +345,7 @@
     .OnInitNewRow("onInitNewRow")
     .OnRowInserting("onRowInserting")
     .OnRowClick("onRowClick")
+    .OnEditingStart("onEditingStart")
 )
 
 <div id="detail" style="display:flex; flex-direction: column;">
@@ -393,6 +396,27 @@
 
         e.data.YCKPDate = currentDateTime;
         e.data.YCKPProcessTime = currentDateTime;
+    }
+
+    function onEditingStart(e) {
+        if (e.data && e.data.ID) {
+            const grid = $("#dxYCKPNEW").dxDataGrid("instance");
+
+            grid.option("editing.form", {
+                items: [
+                    "RankLevel",
+                    "MachineID",
+                    "OptionID",
+                    "ProcessProduct",
+                    "YCKPTimes",
+                    "ProcessStatus",
+                    "YCKPDeadline",
+                    "YCKPContent",
+                    "CauseContent",
+                    "SolutionContent"
+                ]
+            });
+        }
     }
 
     function onGetOrderNo() {
@@ -929,4 +953,124 @@
         }
     }
 
+    function onExportingYCKP(e) {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet 1');
+
+        const titleRow = worksheet.addRow(['BÁO CÁO YÊU CẦU KHẮC PHỤC']);
+        titleRow.font = { bold: true, size: 16 };
+        worksheet.mergeCells('A1:J1');
+        titleRow.alignment = { horizontal: 'center' };
+
+        const dateRow = worksheet.addRow(['Ngày xuất: ' + new Date().toLocaleDateString('vi-VN')]);
+        worksheet.mergeCells('A2:J2');
+        dateRow.alignment = { horizontal: 'right' };
+
+        worksheet.addRow([]);
+
+        const dataGrid = e.component;
+
+        const headerRow = worksheet.addRow([]);
+        const columnHeaders = [];
+        const columnWidths = [];
+
+        const visibleColumns = dataGrid.getVisibleColumns().filter(column =>
+            column.dataField && column.visible && column.caption
+        );
+
+        visibleColumns.forEach(column => {
+            columnHeaders.push(column.caption);
+            if (column.dataField.includes('Date') || column.dataField.includes('Deadline')) {
+                columnWidths.push({ width: 20 });
+            } else if (column.dataField === 'YCKPContent' ||
+                column.dataField === 'CauseContent' ||
+                column.dataField === 'SolutionContent') {
+                columnWidths.push({ width: 40 });
+            } else if (column.dataField === 'PartId') {
+                columnWidths.push({ width: 30 });
+            } else {
+                columnWidths.push({ width: 15 });
+            }
+        });
+
+        const headerCellStyle = {
+            font: { bold: true, color: { argb: 'FFFFFFFF' } },
+            fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4472C4' } },
+            border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } },
+            alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }
+        };
+
+        headerRow.values = columnHeaders;
+        headerRow.eachCell((cell, number) => {
+            cell.style = headerCellStyle;
+        });
+
+        const selectedRowsData = dataGrid.getSelectedRowsData();
+        const dataToExport = selectedRowsData.length > 0 ? selectedRowsData : dataGrid.getVisibleRows().map(row => row.data);
+
+        dataToExport.forEach(dataItem => {
+            const rowData = visibleColumns.map(column => {
+                let value = dataItem[column.dataField];
+
+                if (value && (column.dataField.includes('Date') || column.dataField.includes('Deadline'))) {
+                    if (value instanceof Date) {
+                        return value.toLocaleString('vi-VN');
+                    } else if (typeof value === 'string') {
+                        const date = new Date(value);
+                        return isNaN(date.getTime()) ? value : date.toLocaleString('vi-VN');
+                    }
+                }
+                return value !== null && value !== undefined ? value : '';
+            });
+
+            const row = worksheet.addRow(rowData);
+
+            row.eachCell((cell, colNumber) => {
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+
+                if (typeof rowData[colNumber - 1] === 'number') {
+                    cell.alignment = { horizontal: 'right' };
+                }
+
+                if (visibleColumns[colNumber - 1].dataField === 'YCKPContent' ||
+                    visibleColumns[colNumber - 1].dataField === 'CauseContent' ||
+                    visibleColumns[colNumber - 1].dataField === 'SolutionContent') {
+                    cell.alignment = { wrapText: true, vertical: 'top' };
+                }
+            });
+        });
+
+        worksheet.columns = columnWidths;
+
+        worksheet.columns.forEach(column => {
+            let maxLength = 0;
+            column.eachCell({ includeEmpty: true }, cell => {
+                const columnLength = cell.value ? cell.value.toString().length : 0;
+                maxLength = Math.max(maxLength, columnLength);
+            });
+            column.width = Math.min(Math.max(maxLength + 2, 10), 50);
+        });
+
+        worksheet.eachRow(row => {
+            row.height = 20;
+        });
+
+        e.cancel = true;
+        workbook.xlsx.writeBuffer().then(buffer => {
+            const blob = new Blob([buffer], { type: 'application/octet-stream' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            document.body.appendChild(a);
+            a.href = url;
+            a.download = `YeuCauKiemPhoi_${new Date().toISOString().split('T')[0]}.xlsx`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+    }
 </script>

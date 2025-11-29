@@ -1,212 +1,332 @@
-﻿
-<div style="padding: 20px;">
-    <h2>Danh Sách Yêu Cầu Khắc Phục Đã Xử Lý</h2>
-    
-    <div id="cardsContainer" class="cards-container"></div>
-</div>
+﻿@{
+    ViewBag.Title = "YCKP Đã Xử Lý";
+}
+
+<h2>Danh Sách Yêu Cầu Khắc Phục Đã Xử Lý</h2>
+
+@(Html.DevExtreme().DataGrid<dynamic>()
+    .ID("dxYCKPDXL")
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_YCKP_NewApi")
+        .LoadAction("GetYCKPDXL")
+        .LoadParams(new { StaffID = @Session["StaffID"].ToString() })
+    )
+    .Paging(page => page.PageSize(15))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 15, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Single))
+    .OnExporting("onExportingYCKP")
+    .Export(e => e.Enabled(true)
+        .AllowExportSelectedData(true)
+    )
+    .ColumnAutoWidth(true)
+    .WordWrapEnabled(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+        columns.Add()
+            .DataField("ID")
+            .Visible(false);
+
+        columns.Add()
+            .DataField("OrderNo")
+            .Caption("Số Order")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("RankLevel")
+            .Caption("Mức độ")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("PartId")
+            .Caption("Tên chi tiết")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("MachineID")
+            .Caption("Máy gc")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("OptionID")
+            .Caption("Nguyên công")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("ProcessProduct")
+            .Caption("Số sp gc")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("YCKPTimes")
+            .Caption("Số lần yckp")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("ProcessStatus")
+            .Caption("Tình trạng gc")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("YCKPContent")
+            .Caption("Nội dung")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("CauseContent")
+            .Caption("Dự đoán")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("SolutionContent")
+            .Caption("Đề xuất")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("InputStaff")
+            .Caption("Người yêu cầu")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("InputDept")
+            .Caption("Phòng ban YC")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("UpdatedStaff")
+            .Visible(false)
+            .Caption("Người xử lý")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("UpdatedDept")
+            .Visible(false)
+            .Caption("Phòng ban XL")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .DataField("YCKPDeadline")
+            .Caption("Deadline")
+            .DataType(GridColumnDataType.DateTime)
+            .Alignment(HorizontalAlignment.Center)
+            .Format("dd/MM/yyyy HH:mm");
+
+        columns.Add()
+            .DataField("YCKPDate")
+            .Visible(false)
+            .Caption("Ngày tạo")
+            .DataType(GridColumnDataType.DateTime)
+            .Alignment(HorizontalAlignment.Center)
+            .Format("dd/MM/yyyy HH:mm");
+
+        columns.Add()
+            .DataField("YCKPProcessTime")
+            .Caption("Ngày xử lý")
+            .DataType(GridColumnDataType.DateTime)
+            .Alignment(HorizontalAlignment.Center)
+            .Format("dd/MM/yyyy HH:mm")
+            .SortOrder(SortOrder.Desc);
+
+        columns.Add()
+            .DataField("Status")
+            .Visible(false)
+            .Caption("Trạng thái")
+            .Alignment(HorizontalAlignment.Center);
+    })
+    .MasterDetail(md => md
+        .Enabled(true)
+        .Template(@<text>
+            <div class="master-detail-container" style="padding: 20px; background: #f8f9fa;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    
+                    <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Thông tin xử lý</h4>
+                        <div style="display: grid; gap: 10px;">
+                            <div><strong>Người yêu cầu:</strong> <%= data.InputStaff || 'N/A' %></div>
+                            <div><strong>Phòng ban yêu cầu:</strong> <%= data.InputDept || 'N/A' %></div>
+                            <div><strong>Người xử lý:</strong> <%= data.UpdatedStaff || 'N/A' %></div>
+                            <div><strong>Phòng ban xử lý:</strong> <%= data.UpdatedDept || 'N/A' %></div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Hình ảnh đính kèm</h4>
+                        <div class="detail-images-container" data-order="<%= data.OrderNo %>" data-staff="<%= data.InputStaff %>" data-date="<%= data.YCKPDate %>" style="display: flex; flex-wrap: wrap; gap: 10px; max-height: 300px; overflow-y: auto;">
+                            <p style="color: #999;">Đang tải...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Phản hồi xử lý</h4>
+                    <p style="white-space: pre-wrap; color: #495057; line-height: 1.6;"><%= data.UpdatedResponse || 'N/A' %></p>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 15px;">
+                    <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Nguyên nhân</h4>
+                    <p style="white-space: pre-wrap; color: #495057; line-height: 1.6;"><%= data.UpdatedReason || 'N/A' %></p>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Giải pháp đã áp dụng</h4>
+                    <p style="white-space: pre-wrap; color: #495057; line-height: 1.6;"><%= data.UpdatedSolution || 'N/A' %></p>
+                </div>
+            </div>
+        </text>)
+    )
+    .OnContentReady("onDetailContentReady")
+)
 
 <style>
-    .cards-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
-    }
-
-    .card {
-        background: white;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    .master-detail-container img {
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: transform 0.2s;
     }
 
-    .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .card-title {
-        font-weight: bold;
-        color: #333;
-    }
-
-    .card-status {
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .status-medium { background: #e3f2fd; color: #1976d2; }
-    .status-hard { background: #fff3e0; color: #f57c00; }
-    .status-low { background: #e8f5e9; color: #388e3c; }
-
-    .card-body p {
-        margin: 8px 0;
-        font-size: 14px;
-        color: #666;
-    }
-
-    .card-body strong {
-        color: #333;
+    .master-detail-container img:hover {
+        transform: scale(1.05);
     }
 </style>
 
-@(Html.DevExtreme().Popup()
-    .ID("detailPopup")
-    .Title("Chi Tiết YCKP Đã Xử Lý")
-    .Width("85%")
-    .Height("85%")
-    .ShowTitle(true)
-    .DragEnabled(true)
-    .Visible(false)
-    .Content(@<text>
-        <div id="sendedImagesContainer" style="padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px; max-height: 300px; overflow-y: auto;">
-        </div>
-        <div id="detailContent" style="padding: 20px;">
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">📝 Thông tin xử lý</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div>
-                        <p style="margin: 8px 0;"><strong>Người yêu cầu:</strong> <span id="detail-InputStaff"></span></p>
-                        <p style="margin: 8px 0;"><strong>Phòng ban yêu cầu:</strong> <span id="detail-InputDept"></span></p>
-                    </div>
-                    <div>
-                        <p style="margin: 8px 0;"><strong>Người xử lý:</strong> <span id="detail-UpdatedStaff"></span></p>
-                        <p style="margin: 8px 0;"><strong>Phòng ban xử lý:</strong> <span id="detail-UpdatedDept"></span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 15px;">
-                <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Phản hồi xử lý</h4>
-                <p id="detail-UpdatedResponse" style="white-space: pre-wrap; color: #495057; line-height: 1.6;"></p>
-            </div>
-
-            <div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 15px;">
-                <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Nguyên nhân</h4>
-                <p id="detail-UpdatedReason" style="white-space: pre-wrap; color: #495057; line-height: 1.6;"></p>
-            </div>
-
-            <div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 8px;">
-                <h4 style="margin-top: 0; color: #333; border-bottom: 2px solid #dadadaff; padding-bottom: 10px;">Giải pháp đã áp dụng</h4>
-                <p id="detail-UpdatedSolution" style="white-space: pre-wrap; color: #495057; line-height: 1.6;"></p>
-            </div>
-        </div>
-    </text>)
-)
-
 <script>
-    let yckpData = [];
-    let currentYckpItem = null;
-
-    $(function() {
-        loadYCKPData();
-    });
-
-    function loadYCKPData() {
-        $.ajax({
-            url: '@Url.Action("GetYCKPDXL", "api/C242_YCKP_New")',
-            method: 'GET',
-            data: {
-                StaffID: '@Session["StaffID"].ToString()'
-            },
-            success: function(response) {
-                yckpData = response || [];
-                renderCards();
-            },
-            error: function(xhr) {
-                console.error('Lỗi khi tải dữ liệu YCKP:', xhr.responseText);
-                renderCards();
-            }
+    function onDetailContentReady(e) {
+        $(".detail-images-container").each(function () {
+            loadImagesForDetail(
+                $(this),
+                $(this).data("order"),
+                $(this).data("staff"),
+                $(this).data("date")
+            );
         });
     }
 
-    function renderCards() {
-        const container = $('#cardsContainer');
-        container.empty();
+    async function onExportingYCKP(e) {
+        e.cancel = true;
+        try {
+            const columnNameMapping = {
+                "OrderNo": "Số đơn hàng",
+                "PartId": "Tên chi tiết",
+                "OptionID": "Nguyên Công",
+                "MachineID": "Máy gia công",
+                "Deadline": "Deadline",
+                "RankLevel": "Mức độ",
+                "ProcessProduct": "Số sp gc",
+                "YCKPTimes": "Số lần YCKP",
+                "ProcessStatus": "Tình trạng gc",
+                "YCKPContent": "Nội dung",
+                "CauseContent": "Nguyên nhân",
+                "SolutionContent": "Giải pháp",
+                "YCKPDate": "Ngày YCKP",
+                "YCKPDeadline": "Hạn xử lý YCKP",
+                "YCKPProcessTime": "Thời gian cập nhật YCKP",
+                "InputStaff": "Nhân viên nhập",
+                "InputDept": "Bộ phận nhập",
+                "UpdatedStaff": "Nhân viên cập nhật",
+                "UpdatedDept": "Bộ phận cập nhật",
+                "UpdatedResponse": "Phản hồi",
+                "UpdatedReason": "Lý do",
+                "UpdatedSolution": "Giải pháp"
+            };
 
-        if (yckpData.length === 0) {
-            container.html('<p style="text-align:center; color:#999;">Không có dữ liệu</p>');
-            return;
-        }
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Sheet 1');
 
-        yckpData.forEach(item => {
-            const statusClass = item.RankLevel === 'nhẹ' ? 'status-low' :
-                item.RankLevel === 'gấp' ? 'status-hard' : 'status-medium';
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0].replace(/-/g, '');
+            const filename = `YCKP_DaXuLy_${formattedDate}.xlsx`;
 
-            const card = $(`
-                <div class="card" data-id="${item.ID}">
-                    <div class="card-header">
-                        <span class="card-title">Số Order: ${item.OrderNo || 'N/A'}</span>
-                        <span class="card-status ${statusClass}">${item.RankLevel || 'N/A'}</span>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Tên máy:</strong> ${item.MachineID || 'N/A'}</p>
-                        <p><strong>Tên chi tiết:</strong> ${item.PartId || 'N/A'}</p>
-                        <p><strong>Máy gc:</strong> ${item.MachineID || 'N/A'}</p>
-                        <p><strong>Nguyên công:</strong> ${item.OptionID || 'N/A'}</p>
-                        <p><strong>Số sp gc:</strong> ${item.ProcessProduct || 'N/A'}</p>
-                        <p><strong>Số lần yckp:</strong> ${item.YCKPTimes || 'N/A'}</p>
-                        <p><strong>Tình trạng gc:</strong> ${item.ProcessStatus || 'N/A'}</p>
-                        <p><strong>Nội dung:</strong> ${item.YCKPContent || 'N/A'}</p>
-                        <p><strong>Dự đoán:</strong> ${item.CauseContent || 'N/A'}</p>
-                        <p><strong>Đề xuất:</strong> ${item.SolutionContent || 'N/A'}</p>
-                        <p><strong>Người yêu cầu:</strong> ${item.InputStaff || 'N/A'}</p>
-                        <p><strong>Deadline:</strong> ${item.YCKPDeadline ? new Date(item.YCKPDeadline).toLocaleDateString('vi-VN') : 'N/A'}</p>
-                    </div>
-                </div>
-            `);
-
-            card.on('click', function() {
-                openDetailPopup(item);
+            const dataSource = e.component.getDataSource();
+            const allData = await dataSource.load({
+                skip: 0,
+                take: Number.MAX_SAFE_INTEGER
             });
 
-            container.append(card);
-        });
-    }
-
-    function openDetailPopup(yckpItem) {
-        currentYckpItem = yckpItem;
-
-        try {
-            const popup = $('#detailPopup').dxPopup('instance');
-            
-            if (!popup) {
-                console.error('Popup instance not found');
-                return;
+            if (!allData || allData.length === 0) {
+                throw new Error("Không có dữ liệu để xuất");
             }
 
-            popup.show();
+            const hiddenFields = ["Deleted", "Status", "ResponseId", "ID", "ProcessDept", "ProcessStaff"];
 
-            $('#detail-InputStaff').text(yckpItem.InputStaff || 'N/A');
-            $('#detail-InputDept').text(yckpItem.InputDept || 'N/A');
-            $('#detail-UpdatedStaff').text(yckpItem.UpdatedStaff || 'N/A');
-            $('#detail-UpdatedDept').text(yckpItem.UpdatedDept || 'N/A');
-            $('#detail-UpdatedResponse').text(yckpItem.UpdatedResponse || 'N/A');
-            $('#detail-UpdatedReason').text(yckpItem.UpdatedReason || 'N/A');
-            $('#detail-UpdatedSolution').text(yckpItem.UpdatedSolution || 'N/A');
+            let columns = [];
+            if (allData.length > 0) {
+                columns = Object.keys(allData[0])
+                    .filter(key => !hiddenFields.includes(key))
+                    .map(key => ({
+                        dataField: key,
+                        caption: columnNameMapping[key] || key
+                    }));
+            }
 
-            loadImages1(yckpItem.OrderNo, yckpItem.InputStaff, yckpItem.YCKPDate);
-            
+
+            if (columns.length === 0 && allData.length > 0) {
+                columns = Object.keys(allData[0])
+                    .filter(key => !hiddenFields.includes(key))
+                    .map(key => ({
+                        dataField: key,
+                        caption: key
+                    }));
+            }
+
+            if (columns.length === 0) {
+                throw new Error("Không tìm thấy cột dữ liệu để xuất. Vui lòng kiểm tra dữ liệu nguồn.");
+            }
+
+            const exportColumns = columns.map(col => ({
+                    dataField: col.dataField,
+                    caption: col.caption,
+                    width: col.width || 20
+                }));
+
+            const headerRow = worksheet.addRow(exportColumns.map(c => c.caption));
+            headerRow.font = { bold: true };
+            headerRow.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFD3D3D3' }
+            };
+
+            allData.forEach(row => {
+                const rowData = exportColumns.map(col => {
+                    const val = row[col.dataField];
+                    if (val === null || val === undefined) return '';
+                    if (val instanceof Date) return val.toLocaleDateString('vi-VN');
+                    if (typeof val === 'object') return JSON.stringify(val);
+                    return val.toString();
+                });
+                worksheet.addRow(rowData);
+            });
+
+            exportColumns.forEach((col, index) => {
+                const column = worksheet.getColumn(index + 1);
+                column.width = Math.min(50, Math.max(15, col.caption.length * 1.3));
+                column.alignment = { wrapText: true };
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            saveAs(new Blob([buffer], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }), filename);
         } catch (error) {
-            console.error('Error opening popup:', error);
-            alert('Lỗi khi mở popup: ' + error.message);
+            console.error("Lỗi khi xuất file:", error);
+            DevExpress.ui.notify(
+                `Có lỗi xảy ra: ${error.message || 'Vui lòng thử lại sau'}`,
+                "error",
+                5000
+            );
         }
     }
 
-    function loadImages1(orderNo, staffId, yckpDate) {
-        var container = $("#sendedImagesContainer");
+    function loadImagesForDetail(container, orderNo, staffId, yckpDate) {
         container.empty();
 
         $.ajax({
@@ -219,24 +339,21 @@
             },
             success: function(response) {
                 if (!response || response.length === 0) {
-                    container.html('<p>Không có hình ảnh nào được tìm thấy.</p>');
+                    container.html('<p style="color: #999;">Không có hình ảnh nào được tìm thấy.</p>');
                     return;
                 }
 
                 response.forEach(function(file) {
                     if (file.Path) {
-                        var relativePath = file.Path.replace(/^.*[\\/]Files[\\/]/, 'Files/');
+                        var relativePath = file.Path.replace(/^.*[\\\/]Files[\\\/]/, 'Files/');
                         var imageUrl = '/' + relativePath.replace(/\\/g, '/');
 
                         var imageContainer = $('<div>').css({
-                            width: '200px',
-                            marginBottom: '15px',
+                            width: '150px',
                             border: '1px solid #eee',
                             borderRadius: '4px',
                             overflow: 'hidden',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                            display: 'inline-block',
-                            marginRight: '15px'
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                         });
 
                         var img = $('<img>').attr({
@@ -245,7 +362,7 @@
                             'style': 'width: 100%; height: auto; display: block;'
                         }).on('click', function() {
                             window.open(imageUrl, '_blank');
-                        }).css('cursor', 'pointer');
+                        });
 
                         imageContainer.append(img);
                         container.append(imageContainer);
@@ -258,5 +375,4 @@
             }
         });
     }
-
 </script>

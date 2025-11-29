@@ -26,9 +26,16 @@ namespace NNworking.Controllers
         [HttpGet]
         public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
         {
-            var c242_yckp_new = _context.C242_YCKP_New
-                .GroupBy(i => new { i.OrderNo, i.YCKPDate, i.InputStaff })
-                .Select(g => g.OrderByDescending(x => x.ID).FirstOrDefault());
+            var latestIds = await _context.View_242_YCKPXL
+                    .GroupBy(i => new { i.OrderNo, i.YCKPDate, i.InputStaff })
+                    .Select(g => g.OrderByDescending(x => x.ID).Select(x => x.ID).FirstOrDefault())
+                    .ToListAsync();
+
+            var c242_yckp_new = _context.View_242_YCKPXL
+                .Where(i => latestIds.Contains(i.ID) &&
+                            i.Deleted == false
+                )
+                .OrderBy(x => x.YCKPDeadline);
 
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c242_yckp_new, loadOptions));
         }
@@ -85,15 +92,17 @@ namespace NNworking.Controllers
             try
             {
                 var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
-                string currentDept = queryParams.ContainsKey("Department") ? queryParams["Department"] : "";
 
                 var latestIds = await _context.View_242_YCKPXL
-                    .GroupBy(i => new { i.OrderNo, i.YCKPDate })
+                    .GroupBy(i => new { i.OrderNo, i.YCKPDate, i.InputStaff })
                     .Select(g => g.OrderByDescending(x => x.ID).Select(x => x.ID).FirstOrDefault())
                     .ToListAsync();
 
                 var c242_yckp_new = await _context.View_242_YCKPXL
-                    .Where(i => latestIds.Contains(i.ID) && i.Status == "Đang xử lý" && i.ProcessDept == currentDept)
+                    .Where(i => latestIds.Contains(i.ID) && 
+                                i.Status == "Đang xử lý" &&
+                                i.Deleted == false
+                    )
                     .OrderBy(x => x.YCKPDeadline)
                     .ToListAsync();
 

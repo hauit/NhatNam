@@ -273,6 +273,8 @@
                         <span class="card-status ${statusClass}">${item.RankLevel || 'N/A'}</span>
                     </div>
                     <div class="card-body">
+                        <p><strong>Người xử lý:</strong> ${item.ProcessStaff || 'N/A'}</p>
+                        <p style="border-bottom: 1px solid #eee;"><strong>Phòng ban xử lý:</strong><span style="color:#D4A017; font-weight:600;"> ${item.ProcessDept || 'N/A'} </span></p>
                         <p><strong>Tên chi tiết:</strong> ${item.PartId || 'N/A'}</p>
                         <p><strong>Máy gc:</strong> ${item.MachineID || 'N/A'}</p>
                         <p><strong>Nguyên công:</strong> ${item.OptionID || 'N/A'}</p>
