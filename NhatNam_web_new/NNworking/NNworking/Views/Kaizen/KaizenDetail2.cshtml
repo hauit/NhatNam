@@ -1,0 +1,354 @@
+﻿
+@{
+    ViewBag.Title = "KaizenDetail2";
+    List<string> ediableData = (List<string>)ViewBag.EdiableData;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Biểu mẫu Kaizen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 6px;
+            vertical-align: top;
+        }
+
+        .no-border td {
+            border: none;
+            padding: 2px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            background: #f5f5f5;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 0;
+        }
+
+        .big-box {
+            height: 300px;
+        }
+
+        .two-col td {
+            height: 300px;
+        }
+
+        .center-text {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .small-cell {
+            height: 50px;
+        }
+
+        .result-table td {
+            height: 40px;
+        }
+
+        table td {
+            padding: 0px;
+        }
+
+        td {
+            border: 1px solid #000;
+        }
+
+        .inner-table td {
+            border: 1px solid #000;
+        }
+
+        .inner-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .inner-table tr:first-child td {
+            border-top: none;
+        }
+
+        .inner-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .inner-table td:first-child {
+            border-left: none;
+        }
+
+        .inner-table td:last-child {
+            border-right: none;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 40px;
+            resize: vertical;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+        }
+
+        .title {
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="center-text">Form cải tiến số: @ViewBag.KaizenID</h1>
+    <table>
+
+        <tr>
+            <td>
+                <table class="inner-table">
+                    <tr>
+                        <td><span class="title">Ngày viết:</span> @ViewBag.InputDate</td>
+                        <td><span class="title">Họ và tên:</span> @ViewBag.StaffName</td>
+                        <td><span class="title">Code:</span> @ViewBag.StaffID</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="inner-table">
+                    <tr>
+                        <td><span class="title">Bộ phận:</span> @ViewBag.DepartmentID</td>
+                        <td><span class="title">Nhóm:</span> @ViewBag.DeptCode</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td><span class="title">Tên đề tài cải tiến:</span> @ViewBag.Subject</td>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="inner-table">
+                    <tr>
+                        <td><span class="title">Tên chi tiết:</span> @ViewBag.PartID</td>
+                        <td><span class="title">NC:</span> @ViewBag.OptionID</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="checkbox-group">
+                    <span>Mục đích:</span>
+                    <label><input type="checkbox"> Chất lượng</label>
+                    <label><input type="checkbox"> Giá thành</label>
+                    <label><input type="checkbox"> Thời gian</label>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><span class="title">Ghi chú:</span> @ViewBag.Note</td>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="inner-table">
+                    <tr>
+                        <td style="width:50%;"><span class="title">Cách làm hiện tại</span></td>
+                        <td style="width:50%;"><span class="title">Đề xuất ý kiến</span></td>
+                    </tr>
+                    <tr class="two-col">
+                        <td>@ViewBag.CurrentProcess</td>
+                        <td>@ViewBag.KaizenProcess</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td><span class="title">Dự đoán hiệu quả:</span> @ViewBag.AppliedPredictResult</td>
+        </tr>
+
+        <!-- -->
+        <tr>
+            <td><span class="title">Trưởng nhóm đánh giá</span></td>
+        </tr>
+        <tr>
+            <td>
+                @if (ediableData.Where(x => x.ToLower() == "ManagerComment".ToLower()).Any())
+                {
+                    <textarea id="ManagerComment" style="border: 1px solid red;" placeholder="...">@ViewBag.ManagerComment</textarea>
+                }
+                else
+                {
+                    <textarea id="ManagerComment" placeholder="..." style="min-height: 40px;" readonly>@ViewBag.ManagerComment</textarea>
+                }
+            </td>
+        </tr>
+
+        <!-- -->
+        <tr>
+            <td><span class="title">Bộ phận kỹ thuật đánh giá</span></td>
+        </tr>
+        <tr>
+            <td>
+                @if (ediableData.Where(x => x.ToLower() == "TechnicianComment".ToLower()).Any())
+                {
+                    <textarea id="TechnicianComment" style="border: 1px solid red;" placeholder="...">@ViewBag.TechnicianComment</textarea>
+                }
+                else
+                {
+                    <textarea id="TechnicianComment" placeholder="..." style="min-height: 40px;" readonly>@ViewBag.TechnicianComment</textarea>
+                }
+            </td>
+        </tr>
+
+        <!-- -->
+        <tr>
+            <td><span class="title">Nhóm cải tiến đánh giá</span></td>
+        </tr>
+        <tr>
+            <td>
+                @if (ediableData.Where(x => x.ToLower() == "KaizenDeptComment".ToLower()).Any())
+                {
+                    <textarea id="KaizenDeptComment" style="border: 1px solid red;" placeholder="...">@ViewBag.KaizenDeptComment</textarea>
+                }
+                else
+                {
+                    <textarea id="KaizenDeptComment" placeholder="..." style="min-height: 40px;" readonly>@ViewBag.KaizenDeptComment</textarea>
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td><span class="title">Người theo dõi:</span></td>
+        </tr>
+
+        <tr class="center-text">
+            <td>Kết quả</td>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="inner-table">
+                    <tr>
+                        <td style="width:33%;">Trước áp dụng</td>
+                        <td style="width:33%;">Sau áp dụng</td>
+                        <td style="width:33%;">Hiệu quả</td>
+                    </tr>
+                    <tr>
+                        <td style="width:33%;">
+                            @if (string.IsNullOrEmpty(ViewBag.BeforeApplied))
+                            {
+                                <textarea id="BeforeApplied" placeholder="..." style="min-height: 40px;">@ViewBag.BeforeApplied</textarea>
+                            }
+                            else
+                            {
+                                <textarea id="BeforeApplied" placeholder="..." style="min-height: 40px;" readonly>@ViewBag.BeforeApplied</textarea>
+                            }
+                        </td>
+                        <td style="width:33%;">
+                            @if (string.IsNullOrEmpty(ViewBag.BeforeApplied))
+                            {
+                                <textarea id="AfterApplied" placeholder="..." style="min-height: 40px;">@ViewBag.AfterApplied</textarea>
+                            }
+                            else
+                            {
+                                <textarea id="AfterApplied" placeholder="..." style="min-height: 40px;" readonly>@ViewBag.AfterApplied</textarea>
+                            }
+                        </td>
+                        <td style="width:33%;">
+                            @if (string.IsNullOrEmpty(ViewBag.KaizenEffectiveness))
+                            {
+                                <textarea id="KaizenEffectiveness" placeholder="...">@ViewBag.KaizenEffectiveness</textarea>
+                            }
+                            else
+                            {
+                                <textarea id="KaizenEffectiveness" placeholder="..." readonly>@ViewBag.KaizenEffectiveness</textarea>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+    </table>
+    @if (ediableData.Where(x => x.ToLower() == "KaizenDeptComment".ToLower()).Any())
+    {
+        <span>
+            @(Html.DevExtreme().Button()
+            .Text("Chấp nhận")
+            .ID("btnApproval")
+            .Type(ButtonType.Normal)
+            .Width(120)
+            .OnClick("function(e){ ApproveKaizen(true); }")
+        )
+        </span>
+        <span>
+            @(Html.DevExtreme().Button()
+            .Text("Từ chối")
+            .ID("btnReject")
+            .Type(ButtonType.Normal)
+            .Width(120)
+            .OnClick("function(e){ ApproveKaizen(false); }")
+        )
+        </span>
+    }
+    <script>
+    function ApproveKaizen(approval) {
+        var managerComment = document.querySelector("#ManagerComment").value;
+        var technicianComment = document.querySelector("#TechnicianComment").value;
+        var kaizenDeptComment = document.querySelector("#KaizenDeptComment").value;
+        var beforeApplied = document.querySelector("#BeforeApplied").value;
+        var afterApplied = document.querySelector("#AfterApplied").value;
+        var kaizenEffectiveness = document.querySelector("#KaizenEffectiveness").value;
+        var inputData = {
+            ID : '@ViewBag.KaizenID',
+            ManagerComment : managerComment,
+            TechnicianComment : technicianComment,
+            KaizenDeptComment: kaizenDeptComment,
+            BeforeApplied : beforeApplied,
+            AfterApplied : afterApplied,
+            KaizenEffectiveness : kaizenEffectiveness,
+        };
+        var dataEdited = @Html.Raw(Json.Encode(ViewBag.EdiableData));
+        $.ajax({
+            url: '@Url.Action("KaiZenApprove", "Kaizen")',
+            dataType: 'Json',
+            type: 'POST',
+            data: { 'viewer': '@ViewBag.Viewer', 'data': inputData, 'editedData': dataEdited, 'approval': approval },
+            cache: false,
+            success: function (data) {
+                if (data.Status != "OK")
+                {
+                    alert(data.Values);
+                    return;
+                }
+            },
+        });
+    }
+    </script>
+</body>
+</html>
+
+

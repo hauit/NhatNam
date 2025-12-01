@@ -265,7 +265,7 @@ namespace NNworking.Controllers
         //}
     }
 
-    internal class IndexWorkFollowNote
+    internal class IndexWorkFolowNote
     {
         public string Caption { get; set; }
         public string Content { get; set; }

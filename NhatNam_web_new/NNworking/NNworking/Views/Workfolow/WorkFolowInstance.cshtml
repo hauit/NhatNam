@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Quy trình phần mềm";
+}
+
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_WorkFolowInstance>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_WorkFolowInstanceApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxWorkFolowInstallListGrid")
+    .Paging(page => page.PageSize(30))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 30, 50, 100, 200 })
+    )
+    //.OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.WorkFolow).Caption("Tên quy trình");
+
+        columns.AddFor(m => m.ModuleName).Caption("Tên phần mềm").AllowEditing(false);
+
+        columns.AddFor(m => m.CurrentStep).Caption("Bước hiện tại");
+
+        columns.AddFor(m => m.Status).Caption("Trạng thái");
+
+        columns.AddFor(m => m.CreateBy).Caption("Tạo bởi");
+
+        columns.AddFor(m => m.CreateDate).Caption("Ngày tạo");
+
+        columns.AddFor(m => m.Note).Caption("Ghi chú");
+    })
+    //.Editing(e => e
+    //    .AllowAdding(true)
+    //    .AllowUpdating(true)
+    //    .AllowDeleting(true)
+    //)
+    .OnInitNewRow("onInitNewRow")
+)
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+        e.data.CreateDate = @DateTime.Now;
+    }
+</script>

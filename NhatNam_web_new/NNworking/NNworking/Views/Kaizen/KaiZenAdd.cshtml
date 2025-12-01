@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "KaiZenAdd";
+    int status = ViewBag.KaizenStatus;
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_Kaizen>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_KaizenApi")
+        .LoadAction("GetDataTemplate")
+        .LoadParams(new { KaizenStatus = status })
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxKaiZenListGrid")
+    .RemoteOperations(true)
+.Paging(page => page.PageSize(10))
+.Pager(pager => pager.ShowPageSizeSelector(true)
+    .ShowInfo(true)
+    .AllowedPageSizes(new List<int> { 10, 30, 50 })
+)
+.Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+    .DescendingText("ID")
+)
+.ColumnAutoWidth(true)
+.Selection(select => select.Mode(SelectionMode.Single))
+.FilterRow(fil => fil.Visible(true))
+.FilterPanel(fi => fi.Visible(true))
+.SearchPanel(search => search.Visible(true)
+    .HighlightSearchText(true)
+    .Width(500)
+)
+.ShowColumnHeaders(true)
+.ShowRowLines(true)
+.OnContextMenuPreparing("contextMenu")
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false).Caption("Số cải tiến");
+
+        columns.AddFor(m => m.InputDate).AllowEditing(false).Caption("Ngày nhập");
+
+        columns.AddFor(m => m.StaffID).AllowEditing(false).Caption("Mã nhân viên");
+
+        columns.AddFor(m => m.Subject).Caption("Đề tài cải tiến");
+
+        columns.AddFor(m => m.PartID).Caption("Tên chi tiết");
+
+        columns.AddFor(m => m.OptionID).Caption("Nguyên công");
+
+        columns.AddFor(m => m.KaizenType).Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_KaizenTypeApi")
+                .LoadAction("Get")
+            )
+            .DisplayExpr("KaizenType")
+            .ValueExpr("ID")
+        ).Caption("Mục đích");
+
+        columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+        columns.AddFor(m => m.CurrentProcess).Caption("Cách làm hiện tại");
+
+        columns.AddFor(m => m.KaizenProcess).Caption("Đề xuất cải tiến");
+
+        columns.AddFor(m => m.AppliedPredictResult).Caption("Dự kiến kết quả");
+
+        columns.AddFor(m => m.ManagerComment).Caption("Ý kiến của quản lý");
+
+        columns.AddFor(m => m.KaizenDeptComment).Caption("Ý kiến của BP cải tiến");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(false)
+        .AllowDeleting(false)
+        .Mode(GridEditMode.Popup)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+        e.data.InputDate = new Date('@DateTime.Now.Date.ToString("yyyy-MM-dd")');
+        e.data.StaffID = '@Session["StaffID"]';
+    }
+
+    function contextMenu(e) {
+        var id = e.row.data.ID;
+        if (e.row.rowType === "data") {
+            e.items = [{
+                text: "Chi tiết",
+                onItemClick: function () {
+                    var url = '@Url.Action("KaiZenDetail","Kaizen",new {id = "__id__" })';
+                    url = url.replace("__id__", id);
+                    var win = window.open(url, "blank");
+                }
+            }];
+        }
+    }
+</script>

@@ -254,6 +254,12 @@
             case "Payroll":
                 @Html.Partial("~/Views/Shared/Dashboardv_Layout/_PayrollMenu.cshtml")
                 break;
+            case "WorkFolow":
+                @Html.Partial("~/Views/Shared/Dashboardv_Layout/_WorkFolow.cshtml")
+                break;
+            case "Kaizen":
+                @Html.Partial("~/Views/Shared/Dashboardv_Layout/_Kaizen.cshtml")
+                break;
             default:
                 @Html.Partial("~/Views/Shared/Dashboardv_Layout/_Sidebar.cshtml")
                 break;
@@ -284,13 +290,13 @@
         }
 
         var sessionStaffID = "@Session["StaffID"].ToString()";
-</script>
-    
+    </script>
+
     @*<script>
-        const observer = new MutationObserver(() => {
-            document.querySelectorAll("dx-license").forEach(el => el.remove());
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-    </script>*@
+            const observer = new MutationObserver(() => {
+                document.querySelectorAll("dx-license").forEach(el => el.remove());
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        </script>*@
 </body>
 </html>

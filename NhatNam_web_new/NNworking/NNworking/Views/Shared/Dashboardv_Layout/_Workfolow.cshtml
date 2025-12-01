@@ -1,0 +1,28 @@
+﻿@{
+
+}
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        @*<ul class="sidebar-menu">
+                <li class="@Html.IsSelected(controller: " Dashboard")">
+                    <a href="@Url.Action("Index","EmailConfiguration")">
+                        <i class="fa fa-dashboard"></i> <span>Trang chủ cấu hình</span>
+                    </a>
+                </li>
+            </ul>*@
+
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkflowDefinition","WorkFolow")"><i class="fa fa-circle-o"></i> Danh sách quy trình</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkflowStep","WorkFolow")"><i class="fa fa-circle-o"></i> Bước của quy trình</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkFolowActionType","WorkFolow")"><i class="fa fa-circle-o"></i> Hành động phê duyệt</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkFolowRole","WorkFolow")"><i class="fa fa-circle-o"></i> Nhóm user</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkFolowInstance","WorkFolow")"><i class="fa fa-circle-o"></i> Quy trình</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkFolowModuleDefinition","WorkFolow")"><i class="fa fa-circle-o"></i> Quy trình cho PM</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkFolowInstanceHistory","WorkFolow")"><i class="fa fa-circle-o"></i> Lịch sử phê duyệt</a></li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+

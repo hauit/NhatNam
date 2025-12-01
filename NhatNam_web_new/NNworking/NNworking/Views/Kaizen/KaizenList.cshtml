@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "KaizenList";
+    int status = ViewBag.KaizenStatus;
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_Kaizen>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_KaizenApi")
+        .LoadAction("GetDataTemplate")
+        .LoadParams(new { KaizenStatus = status })
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxKaiZenListGrid")
+    .RemoteOperations(true)
+.Paging(page => page.PageSize(10))
+.Pager(pager => pager.ShowPageSizeSelector(true)
+    .ShowInfo(true)
+    .AllowedPageSizes(new List<int> { 10, 30, 50 })
+)
+.Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+    .DescendingText("ID")
+)
+.ColumnAutoWidth(true)
+.Selection(select => select.Mode(SelectionMode.Single))
+.FilterRow(fil => fil.Visible(true))
+.FilterPanel(fi => fi.Visible(true))
+.SearchPanel(search => search.Visible(true)
+    .HighlightSearchText(true)
+    .Width(500)
+)
+.ShowColumnHeaders(true)
+.ShowRowLines(true)
+.OnContextMenuPreparing("contextMenu")
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.InputDate);
+
+        columns.AddFor(m => m.StaffID);
+
+        columns.AddFor(m => m.Subject);
+
+        columns.AddFor(m => m.PartID);
+
+        columns.AddFor(m => m.OptionID);
+
+        columns.AddFor(m => m.KaizenType);
+
+        columns.AddFor(m => m.Note);
+
+        columns.AddFor(m => m.CurrentProcess);
+
+        columns.AddFor(m => m.KaizenProcess);
+
+        columns.AddFor(m => m.AppliedPredictResult);
+
+        columns.AddFor(m => m.ManagerComment);
+
+        columns.AddFor(m => m.KaizenDeptComment);
+    })
+    .Editing(e => e
+        .AllowAdding(false)
+        .AllowUpdating(false)
+        .AllowDeleting(false)
+        .Mode(GridEditMode.Popup)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+    }
+
+    function contextMenu(e) {
+        var id = e.row.data.ID;
+        if (e.row.rowType === "data") {
+            e.items = [{
+                text: "Chi tiết",
+                onItemClick: function () {
+                    var url = '@Url.Action("KaiZenDetail","Kaizen",new {id = "__id__" })';
+                    url = url.replace("__id__", id);
+                    var win = window.open(url, "blank");
+                }
+            }];
+        }
+    }
+</script>

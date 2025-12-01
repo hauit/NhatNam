@@ -1,0 +1,68 @@
+﻿`
+@{
+    ViewBag.Title = "Cấu hình phần mềm";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_WorkFolowModuleDefinition>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_WorkFolowModuleDefinitionApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxWorkFolowModuleListGrid")
+    .Paging(page => page.PageSize(30))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 30, 50, 100, 200 })
+    )
+    //.OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.DefinitionID).Caption("Tên quy trình")
+        .Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_WorkFolowDefinitionApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("WorkflowName")
+            .ValueExpr("ID")
+        );
+
+        columns.AddFor(m => m.ModuleName).AllowEditing(false).Caption("Phần mềm");
+
+        columns.AddFor(m => m.Note).Caption("Ghi chú");
+
+        columns.AddFor(m => m.Active).Caption("Đang hoạt động");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+    //.AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+        e.data.ModuleName = '@ViewBag.ModuleName';
+        e.data.Deleted = false;
+        e.data.Active = true;
+    }
+</script>

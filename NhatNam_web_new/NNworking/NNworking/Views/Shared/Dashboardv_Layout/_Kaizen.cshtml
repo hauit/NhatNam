@@ -1,0 +1,25 @@
+﻿@{
+
+}
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        @*<ul class="sidebar-menu">
+                <li class="@Html.IsSelected(controller: " Dashboard")">
+                    <a href="@Url.Action("Index","EmailConfiguration")">
+                        <i class="fa fa-dashboard"></i> <span>Trang chủ cấu hình</span>
+                    </a>
+                </li>
+            </ul>*@
+
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("Index","Kaizen")"><i class="fa fa-circle-o"></i> Trang chủ cải tiến</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("KaiZenAdd","Kaizen")"><i class="fa fa-circle-o"></i> Thêm cải tiến</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("KaiZenAction","Kaizen")"><i class="fa fa-circle-o"></i> Phê duyệt cải tiến</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkFolowSetup","Kaizen")"><i class="fa fa-circle-o"></i> Cấu hình phần mềm</a></li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+

@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Lịch sử phê duyệt";
+}
+
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_WorkFolowInstanceHistory>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_WorkFolowInstanceHistoryApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxWorkFolowInstanceHistoryListGrid")
+    .Paging(page => page.PageSize(30))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 30, 50, 100, 200 })
+    )
+    //.OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.InstanceID).Caption("Quy trình");
+
+        columns.AddFor(m => m.StepID).Caption("Bước xử lý");
+
+        columns.AddFor(m => m.StepAction).Caption("Hành động");
+
+        columns.AddFor(m => m.ActionBy).Caption("Người xử lý");
+
+        columns.AddFor(m => m.ActionDate).Caption("Ngày xử lý");
+
+        columns.AddFor(m => m.Commment).Caption("Bình luận");
+
+        columns.AddFor(m => m.StatusAfterAction).Caption("Trạng thái sau xử lý");
+
+        columns.AddFor(m => m.ModuleName).Caption("Tên phần mềm");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+        e.data.ActionDate = @DateTime.Now;
+    }
+</script>

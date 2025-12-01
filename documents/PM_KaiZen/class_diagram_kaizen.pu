@@ -1,0 +1,58 @@
+@startuml
+class Kaizen{
+    + ID
+    + InputDate
+    + StaffID
+    + Subject
+    + PartID
+    + OptionID
+    + KaizenType
+    + Note
+    + CurrentProcess
+    + KaizenProcess
+    + AppliedPredictResult
+    + ManagerComment
+    + KaizenDeptComment
+}
+
+class KaizenAppliedResult{
+    + ID
+    + KaizenID
+    + BeforeApplied
+    + AfterApplied
+    + KaizenEffectiveness
+}
+
+class KaizenType{
+    + ID
+    + KaizenType
+    + Note
+}
+
+note left of Kaizen::KaizenType
+    This is FK: KaizenType.ID
+end note
+
+note left of KaizenAppliedResult::KaizenID
+    This is FK: Kaizen.ID
+end note
+
+note left of Kaizen::StaffID
+    This is StaffID on staffList
+end note
+
+note left of Kaizen::PartID
+    This is PartID on partData
+end note
+
+note left of Kaizen::OptionID
+    This is OptionID on partData
+end note
+
+Kaizen -r-> KaizenType
+Kaizen -u-> Staff
+Kaizen -u-> PartData
+KaizenAppliedResult -u-> Kaizen
+
+
+@enduml

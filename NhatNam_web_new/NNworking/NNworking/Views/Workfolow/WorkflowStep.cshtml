@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "Bước xử lý quy trình phần mềm";
+}
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_WorkFolowStep>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_WorkFolowStepApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxWorkFolowStepListGrid")
+    .Paging(page => page.PageSize(30))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 30, 50, 100, 200 })
+    )
+    //.OnExporting("onExportingDatagridToExcel").Export(e => e.Enabled(true))
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("ID")
+    )
+    .ColumnAutoWidth(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .Columns(columns => {
+
+        columns.AddFor(m => m.ID).AllowEditing(false);
+
+        columns.AddFor(m => m.WorkFollowID).Caption("Tên quy trình")
+        .Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_WorkFolowDefinitionApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("WorkflowName")
+            .ValueExpr("ID")
+        );
+
+        columns.AddFor(m => m.StepOder).Caption("Thứ tự bước");
+
+        columns.AddFor(m => m.StepName).Caption("Tên bước");
+
+        columns.AddFor(m => m.ManagerCheck).Caption("Quản lý kiểm tra");
+
+        columns.AddFor(m => m.RoleID).Caption("Người xử lý")
+        .Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_WorkFolowRoleApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("GroupName")
+            .ValueExpr("ID")
+        );
+
+        columns.AddFor(m => m.ActionType).Caption("Hoạt động")
+        .Lookup(lup =>
+            lup.DataSource(ds => ds.WebApi()
+                .RouteName("C222_WorkFolowActionTypeApi")
+                .LoadAction("Get")
+                .Key("ID")
+            )
+            .DisplayExpr("Action")
+            .ValueExpr("ID")
+        );
+
+        //columns.AddFor(m => m.NextStepOnApprove).Caption("Bước tiếp theo(Approve)");
+
+        //columns.AddFor(m => m.NextStepOnReject).Caption("Bước tiếp theo(reject)");
+
+        columns.AddFor(m => m.IsFinal).Caption("Bước cuối cùng");
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .OnInitNewRow("onInitNewRow")
+)
+
+<script>
+    function onInitNewRow(e) {
+        e.data.ID = 0;
+        e.data.IsFinal = false;
+    }
+</script>

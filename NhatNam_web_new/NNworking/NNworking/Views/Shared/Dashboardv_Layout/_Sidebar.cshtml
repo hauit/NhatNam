@@ -28,7 +28,8 @@
         </ul>
         <ul class="sidebar-menu" data-widget="tree">
             <li>
-                <a href="@Url.Action("ToLenh","Planning")">@*enter1988*@
+                <a href="@Url.Action("ToLenh","Planning")">
+                    @*enter1988*@
                     <i class="fa fa-hospital-o"></i> <span>QL giao việc</span>
                 </a>
             </li>
@@ -135,8 +136,8 @@
                             <li><a href="@Url.Action("GiaDeHang","Tool")" class=""><i class="fa fa-cart-plus"></i>Giá để hàng</a></li>
                             <li><a href="@Url.Action("InventoryData","Tool")" class=""><i class="fa fa-cart-plus"></i>DL kiểm kê</a></li>
                             @*<li><a href="@Url.Action("ErrorItemNotify","AllDept")" class=""><i class="fa fa-circle-o"></i>Danh sách báo lỗi</a></li>
-                <li><a href="@Url.Action("ErrorType","AllDept")" class=""><i class="fa fa-circle-o"></i>Kiểu lỗi</a></li>
-                <li><a href="@Url.Action("EvaluateIndex","AllDept")" class=""><i class="fa fa-circle-o"></i>Mã đánh giá hàng lỗi</a></li>*@
+                            <li><a href="@Url.Action("ErrorType","AllDept")" class=""><i class="fa fa-circle-o"></i>Kiểu lỗi</a></li>
+                            <li><a href="@Url.Action("EvaluateIndex","AllDept")" class=""><i class="fa fa-circle-o"></i>Mã đánh giá hàng lỗi</a></li>*@
                         </ul>
                     </li>
                     <li class="fa-address-book"><a href="@Url.Action("InventoryImport","Tool")"><i class="fa fa-circle-o"></i> Giao nhận</a></li>
@@ -232,7 +233,7 @@
 
                             @*@if (Session["StaffID"].ToString() == "1556" || Session["StaffID"].ToString() == "0828")
                             {*@
-                                <li><a href="@Url.Action("UserList","InputData")"><i class="fa fa-circle-o"></i> Danh sách tài khoản</a></li>
+                            <li><a href="@Url.Action("UserList","InputData")"><i class="fa fa-circle-o"></i> Danh sách tài khoản</a></li>
                             @*}*@
                         </ul>
                     </li>
@@ -329,6 +330,20 @@
             <li>
                 <a href="@Url.Action("Index","Payroll")">
                     <i class="fa fa-hospital-o"></i> <span>QL nhân sự</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("Index","WorkFolow")">
+                    <i class="fa fa-hospital-o"></i> <span>Quy trình phê duyệt</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("Index","Kaizen")">
+                    <i class="fa fa-hospital-o"></i> <span>PM cải tiến</span>
                 </a>
             </li>
         </ul>

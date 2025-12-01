@@ -16,7 +16,7 @@ function GetWorkingFollow(url,url2) {
                 list += '</a>';
                 list += '</li>';
             });
-            $("#notify_WorkFollow_items").html(list);
+            $("#notify_WorkFolow_items").html(list);
         },
     });
 }

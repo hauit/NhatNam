@@ -4766,6 +4766,23 @@
     <Content Include="Views\ProcessingDept\YCKPNEW.cshtml" />
     <Content Include="Views\ProcessingDept\YCKPXL.cshtml" />
     <Content Include="Views\ProcessingDept\YCKPDXL.cshtml" />
+    <Content Include="Views\Workfolow\Index.cshtml" />
+    <Content Include="Views\Workfolow\WorkflowDefinition.cshtml" />
+    <Content Include="Views\Workfolow\WorkflowStep.cshtml" />
+    <Content Include="Views\Workfolow\WorkfolowActionType.cshtml" />
+    <Content Include="Views\Workfolow\WorkFolowRole.cshtml" />
+    <Content Include="Views\Workfolow\WorkFolowInstanceHistory.cshtml" />
+    <Content Include="Views\Workfolow\WorkFolowInstance.cshtml" />
+    <Content Include="Views\Workfolow\WorkFolowModuleDefinition.cshtml" />
+    <Content Include="Views\Shared\Dashboardv_Layout\_Workfolow.cshtml" />
+    <Content Include="Views\Kaizen\KaiZenAdd.cshtml" />
+    <Content Include="Views\Kaizen\Index.cshtml" />
+    <Content Include="Views\Kaizen\WorkFolowSetup.cshtml" />
+    <Content Include="Views\Kaizen\KaiZenDetail.cshtml" />
+    <Content Include="Views\Shared\Dashboardv_Layout\_Kaizen.cshtml" />
+    <Content Include="Views\Kaizen\KaizenType.cshtml" />
+    <Content Include="Views\Kaizen\KaizenList.cshtml" />
+    <Content Include="Views\Kaizen\KaizenDetail2.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4785,19 +4802,27 @@
     <Compile Include="Controllers\AllDept\AllDeptController.cs" />
     <Compile Include="Controllers\AllDept\StaffManagementController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\C222_KaizenController.cs" />
+    <Compile Include="Controllers\C222_KaizenTypeController.cs" />
     <Compile Include="Controllers\C222_PartnerTypeController.cs" />
+    <Compile Include="Controllers\C222_WorkFollowDefinitionController.cs" />
+    <Compile Include="Controllers\C222_WorkFollowInstanceController.cs" />
+    <Compile Include="Controllers\C222_WorkFollowInstanceHistoryController.cs" />
+    <Compile Include="Controllers\C222_WorkFollowModuleDefinitionController.cs" />
     <Compile Include="Controllers\C242_BusOderController.cs" />
     <Compile Include="Controllers\C242_ErrorItemStatusController.cs" />
     <Compile Include="Controllers\EmailConfigurationController.cs" />
     <Compile Include="Controllers\HubController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\InputDataController.cs" />
+    <Compile Include="Controllers\KaizenController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MaterialStockController.cs" />
     <Compile Include="Controllers\PayrollController.cs" />
     <Compile Include="Controllers\PlanningController.cs" />
     <Compile Include="Controllers\ProcessingDept\ProcessingAPIControllerController.cs" />
     <Compile Include="Controllers\ProcessingDept\ProcessingDeptController.cs" />
+    <Compile Include="Controllers\PurchaseController.cs" />
     <Compile Include="Controllers\SampleDataController.cs" />
     <Compile Include="Controllers\StockerController.cs" />
     <Compile Include="Controllers\TableAPI\C222_CarRegisterController.cs" />
@@ -4839,6 +4864,9 @@
     <Compile Include="Controllers\TableAPI\C222_UsersController.cs" />
     <Compile Include="Controllers\TableAPI\C222_WebPermissionController.cs" />
     <Compile Include="Controllers\TableAPI\C222_WebUrlController.cs" />
+    <Compile Include="Controllers\TableAPI\C222_WorkflowStepController.cs" />
+    <Compile Include="Controllers\TableAPI\C222_WorkfollowActionTypeController.cs" />
+    <Compile Include="Controllers\TableAPI\C222_WorkFollowRoleController.cs" />
     <Compile Include="Controllers\TableAPI\C222_WorkingDayController.cs" />
     <Compile Include="Controllers\TableAPI\C242_BusOder_ActualQtyController.cs" />
     <Compile Include="Controllers\TableAPI\C242_DeceidedTimeController.cs" />
@@ -4877,6 +4905,7 @@
     <Compile Include="Controllers\TableAPI\C333_ToolController.cs" />
     <Compile Include="Controllers\ToolController.cs" />
     <Compile Include="Controllers\View_ToLenhController.cs" />
+    <Compile Include="Controllers\WorkfollowController.cs" />
     <Compile Include="Controllers\WTS\AnodWTSController.cs" />
     <Compile Include="Controllers\WTS\WTSController.cs" />
     <Compile Include="Global.asax.cs">
@@ -4896,6 +4925,12 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_GroupMachine.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_Kaizen.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_KaizenType.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_LeaderDailyInput.cs">
@@ -5031,6 +5066,27 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_Work.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_WorkFolowActionType.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_WorkFolowDefinition.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_WorkFolowInstance.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_WorkFolowInstanceHistory.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_WorkFolowModuleDefinition.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_WorkFolowRole.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_WorkFolowStep.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_WorkingDay.cs">
@@ -6126,6 +6182,7 @@
   <ItemGroup>
     <Folder Include="Controllers\ProcessingDept\ToolManagement\" />
     <Folder Include="Files\" />
+    <Folder Include="Views\Purchase\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

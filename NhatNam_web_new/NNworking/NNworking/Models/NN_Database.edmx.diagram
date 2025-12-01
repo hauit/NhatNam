@@ -243,7 +243,7 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.SM_TrainingProgram" Width="1.5" PointX="10.75" PointY="50.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.SM_Work" Width="1.5" PointX="50.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.SM_WorkGroup" Width="1.5" PointX="12.75" PointY="50.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.SM_WorkOfWorkGroup" Width="1.5" PointX="50.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.SM_WorkOfWorkGroup" Width="1.125" PointX="50.75" PointY="14.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.SM_WorkPosition" Width="1.5" PointX="50.75" PointY="17.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.StaffListCheck202002" Width="1.5" PointX="50.75" PointY="21.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NN_DatabaseModel.sysdiagram" Width="1.5" PointX="50.75" PointY="25.75" IsExpanded="true" />
@@ -317,6 +317,15 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP_New" Width="1.5" PointX="57.375" PointY="38.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP_Response" Width="1.5" PointX="57.375" PointY="45.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKPXL" Width="1.5" PointX="57.375" PointY="49.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_Kaizen" Width="1.5" PointX="57.75" PointY="57.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_KaizenType" Width="1.5" PointX="0.75" PointY="58.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowActionType" Width="1.5" PointX="2.75" PointY="58.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowDefinition" Width="1.5" PointX="29.75" PointY="58.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowInstance" Width="1.5" PointX="31.75" PointY="58.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowInstanceHistory" Width="1.5" PointX="43.75" PointY="58.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowModuleDefinition" Width="1.5" PointX="49.75" PointY="58.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowRole" Width="1.5" PointX="59.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowStep" Width="1.5" PointX="59.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

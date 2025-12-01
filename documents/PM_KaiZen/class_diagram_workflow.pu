@@ -1,0 +1,123 @@
+@startuml
+class WorkFollowDefinition{
+    + ID
+    + WorkflowName
+    + Active
+}
+
+class WorkFollowModuleDefinition{
+    + ID
+    + DefinitionID
+    + ModuleName
+    + Note
+    + Active
+    + Deleted
+}
+class WorkFollowStep{
+    + ID
+    + WorkFollowModuleID
+    + StepOder
+    + StepName
+    + RoleID
+    + ActionType
+    + NextStepOnApprove
+    + NextStepOnReject
+    + IsFinal
+}
+
+class WorkFollowActionType{
+    + ID
+    + Action
+    + Note
+}
+class WorkFollowRole{
+    + ID
+    + GroupName
+    + Manager
+    + StaffID
+    + Note
+}
+
+class WorkFollowInstance{
+    + ID
+    + ModuleName
+    + CurrentStep
+    + Status
+    + CreateBy
+    + CreateDate
+    + Note
+}
+
+class WorkInstanceHistory{
+    + ID
+    + InstanceID
+    + StepID
+    + StepAction
+    + ActionBy
+    + ActionDate
+    + Commment
+    + StatusAfterAction
+    + ModuleName
+}
+class PurchaseOder
+
+note left of WorkInstanceHistory::InstanceID
+    This is FK: WorkFollowInstance.ID
+end note
+
+note left of WorkInstanceHistory::StepID
+    This is FK: WorkFollowStep.ID
+end note
+
+note left of WorkInstanceHistory::StepAction
+    This is FK: WorkFollowActionType.ID
+end note
+
+note left of WorkInstanceHistory::ModuleName
+    Same as module name on WorkFollowInstance
+    and WorkFollowModuleDefinition. It is string 
+    which was definded on source code
+end note
+
+note left of WorkFollowRole::Manager
+    This is for the case Manager check his member
+end note
+
+note left of WorkFollowInstance::ModuleName
+    This is FK: WorkFollowModuleDefinition.ID
+end note
+
+note left of WorkFollowInstance::CurrentStep
+    This is FK: WorkFollowStep.ID
+end note
+
+note right of WorkFollowStep::WorkFollowModuleID
+    This is FK: WorkFollowRole.ID
+end note
+
+note right of WorkFollowStep::RoleID
+    This is FK: WorkFollowModuleDefinition.ID
+end note
+
+note right of WorkFollowStep::ActionType
+    This is FK: WorkFollowActionType.ID
+end note
+
+note right of WorkFollowModuleDefinition::DefinitionID
+    This is FK: WorkFollowDefinition.ID
+end note
+
+note top of PurchaseOder: bang thong tin dat hang
+
+WorkFollowModuleDefinition -u-> WorkFollowDefinition
+WorkFollowStep -u-> WorkFollowModuleDefinition
+WorkFollowStep -l-> WorkFollowActionType
+WorkFollowStep -d-> WorkFollowRole
+
+WorkFollowInstance -> WorkFollowModuleDefinition
+WorkInstanceHistory -u-> WorkFollowInstance
+WorkFollowInstance -d-> WorkInstanceHistory
+
+PurchaseOder -d-> WorkFollowInstance
+
+@enduml
