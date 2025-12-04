@@ -55,28 +55,22 @@ namespace NNworking.Controllers
                 DateTime.TryParse(yckpDateStr, out yckpDate);
 
                 var query = _context.C242_YCKP_New.AsQueryable();
+                var nextSecond = yckpDate.AddSeconds(1);
+                var prevSecond = yckpDate.AddSeconds(-1);
 
-                if (!string.IsNullOrEmpty(orderNo))
-                    query = query.Where(x => x.OrderNo == orderNo);
-
-                if (!string.IsNullOrEmpty(inputStaff))
-                    query = query.Where(x => x.InputStaff == inputStaff);
-
-                if (yckpDate != default)
-                {
-                    var nextSecond = yckpDate.AddSeconds(1);
-                    var prevSecond = yckpDate.AddSeconds(-1);
-                    query = query.Where(x => x.YCKPDate > prevSecond && x.YCKPDate < nextSecond);
-                }
-
-                var list = await query.Select(x => new
-                {
-                    x.ProcessStaff,
-                    x.ProcessDept,
-                    x.YCKPProcessTime,
-                    x.Status,
-                    x.ResponseId,
-                }).ToListAsync();
+                var list = await query.Where(x =>
+                            x.InputStaff == inputStaff &&
+                            x.OrderNo == orderNo &&
+                            x.YCKPDate > prevSecond &&
+                            x.YCKPDate < nextSecond
+                    ).Select(x => new
+                    {
+                        x.ProcessStaff,
+                        x.ProcessDept,
+                        x.YCKPProcessTime,
+                        x.Status,
+                        x.ResponseId,
+                    }).ToListAsync();
 
                 return Request.CreateResponse(HttpStatusCode.OK, list);
             }
@@ -99,7 +93,7 @@ namespace NNworking.Controllers
                     .ToListAsync();
 
                 var c242_yckp_new = await _context.View_242_YCKPXL
-                    .Where(i => latestIds.Contains(i.ID) && 
+                    .Where(i => latestIds.Contains(i.ID) &&
                                 i.Status == "Đang xử lý" &&
                                 i.Deleted == false
                     )
@@ -132,6 +126,93 @@ namespace NNworking.Controllers
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<HttpResponseMessage> GetYCKPXLWithDetails()
+        {
+            try
+            {
+                var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+
+                string orderNo = queryParams.ContainsKey("OrderNo") ? queryParams["OrderNo"] : "";
+                string inputStaff = queryParams.ContainsKey("InputStaff") ? queryParams["InputStaff"] : "";
+                string yckpDateStr = queryParams.ContainsKey("YCKPDate") ? queryParams["YCKPDate"] : "";
+
+                DateTime yckpDate;
+                DateTime.TryParse(yckpDateStr, out yckpDate);
+                var nextSecond = yckpDate.AddSeconds(1);
+                var prevSecond = yckpDate.AddSeconds(-1);
+
+                var yckpRecords = await _context.View_242_YCKPXL
+                    .Where(x =>
+                            x.InputStaff == inputStaff &&
+                            x.OrderNo == orderNo &&
+                            x.YCKPDate > prevSecond &&
+                            x.YCKPDate < nextSecond
+                    )
+                    .OrderBy(x => x.YCKPProcessTime)
+                    .Select(x => new
+                    {
+                        x.OrderNo,
+                        x.OptionID,
+                        x.MachineID,
+                        x.PartId,
+                        x.Deadline,
+                        x.RankLevel,
+                        x.ProcessProduct,
+                        x.YCKPTimes,
+                        x.ProcessStatus,
+                        x.YCKPContent,
+                        x.CauseContent,
+                        x.SolutionContent,
+                        x.YCKPDate,
+                        x.YCKPDeadline,
+                        x.YCKPProcessTime,
+                        x.InputStaff,
+                        x.InputDept,
+                        x.Status,
+                        x.UpdatedStaff,
+                        x.UpdatedDept,
+                        x.UpdatedResponse,
+                        x.UpdatedReason,
+                        x.UpdatedSolution,
+                        x.CausedDept,
+                        x.CausedDetail
+                    })
+                    .ToListAsync();
+
+                if (yckpRecords == null || !yckpRecords.Any())
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Không tìm thấy bản ghi YCKP");
+                }
+
+                var allFiles = await _context.C242_YCKP_Files
+                    .Where(x =>
+                        x.StaffId == inputStaff &&
+                        x.OrderNo == orderNo &&
+                        x.Date > prevSecond &&
+                        x.Date < nextSecond
+                    )
+                    .Select(x => new
+                    {
+                        x.Path
+                    })
+                    .ToListAsync();
+
+                var result = new
+                {
+                    History = yckpRecords,
+                    Files = allFiles
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                    $"Đã xảy ra lỗi: {ex.Message}");
             }
         }
 

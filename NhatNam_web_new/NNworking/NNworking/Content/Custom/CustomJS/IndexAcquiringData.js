@@ -1,5 +1,5 @@
 ﻿
-function GetWorkingFollow(url,url2) {
+function GetWorkingFollow(url, url2) {
     $.ajax({
         url: url,
         dataType: 'JSON',
@@ -21,17 +21,16 @@ function GetWorkingFollow(url,url2) {
     });
 }
 
-function GetDataForReportNumber1(url,reportID) {
+function GetDataForReportNumber1(url, reportID) {
     $.ajax({
         url: url,
         dataType: 'JSON',
         type: 'POST',
         traditional: true,
         cache: false,
-        data: { 'reportID': reportID,'json':true},
+        data: { 'reportID': reportID, 'json': true },
         success: function (data) {
-            if (data == "NG")
-            {
+            if (data == "NG") {
                 return;
             }
 

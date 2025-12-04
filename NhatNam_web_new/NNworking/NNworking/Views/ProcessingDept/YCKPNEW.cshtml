@@ -12,7 +12,7 @@
         .Key("ID")
     )
     .ID("dxYCKPNEW")
-    .Paging(page => page.PageSize(15))
+    .Paging(page => page.PageSize(10))
     .OnExporting("onExportingYCKP")
     .Export(e => e.Enabled(true)
         .AllowExportSelectedData(true)
@@ -719,6 +719,11 @@
                         { label: 'Giải pháp', value: response.UpdatedSolution || 'N/A' }
                     ];
 
+                    if (response.Status && response.Status.trim() === 'OK' || response.Status.trim() === 'NG') {
+                        details.push({ label: 'Phòng ban nguyên nhân', value: response.CausedDept || 'N/A' });
+                        details.push({ label: 'Chi tiết nguyên nhân', value: response.CausedDetail || 'N/A' });
+                    }
+
                     details.forEach(function (detail) {
                         var detailItem = $('<div>').addClass('detail-item').css({
                             'border-bottom': '1px solid #eee',
@@ -953,124 +958,268 @@
         }
     }
 
-    function onExportingYCKP(e) {
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Sheet 1');
-
-        const titleRow = worksheet.addRow(['BÁO CÁO YÊU CẦU KHẮC PHỤC']);
-        titleRow.font = { bold: true, size: 16 };
-        worksheet.mergeCells('A1:J1');
-        titleRow.alignment = { horizontal: 'center' };
-
-        const dateRow = worksheet.addRow(['Ngày xuất: ' + new Date().toLocaleDateString('vi-VN')]);
-        worksheet.mergeCells('A2:J2');
-        dateRow.alignment = { horizontal: 'right' };
-
-        worksheet.addRow([]);
+    async function onExportingYCKP(e) {
+        e.cancel = true;
 
         const dataGrid = e.component;
-
-        const headerRow = worksheet.addRow([]);
-        const columnHeaders = [];
-        const columnWidths = [];
-
-        const visibleColumns = dataGrid.getVisibleColumns().filter(column =>
-            column.dataField && column.visible && column.caption
-        );
-
-        visibleColumns.forEach(column => {
-            columnHeaders.push(column.caption);
-            if (column.dataField.includes('Date') || column.dataField.includes('Deadline')) {
-                columnWidths.push({ width: 20 });
-            } else if (column.dataField === 'YCKPContent' ||
-                column.dataField === 'CauseContent' ||
-                column.dataField === 'SolutionContent') {
-                columnWidths.push({ width: 40 });
-            } else if (column.dataField === 'PartId') {
-                columnWidths.push({ width: 30 });
-            } else {
-                columnWidths.push({ width: 15 });
-            }
-        });
-
-        const headerCellStyle = {
-            font: { bold: true, color: { argb: 'FFFFFFFF' } },
-            fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4472C4' } },
-            border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } },
-            alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }
-        };
-
-        headerRow.values = columnHeaders;
-        headerRow.eachCell((cell, number) => {
-            cell.style = headerCellStyle;
-        });
-
         const selectedRowsData = dataGrid.getSelectedRowsData();
         const dataToExport = selectedRowsData.length > 0 ? selectedRowsData : dataGrid.getVisibleRows().map(row => row.data);
 
-        dataToExport.forEach(dataItem => {
-            const rowData = visibleColumns.map(column => {
-                let value = dataItem[column.dataField];
+        if (dataToExport.length === 0) {
+            alert('Không có dữ liệu để xuất!');
+            return;
+        }
 
-                if (value && (column.dataField.includes('Date') || column.dataField.includes('Deadline'))) {
-                    if (value instanceof Date) {
-                        return value.toLocaleString('vi-VN');
-                    } else if (typeof value === 'string') {
-                        const date = new Date(value);
-                        return isNaN(date.getTime()) ? value : date.toLocaleString('vi-VN');
-                    }
-                }
-                return value !== null && value !== undefined ? value : '';
-            });
+        try {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('YCKP');
 
-            const row = worksheet.addRow(rowData);
+            worksheet.mergeCells('A1:T1');
+            const titleCell = worksheet.getCell('A1');
+            titleCell.value = 'BÁO CÁO YÊU CẦU KHẮC PHỤC CHI TIẾT';
+            titleCell.font = { name: 'Times New Roman', bold: true, size: 14 };
+            titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getRow(1).height = 25;
 
-            row.eachCell((cell, colNumber) => {
+            worksheet.mergeCells('A2:T2');
+            const dateCell = worksheet.getCell('A2');
+            dateCell.value = `Ngày xuất: ${new Date().toLocaleDateString('vi-VN')} | Số lượng: ${dataToExport.length} YCKP`;
+            dateCell.alignment = { horizontal: 'center' };
+            dateCell.font = { name: 'Times New Roman', size: 10 };
+            worksheet.getRow(2).height = 18;
+
+            worksheet.addRow([]);
+
+            const headerRow = worksheet.addRow([
+                'Số Order',
+                'Trạng thái',
+                'Mức độ',
+                'Tên chi tiết',
+                'Deadline',
+                'Máy GC',
+                'Nguyên công',
+                'Số SP GC',
+                'Lần YCKP',
+                'Tình trạng GC',
+                'Nội dung',
+                'Nguyên nhân',
+                'Giải pháp',
+                'Hạn xử lý',
+                'NV yêu cầu',
+                'PB yêu cầu',
+                'NV xử lý',
+                'PB xử lý',
+                'Thông tin bổ sung'
+            ]);
+
+            headerRow.font = { name: 'Times New Roman', bold: true, size: 10, color: { argb: 'FFFFFFFF' } };
+            headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4472C4' } };
+            headerRow.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+            headerRow.height = 30;
+
+            worksheet.columns = [
+                { width: 12 }, 
+                { width: 12 }, 
+                { width: 10 }, 
+                { width: 15 },  
+                { width: 14 }, 
+                { width: 10 },  
+                { width: 10 }, 
+                { width: 8 },   
+                { width: 8 },   
+                { width: 12 },  
+                { width: 40 },
+                { width: 30 },  
+                { width: 30 }, 
+                { width: 14 }, 
+                { width: 12 }, 
+                { width: 10 }, 
+                { width: 12 }, 
+                { width: 10 },  
+                { width: 25 }  
+            ];
+
+            headerRow.eachCell((cell) => {
                 cell.border = {
                     top: { style: 'thin' },
                     left: { style: 'thin' },
                     bottom: { style: 'thin' },
                     right: { style: 'thin' }
                 };
+            });
 
-                if (typeof rowData[colNumber - 1] === 'number') {
-                    cell.alignment = { horizontal: 'right' };
+            let sttCounter = 1;
+            for (let idx = 0; idx < dataToExport.length; idx++) {
+                const item = dataToExport[idx];
+                await new Promise(resolve => setTimeout(resolve, 0));
+
+                let detailsData = null;
+                try {
+                    detailsData = await $.ajax({
+                        url: '@Url.Action("GetYCKPXLWithDetails", "api/C242_YCKP_New")',
+                        type: 'GET',
+                        data: { OrderNo: item.OrderNo, InputStaff: item.InputStaff, YCKPDate: item.YCKPDate }
+                    });
+                } catch (err) {
+                    console.error('GetYCKPXLWithDetails error:', err);
                 }
 
-                if (visibleColumns[colNumber - 1].dataField === 'YCKPContent' ||
-                    visibleColumns[colNumber - 1].dataField === 'CauseContent' ||
-                    visibleColumns[colNumber - 1].dataField === 'SolutionContent') {
-                    cell.alignment = { wrapText: true, vertical: 'top' };
+                const mainRow = worksheet.addRow([
+                    item.OrderNo || '',
+                    item.Status || '',
+                    item.RankLevel || '',
+                    item.PartId || '',
+                    item.Deadline ? new Date(item.Deadline).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '',
+                    item.MachineID || '',
+                    item.OptionID || '',
+                    item.ProcessProduct || '',
+                    item.YCKPTimes || '',
+                    item.ProcessStatus || '',
+                    item.YCKPContent || '',
+                    item.CauseContent || '',
+                    item.SolutionContent || '',
+                    item.YCKPDeadline ? new Date(item.YCKPDeadline).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '',
+                    item.InputStaff || '',
+                    item.InputDept || '',
+                    item.ProcessStaff || '',
+                    item.ProcessDept || '',
+                    `Ngày tạo: ${item.YCKPProcessTime ? new Date(item.YCKPProcessTime).toLocaleDateString('vi-VN') : ''}`
+                ]);
+
+                mainRow.font = { name: 'Times New Roman', size: 10 };
+                mainRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE7E6E6' } };
+                mainRow.alignment = { horizontal: 'center', vertical: 'top', wrapText: true };
+                mainRow.height = 35;
+                mainRow.eachCell((cell) => {
+                    cell.border = {
+                        top: { style: 'medium' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
+
+                if (detailsData && detailsData.History && detailsData.History.length > 0) {
+                    for (let hi = 0; hi < detailsData.History.length; hi++) {
+                        const historyItem = detailsData.History[hi];
+                        const additionalInfo = [
+                            `Ngày tạo: ${historyItem.YCKPProcessTime ? new Date(historyItem.YCKPProcessTime).toLocaleDateString('vi-VN') : ''}`,
+                            historyItem.CausedDept ? `PB gây lỗi: ${historyItem.CausedDept}` : ''
+                        ].filter(Boolean).join('\r\n');
+
+                        const responseRow = worksheet.addRow([
+                            '',
+                            historyItem.Status || '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            historyItem.UpdatedResponse || '',
+                            historyItem.UpdatedReason || '',
+                            historyItem.UpdatedSolution || '',
+                            '',
+                            '',
+                            '',
+                            historyItem.UpdatedStaff || '',
+                            historyItem.UpdatedDept || '',
+                            additionalInfo
+                        ]);
+
+                        responseRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF9F9F9' } };
+                        responseRow.alignment = { vertical: 'top', wrapText: true };
+                        responseRow.height = 30;
+                        responseRow.getCell(1).font = { name: 'Times New Roman', italic: true, color: { argb: 'FF0066CC' } };
+                        responseRow.getCell(1).alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+                        responseRow.eachCell((cell) => {
+                            cell.border = {
+                                top: { style: 'dotted', color: { argb: 'FFCCCCCC' } },
+                                left: { style: 'thin' },
+                                bottom: { style: 'dotted', color: { argb: 'FFCCCCCC' } },
+                                right: { style: 'thin' }
+                            };
+                        });
+                    }
                 }
-            });
-        });
 
-        worksheet.columns = columnWidths;
+                if (detailsData && detailsData.Files && detailsData.Files.length > 0) {
+                    const getImageAsBase64 = async (imagePath) => {
+                        try {
+                            const response = await fetch(imagePath);
+                            const blob = await response.blob();
+                            return new Promise((resolve, reject) => {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    const base64String = reader.result.split(',')[1];
+                                    resolve(base64String);
+                                };
+                                reader.onerror = reject;
+                                reader.readAsDataURL(blob);
+                            });
+                        } catch (error) {
+                            console.error('Lỗi khi tải ảnh:', imagePath, error);
+                            return null;
+                        }
+                    };
 
-        worksheet.columns.forEach(column => {
-            let maxLength = 0;
-            column.eachCell({ includeEmpty: true }, cell => {
-                const columnLength = cell.value ? cell.value.toString().length : 0;
-                maxLength = Math.max(maxLength, columnLength);
-            });
-            column.width = Math.min(Math.max(maxLength + 2, 10), 50);
-        });
+                    const getImageExtension = (path) => {
+                        const ext = path.split('.').pop().toLowerCase();
+                        if (ext === 'jpg' || ext === 'jpeg') return 'jpeg';
+                        if (ext === 'png') return 'png';
+                        return 'jpeg';  
+                    };
 
-        worksheet.eachRow(row => {
-            row.height = 20;
-        });
+                    for (let fi = 0; fi < detailsData.Files.length; fi++) {
+                        const fileItem = detailsData.Files[fi];
+                        let imagePath = fileItem.Path;
+                        const base64Image = await getImageAsBase64(imagePath);
 
-        e.cancel = true;
-        workbook.xlsx.writeBuffer().then(buffer => {
-            const blob = new Blob([buffer], { type: 'application/octet-stream' });
+                        if (base64Image) {
+                            const imageId = workbook.addImage({
+                                base64: base64Image,
+                                extension: getImageExtension(imagePath)
+                            });
+
+                            const imageRow = worksheet.addRow(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+
+                            imageRow.height = 150;
+
+                            worksheet.addImage(imageId, {
+                                tl: { col: 1, row: imageRow.number - 1 }, 
+                                ext: { width: 200, height: 200 }, 
+                                editAs: 'oneCell' 
+                            });
+
+                            imageRow.eachCell((cell) => {
+                                cell.border = {
+                                    top: { style: 'thin', color: { argb: 'FFCCCCCC' } },
+                                    left: { style: 'thin' },
+                                    bottom: { style: 'thin', color: { argb: 'FFCCCCCC' } },
+                                    right: { style: 'thin' }
+                                };
+                            });
+                        }
+                    }
+                }
+            }
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             document.body.appendChild(a);
             a.href = url;
-            a.download = `YeuCauKiemPhoi_${new Date().toISOString().split('T')[0]}.xlsx`;
+            a.download = `YCKP_ChiTiet_${new Date().toISOString().split('T')[0]}.xlsx`;
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-        });
+
+        } catch (error) {
+            console.error('Export error:', error);
+            alert('Có lỗi xảy ra khi xuất file Excel: ' + error.message);
+        }
     }
-</script>
+</script>   

@@ -24,7 +24,8 @@ namespace NNworking.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
+        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
+        {
             var c222_kaizen = _context.C222_Kaizen.Where(x => x.ID == 0).ToList();
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -45,18 +46,19 @@ namespace NNworking.Controllers
                 kaizenStatus = 0;
             }
 
-            if(!int.TryParse(queryParams["KaizenStatus"], out kaizenStatus))
+            if (!int.TryParse(queryParams["KaizenStatus"], out kaizenStatus))
             {
                 kaizenStatus = 0;
             }
-            else {
+            else
+            {
                 kaizenStatus = Convert.ToInt32(queryParams["KaizenStatus"]);
             }
 
             var c222_kaizen = _context.C222_Kaizen.Where(x => x.ID == 0).ToList();
-            if(kaizenStatus > 0)
+            if (kaizenStatus > 0)
             {
-                 GetDataByType(kaizenStatus, out c222_kaizen);
+                GetDataByType(kaizenStatus, out c222_kaizen);
             }
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -69,7 +71,7 @@ namespace NNworking.Controllers
 
         private void GetDataByType(int dataType, out List<C222_Kaizen> c222_kaizen)
         {
-            switch(dataType)
+            switch (dataType)
             {
                 case (int)StatusAfterAction.Pending:
                     GetPendingKaizen(out c222_kaizen);
@@ -117,7 +119,8 @@ namespace NNworking.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Post(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Post(FormDataCollection form)
+        {
             var model = new C222_Kaizen();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -143,8 +146,8 @@ namespace NNworking.Controllers
                     if (worFlow == null)
                     {
                         throw new Exception("Không tìm thấy thiết lập quy trình cho module Kaizen. Vui lòng liên hệ Admin");
-                    }   
-                    
+                    }
+
                     var workflowInstance = new C222_WorkFolowInstance
                     {
                         WorkFollow = worFlow.DefinitionID,
@@ -171,10 +174,11 @@ namespace NNworking.Controllers
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> Put(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_Kaizen.FirstOrDefaultAsync(item => item.ID == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "Object not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -191,7 +195,8 @@ namespace NNworking.Controllers
         }
 
         [HttpDelete]
-        public async Task Delete(FormDataCollection form) {
+        public async Task Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_Kaizen.FirstOrDefaultAsync(item => item.ID == key);
 
@@ -200,7 +205,8 @@ namespace NNworking.Controllers
         }
 
 
-        private void PopulateModel(C222_Kaizen model, IDictionary values) {
+        private void PopulateModel(C222_Kaizen model, IDictionary values)
+        {
             string ID = nameof(C222_Kaizen.ID);
             string INPUT_DATE = nameof(C222_Kaizen.InputDate);
             string STAFF_ID = nameof(C222_Kaizen.StaffID);
@@ -215,72 +221,89 @@ namespace NNworking.Controllers
             string MANAGER_COMMENT = nameof(C222_Kaizen.ManagerComment);
             string KAIZEN_DEPT_COMMENT = nameof(C222_Kaizen.KaizenDeptComment);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(INPUT_DATE)) {
+            if (values.Contains(INPUT_DATE))
+            {
                 model.InputDate = Convert.ToDateTime(values[INPUT_DATE]);
             }
 
-            if(values.Contains(STAFF_ID)) {
+            if (values.Contains(STAFF_ID))
+            {
                 model.StaffID = Convert.ToString(values[STAFF_ID]);
             }
 
-            if(values.Contains(SUBJECT)) {
+            if (values.Contains(SUBJECT))
+            {
                 model.Subject = Convert.ToString(values[SUBJECT]);
             }
 
-            if(values.Contains(PART_ID)) {
+            if (values.Contains(PART_ID))
+            {
                 model.PartID = Convert.ToString(values[PART_ID]);
             }
 
-            if(values.Contains(OPTION_ID)) {
+            if (values.Contains(OPTION_ID))
+            {
                 model.OptionID = Convert.ToString(values[OPTION_ID]);
             }
 
-            if(values.Contains(KAIZEN_TYPE)) {
+            if (values.Contains(KAIZEN_TYPE))
+            {
                 model.KaizenType = values[KAIZEN_TYPE] != null ? Convert.ToInt32(values[KAIZEN_TYPE]) : (int?)null;
             }
 
-            if(values.Contains(NOTE)) {
+            if (values.Contains(NOTE))
+            {
                 model.Note = Convert.ToString(values[NOTE]);
             }
 
-            if(values.Contains(CURRENT_PROCESS)) {
+            if (values.Contains(CURRENT_PROCESS))
+            {
                 model.CurrentProcess = Convert.ToString(values[CURRENT_PROCESS]);
             }
 
-            if(values.Contains(KAIZEN_PROCESS)) {
+            if (values.Contains(KAIZEN_PROCESS))
+            {
                 model.KaizenProcess = Convert.ToString(values[KAIZEN_PROCESS]);
             }
 
-            if(values.Contains(APPLIED_PREDICT_RESULT)) {
+            if (values.Contains(APPLIED_PREDICT_RESULT))
+            {
                 model.AppliedPredictResult = Convert.ToString(values[APPLIED_PREDICT_RESULT]);
             }
 
-            if(values.Contains(MANAGER_COMMENT)) {
+            if (values.Contains(MANAGER_COMMENT))
+            {
                 model.ManagerComment = Convert.ToString(values[MANAGER_COMMENT]);
             }
 
-            if(values.Contains(KAIZEN_DEPT_COMMENT)) {
+            if (values.Contains(KAIZEN_DEPT_COMMENT))
+            {
                 model.KaizenDeptComment = Convert.ToString(values[KAIZEN_DEPT_COMMENT]);
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);

@@ -1,4 +1,4 @@
-using DevExtreme.AspNet.Data;
+﻿using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -23,8 +23,10 @@ namespace NNworking.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
-            var c222_WorkFolowdefinition = _context.C222_WorkFolowDefinition.Select(i => new {
+        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
+        {
+            var c222_WorkFolowdefinition = _context.C222_WorkFolowDefinition.Select(i => new
+            {
                 i.ID,
                 i.WorkflowName,
                 i.Active
@@ -40,7 +42,8 @@ namespace NNworking.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Post(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Post(FormDataCollection form)
+        {
             var model = new C222_WorkFolowDefinition();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -57,17 +60,18 @@ namespace NNworking.Controllers
 
                 return Request.CreateResponse(HttpStatusCode.Created, new { result.ID });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, GetFullErrorMessage(ModelState));
             }
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> Put(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_WorkFolowDefinition.FirstOrDefaultAsync(item => item.ID == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "Object not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -83,7 +87,8 @@ namespace NNworking.Controllers
         }
 
         [HttpDelete]
-        public async Task Delete(FormDataCollection form) {
+        public async Task Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_WorkFolowDefinition.FirstOrDefaultAsync(item => item.ID == key);
 
@@ -92,37 +97,45 @@ namespace NNworking.Controllers
         }
 
 
-        private void PopulateModel(C222_WorkFolowDefinition model, IDictionary values) {
+        private void PopulateModel(C222_WorkFolowDefinition model, IDictionary values)
+        {
             string ID = nameof(C222_WorkFolowDefinition.ID);
             string WORKFLOW_NAME = nameof(C222_WorkFolowDefinition.WorkflowName);
             string ACTIVE = nameof(C222_WorkFolowDefinition.Active);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(WORKFLOW_NAME)) {
+            if (values.Contains(WORKFLOW_NAME))
+            {
                 model.WorkflowName = Convert.ToString(values[WORKFLOW_NAME]);
             }
 
-            if(values.Contains(ACTIVE)) {
+            if (values.Contains(ACTIVE))
+            {
                 model.Active = values[ACTIVE] != null ? Convert.ToBoolean(values[ACTIVE]) : (bool?)null;
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);

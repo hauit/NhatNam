@@ -1,4 +1,4 @@
-using DevExtreme.AspNet.Data;
+﻿using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -23,8 +23,10 @@ namespace NNworking.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
-            var c222_kaizentype = _context.C222_KaizenType.Select(i => new {
+        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
+        {
+            var c222_kaizentype = _context.C222_KaizenType.Select(i => new
+            {
                 i.ID,
                 i.KaizenType,
                 i.Note
@@ -40,7 +42,8 @@ namespace NNworking.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Post(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Post(FormDataCollection form)
+        {
             var model = new C222_KaizenType();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -56,10 +59,11 @@ namespace NNworking.Controllers
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> Put(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_KaizenType.FirstOrDefaultAsync(item => item.ID == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "Object not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -75,7 +79,8 @@ namespace NNworking.Controllers
         }
 
         [HttpDelete]
-        public async Task Delete(FormDataCollection form) {
+        public async Task Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_KaizenType.FirstOrDefaultAsync(item => item.ID == key);
 
@@ -84,37 +89,45 @@ namespace NNworking.Controllers
         }
 
 
-        private void PopulateModel(C222_KaizenType model, IDictionary values) {
+        private void PopulateModel(C222_KaizenType model, IDictionary values)
+        {
             string ID = nameof(C222_KaizenType.ID);
             string KAIZEN_TYPE = nameof(C222_KaizenType.KaizenType);
             string NOTE = nameof(C222_KaizenType.Note);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(KAIZEN_TYPE)) {
+            if (values.Contains(KAIZEN_TYPE))
+            {
                 model.KaizenType = Convert.ToString(values[KAIZEN_TYPE]);
             }
 
-            if(values.Contains(NOTE)) {
+            if (values.Contains(NOTE))
+            {
                 model.Note = Convert.ToString(values[NOTE]);
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);

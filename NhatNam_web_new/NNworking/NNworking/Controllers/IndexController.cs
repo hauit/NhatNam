@@ -68,7 +68,7 @@ namespace NNworking.Controllers
             }
         }
 
-        private string ConvertFromAccentCharToUnsignedChar( string sourceString)
+        private string ConvertFromAccentCharToUnsignedChar(string sourceString)
         {
             sourceString = sourceString.ToLower();
             Dictionary<string, string> listData = new Dictionary<string, string>(){
@@ -80,11 +80,11 @@ namespace NNworking.Controllers
                 { "d", "đ" },
                 { "y", "ýỳỵỷỹ" }
             };
-            
-            foreach(var item in sourceString)
+
+            foreach (var item in sourceString)
             {
                 var needToConvert = listData.Where(x => x.Value.IndexOf(item) != -1).FirstOrDefault();//.ToDictionary(x=>x.Key,x=>x.Value);
-                if(needToConvert.Key == null)
+                if (needToConvert.Key == null)
                 {
                     continue;
                 }
@@ -93,7 +93,7 @@ namespace NNworking.Controllers
                 sourceString = sourceString.Replace(item.ToString(), needToConvert.Key);
             }
 
-            return sourceString.Replace(' ','-');
+            return sourceString.Replace(' ', '-');
         }
 
         [HttpGet]
@@ -102,7 +102,7 @@ namespace NNworking.Controllers
             try
             {
                 DateTime from;
-                if(!DateTime.TryParse(fromDate,out from))
+                if (!DateTime.TryParse(fromDate, out from))
                 {
                     from = DateTime.ParseExact(fromDate.Substring(0, 24),
                               "ddd MMM d yyyy HH:mm:ss",
@@ -148,7 +148,7 @@ namespace NNworking.Controllers
                                   "ddd MMM d yyyy HH:mm:ss",
                                   System.Globalization.CultureInfo.InvariantCulture);
                 }
-                
+
                 var list = db.sp_242_GetWorkingTimePLJ1Total(from, to).ToList();
                 return Json(list, JsonRequestBehavior.AllowGet);
             }
@@ -178,7 +178,7 @@ namespace NNworking.Controllers
                                   "ddd MMM d yyyy HH:mm:ss",
                                   System.Globalization.CultureInfo.InvariantCulture).Date;
                 }
-                
+
                 var list = db.sp_242_WTS_RateTimeWorkInTotal_Machine(from, to, machineID).ToList();
                 return Json(list, JsonRequestBehavior.AllowGet);
             }
@@ -228,7 +228,7 @@ namespace NNworking.Controllers
             return View("IndexReportDetail");
         }
 
-        public JsonResult ReportID1DetailData1(string reportID,bool json)
+        public JsonResult ReportID1DetailData1(string reportID, bool json)
         {
             try
             {

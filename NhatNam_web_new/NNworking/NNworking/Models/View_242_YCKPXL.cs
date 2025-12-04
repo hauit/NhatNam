@@ -42,5 +42,7 @@ namespace NNworking.Models
         public string UpdatedResponse { get; set; }
         public string UpdatedReason { get; set; }
         public string UpdatedSolution { get; set; }
+        public string CausedDept { get; set; }
+        public string CausedDetail { get; set; }
     }
 }

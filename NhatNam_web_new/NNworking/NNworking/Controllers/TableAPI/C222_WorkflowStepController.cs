@@ -1,4 +1,4 @@
-using DevExtreme.AspNet.Data;
+﻿using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -23,8 +23,10 @@ namespace NNworking.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
-            var C222_WorkFolowStep = _context.C222_WorkFolowStep.Select(i => new {
+        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
+        {
+            var C222_WorkFolowStep = _context.C222_WorkFolowStep.Select(i => new
+            {
                 i.ID,
                 i.WorkFollowID,
                 i.StepOder,
@@ -46,7 +48,8 @@ namespace NNworking.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Post(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Post(FormDataCollection form)
+        {
             var model = new C222_WorkFolowStep();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -62,10 +65,11 @@ namespace NNworking.Controllers
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> Put(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_WorkFolowStep.FirstOrDefaultAsync(item => item.ID == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "Object not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -81,7 +85,8 @@ namespace NNworking.Controllers
         }
 
         [HttpDelete]
-        public async Task Delete(FormDataCollection form) {
+        public async Task Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_WorkFolowStep.FirstOrDefaultAsync(item => item.ID == key);
 
@@ -90,7 +95,8 @@ namespace NNworking.Controllers
         }
 
 
-        private void PopulateModel(C222_WorkFolowStep model, IDictionary values) {
+        private void PopulateModel(C222_WorkFolowStep model, IDictionary values)
+        {
             string ID = nameof(C222_WorkFolowStep.ID);
             string WORK_FOLLOW_ID = nameof(C222_WorkFolowStep.WorkFollowID);
             string STEP_ODER = nameof(C222_WorkFolowStep.StepOder);
@@ -102,39 +108,48 @@ namespace NNworking.Controllers
             string ManagerCheck = nameof(C222_WorkFolowStep.ManagerCheck);
             string IS_FINAL = nameof(C222_WorkFolowStep.IsFinal);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(WORK_FOLLOW_ID)) {
+            if (values.Contains(WORK_FOLLOW_ID))
+            {
                 model.WorkFollowID = values[WORK_FOLLOW_ID] != null ? Convert.ToInt32(values[WORK_FOLLOW_ID]) : (int?)null;
             }
 
-            if(values.Contains(STEP_ODER)) {
+            if (values.Contains(STEP_ODER))
+            {
                 model.StepOder = values[STEP_ODER] != null ? Convert.ToInt32(values[STEP_ODER]) : (int?)null;
             }
 
-            if(values.Contains(STEP_NAME)) {
+            if (values.Contains(STEP_NAME))
+            {
                 model.StepName = Convert.ToString(values[STEP_NAME]);
             }
 
-            if(values.Contains(ROLE_ID)) {
+            if (values.Contains(ROLE_ID))
+            {
                 model.RoleID = values[ROLE_ID] != null ? Convert.ToInt32(values[ROLE_ID]) : (int?)null;
             }
 
-            if(values.Contains(ACTION_TYPE)) {
+            if (values.Contains(ACTION_TYPE))
+            {
                 model.ActionType = values[ACTION_TYPE] != null ? Convert.ToInt32(values[ACTION_TYPE]) : (int?)null;
             }
 
-            if(values.Contains(NEXT_STEP_ON_APPROVE)) {
+            if (values.Contains(NEXT_STEP_ON_APPROVE))
+            {
                 model.NextStepOnApprove = values[NEXT_STEP_ON_APPROVE] != null ? Convert.ToInt32(values[NEXT_STEP_ON_APPROVE]) : (int?)null;
             }
 
-            if(values.Contains(NEXT_STEP_ON_REJECT)) {
+            if (values.Contains(NEXT_STEP_ON_REJECT))
+            {
                 model.NextStepOnReject = values[NEXT_STEP_ON_REJECT] != null ? Convert.ToInt32(values[NEXT_STEP_ON_REJECT]) : (int?)null;
             }
 
-            if(values.Contains(ManagerCheck)) {
+            if (values.Contains(ManagerCheck))
+            {
                 model.ManagerCheck = Convert.ToBoolean(values[ManagerCheck]);
             }
 
@@ -144,19 +159,23 @@ namespace NNworking.Controllers
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);

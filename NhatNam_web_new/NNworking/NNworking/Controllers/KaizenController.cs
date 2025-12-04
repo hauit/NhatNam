@@ -91,18 +91,18 @@ namespace NNworking.Controllers
                 //var data1 = _context.C222_WorkFolowStep.Where(item => item.ID == data.CurrentStep).FirstOrDefault();
                 //string alo = ModuleName;
                 var data = (from a in _context.C222_WorkFolowInstance
-                           join b in _context.C222_WorkFolowStep
-                               on new { a.ItemID, a.WorkFollow, a.CurrentStep, a.ModuleName } equals new { ItemID = kaizen.ID, WorkFollow = b.WorkFollowID, CurrentStep = b.StepOder,ModuleName = KaizenController.ModuleName }
-                           join c in _context.C222_WorkFolowRole
-                                on b.RoleID equals c.ID into roleGroup
+                            join b in _context.C222_WorkFolowStep
+                                on new { a.ItemID, a.WorkFollow, a.CurrentStep, a.ModuleName } equals new { ItemID = kaizen.ID, WorkFollow = b.WorkFollowID, CurrentStep = b.StepOder, ModuleName = KaizenController.ModuleName }
+                            join c in _context.C222_WorkFolowRole
+                                 on b.RoleID equals c.ID into roleGroup
                             from c in roleGroup.DefaultIfEmpty()
                             select new
-                           {
-                               CurrentStep = a.CurrentStep,
-                               ManagerCheck = b.ManagerCheck,
-                               OptionStep = b.OptionStep,
-                               StaffID = c.StaffID
-                           }).FirstOrDefault();
+                            {
+                                CurrentStep = a.CurrentStep,
+                                ManagerCheck = b.ManagerCheck,
+                                OptionStep = b.OptionStep,
+                                StaffID = c.StaffID
+                            }).FirstOrDefault();
                 if (data.ManagerCheck == true)
                 {
                     var per = _context.C222_Staff.Where(x => (x.StaffID == kaizen.StaffID) && (x.ngduyet == viewer || x.ngduyet2 == viewer || x.ngduyet3 == viewer)).Any();
@@ -123,7 +123,7 @@ namespace NNworking.Controllers
                 }
 
                 //var data2 = _context.C222_WorkFolowRole.Where(x => x.ID == data1.RoleID).FirstOrDefault();
-                if(data.StaffID.IndexOf(viewer) != -1)
+                if (data.StaffID.IndexOf(viewer) != -1)
                 {
                     return new List<string>() { "KaizenDeptComment" };
                 }
@@ -202,7 +202,7 @@ namespace NNworking.Controllers
                     history.InstanceID = instance.InstanceID;
                     _context.C222_WorkFolowInstanceHistory.Add(history);
                     _context.SaveChanges();
-                    return Json(new { Status = "OK", Values = "Cập nhật thành công"});
+                    return Json(new { Status = "OK", Values = "Cập nhật thành công" });
                 }
             }
             catch (Exception ex)
@@ -220,7 +220,7 @@ namespace NNworking.Controllers
                 {
                     instanceObject.CurrentStep += 1;
                     var stepObj = _context.C222_WorkFolowStep.Where(x => x.WorkFollowID == instanceObject.WorkFollow && x.StepOder == instanceObject.CurrentStep).FirstOrDefault();
-                    if(stepObj == null)
+                    if (stepObj == null)
                     {
                         instanceObject.CurrentStep -= 1;
                         instanceObject.Status = (int)StatusAfterAction.Approval;
@@ -263,7 +263,7 @@ namespace NNworking.Controllers
         private void CheckViewerPermission(string viewer, C222_Kaizen data)
         {
             List<string> editableData = GetEditableData(viewer, data);
-            if(editableData.Count <= 0)
+            if (editableData.Count <= 0)
             {
                 throw new ArgumentException("Bạn không có quyền duyệt cải tiến");
             }

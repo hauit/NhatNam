@@ -1,4 +1,4 @@
-﻿using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -34,7 +34,9 @@ namespace NNworking.Controllers
                 i.Status,
                 i.UpdatedResponse,
                 i.UpdatedReason,
-                i.UpdatedSolution
+                i.UpdatedSolution,
+                i.CausedDept,
+                i.CausedDetail
             });
 
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c242_yckp_response, loadOptions));
@@ -54,7 +56,9 @@ namespace NNworking.Controllers
                     i.Status,
                     i.UpdatedResponse,
                     i.UpdatedReason,
-                    i.UpdatedSolution
+                    i.UpdatedSolution,
+                    i.CausedDept,
+                    i.CausedDetail
                 })
                 .FirstOrDefaultAsync();
 
@@ -109,7 +113,7 @@ namespace NNworking.Controllers
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C242_YCKP_Response.FirstOrDefaultAsync(item => item.ID == key);
 
-            //_context.C242_YCKP_Response.Remove(model);
+            _context.C242_YCKP_Response.Remove(model);
             await _context.SaveChangesAsync();
         }
 
@@ -123,6 +127,8 @@ namespace NNworking.Controllers
             string UPDATED_RESPONSE = nameof(C242_YCKP_Response.UpdatedResponse);
             string UPDATED_REASON = nameof(C242_YCKP_Response.UpdatedReason);
             string UPDATED_SOLUTION = nameof(C242_YCKP_Response.UpdatedSolution);
+            string CAUSED_DEPT = nameof(C242_YCKP_Response.CausedDept);
+            string CAUSED_DETAIL = nameof(C242_YCKP_Response.CausedDetail);
 
             if (values.Contains(ID))
             {
@@ -162,6 +168,16 @@ namespace NNworking.Controllers
             if (values.Contains(UPDATED_SOLUTION))
             {
                 model.UpdatedSolution = Convert.ToString(values[UPDATED_SOLUTION]);
+            }
+
+            if (values.Contains(CAUSED_DEPT))
+            {
+                model.CausedDept = Convert.ToString(values[CAUSED_DEPT]);
+            }
+
+            if (values.Contains(CAUSED_DETAIL))
+            {
+                model.CausedDetail = Convert.ToString(values[CAUSED_DETAIL]);
             }
         }
 

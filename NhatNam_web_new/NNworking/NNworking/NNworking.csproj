@@ -4766,23 +4766,23 @@
     <Content Include="Views\ProcessingDept\YCKPNEW.cshtml" />
     <Content Include="Views\ProcessingDept\YCKPXL.cshtml" />
     <Content Include="Views\ProcessingDept\YCKPDXL.cshtml" />
+    <Content Include="Views\Kaizen\Index.cshtml" />
+    <Content Include="Views\Kaizen\KaiZenAdd.cshtml" />
+    <Content Include="Views\Kaizen\KaiZenDetail.cshtml" />
+    <Content Include="Views\Kaizen\KaizenDetail2.cshtml" />
+    <Content Include="Views\Kaizen\KaizenList.cshtml" />
+    <Content Include="Views\Kaizen\KaizenType.cshtml" />
+    <Content Include="Views\Kaizen\WorkFolowSetup.cshtml" />
+    <Content Include="Views\Shared\Dashboardv_Layout\_Kaizen.cshtml" />
+    <Content Include="Views\Shared\Dashboardv_Layout\_Workfolow.cshtml" />
     <Content Include="Views\Workfolow\Index.cshtml" />
+    <Content Include="Views\Workfolow\WorkFolowInstance.cshtml" />
+    <Content Include="Views\Workfolow\WorkFolowInstanceHistory.cshtml" />
+    <Content Include="Views\Workfolow\WorkFolowModuleDefinition.cshtml" />
+    <Content Include="Views\Workfolow\WorkFolowRole.cshtml" />
     <Content Include="Views\Workfolow\WorkflowDefinition.cshtml" />
     <Content Include="Views\Workfolow\WorkflowStep.cshtml" />
     <Content Include="Views\Workfolow\WorkfolowActionType.cshtml" />
-    <Content Include="Views\Workfolow\WorkFolowRole.cshtml" />
-    <Content Include="Views\Workfolow\WorkFolowInstanceHistory.cshtml" />
-    <Content Include="Views\Workfolow\WorkFolowInstance.cshtml" />
-    <Content Include="Views\Workfolow\WorkFolowModuleDefinition.cshtml" />
-    <Content Include="Views\Shared\Dashboardv_Layout\_Workfolow.cshtml" />
-    <Content Include="Views\Kaizen\KaiZenAdd.cshtml" />
-    <Content Include="Views\Kaizen\Index.cshtml" />
-    <Content Include="Views\Kaizen\WorkFolowSetup.cshtml" />
-    <Content Include="Views\Kaizen\KaiZenDetail.cshtml" />
-    <Content Include="Views\Shared\Dashboardv_Layout\_Kaizen.cshtml" />
-    <Content Include="Views\Kaizen\KaizenType.cshtml" />
-    <Content Include="Views\Kaizen\KaizenList.cshtml" />
-    <Content Include="Views\Kaizen\KaizenDetail2.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4928,6 +4928,9 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_Kaizen.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_KaizenAppliedResult.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_KaizenType.cs">
@@ -6182,7 +6185,6 @@
   <ItemGroup>
     <Folder Include="Controllers\ProcessingDept\ToolManagement\" />
     <Folder Include="Files\" />
-    <Folder Include="Views\Purchase\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

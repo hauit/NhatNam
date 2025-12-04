@@ -186,6 +186,34 @@
                 items.AddGroup()
                     .ColCount(2)
                     .Items(groupItems => {
+                        groupItems.AddSimple()
+                            .DataField("CausedDept")
+                            .Name("CausedDeptField")
+                            .Label(l => l.Text("Mã bộ phận gây lỗi").Location(FormLabelLocation.Top))
+                            .Editor(e => e.SelectBox()
+                                .ID("CausedDeptSelect")
+                                .DataSource(d => d.WebApi()
+                                    .RouteName("C222_DepartmentApi")
+                                    .LoadAction("Get")
+                                    .Key("ID")
+                                )
+                                .DisplayExpr("DeptName")
+                                .ValueExpr("DeptCode")
+                                .Placeholder("Chọn mã bộ phận gây lỗi")
+                                .SearchEnabled(true)
+                                .ShowClearButton(true)
+                                .Width("100%")
+                            )
+                            .Visible(false)
+                            .ColSpan(2);
+
+                        groupItems.AddSimpleFor(m => m.CausedDetail)
+                            .Name("CausedDetailField")
+                            .Label(l => l.Text("Chi tiết nguyên nhân").Location(FormLabelLocation.Top))
+                            .Editor(e => e.TextArea().Height(80).Width("100%"))
+                            .Visible(false)
+                            .ColSpan(2);
+
                         groupItems.AddSimpleFor(m => m.UpdatedResponse)
                             .Label(l => l.Text("Phản hồi").Location(FormLabelLocation.Top))
                             .Editor(e => e.TextArea().Height(80))
@@ -396,7 +424,9 @@
                             Status: formData.StatusChoice,
                             UpdatedResponse: formData.UpdatedResponse,
                             UpdatedReason: formData.UpdatedReason,
-                            UpdatedSolution: formData.UpdatedSolution
+                            UpdatedSolution: formData.UpdatedSolution,
+                            CausedDept: formData.CausedDept,   
+                            CausedDetail: formData.CausedDetail 
                         })
                     },
                     success: function(responseData) {
@@ -447,11 +477,6 @@
                     return;
                 }
 
-                if (!finalProcessStaff || finalProcessStaff.toString().trim() === '') {
-                    DevExpress.ui.notify('Người xử lý không hợp lệ', 'error', 3000);
-                    return;
-                }
-
                 $.ajax({
                     url: '/api/C242_YCKP_Response/Post',
                     method: 'POST',
@@ -463,7 +488,9 @@
                             Status: formData.StatusChoice,
                             UpdatedResponse: formData.UpdatedResponse,
                             UpdatedReason: formData.UpdatedReason,
-                            UpdatedSolution: formData.UpdatedSolution
+                            UpdatedSolution: formData.UpdatedSolution,
+                            CausedDept: null,        
+                            CausedDetail: null 
                         })
                     },
                     success: function (responseData) {
@@ -574,9 +601,12 @@
         form.option('formData', formData);
 
         const showSelects = (e.value === "NEXT");
-
         form.itemOption("ProcessDeptField", "visible", showSelects);
         form.itemOption("ProcessStaffField", "visible", showSelects);
+
+        const showCausedFields = (e.value === "OK" || e.value === "Cancel");
+        form.itemOption("CausedDeptField", "visible", showCausedFields);
+        //form.itemOption("CausedDetailField", "visible", showCausedFields);
     }
 
     function onProcessDeptChanged(e) {

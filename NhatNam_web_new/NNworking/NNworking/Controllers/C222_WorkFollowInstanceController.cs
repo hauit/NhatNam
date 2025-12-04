@@ -1,4 +1,4 @@
-using DevExtreme.AspNet.Data;
+﻿using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -23,8 +23,10 @@ namespace NNworking.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
-            var c222_WorkFolowinstance = _context.C222_WorkFolowInstance.Select(i => new {
+        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
+        {
+            var c222_WorkFolowinstance = _context.C222_WorkFolowInstance.Select(i => new
+            {
                 i.ID,
                 i.WorkFollow,
                 i.ModuleName,
@@ -45,7 +47,8 @@ namespace NNworking.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Post(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Post(FormDataCollection form)
+        {
             var model = new C222_WorkFolowInstance();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -61,10 +64,11 @@ namespace NNworking.Controllers
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> Put(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_WorkFolowInstance.FirstOrDefaultAsync(item => item.ID == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "Object not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -80,7 +84,8 @@ namespace NNworking.Controllers
         }
 
         [HttpDelete]
-        public async Task Delete(FormDataCollection form) {
+        public async Task Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_WorkFolowInstance.FirstOrDefaultAsync(item => item.ID == key);
 
@@ -89,7 +94,8 @@ namespace NNworking.Controllers
         }
 
 
-        private void PopulateModel(C222_WorkFolowInstance model, IDictionary values) {
+        private void PopulateModel(C222_WorkFolowInstance model, IDictionary values)
+        {
             string ID = nameof(C222_WorkFolowInstance.ID);
             string WORK_FOLLOW = nameof(C222_WorkFolowInstance.WorkFollow);
             string ItemID = nameof(C222_WorkFolowInstance.ItemID);
@@ -100,11 +106,13 @@ namespace NNworking.Controllers
             string CREATE_DATE = nameof(C222_WorkFolowInstance.CreateDate);
             string NOTE = nameof(C222_WorkFolowInstance.Note);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(WORK_FOLLOW)) {
+            if (values.Contains(WORK_FOLLOW))
+            {
                 model.WorkFollow = values[WORK_FOLLOW] != null ? Convert.ToInt32(values[WORK_FOLLOW]) : (int?)null;
             }
 
@@ -113,44 +121,54 @@ namespace NNworking.Controllers
                 model.ItemID = Convert.ToInt32(values[ItemID]);
             }
 
-            if (values.Contains(MODULE_NAME)) {
+            if (values.Contains(MODULE_NAME))
+            {
                 model.ModuleName = Convert.ToString(values[MODULE_NAME]);
             }
 
-            if(values.Contains(CURRENT_STEP)) {
+            if (values.Contains(CURRENT_STEP))
+            {
                 model.CurrentStep = values[CURRENT_STEP] != null ? Convert.ToInt32(values[CURRENT_STEP]) : (int?)null;
             }
 
-            if(values.Contains(STATUS)) {
+            if (values.Contains(STATUS))
+            {
                 model.Status = values[STATUS] != null ? Convert.ToInt32(values[STATUS]) : (int?)null;
             }
 
-            if(values.Contains(CREATE_BY)) {
+            if (values.Contains(CREATE_BY))
+            {
                 model.CreateBy = Convert.ToString(values[CREATE_BY]);
             }
 
-            if(values.Contains(CREATE_DATE)) {
+            if (values.Contains(CREATE_DATE))
+            {
                 model.CreateDate = values[CREATE_DATE] != null ? Convert.ToDateTime(values[CREATE_DATE]) : (DateTime?)null;
             }
 
-            if(values.Contains(NOTE)) {
+            if (values.Contains(NOTE))
+            {
                 model.Note = Convert.ToString(values[NOTE]);
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);

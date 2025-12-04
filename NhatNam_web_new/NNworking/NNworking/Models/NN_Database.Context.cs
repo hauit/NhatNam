@@ -282,7 +282,6 @@ namespace NNworking.Models
         public virtual DbSet<Welfare_Relative> Welfare_Relative { get; set; }
         public virtual DbSet<Welfare_Rule> Welfare_Rule { get; set; }
         public virtual DbSet<WorkingNotifycation> WorkingNotifycations { get; set; }
-        public virtual DbSet<C242_MachinePlanning_view> C242_MachinePlanning_view { get; set; }
         public virtual DbSet<P_LayNClamKHGcong01> P_LayNClamKHGcong01 { get; set; }
         public virtual DbSet<P_LayNClamKHGcong01_All> P_LayNClamKHGcong01_All { get; set; }
         public virtual DbSet<P_LayNClamKHGcong02> P_LayNClamKHGcong02 { get; set; }
@@ -348,6 +347,8 @@ namespace NNworking.Models
         public virtual DbSet<C222_WorkFolowModuleDefinition> C222_WorkFolowModuleDefinition { get; set; }
         public virtual DbSet<C222_WorkFolowRole> C222_WorkFolowRole { get; set; }
         public virtual DbSet<C222_WorkFolowStep> C222_WorkFolowStep { get; set; }
+        public virtual DbSet<C222_KaizenAppliedResult> C222_KaizenAppliedResult { get; set; }
+        public virtual DbSet<C242_MachinePlanning_view> C242_MachinePlanning_view { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {
@@ -1417,167 +1418,6 @@ namespace NNworking.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_242_Part_Update", iDParameter, partNoParameter, partNameParameter, customerIDParameter, supplierIDParameter, upQtyParameter, giaThanhParameter, deletedParameter);
         }
     
-        public virtual int sp_242_PartData_UpdateMaterial(Nullable<int> iD, Nullable<System.DateTime> inputDate, string materialID, string materialType, string partID, string workpiecesize, string shape, Nullable<double> thickness, string width, Nullable<double> lenght, Nullable<bool> cut, Nullable<bool> rawMachine, Nullable<bool> handFinish, Nullable<bool> hairLine, Nullable<bool> wAnod, Nullable<bool> bAnod, Nullable<bool> blast30, Nullable<bool> blast60, Nullable<bool> seal, Nullable<bool> migaki, Nullable<bool> bafu, Nullable<bool> cleanwave, Nullable<bool> vacPac, Nullable<bool> helisert, Nullable<bool> serialNo, Nullable<bool> palCoat, Nullable<bool> caciras, Nullable<bool> inLuoi, Nullable<bool> heru, Nullable<bool> niken, Nullable<bool> maiBongDP, Nullable<bool> maBong, Nullable<bool> inside, Nullable<bool> bBD, Nullable<bool> paint, string otherpro, Nullable<decimal> price, string memo, string note)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            var inputDateParameter = inputDate.HasValue ?
-                new ObjectParameter("InputDate", inputDate) :
-                new ObjectParameter("InputDate", typeof(System.DateTime));
-    
-            var materialIDParameter = materialID != null ?
-                new ObjectParameter("MaterialID", materialID) :
-                new ObjectParameter("MaterialID", typeof(string));
-    
-            var materialTypeParameter = materialType != null ?
-                new ObjectParameter("MaterialType", materialType) :
-                new ObjectParameter("MaterialType", typeof(string));
-    
-            var partIDParameter = partID != null ?
-                new ObjectParameter("PartID", partID) :
-                new ObjectParameter("PartID", typeof(string));
-    
-            var workpiecesizeParameter = workpiecesize != null ?
-                new ObjectParameter("workpiecesize", workpiecesize) :
-                new ObjectParameter("workpiecesize", typeof(string));
-    
-            var shapeParameter = shape != null ?
-                new ObjectParameter("shape", shape) :
-                new ObjectParameter("shape", typeof(string));
-    
-            var thicknessParameter = thickness.HasValue ?
-                new ObjectParameter("thickness", thickness) :
-                new ObjectParameter("thickness", typeof(double));
-    
-            var widthParameter = width != null ?
-                new ObjectParameter("width", width) :
-                new ObjectParameter("width", typeof(string));
-    
-            var lenghtParameter = lenght.HasValue ?
-                new ObjectParameter("lenght", lenght) :
-                new ObjectParameter("lenght", typeof(double));
-    
-            var cutParameter = cut.HasValue ?
-                new ObjectParameter("cut", cut) :
-                new ObjectParameter("cut", typeof(bool));
-    
-            var rawMachineParameter = rawMachine.HasValue ?
-                new ObjectParameter("rawMachine", rawMachine) :
-                new ObjectParameter("rawMachine", typeof(bool));
-    
-            var handFinishParameter = handFinish.HasValue ?
-                new ObjectParameter("handFinish", handFinish) :
-                new ObjectParameter("handFinish", typeof(bool));
-    
-            var hairLineParameter = hairLine.HasValue ?
-                new ObjectParameter("hairLine", hairLine) :
-                new ObjectParameter("hairLine", typeof(bool));
-    
-            var wAnodParameter = wAnod.HasValue ?
-                new ObjectParameter("wAnod", wAnod) :
-                new ObjectParameter("wAnod", typeof(bool));
-    
-            var bAnodParameter = bAnod.HasValue ?
-                new ObjectParameter("bAnod", bAnod) :
-                new ObjectParameter("bAnod", typeof(bool));
-    
-            var blast30Parameter = blast30.HasValue ?
-                new ObjectParameter("blast30", blast30) :
-                new ObjectParameter("blast30", typeof(bool));
-    
-            var blast60Parameter = blast60.HasValue ?
-                new ObjectParameter("blast60", blast60) :
-                new ObjectParameter("blast60", typeof(bool));
-    
-            var sealParameter = seal.HasValue ?
-                new ObjectParameter("seal", seal) :
-                new ObjectParameter("seal", typeof(bool));
-    
-            var migakiParameter = migaki.HasValue ?
-                new ObjectParameter("migaki", migaki) :
-                new ObjectParameter("migaki", typeof(bool));
-    
-            var bafuParameter = bafu.HasValue ?
-                new ObjectParameter("Bafu", bafu) :
-                new ObjectParameter("Bafu", typeof(bool));
-    
-            var cleanwaveParameter = cleanwave.HasValue ?
-                new ObjectParameter("Cleanwave", cleanwave) :
-                new ObjectParameter("Cleanwave", typeof(bool));
-    
-            var vacPacParameter = vacPac.HasValue ?
-                new ObjectParameter("VacPac", vacPac) :
-                new ObjectParameter("VacPac", typeof(bool));
-    
-            var helisertParameter = helisert.HasValue ?
-                new ObjectParameter("Helisert", helisert) :
-                new ObjectParameter("Helisert", typeof(bool));
-    
-            var serialNoParameter = serialNo.HasValue ?
-                new ObjectParameter("SerialNo", serialNo) :
-                new ObjectParameter("SerialNo", typeof(bool));
-    
-            var palCoatParameter = palCoat.HasValue ?
-                new ObjectParameter("PalCoat", palCoat) :
-                new ObjectParameter("PalCoat", typeof(bool));
-    
-            var cacirasParameter = caciras.HasValue ?
-                new ObjectParameter("Caciras", caciras) :
-                new ObjectParameter("Caciras", typeof(bool));
-    
-            var inLuoiParameter = inLuoi.HasValue ?
-                new ObjectParameter("InLuoi", inLuoi) :
-                new ObjectParameter("InLuoi", typeof(bool));
-    
-            var heruParameter = heru.HasValue ?
-                new ObjectParameter("Heru", heru) :
-                new ObjectParameter("Heru", typeof(bool));
-    
-            var nikenParameter = niken.HasValue ?
-                new ObjectParameter("Niken", niken) :
-                new ObjectParameter("Niken", typeof(bool));
-    
-            var maiBongDPParameter = maiBongDP.HasValue ?
-                new ObjectParameter("MaiBongDP", maiBongDP) :
-                new ObjectParameter("MaiBongDP", typeof(bool));
-    
-            var maBongParameter = maBong.HasValue ?
-                new ObjectParameter("MaBong", maBong) :
-                new ObjectParameter("MaBong", typeof(bool));
-    
-            var insideParameter = inside.HasValue ?
-                new ObjectParameter("Inside", inside) :
-                new ObjectParameter("Inside", typeof(bool));
-    
-            var bBDParameter = bBD.HasValue ?
-                new ObjectParameter("BBD", bBD) :
-                new ObjectParameter("BBD", typeof(bool));
-    
-            var paintParameter = paint.HasValue ?
-                new ObjectParameter("Paint", paint) :
-                new ObjectParameter("Paint", typeof(bool));
-    
-            var otherproParameter = otherpro != null ?
-                new ObjectParameter("Otherpro", otherpro) :
-                new ObjectParameter("Otherpro", typeof(string));
-    
-            var priceParameter = price.HasValue ?
-                new ObjectParameter("Price", price) :
-                new ObjectParameter("Price", typeof(decimal));
-    
-            var memoParameter = memo != null ?
-                new ObjectParameter("Memo", memo) :
-                new ObjectParameter("Memo", typeof(string));
-    
-            var noteParameter = note != null ?
-                new ObjectParameter("Note", note) :
-                new ObjectParameter("Note", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_242_PartData_UpdateMaterial", iDParameter, inputDateParameter, materialIDParameter, materialTypeParameter, partIDParameter, workpiecesizeParameter, shapeParameter, thicknessParameter, widthParameter, lenghtParameter, cutParameter, rawMachineParameter, handFinishParameter, hairLineParameter, wAnodParameter, bAnodParameter, blast30Parameter, blast60Parameter, sealParameter, migakiParameter, bafuParameter, cleanwaveParameter, vacPacParameter, helisertParameter, serialNoParameter, palCoatParameter, cacirasParameter, inLuoiParameter, heruParameter, nikenParameter, maiBongDPParameter, maBongParameter, insideParameter, bBDParameter, paintParameter, otherproParameter, priceParameter, memoParameter, noteParameter);
-        }
-    
         public virtual int sp_242_Planning_Delete(Nullable<int> iD)
         {
             var iDParameter = iD.HasValue ?
@@ -2397,6 +2237,167 @@ namespace NNworking.Models
                 new ObjectParameter("ToDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_StaffCapability_Result>("sp_Get_StaffCapability", fromDateParameter, toDateParameter);
+        }
+    
+        public virtual int sp_242_PartData_UpdateMaterial(Nullable<int> iD, string inputDate, string materialID, string materialType, string partID, string workpiecesize, string shape, Nullable<double> thickness, string width, Nullable<double> lenght, Nullable<bool> cut, Nullable<bool> rawMachine, Nullable<bool> handFinish, Nullable<bool> hairLine, Nullable<bool> wAnod, Nullable<bool> bAnod, Nullable<bool> blast30, Nullable<bool> blast60, Nullable<bool> seal, Nullable<bool> migaki, Nullable<bool> bafu, Nullable<bool> cleanwave, Nullable<bool> vacPac, Nullable<bool> helisert, Nullable<bool> serialNo, Nullable<bool> palCoat, Nullable<bool> caciras, Nullable<bool> inLuoi, Nullable<bool> heru, Nullable<bool> niken, Nullable<bool> maiBongDP, Nullable<bool> maBong, Nullable<bool> inside, Nullable<bool> bBD, Nullable<bool> paint, string otherpro, Nullable<decimal> price, string memo, string note)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            var inputDateParameter = inputDate != null ?
+                new ObjectParameter("InputDate", inputDate) :
+                new ObjectParameter("InputDate", typeof(string));
+    
+            var materialIDParameter = materialID != null ?
+                new ObjectParameter("MaterialID", materialID) :
+                new ObjectParameter("MaterialID", typeof(string));
+    
+            var materialTypeParameter = materialType != null ?
+                new ObjectParameter("MaterialType", materialType) :
+                new ObjectParameter("MaterialType", typeof(string));
+    
+            var partIDParameter = partID != null ?
+                new ObjectParameter("PartID", partID) :
+                new ObjectParameter("PartID", typeof(string));
+    
+            var workpiecesizeParameter = workpiecesize != null ?
+                new ObjectParameter("workpiecesize", workpiecesize) :
+                new ObjectParameter("workpiecesize", typeof(string));
+    
+            var shapeParameter = shape != null ?
+                new ObjectParameter("shape", shape) :
+                new ObjectParameter("shape", typeof(string));
+    
+            var thicknessParameter = thickness.HasValue ?
+                new ObjectParameter("thickness", thickness) :
+                new ObjectParameter("thickness", typeof(double));
+    
+            var widthParameter = width != null ?
+                new ObjectParameter("width", width) :
+                new ObjectParameter("width", typeof(string));
+    
+            var lenghtParameter = lenght.HasValue ?
+                new ObjectParameter("lenght", lenght) :
+                new ObjectParameter("lenght", typeof(double));
+    
+            var cutParameter = cut.HasValue ?
+                new ObjectParameter("cut", cut) :
+                new ObjectParameter("cut", typeof(bool));
+    
+            var rawMachineParameter = rawMachine.HasValue ?
+                new ObjectParameter("rawMachine", rawMachine) :
+                new ObjectParameter("rawMachine", typeof(bool));
+    
+            var handFinishParameter = handFinish.HasValue ?
+                new ObjectParameter("handFinish", handFinish) :
+                new ObjectParameter("handFinish", typeof(bool));
+    
+            var hairLineParameter = hairLine.HasValue ?
+                new ObjectParameter("hairLine", hairLine) :
+                new ObjectParameter("hairLine", typeof(bool));
+    
+            var wAnodParameter = wAnod.HasValue ?
+                new ObjectParameter("wAnod", wAnod) :
+                new ObjectParameter("wAnod", typeof(bool));
+    
+            var bAnodParameter = bAnod.HasValue ?
+                new ObjectParameter("bAnod", bAnod) :
+                new ObjectParameter("bAnod", typeof(bool));
+    
+            var blast30Parameter = blast30.HasValue ?
+                new ObjectParameter("blast30", blast30) :
+                new ObjectParameter("blast30", typeof(bool));
+    
+            var blast60Parameter = blast60.HasValue ?
+                new ObjectParameter("blast60", blast60) :
+                new ObjectParameter("blast60", typeof(bool));
+    
+            var sealParameter = seal.HasValue ?
+                new ObjectParameter("seal", seal) :
+                new ObjectParameter("seal", typeof(bool));
+    
+            var migakiParameter = migaki.HasValue ?
+                new ObjectParameter("migaki", migaki) :
+                new ObjectParameter("migaki", typeof(bool));
+    
+            var bafuParameter = bafu.HasValue ?
+                new ObjectParameter("Bafu", bafu) :
+                new ObjectParameter("Bafu", typeof(bool));
+    
+            var cleanwaveParameter = cleanwave.HasValue ?
+                new ObjectParameter("Cleanwave", cleanwave) :
+                new ObjectParameter("Cleanwave", typeof(bool));
+    
+            var vacPacParameter = vacPac.HasValue ?
+                new ObjectParameter("VacPac", vacPac) :
+                new ObjectParameter("VacPac", typeof(bool));
+    
+            var helisertParameter = helisert.HasValue ?
+                new ObjectParameter("Helisert", helisert) :
+                new ObjectParameter("Helisert", typeof(bool));
+    
+            var serialNoParameter = serialNo.HasValue ?
+                new ObjectParameter("SerialNo", serialNo) :
+                new ObjectParameter("SerialNo", typeof(bool));
+    
+            var palCoatParameter = palCoat.HasValue ?
+                new ObjectParameter("PalCoat", palCoat) :
+                new ObjectParameter("PalCoat", typeof(bool));
+    
+            var cacirasParameter = caciras.HasValue ?
+                new ObjectParameter("Caciras", caciras) :
+                new ObjectParameter("Caciras", typeof(bool));
+    
+            var inLuoiParameter = inLuoi.HasValue ?
+                new ObjectParameter("InLuoi", inLuoi) :
+                new ObjectParameter("InLuoi", typeof(bool));
+    
+            var heruParameter = heru.HasValue ?
+                new ObjectParameter("Heru", heru) :
+                new ObjectParameter("Heru", typeof(bool));
+    
+            var nikenParameter = niken.HasValue ?
+                new ObjectParameter("Niken", niken) :
+                new ObjectParameter("Niken", typeof(bool));
+    
+            var maiBongDPParameter = maiBongDP.HasValue ?
+                new ObjectParameter("MaiBongDP", maiBongDP) :
+                new ObjectParameter("MaiBongDP", typeof(bool));
+    
+            var maBongParameter = maBong.HasValue ?
+                new ObjectParameter("MaBong", maBong) :
+                new ObjectParameter("MaBong", typeof(bool));
+    
+            var insideParameter = inside.HasValue ?
+                new ObjectParameter("Inside", inside) :
+                new ObjectParameter("Inside", typeof(bool));
+    
+            var bBDParameter = bBD.HasValue ?
+                new ObjectParameter("BBD", bBD) :
+                new ObjectParameter("BBD", typeof(bool));
+    
+            var paintParameter = paint.HasValue ?
+                new ObjectParameter("Paint", paint) :
+                new ObjectParameter("Paint", typeof(bool));
+    
+            var otherproParameter = otherpro != null ?
+                new ObjectParameter("Otherpro", otherpro) :
+                new ObjectParameter("Otherpro", typeof(string));
+    
+            var priceParameter = price.HasValue ?
+                new ObjectParameter("Price", price) :
+                new ObjectParameter("Price", typeof(decimal));
+    
+            var memoParameter = memo != null ?
+                new ObjectParameter("Memo", memo) :
+                new ObjectParameter("Memo", typeof(string));
+    
+            var noteParameter = note != null ?
+                new ObjectParameter("Note", note) :
+                new ObjectParameter("Note", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_242_PartData_UpdateMaterial", iDParameter, inputDateParameter, materialIDParameter, materialTypeParameter, partIDParameter, workpiecesizeParameter, shapeParameter, thicknessParameter, widthParameter, lenghtParameter, cutParameter, rawMachineParameter, handFinishParameter, hairLineParameter, wAnodParameter, bAnodParameter, blast30Parameter, blast60Parameter, sealParameter, migakiParameter, bafuParameter, cleanwaveParameter, vacPacParameter, helisertParameter, serialNoParameter, palCoatParameter, cacirasParameter, inLuoiParameter, heruParameter, nikenParameter, maiBongDPParameter, maBongParameter, insideParameter, bBDParameter, paintParameter, otherproParameter, priceParameter, memoParameter, noteParameter);
         }
     }
 }

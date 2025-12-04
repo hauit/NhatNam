@@ -12,17 +12,12 @@ namespace NNworking.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class C242_YCKP_Response
+    public partial class C222_KaizenAppliedResult
     {
         public int ID { get; set; }
-        public string UpdatedStaff { get; set; }
-        public string UpdatedDept { get; set; }
-        public System.DateTime Date { get; set; }
-        public string Status { get; set; }
-        public string UpdatedResponse { get; set; }
-        public string UpdatedReason { get; set; }
-        public string UpdatedSolution { get; set; }
-        public string CausedDept { get; set; }
-        public string CausedDetail { get; set; }
+        public int KaizenID { get; set; }
+        public string BeforeApplied { get; set; }
+        public string AfterApplied { get; set; }
+        public string KaizenEffectiveness { get; set; }
     }
 }

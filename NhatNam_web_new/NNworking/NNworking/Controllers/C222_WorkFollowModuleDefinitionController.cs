@@ -1,4 +1,4 @@
-using DevExtreme.AspNet.Data;
+﻿using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -23,8 +23,10 @@ namespace NNworking.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
-            var c222_WorkFolowmoduledefinition = _context.C222_WorkFolowModuleDefinition.Select(i => new {
+        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
+        {
+            var c222_WorkFolowmoduledefinition = _context.C222_WorkFolowModuleDefinition.Select(i => new
+            {
                 i.ID,
                 i.DefinitionID,
                 i.ModuleName,
@@ -43,7 +45,8 @@ namespace NNworking.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Post(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Post(FormDataCollection form)
+        {
             var model = new C222_WorkFolowModuleDefinition();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -59,10 +62,11 @@ namespace NNworking.Controllers
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> Put(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_WorkFolowModuleDefinition.FirstOrDefaultAsync(item => item.ID == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "Object not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -78,7 +82,8 @@ namespace NNworking.Controllers
         }
 
         [HttpDelete]
-        public async Task Delete(FormDataCollection form) {
+        public async Task Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_WorkFolowModuleDefinition.FirstOrDefaultAsync(item => item.ID == key);
 
@@ -87,7 +92,8 @@ namespace NNworking.Controllers
         }
 
 
-        private void PopulateModel(C222_WorkFolowModuleDefinition model, IDictionary values) {
+        private void PopulateModel(C222_WorkFolowModuleDefinition model, IDictionary values)
+        {
             string ID = nameof(C222_WorkFolowModuleDefinition.ID);
             string DEFINITION_ID = nameof(C222_WorkFolowModuleDefinition.DefinitionID);
             string MODULE_NAME = nameof(C222_WorkFolowModuleDefinition.ModuleName);
@@ -95,44 +101,54 @@ namespace NNworking.Controllers
             string ACTIVE = nameof(C222_WorkFolowModuleDefinition.Active);
             string DELETED = nameof(C222_WorkFolowModuleDefinition.Deleted);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(DEFINITION_ID)) {
+            if (values.Contains(DEFINITION_ID))
+            {
                 model.DefinitionID = values[DEFINITION_ID] != null ? Convert.ToInt32(values[DEFINITION_ID]) : (int?)null;
             }
 
-            if(values.Contains(MODULE_NAME)) {
+            if (values.Contains(MODULE_NAME))
+            {
                 model.ModuleName = Convert.ToString(values[MODULE_NAME]);
             }
 
-            if(values.Contains(NOTE)) {
+            if (values.Contains(NOTE))
+            {
                 model.Note = Convert.ToString(values[NOTE]);
             }
 
-            if(values.Contains(ACTIVE)) {
+            if (values.Contains(ACTIVE))
+            {
                 model.Active = values[ACTIVE] != null ? Convert.ToBoolean(values[ACTIVE]) : (bool?)null;
             }
 
-            if(values.Contains(DELETED)) {
+            if (values.Contains(DELETED))
+            {
                 model.Deleted = values[DELETED] != null ? Convert.ToBoolean(values[DELETED]) : (bool?)null;
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);
