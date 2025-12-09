@@ -314,8 +314,6 @@
 				<EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKP" Width="1.5" PointX="55.375" PointY="56.75" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP_Files" Width="1.5" PointX="57.375" PointY="19.75" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP_New" Width="1.5" PointX="57.375" PointY="38.75" />
-				<EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP_Response" Width="1.5" PointX="57.375" PointY="45.75" />
-				<EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKPXL" Width="1.5" PointX="57.375" PointY="49.75" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C222_Kaizen" Width="1.5" PointX="57.75" PointY="57.75" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C222_KaizenType" Width="1.5" PointX="0.75" PointY="58.75" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowActionType" Width="1.5" PointX="2.75" PointY="58.75" />
@@ -327,6 +325,8 @@
 				<EntityTypeShape EntityType="NN_DatabaseModel.C222_WorkFolowStep" Width="1.5" PointX="59.75" PointY="3.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_KaizenAppliedResult" Width="1.5" PointX="59.375" PointY="7.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_MachinePlanning_view" Width="1.5" PointX="59.375" PointY="10.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP_Response" Width="1.5" PointX="57.375" PointY="45.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKPXL" Width="1.5" PointX="57.375" PointY="49.75" />
 			</Diagram>
 		</edmx:Diagrams>
 	</edmx:Designer>

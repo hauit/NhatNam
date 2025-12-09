@@ -439,7 +439,26 @@ namespace NNworking.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetListMachine(string date,string department)
+        public JsonResult GetListGroupMachine()
+        {
+            try
+            {
+                NN_DatabaseEntities db = new NN_DatabaseEntities();
+                var data1 = (from a in db.C222_Machine
+                             select new
+                             {
+                                 a.MachineGroup
+                             }).ToList().Distinct();
+                return Json(new { Status = "OK", Values = data1 }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Status = "NG", Values = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetListMachine(string date,string department, string machineGroup)
         {
             try
             {
@@ -453,7 +472,7 @@ namespace NNworking.Controllers
 
                 dateTime = dateTime.Date;
                 NN_DatabaseEntities db = new NN_DatabaseEntities();
-                var data1 = db.sp_GetMachineHavePlan(dateTime, department).ToList();
+                var data1 = db.sp_GetMachineHavePlanByGroup(dateTime, department, machineGroup).ToList();
                 return Json(new { Status = "OK", Values = data1 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

@@ -5972,6 +5972,9 @@
     <Compile Include="Models\sp_GetAllOrder_Result.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_GetMachineHavePlanByGroup_Result.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_GetMachineHavePlan_Result.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>

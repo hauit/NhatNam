@@ -377,6 +377,7 @@
     var shift = '';
     var machineID = '';
     var department = '';
+    var machineGroup = '';
     $(document).ready(function () {
         /** các hàm dùng chug cho popup**/
         $(this).keydown(function (event) {
@@ -602,10 +603,10 @@
 
         var date = getDateValue();
         $.ajax({
-            url: '@Url.Action("GetListMachine", "WTS")',
+            url: '@Url.Action("GetListGroupMachine", "WTS")',
             dataType: 'Json',
             type: 'POST',
-            data: { 'date': date, 'department': department },
+            data: {  },
             cache: false,
             success: function (data) {
                 if (data.Status != "OK")
@@ -616,23 +617,64 @@
 
                 var GroupMachineBT = "";
                 $.each(data.Values, function (i, val) {
-                    var color = "red";
-                    if (val.Active == true) {
-                        color = "blue";
-                    }
-
-                    if (val.ID == 0)
-                    {
-                        GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;background-color:' + color + '" type="Button" tabindex="" id="' + val.Key + '" name=""  value="' + val.Key + '" onclick="ListMachine(\'' + val.Key + '\')"> ';
-                        return;
-                    }
-
-                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;background-color:' + color + '" type="Button" tabindex="" id="' + val.Key + '" name=""  value="' + val.Key + '" onclick="ListMachine(\'' + val.Key + '\')"> ';
+                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;" type="Button" tabindex="" id="' + val.MachineGroup + '" name=""  value="' + val.MachineGroup + '" onclick="loadMachineList(\'' + val.MachineGroup + '\')"> ';
                 });
                 $("#MachineGroupButton").html(GroupMachineBT);
             },
         });
     }
+
+    function loadMachineList(group) {
+    machineGroup = group;
+    if (department == '')
+    {
+        alert('Chưa chọn bộ phận làm việc. Vui lòng chọn bộ phận!');
+        return;
+    }
+        if (machineGroup == '')
+    {
+        alert('Chưa chọn nhóm máy. Vui lòng chọn nhóm máy!');
+        return;
+    }
+
+    //switch(department)
+    //{
+    //    case 'Xuong':
+    //}
+
+    var date = getDateValue();
+    $.ajax({
+        url: '@Url.Action("GetListMachine", "WTS")',
+        dataType: 'Json',
+        type: 'POST',
+        data: { 'date': date, 'department': department, 'machineGroup': machineGroup },
+        cache: false,
+        success: function (data) {
+            if (data.Status != "OK")
+            {
+                alert(data.Values);
+                return;
+            }
+
+            var GroupMachineBT = "";
+            $.each(data.Values, function (i, val) {
+                var color = "red";
+                if (val.Active == true) {
+                    color = "blue";
+                }
+
+                if (val.ID == 0)
+                {
+                    GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;background-color:' + color + '" type="Button" tabindex="" id="' + val.Key + '" name=""  value="' + val.Key + '" onclick="ListMachine(\'' + val.Key + '\')"> ';
+                    return;
+                }
+
+                GroupMachineBT += '<input class="btn btn-green" style="margin-top: 10px;background-color:' + color + '" type="Button" tabindex="" id="' + val.Key + '" name=""  value="' + val.Key + '" onclick="ListMachine(\'' + val.Key + '\')"> ';
+            });
+            $("#MachineGroupButton").html(GroupMachineBT);
+        },
+    });
+}
 
     function loadDepartment() {
         machineID = '';
@@ -850,12 +892,17 @@
         });
     }
 
-    function ShowListWorkID(){
+    function ShowListWorkID() {
+        var dpt = department;
+        if (department.toLowerCase() == 'xuong' && machineGroup.toLowerCase() == 'duc') {
+            dpt = machineGroup;
+        }
+
         $.ajax({
         url: '@Url.Action("List_WorkID", "WTS")',
         dataType: 'Json',
         type: 'GET',
-        data: { 'dept': department },
+        data: { 'dept': dpt },
         cache: false,
         success: function (data) {
             var i = 0;

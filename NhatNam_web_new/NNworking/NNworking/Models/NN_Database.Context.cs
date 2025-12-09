@@ -336,8 +336,6 @@ namespace NNworking.Models
         public virtual DbSet<View_242_YCKP> View_242_YCKP { get; set; }
         public virtual DbSet<C242_YCKP_Files> C242_YCKP_Files { get; set; }
         public virtual DbSet<C242_YCKP_New> C242_YCKP_New { get; set; }
-        public virtual DbSet<C242_YCKP_Response> C242_YCKP_Response { get; set; }
-        public virtual DbSet<View_242_YCKPXL> View_242_YCKPXL { get; set; }
         public virtual DbSet<C222_Kaizen> C222_Kaizen { get; set; }
         public virtual DbSet<C222_KaizenType> C222_KaizenType { get; set; }
         public virtual DbSet<C222_WorkFolowActionType> C222_WorkFolowActionType { get; set; }
@@ -349,6 +347,8 @@ namespace NNworking.Models
         public virtual DbSet<C222_WorkFolowStep> C222_WorkFolowStep { get; set; }
         public virtual DbSet<C222_KaizenAppliedResult> C222_KaizenAppliedResult { get; set; }
         public virtual DbSet<C242_MachinePlanning_view> C242_MachinePlanning_view { get; set; }
+        public virtual DbSet<C242_YCKP_Response> C242_YCKP_Response { get; set; }
+        public virtual DbSet<View_242_YCKPXL> View_242_YCKPXL { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {
@@ -2219,7 +2219,7 @@ namespace NNworking.Models
                 new ObjectParameter("toDate", toDate) :
                 new ObjectParameter("toDate", typeof(System.DateTime));
     
-            var shiftParameter = shift != "" ?
+            var shiftParameter = shift != null ?
                 new ObjectParameter("shift", shift) :
                 new ObjectParameter("shift", typeof(string));
     
@@ -2239,15 +2239,15 @@ namespace NNworking.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_StaffCapability_Result>("sp_Get_StaffCapability", fromDateParameter, toDateParameter);
         }
     
-        public virtual int sp_242_PartData_UpdateMaterial(Nullable<int> iD, string inputDate, string materialID, string materialType, string partID, string workpiecesize, string shape, Nullable<double> thickness, string width, Nullable<double> lenght, Nullable<bool> cut, Nullable<bool> rawMachine, Nullable<bool> handFinish, Nullable<bool> hairLine, Nullable<bool> wAnod, Nullable<bool> bAnod, Nullable<bool> blast30, Nullable<bool> blast60, Nullable<bool> seal, Nullable<bool> migaki, Nullable<bool> bafu, Nullable<bool> cleanwave, Nullable<bool> vacPac, Nullable<bool> helisert, Nullable<bool> serialNo, Nullable<bool> palCoat, Nullable<bool> caciras, Nullable<bool> inLuoi, Nullable<bool> heru, Nullable<bool> niken, Nullable<bool> maiBongDP, Nullable<bool> maBong, Nullable<bool> inside, Nullable<bool> bBD, Nullable<bool> paint, string otherpro, Nullable<decimal> price, string memo, string note)
+        public virtual int sp_242_PartData_UpdateMaterial(Nullable<int> iD, Nullable<System.DateTime> inputDate, string materialID, string materialType, string partID, string workpiecesize, string shape, Nullable<double> thickness, string width, Nullable<double> lenght, Nullable<bool> cut, Nullable<bool> rawMachine, Nullable<bool> handFinish, Nullable<bool> hairLine, Nullable<bool> wAnod, Nullable<bool> bAnod, Nullable<bool> blast30, Nullable<bool> blast60, Nullable<bool> seal, Nullable<bool> migaki, Nullable<bool> bafu, Nullable<bool> cleanwave, Nullable<bool> vacPac, Nullable<bool> helisert, Nullable<bool> serialNo, Nullable<bool> palCoat, Nullable<bool> caciras, Nullable<bool> inLuoi, Nullable<bool> heru, Nullable<bool> niken, Nullable<bool> maiBongDP, Nullable<bool> maBong, Nullable<bool> inside, Nullable<bool> bBD, Nullable<bool> paint, string otherpro, Nullable<decimal> price, string memo, string note)
         {
             var iDParameter = iD.HasValue ?
                 new ObjectParameter("ID", iD) :
                 new ObjectParameter("ID", typeof(int));
     
-            var inputDateParameter = inputDate != null ?
+            var inputDateParameter = inputDate.HasValue ?
                 new ObjectParameter("InputDate", inputDate) :
-                new ObjectParameter("InputDate", typeof(string));
+                new ObjectParameter("InputDate", typeof(System.DateTime));
     
             var materialIDParameter = materialID != null ?
                 new ObjectParameter("MaterialID", materialID) :
@@ -2398,6 +2398,23 @@ namespace NNworking.Models
                 new ObjectParameter("Note", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_242_PartData_UpdateMaterial", iDParameter, inputDateParameter, materialIDParameter, materialTypeParameter, partIDParameter, workpiecesizeParameter, shapeParameter, thicknessParameter, widthParameter, lenghtParameter, cutParameter, rawMachineParameter, handFinishParameter, hairLineParameter, wAnodParameter, bAnodParameter, blast30Parameter, blast60Parameter, sealParameter, migakiParameter, bafuParameter, cleanwaveParameter, vacPacParameter, helisertParameter, serialNoParameter, palCoatParameter, cacirasParameter, inLuoiParameter, heruParameter, nikenParameter, maiBongDPParameter, maBongParameter, insideParameter, bBDParameter, paintParameter, otherproParameter, priceParameter, memoParameter, noteParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetMachineHavePlanByGroup_Result> sp_GetMachineHavePlanByGroup(Nullable<System.DateTime> date, string department, string machineGroup)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("date", date) :
+                new ObjectParameter("date", typeof(System.DateTime));
+    
+            var departmentParameter = department != null ?
+                new ObjectParameter("department", department) :
+                new ObjectParameter("department", typeof(string));
+    
+            var machineGroupParameter = machineGroup != null ?
+                new ObjectParameter("machineGroup", machineGroup) :
+                new ObjectParameter("machineGroup", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetMachineHavePlanByGroup_Result>("sp_GetMachineHavePlanByGroup", dateParameter, departmentParameter, machineGroupParameter);
         }
     }
 }

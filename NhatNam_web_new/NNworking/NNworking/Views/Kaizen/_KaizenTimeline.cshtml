@@ -1,0 +1,160 @@
+﻿<div class="timeline-horizontal">
+
+    <style>
+        .timeline-horizontal {
+            font-family: Arial, sans-serif;
+            padding: 20px 0;
+        }
+
+            .timeline-horizontal .timeline-wrapper {
+                position: relative;
+                width: 100%;
+                margin: auto;
+                padding: 40px 0;
+            }
+
+            /* Line chính giữa */
+            .timeline-horizontal .middle-line {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: #d0d0d0;
+                transform: translateY(-50%);
+            }
+
+            /* Hàng timeline */
+            .timeline-horizontal .timeline-items {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+            }
+
+            /* Một item */
+            .timeline-horizontal .timeline-item {
+                position: relative;
+                text-align: center;
+                width: 20%;
+            }
+
+            /* Nút ngày */
+            .timeline-horizontal .date {
+                width: 60px;
+                height: 60px;
+                background: white;
+                border: 3px solid #00b0bd;
+                border-radius: 50%;
+                margin: auto;
+                position: relative;
+                z-index: 2;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-weight: bold;
+            }
+
+                .timeline-horizontal .date p {
+                    margin: 0;
+                    font-size: 13px;
+                    line-height: 1.1;
+                }
+
+            /* Box nội dung */
+            .timeline-horizontal .box-content {
+                width: 150px;
+                background: #00b0bd;
+                color: white;
+                padding: 2px;
+                border-radius: 8px;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                text-align: center;
+            }
+
+                /* Mũi tên */
+                .timeline-horizontal .box-content::after {
+                    content: "";
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border: 10px solid transparent;
+                }
+
+            /* Box trên */
+            .timeline-horizontal .box-top .box-content {
+                bottom: 50px;
+            }
+
+                .timeline-horizontal .box-top .box-content::after {
+                    top: 100%;
+                    border-top-color: #00b0bd;
+                }
+
+            /* Box dưới */
+            .timeline-horizontal .box-bottom .box-content {
+                top: 50px;
+            }
+
+            .timeline-horizontal .box-bottom .box-content::after {
+                bottom: 100%;
+                border-bottom-color: #00b0bd;
+            }
+    </style>
+
+    <section class="timeline-wrapper">
+        <div class="middle-line"></div>
+
+        <div class="timeline-items">
+
+            <!-- ITEM 1 -->
+            <div class="timeline-item box-top">
+                <div class="date">
+                    <p>12:30</p>
+                    <p>2025/12/14</p>
+                </div>
+                <div class="box-content">
+                    khởi tạo bởi 0002-Trạch Văn Đoành
+                </div>
+            </div>
+
+            <!-- ITEM 2 -->
+            <div class="timeline-item box-bottom"  style="">
+                <div class="date">
+                    <p>12:30</p>
+                    <p>2025/12/16</p>
+                </div>
+                <div class="box-content">
+                    Quản lý chấp thuận (0501-Vương Văn Sênh)
+                </div>
+            </div>
+
+            <!-- ITEM 3 -->
+            <div class="timeline-item box-top">
+                <div class="date">
+                    <p>12:30</p>
+                    <p>2025/12/18</p>
+                </div>
+                <div class="box-content">
+                    Bộ phận kĩ thuật chấp nhận (0010-Dùng A Tín)
+                </div>
+            </div>
+
+            <!-- ITEM 4 -->
+            <div class="timeline-item box-bottom">
+                <div class="date">
+                    <p>12:30</p>
+                    <p>2025/12/18</p>
+                </div>
+                <div class="box-content">
+                    Bộ phận kaizen chấp nhận (0011-Dùng A Tà)
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
