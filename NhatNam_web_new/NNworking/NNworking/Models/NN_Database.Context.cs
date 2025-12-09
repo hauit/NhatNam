@@ -2219,7 +2219,7 @@ namespace NNworking.Models
                 new ObjectParameter("toDate", toDate) :
                 new ObjectParameter("toDate", typeof(System.DateTime));
     
-            var shiftParameter = shift != null ?
+            var shiftParameter = shift != "" ?
                 new ObjectParameter("shift", shift) :
                 new ObjectParameter("shift", typeof(string));
     
