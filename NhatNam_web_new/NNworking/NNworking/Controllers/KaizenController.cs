@@ -45,6 +45,14 @@ namespace NNworking.Controllers
                 {
                     return HttpNotFound();
                 }
+                var historyApp = GetApprovalHistory(kaizen.ID, _context);
+                var kaizenTemp = new C222_Kaizen();
+                kaizenTemp.InputDate = kaizen.InputDate;
+                kaizenTemp.Note = $@"Nhập cải tiến bởi {kaizen.StaffID}";
+                kaizenTemp.ID = -2;
+                historyApp.Insert(0, kaizenTemp);
+
+                ViewBag.HisoryApp = historyApp;
                 List<string> editableData = GetEditableData(staffID, kaizen);
                 ViewBag.EdiableData = editableData;
                 ViewBag.Viewer = staffID;
@@ -80,6 +88,47 @@ namespace NNworking.Controllers
                 ViewBag.KaizenEffectiveness = kaizen.KaizenEffectiveness;
             }
             return View("KaizenDetail2");
+        }
+
+        private List<C222_Kaizen> GetApprovalHistory(int iD, NN_DatabaseEntities _context)
+        {
+            var data = (from a in _context.C222_WorkFolowInstance
+                       join b in _context.C222_WorkFolowInstanceHistory
+                           on new {a.ID, a.ItemID} equals new { ID = (int)b.InstanceID, ItemID = iD }
+                       select new
+                       {
+                           b.ActionDate,
+                           b.StepAction,
+                           b.ActionBy ,
+                           b.StatusAfterAction,
+                           a.Status
+                       }).ToList();
+            List<C222_Kaizen> result = new List<C222_Kaizen>();
+            if (data.Count == 0)
+            {
+                return result;
+            }
+
+            for (int i = 0; i < data.Count; i ++)
+            {
+                C222_Kaizen kaizen = new C222_Kaizen();
+                kaizen.InputDate = (DateTime)data[i].ActionDate;
+                string note = $@"Cải tiến đã {(data[i].StepAction == (int)StatusAfterAction.Approval ? "Chấp nhận" : "từ chối")} bởi {data[i].ActionBy}";
+                kaizen.Note = note;
+                kaizen.ID = (int)data[i].StatusAfterAction;
+                result.Add(kaizen);
+                    
+                if(i == (data.Count - 1) && data[i].Status == (int)StatusAfterAction.Pending)
+                {
+                    C222_Kaizen kaizenLast = new C222_Kaizen();
+                    kaizenLast.InputDate = DateTime.Now.Date.AddMonths(10);
+                    kaizenLast.Note = "Đang chờ";
+                    kaizenLast.ID = -1;
+                    result.Add(kaizenLast);
+                }
+            }
+
+            return result;
         }
 
         private List<string> GetEditableData(string viewer, C222_Kaizen kaizen)

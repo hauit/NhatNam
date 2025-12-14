@@ -109,9 +109,23 @@
         <div class="middle-line"></div>
 
         <div class="timeline-items">
+            @{
+                var list = (List<NNworking.Models.C222_Kaizen>)ViewBag.HisoryApp;
+                for (int i = 0; i < list.Count; i ++){
+                    <div class="timeline-item @(i % 2 == 0 ? "box-top" : "box-bottom")">
+                        <div class="date">
+                            <p>@list[i].InputDate.ToString("HH:mm")</p>
+                            <p>@list[i].InputDate.ToString("yyyy/MM/dd")</p>
+                        </div>
+                        <div class="box-content">
+                            @list[i].Note
+                        </div>
+                    </div>
+                }
+            }
 
             <!-- ITEM 1 -->
-            <div class="timeline-item box-top">
+            <!--<div class="timeline-item box-top">
                 <div class="date">
                     <p>12:30</p>
                     <p>2025/12/14</p>
@@ -119,10 +133,10 @@
                 <div class="box-content">
                     khởi tạo bởi 0002-Trạch Văn Đoành
                 </div>
-            </div>
+            </div>-->
 
             <!-- ITEM 2 -->
-            <div class="timeline-item box-bottom"  style="">
+            <!--<div class="timeline-item box-bottom" style="">
                 <div class="date">
                     <p>12:30</p>
                     <p>2025/12/16</p>
@@ -130,10 +144,10 @@
                 <div class="box-content">
                     Quản lý chấp thuận (0501-Vương Văn Sênh)
                 </div>
-            </div>
+            </div>-->
 
             <!-- ITEM 3 -->
-            <div class="timeline-item box-top">
+            <!--<div class="timeline-item box-top">
                 <div class="date">
                     <p>12:30</p>
                     <p>2025/12/18</p>
@@ -141,10 +155,10 @@
                 <div class="box-content">
                     Bộ phận kĩ thuật chấp nhận (0010-Dùng A Tín)
                 </div>
-            </div>
+            </div>-->
 
             <!-- ITEM 4 -->
-            <div class="timeline-item box-bottom">
+            <!--<div class="timeline-item box-bottom">
                 <div class="date">
                     <p>12:30</p>
                     <p>2025/12/18</p>
@@ -152,7 +166,7 @@
                 <div class="box-content">
                     Bộ phận kaizen chấp nhận (0011-Dùng A Tà)
                 </div>
-            </div>
+            </div>-->
 
         </div>
     </section>

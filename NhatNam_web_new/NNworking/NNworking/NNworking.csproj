@@ -4783,6 +4783,7 @@
     <Content Include="Views\Workfolow\WorkflowDefinition.cshtml" />
     <Content Include="Views\Workfolow\WorkflowStep.cshtml" />
     <Content Include="Views\Workfolow\WorkfolowActionType.cshtml" />
+    <Content Include="Views\Kaizen\_KaizenTimeline.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
