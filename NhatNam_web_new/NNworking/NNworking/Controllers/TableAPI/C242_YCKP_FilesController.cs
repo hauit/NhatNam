@@ -6,7 +6,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -88,9 +87,11 @@ namespace NNworking.Controllers
 
                 var orderNo = HttpContext.Current.Request.Form["OrderNo"];
                 var staffId = HttpContext.Current.Request.Form["StaffId"];
-                var yckpDate = HttpContext.Current.Request.Form["YCKPDate"];
 
-                var todayFolder = DateTimeOffset.Parse(yckpDate).UtcDateTime.Date.ToString("dd-MM-yyyy");
+                TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                DateTime vietnamNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
+
+                var todayFolder = vietnamNow.Date.ToString("dd-MM-yyyy");
                 var baseFolder = HttpContext.Current.Server.MapPath("~/Files");
                 var folderPath = Path.Combine(baseFolder, todayFolder);
                 if (!System.IO.Directory.Exists(folderPath))
@@ -119,7 +120,7 @@ namespace NNworking.Controllers
                     {
                         OrderNo = orderNo,
                         StaffId = staffId,
-                        Date = DateTimeOffset.Parse(yckpDate).UtcDateTime,
+                        Date = vietnamNow,  // Sử dụng thời gian từ backend
                         Path = $"/Files/{todayFolder}/{filename}"
                     };
 

@@ -1,0 +1,119 @@
+﻿
+<h2>Quản lý người đánh giá</h2>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_Evaluation_Reviewer>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_Evaluation_ReviewerApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("Id")
+    )
+    .ID("dxManageReviewGrid")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager
+        .ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple))
+    .OnExporting("onExportingDatagridToExcel")
+    .Export(e => e
+        .Enabled(true)
+        .AllowExportSelectedData(true)
+    )
+    .ColumnAutoWidth(true)
+    .WordWrapEnabled(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search
+        .Visible(true)
+        .HighlightSearchText(true)
+        .Width(300)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns => {
+        columns.AddFor(m => m.StaffId)
+            .Caption("Mã NV")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.SecName)
+            .Caption("Bộ phận")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.DeptName)
+            .Caption("Phòng ban")
+            .Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.Manager)
+            .Caption("Quản lý")
+            .Alignment(HorizontalAlignment.Center)
+            .DataType(GridColumnDataType.Boolean);
+    })
+    .Editing(e => e
+        .Mode(GridEditMode.Popup)
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .UseIcons(true)
+        .Popup(p => p
+            .Title("Thông tin người đánh giá")
+            .ShowTitle(true)
+            .Width(700)
+            .Height("auto")
+        )
+        .Form(f =>
+        {
+            f.ColCount(2);
+            f.Items(items =>
+            {
+                items.AddSimpleFor(m => m.StaffId)
+                    .Label(l => l.Text("Mã nhân viên"))
+                    .IsRequired(true);
+
+                items.AddSimpleFor(m => m.SecName)
+                    .Label(l => l.Text("Bộ phận"))
+                    .Editor(editor => editor
+                        .SelectBox()
+                        .DataSource(new[] {
+                            "PGĐ",
+                            "Trưởng phòng",
+                            "Phó phòng",
+                            "Trưởng ca",
+                            "Tổ trưởng",
+                            "Tổ phó"
+                        })
+                        .ValueExpr("this")
+                        .DisplayExpr("this")
+                        .SearchEnabled(true)
+                    )
+                    .IsRequired(true);
+
+                items.AddSimpleFor(m => m.DeptName)
+                    .Label(l => l.Text("Phòng ban"))
+                    .IsRequired(true);
+            });
+        })
+    )
+)
+
+<script>
+    function onExportingDatagridToExcel(e) {
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet('Reviewers');
+        
+        DevExpress.excelExporter.exportDataGrid({
+            component: e.component,
+            worksheet: worksheet,
+            autoFilterEnabled: true
+        }).then(function() {
+            workbook.xlsx.writeBuffer().then(function(buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Reviewers_List.xlsx');
+            });
+        });
+        e.cancel = true;
+    }
+</script>

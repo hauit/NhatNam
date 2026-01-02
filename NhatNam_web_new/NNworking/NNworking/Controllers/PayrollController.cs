@@ -121,7 +121,7 @@ namespace NNworking.Controllers
             try
             {
                 string name = UploadImportFiles(Request.Files);
-                IImport import = new ImportMaterialStockInput();
+                IImport import = new ImportTimeCardDetail();
                 import.ImportData(name, Session["StaffID"].ToString(), out Error);
                 if(Error.Count > 0)
                 {

@@ -19,7 +19,8 @@ namespace NNworking.Models.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public HttpResponseMessage Get(DataSourceLoadOptions loadOptions) {
+        public HttpResponseMessage Get(DataSourceLoadOptions loadOptions)
+        {
             var c242_part = _context.C242_Part.Where(a => a.Deleted != true).ToList();
             return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
         }
@@ -42,7 +43,7 @@ namespace NNworking.Models.Controllers
             var todate = DateTime.ParseExact(queryParams["todate"].Substring(0, 24),
                               "ddd MMM d yyyy HH:mm:ss",
                               System.Globalization.CultureInfo.InvariantCulture).Date;
-            string shift = queryParams.ContainsKey("shift") ? queryParams["shift"] : "";
+            string shift = queryParams.ContainsKey("shift") ? queryParams["shift"] == "" ? null : queryParams["shift"] : null;
             var c242_part = _context.sp_Get_MachineCapability(fromdate, todate, shift).ToList();
             return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
         }
@@ -76,7 +77,7 @@ namespace NNworking.Models.Controllers
                 var c242_part = _context.sp_242_WTS_StandTimeWorkPercen(fromdate, todate).ToList();
                 return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -85,7 +86,8 @@ namespace NNworking.Models.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage Post(FormDataCollection form) {
+        public HttpResponseMessage Post(FormDataCollection form)
+        {
             var model = new C242_Part();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -101,10 +103,11 @@ namespace NNworking.Models.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Put(FormDataCollection form) {
+        public HttpResponseMessage Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = _context.C242_Part.FirstOrDefault(item => item.ID == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "C242_Part not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -120,7 +123,8 @@ namespace NNworking.Models.Controllers
         }
 
         [HttpDelete]
-        public void Delete(FormDataCollection form) {
+        public void Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = _context.C242_Part.FirstOrDefault(item => item.ID == key);
 
@@ -129,7 +133,8 @@ namespace NNworking.Models.Controllers
         }
 
 
-        private void PopulateModel(C242_Part model, IDictionary values) {
+        private void PopulateModel(C242_Part model, IDictionary values)
+        {
             string ID = nameof(C242_Part.ID);
             string PART_NO = nameof(C242_Part.PartNo);
             string PART_NAME = nameof(C242_Part.PartName);
@@ -142,64 +147,79 @@ namespace NNworking.Models.Controllers
             string UNIT = nameof(C242_Part.Unit);
             string IS_TOOL = nameof(C242_Part.IsTool);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(PART_NO)) {
+            if (values.Contains(PART_NO))
+            {
                 model.PartNo = Convert.ToString(values[PART_NO]);
             }
 
-            if(values.Contains(PART_NAME)) {
+            if (values.Contains(PART_NAME))
+            {
                 model.PartName = Convert.ToString(values[PART_NAME]);
             }
 
-            if(values.Contains(CUSTOMER_ID)) {
+            if (values.Contains(CUSTOMER_ID))
+            {
                 model.CustomerID = Convert.ToString(values[CUSTOMER_ID]);
             }
 
-            if(values.Contains(SUPPLIER_ID)) {
+            if (values.Contains(SUPPLIER_ID))
+            {
                 model.SupplierID = Convert.ToString(values[SUPPLIER_ID]);
             }
 
-            if(values.Contains(UP_QTY)) {
+            if (values.Contains(UP_QTY))
+            {
                 model.UpQty = Convert.ToInt32(values[UP_QTY]);
             }
 
-            if(values.Contains(GIA_THANH)) {
+            if (values.Contains(GIA_THANH))
+            {
                 model.GiaThanh = Convert.ToInt32(values[GIA_THANH]);
             }
 
-            if(values.Contains(DELETED)) {
+            if (values.Contains(DELETED))
+            {
                 model.Deleted = Convert.ToBoolean(values[DELETED]);
             }
 
-            if(values.Contains(CAT_ID)) {
+            if (values.Contains(CAT_ID))
+            {
                 model.CatID = Convert.ToInt32(values[CAT_ID]);
             }
 
-            if(values.Contains(UNIT)) {
+            if (values.Contains(UNIT))
+            {
                 model.Unit = Convert.ToString(values[UNIT]);
             }
 
-            if(values.Contains(IS_TOOL)) {
+            if (values.Contains(IS_TOOL))
+            {
                 model.IsTool = Convert.ToBoolean(values[IS_TOOL]);
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);

@@ -67,7 +67,6 @@
 				<EntityTypeShape EntityType="NN_DatabaseModel.C242_MachinePlanningOrderNull" Width="1.5" PointX="22.75" PointY="15.75" IsExpanded="true" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C242_ManualExcutionChecking" Width="1.5" PointX="22.75" PointY="19.75" IsExpanded="true" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C242_Material" Width="1.5" PointX="0.75" PointY="23.75" IsExpanded="true" />
-				<EntityTypeShape EntityType="NN_DatabaseModel.C242_MechanicalElectronicalWork" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C242_MO" Width="1.5" PointX="24.75" PointY="5.75" IsExpanded="true" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C242_MOOption" Width="1.5" PointX="6.75" PointY="24.75" IsExpanded="true" />
 				<EntityTypeShape EntityType="NN_DatabaseModel.C242_Option" Width="1.5" PointX="8.75" PointY="24.75" IsExpanded="true" />
@@ -327,6 +326,13 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_MachinePlanning_view" Width="1.5" PointX="59.375" PointY="10.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_YCKP_Response" Width="1.5" PointX="57.375" PointY="45.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.View_242_YCKPXL" Width="1.5" PointX="57.375" PointY="49.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_MaintenanceAssignment" Width="1.5" PointX="59.375" PointY="27.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_MaintenanceBug" Width="1.5" PointX="59.375" PointY="31.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_MaintenanceCheck" Width="1.5" PointX="59.375" PointY="35.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_MaintenancePlan" Width="1.5" PointX="59.375" PointY="40.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_MechanicalElectronicalWork" Width="1.5" PointX="23.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_Evaluation_Employee" Width="1.5" PointX="59.375" PointY="43.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_Evaluation_Reviewer" Width="1.5" PointX="59.375" PointY="50.75" />
 			</Diagram>
 		</edmx:Diagrams>
 	</edmx:Designer>

@@ -26,10 +26,13 @@
     .ColumnAutoWidth(false)
     .FilterRow(fil => fil.Visible(true))
     .FilterPanel(fi => fi.Visible(true))
-    .SearchPanel(search => search.Visible(true)
+    .SearchPanel(search => search
+        .Visible(true)
         .HighlightSearchText(true)
         .Width(500)
+        .SearchVisibleColumnsOnly(true)
     )
+    .HeaderFilter(headerFilter => headerFilter.Visible(true))
     .ShowColumnHeaders(true)
     .ShowRowLines(true)
     .RemoteOperations(true)
@@ -52,6 +55,7 @@
                                             .ID("OrderNoTextBox")
                                             .OnValueChanged("function(e){ window.currentOrderNo = e.value; }")
                                             .Width("100%")
+                                            .ValidationRules(rules => { rules.AddRequired().Message("Vui lòng nhập thông tin này"); })
                                         )
                                         <button type="button" onclick="onGetOrderNo()" style="margin-left: 5px; flex-shrink: 0; padding: 0 10px;">Lấy Order</button>
                                     </div>
@@ -74,7 +78,7 @@
 
         columns.AddFor(m => m.PartId)
                 .Caption("Tên")
-                .Alignment(HorizontalAlignment.Center)
+                .Alignment(HorizontalAlignment.Center)  
                 .FormItem(formItem => {
                     formItem.IsRequired(true);
                     formItem.Editor(o => o.TextBox()
@@ -110,7 +114,6 @@
         columns.AddFor(m => m.ProcessProduct)
                 .Caption("Số sp gc")
                 .Alignment(HorizontalAlignment.Center)
-                .FormItem(formItem => formItem.IsRequired(true))
                 .FormItem(formItem =>
                 {
                     formItem.IsRequired(true);
@@ -124,7 +127,6 @@
         columns.AddFor(m => m.YCKPTimes)
                 .Caption("Số lần yckp")
                 .Alignment(HorizontalAlignment.Center)
-                .FormItem(formItem => formItem.IsRequired(true))
                 .FormItem(formItem =>
                 {
                     formItem.IsRequired(true);
@@ -372,8 +374,177 @@
 </div>
 
 <style>
+    /* Grid Selection */
     #dxYCKPNEW tr[data-selected="true"] {
         background-color: #f0f0f0 !important;
+    }
+
+    /* Detail Container */
+    .detail-grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .detail-item {
+        border: 1px solid #eee;
+        padding: 8px;
+        background-color: #fafafa;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .detail-item.full-width {
+        grid-column: span 2;
+        background-color: #fff;
+    }
+
+    .detail-label {
+        font-weight: bold;
+        margin-bottom: 4px;
+        color: #333;
+        font-size: 12px;
+    }
+
+    .detail-value {
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: #555;
+        font-size: 13px;
+    }
+
+    /* Timeline Styles */
+    .timeline-container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        position: relative;
+    }
+
+    .timeline-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        position: relative;
+        padding-left: 40px;
+    }
+
+    .timeline-item.begin {
+        height: 30px;
+    }
+
+    .timeline-dot {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 2;
+    }
+
+    .timeline-dot.begin {
+        background-color: #52c41a;
+        cursor: default;
+    }
+
+    .timeline-dot.completed {
+        background-color: #52c41a;
+    }
+
+    .timeline-dot.cancelled {
+        background-color: #ff4d4f;
+    }
+
+    .timeline-line {
+        position: absolute;
+        left: 15px;
+        top: 30px;
+        bottom: -15px;
+        width: 2px;
+        background-color: #d9d9d9;
+        z-index: 1;
+    }
+
+    .timeline-info {
+        margin-left: 15px;
+        padding: 5px 10px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+    }
+
+    .timeline-info.completed {
+        border-left: 3px solid #52c41a;
+    }
+
+    .timeline-info.cancelled {
+        border-left: 3px solid #ff4d4f;
+    }
+
+    .timeline-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+        width: 100%;
+    }
+
+    .timeline-staff {
+        font-weight: bold;
+    }
+
+    .timeline-dept {
+        color: #666;
+        font-size: 11px;
+    }
+
+    .timeline-date {
+        color: #666;
+        font-size: 11px;
+        margin-top: 4px;
+    }
+
+    .timeline-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 10px;
+        color: #1890ff;
+        cursor: pointer;
+        font-size: 12px;
+        text-decoration: underline;
+    }
+
+    .timeline-right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    /* Image Container */
+    .image-container {
+        width: 200px;
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: pointer;
     }
 </style>
 
@@ -384,18 +555,6 @@
         e.data.InputDept = '@Session["Department"].ToString()';
         e.data.RankLevel = "nhẹ";
         e.data.Status = "Đang xử lý";
-
-        const now = new Date();
-        const options = {
-            timeZone: 'Asia/Ho_Chi_Minh',
-            year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit', second: '2-digit',
-            hour12: false
-        };
-        const currentDateTime = new Intl.DateTimeFormat('sv-SE', options).format(now).replace(/\//g, '-');
-
-        e.data.YCKPDate = currentDateTime;
-        e.data.YCKPProcessTime = currentDateTime;
     }
 
     function onEditingStart(e) {
@@ -499,17 +658,6 @@
     function onRowInserting(e) {
         e.data.ProcessDept = $("#ProcessDeptSelect").dxSelectBox("instance").option("value");
         e.data.ProcessStaff = $("#ProcessStaffSelect").dxSelectBox("instance").option("value");
-
-        function toVietnamTimeISO(dateValue) {
-            if (!dateValue) return null;
-            var date = new Date(dateValue);
-            date.setHours(date.getHours() + 7);
-            return date.toISOString();
-        }
-
-        e.data.YCKPDate = toVietnamTimeISO(e.data.YCKPDate);
-        e.data.YCKPProcessTime = toVietnamTimeISO(e.data.YCKPProcessTime);
-        e.data.YCKPDeadline = toVietnamTimeISO(e.data.YCKPDeadline);
         e.data.Deleted = false;
 
         var rg = $("#rgProcessStatus").dxRadioGroup("instance");
@@ -529,7 +677,6 @@
 
             formData.append("OrderNo", e.data.OrderNo);
             formData.append("StaffId", e.data.InputStaff);
-            formData.append("YCKPDate", e.data.YCKPDate);
 
             $.ajax({
                 url: '@Url.Action("UploadFiles", "api/C242_YCKP_Files")',
@@ -564,12 +711,7 @@
 
         $('#responseContainer').empty();
 
-        var gridContainer = $('<div>').css({
-            'display': 'grid',
-            'grid-template-columns': '1fr 1fr',
-            'gap': '10px',                  
-            'width': '100%'
-        });
+        var gridContainer = $('<div>').addClass('detail-grid-container');
 
         var fields = [
             { label: 'Số Order', value: data.OrderNo },
@@ -596,35 +738,14 @@
 
         fields.forEach(function (field) {
             if (field.value !== null && field.value !== undefined && field.value !== '') {
-                var detailItem = $('<div>').addClass('detail-item').css({
-                    'border': '1px solid #eee',
-                    'padding': '8px',
-                    'background-color': '#fafafa',
-                    'border-radius': '4px',
-                    'display': 'flex',
-                    'flex-direction': 'column'
-                });
-
+                var detailItem = $('<div>').addClass('detail-item');
+                
                 if (field.fullWidth) {
-                    detailItem.css('grid-column', 'span 2');
-                    detailItem.css('background-color', '#fff');
+                    detailItem.addClass('full-width');
                 }
 
-                var label = $('<div>').addClass('detail-label').text(field.label + ':')
-                    .css({
-                        'font-weight': 'bold',
-                        'margin-bottom': '4px',
-                        'color': '#333',
-                        'font-size': '12px'
-                    });
-
-                var value = $('<div>').addClass('detail-value').text(field.value)
-                    .css({
-                        'white-space': 'pre-wrap',
-                        'word-break': 'break-word',
-                        'color': '#555',
-                        'font-size': '13px'
-                    });
+                var label = $('<div>').addClass('detail-label').text(field.label + ':');
+                var value = $('<div>').addClass('detail-value').text(field.value);
 
                 detailItem.append(label).append(value);
                 gridContainer.append(detailItem);
@@ -1216,7 +1337,6 @@
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-
         } catch (error) {
             console.error('Export error:', error);
             alert('Có lỗi xảy ra khi xuất file Excel: ' + error.message);

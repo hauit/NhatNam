@@ -89,7 +89,6 @@ namespace NNworking.Models
         public virtual DbSet<C242_MachinePlanningOrderNull> C242_MachinePlanningOrderNull { get; set; }
         public virtual DbSet<C242_ManualExcutionChecking> C242_ManualExcutionChecking { get; set; }
         public virtual DbSet<C242_Material> C242_Material { get; set; }
-        public virtual DbSet<C242_MechanicalElectronicalWork> C242_MechanicalElectronicalWork { get; set; }
         public virtual DbSet<C242_MO> C242_MO { get; set; }
         public virtual DbSet<C242_MOOption> C242_MOOption { get; set; }
         public virtual DbSet<C242_Option> C242_Option { get; set; }
@@ -349,6 +348,13 @@ namespace NNworking.Models
         public virtual DbSet<C242_MachinePlanning_view> C242_MachinePlanning_view { get; set; }
         public virtual DbSet<C242_YCKP_Response> C242_YCKP_Response { get; set; }
         public virtual DbSet<View_242_YCKPXL> View_242_YCKPXL { get; set; }
+        public virtual DbSet<C242_MaintenanceAssignment> C242_MaintenanceAssignment { get; set; }
+        public virtual DbSet<C242_MaintenanceBug> C242_MaintenanceBug { get; set; }
+        public virtual DbSet<C242_MaintenanceCheck> C242_MaintenanceCheck { get; set; }
+        public virtual DbSet<C242_MaintenancePlan> C242_MaintenancePlan { get; set; }
+        public virtual DbSet<C242_MechanicalElectronicalWork> C242_MechanicalElectronicalWork { get; set; }
+        public virtual DbSet<C222_Evaluation_Employee> C222_Evaluation_Employee { get; set; }
+        public virtual DbSet<C222_Evaluation_Reviewer> C222_Evaluation_Reviewer { get; set; }
     
         public virtual ObjectResult<sp_222_AcquireNotifications_Result> sp_222_AcquireNotifications(string staffID)
         {
@@ -2226,28 +2232,15 @@ namespace NNworking.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_MachineCapability_Result>("sp_Get_MachineCapability", fromDateParameter, toDateParameter, shiftParameter);
         }
     
-        public virtual ObjectResult<sp_Get_StaffCapability_Result> sp_Get_StaffCapability(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("FromDate", fromDate) :
-                new ObjectParameter("FromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("ToDate", toDate) :
-                new ObjectParameter("ToDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_StaffCapability_Result>("sp_Get_StaffCapability", fromDateParameter, toDateParameter);
-        }
-    
-        public virtual int sp_242_PartData_UpdateMaterial(Nullable<int> iD, Nullable<System.DateTime> inputDate, string materialID, string materialType, string partID, string workpiecesize, string shape, Nullable<double> thickness, string width, Nullable<double> lenght, Nullable<bool> cut, Nullable<bool> rawMachine, Nullable<bool> handFinish, Nullable<bool> hairLine, Nullable<bool> wAnod, Nullable<bool> bAnod, Nullable<bool> blast30, Nullable<bool> blast60, Nullable<bool> seal, Nullable<bool> migaki, Nullable<bool> bafu, Nullable<bool> cleanwave, Nullable<bool> vacPac, Nullable<bool> helisert, Nullable<bool> serialNo, Nullable<bool> palCoat, Nullable<bool> caciras, Nullable<bool> inLuoi, Nullable<bool> heru, Nullable<bool> niken, Nullable<bool> maiBongDP, Nullable<bool> maBong, Nullable<bool> inside, Nullable<bool> bBD, Nullable<bool> paint, string otherpro, Nullable<decimal> price, string memo, string note)
+        public virtual int sp_242_PartData_UpdateMaterial(Nullable<int> iD, string inputDate, string materialID, string materialType, string partID, string workpiecesize, string shape, Nullable<double> thickness, string width, Nullable<double> lenght, Nullable<bool> cut, Nullable<bool> rawMachine, Nullable<bool> handFinish, Nullable<bool> hairLine, Nullable<bool> wAnod, Nullable<bool> bAnod, Nullable<bool> blast30, Nullable<bool> blast60, Nullable<bool> seal, Nullable<bool> migaki, Nullable<bool> bafu, Nullable<bool> cleanwave, Nullable<bool> vacPac, Nullable<bool> helisert, Nullable<bool> serialNo, Nullable<bool> palCoat, Nullable<bool> caciras, Nullable<bool> inLuoi, Nullable<bool> heru, Nullable<bool> niken, Nullable<bool> maiBongDP, Nullable<bool> maBong, Nullable<bool> inside, Nullable<bool> bBD, Nullable<bool> paint, string otherpro, Nullable<decimal> price, string memo, string note)
         {
             var iDParameter = iD.HasValue ?
                 new ObjectParameter("ID", iD) :
                 new ObjectParameter("ID", typeof(int));
     
-            var inputDateParameter = inputDate.HasValue ?
+            var inputDateParameter = inputDate != null ?
                 new ObjectParameter("InputDate", inputDate) :
-                new ObjectParameter("InputDate", typeof(System.DateTime));
+                new ObjectParameter("InputDate", typeof(string));
     
             var materialIDParameter = materialID != null ?
                 new ObjectParameter("MaterialID", materialID) :
@@ -2415,6 +2408,28 @@ namespace NNworking.Models
                 new ObjectParameter("machineGroup", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetMachineHavePlanByGroup_Result>("sp_GetMachineHavePlanByGroup", dateParameter, departmentParameter, machineGroupParameter);
+        }
+    
+        public virtual ObjectResult<sp_EvaluationEmployee_Result> sp_EvaluationEmployee(Nullable<System.DateTime> date)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_EvaluationEmployee_Result>("sp_EvaluationEmployee", dateParameter);
+        }
+    
+        public virtual ObjectResult<sp_Get_StaffCapability_Result> sp_Get_StaffCapability(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_StaffCapability_Result>("sp_Get_StaffCapability", fromDateParameter, toDateParameter);
         }
     }
 }

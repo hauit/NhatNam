@@ -1,0 +1,665 @@
+﻿<div id="reviewerInfo" style="margin: 20px 0; display: none;">
+    <h4 id="infoText" style="margin: 0; padding: 0;"></h4>
+</div>
+
+@(Html.DevExtreme().DataGrid<dynamic>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_Evaluation_EmployeeApi")
+        .LoadAction("GetByProcessId").LoadParams(new { StaffID = @Session["StaffID"].ToString() })
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("Id")
+    )
+    .ID("evaluationGrid")
+    .Paging(p => p.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple))
+    .OnExporting("onExportingDatagridToExcel")
+    .Export(e => e.Enabled(true)
+        .AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .WordWrapEnabled(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Editing(editing => {
+        editing.Mode(GridEditMode.Popup);
+        editing.AllowAdding(true);
+        editing.AllowDeleting(true);
+        editing.ConfirmDelete(true);
+        editing.Popup(p => p
+            .Title("Thông tin đánh giá")
+            .ShowTitle(true)
+            .Width(1100)
+            .Height(650)
+        );
+        editing.Form(f => {
+            f.OnInitialized("onFormInitialized");
+            f.ScrollingEnabled(true);
+            f.ColCount(1).Items(items =>
+            {
+                items.AddSimple()
+                    .Label(l => l.Text("Mã phòng"))
+                    .Editor(e => e
+                        .SelectBox()
+                        .ID("DeptSelect")
+                        .DataSource(d => d.WebApi()
+                            .RouteName("C222_DepartmentApi")
+                            .LoadAction("Get")
+                            .Key("ID")
+                        )
+                        .OnValueChanged("onDeptChanged")
+                        .DisplayExpr("DeptName")
+                        .ValueExpr("DeptCode")
+                        .SearchEnabled(true)
+                        .ShowClearButton(true)
+                        .Placeholder("Chọn phòng ban...")
+                    );
+
+                items.AddSimple()
+                    .DataField("StaffId")
+                    .Label(l => l.Text("Mã NV"))
+                    .Editor(e => e
+                        .SelectBox()
+                        .ID("StaffSelect")
+                        .OnValueChanged("onStaffChanged")
+                        .DisplayExpr("DisplayName")
+                        .ValueExpr("StaffID")
+                        .SearchEnabled(true)
+                        .ShowClearButton(true)
+                        .Placeholder("Chọn nhân viên...")
+                    );
+                items.AddGroup()
+                    .Name("CriteriaGroup")
+                    .Caption("ĐÁNH GIÁ NHÂN VIÊN")
+                    .ColCount(1)
+                    .Items(groupItems =>
+                    {
+                        groupItems.AddSimple()
+                            .DataField("NV_TC1")
+                            .Label(l => l.Text("Tuân thủ đầy đủ các việc đã quyết định, thống nhất, quy trình quy định của Công ty, của Phòng"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC1")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC2")
+                            .Label(l => l.Text("Thời gian làm việc đúng theo sự sắp xếp phân công"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC2")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC3")
+                            .Label(l => l.Text("Trang phục, tác phong, lề lối làm việc chuẩn mực"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC3")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC4")
+                            .Label(l => l.Text("Luôn sắp xếp gọn gàng, ngăn nắp(5S)"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC4")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC5")
+                            .Label(l => l.Text("Khi bản thân mắc lỗi không bao biện mà thành khẩn nhận lỗi"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC5")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC6")
+                            .Label(l => l.Text("Thực hiện công việc theo đúng Kế hoạch"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC6")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC7")
+                            .Label(l => l.Text("Chất lượng công việc"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC7")
+                            );
+                        groupItems.AddSimple().
+                            DataField("NV_TC8")
+                            .Label(l => l.Text("Tốc độ công việc"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC8")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC9")
+                            .Label(l => l.Text("Có đề án cải tiến"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC9")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC10")
+                            .Label(l => l.Text("Tự học hỏi, tự nâng cao năng lực"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC10")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("NV_TC11")
+                            .Label(l => l.Text("Công việc làm theo nhóm"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("NV_TC11")
+                            );
+                    });
+                items.AddGroup()
+                    .Name("QL_GROUP")
+                    .Caption("CẤP QUẢN LÝ")
+                    .Visible(false)
+                    .ColCount(1)
+                    .Items(groupItems =>
+                    {
+
+                        groupItems.AddSimple()
+                            .DataField("QL_TC1")
+                            .Label(l => l.Text("Không đợi chỉ thị, tự bản thân tìm hiểu và tiến hành thực hiện công việc"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC1")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("QL_TC2")
+                            .Label(l => l.Text("Đào tạo, hướng dẫn cấp dưới"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC2")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("QL_TC3")
+                            .Label(l => l.Text("Kỹ năng lặp kế hoạch, kỹ năng làm báo cáo"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC3")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("QL_TC4")
+                            .Label(l => l.Text("Khi báo cáo xử lý sự cố không dựa vào suy nghĩ chủ quan, phải báo cáo chính xác"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC4")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("QL_TC5")
+                            .Label(l => l.Text("Phối hợp nhịp nhàng giữa các phòng,Tổ liên quan"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC5")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("QL_TC6")
+                            .Label(l => l.Text("Khi phát sinh thắc mắc hoặc phàn nàn từ khách hàng đối với cùng 1 vấn đề thì cần có đối sách trên phạm vi toàn công ty"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC6")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("QL_TC7")
+                            .Label(l => l.Text("Có thể hiểu rõ định hướng, mục tiêu kinh doanh của công ty và có hành động phù hợp với định hướng và mục tiêu đó"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC7")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("QL_TC8")
+                            .Label(l => l.Text("Tuyệt đối tuân thủ theo sự chỉ đạo của cấp trên"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC8")
+                            );
+                        groupItems.AddSimple()
+                            .DataField("QL_TC9")
+                            .Label(l => l.Text("Thường xuyên sửa đổi, cải tiến kế hoạch thực hiện cho phù hợp với hoàn cảnh thực tại"))
+                            .Editor(e => e
+                                .RadioGroup()
+                                .DataSource(new[] {
+                                    new { Text = "1", Value = 1 },
+                                    new { Text = "3", Value = 3 },
+                                    new { Text = "5", Value = 5 }
+                                })
+                                .ValueExpr("Value")
+                                .DisplayExpr("Text")
+                                .Layout(Orientation.Horizontal)
+                                .OnValueChanged("onTcValueChanged")
+                                .Name("QL_TC9")
+                            );
+                    });
+            });
+        });
+    })
+    .OnRowInserting("onRowInserting")
+    .OnRowRemoving("onRowRemoving")
+    .Columns(columns => {
+        columns.Add().DataField("StaffId").Caption("Mã NV").Alignment(HorizontalAlignment.Center);
+        columns.Add().DataField("Date").Caption("Ngày").DataType(GridColumnDataType.Date).Format("dd/MM/yyyy").Alignment(HorizontalAlignment.Center);
+
+        columns.Add().Caption("ĐÁNH GIÁ NHÂN VIÊN").Alignment(HorizontalAlignment.Center).Columns(nvColumns =>
+        {
+            nvColumns.Add().DataField("NV_TC1").Caption("Tuân thủ đầy đủ các việc đã quyết định, thống nhất, quy trình quy định của Công ty, của Phòng").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC2").Caption("Thời gian làm việc đúng theo sự sắp xếp phân công").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC3").Caption("Trang phục, tác phong, lề lối làm việc chuẩn mực").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC4").Caption("Luôn sắp xếp gọn gàng, ngăn nắp(5S)").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC5").Caption("Khi bản thân mắc lỗi không bao biện mà thành khẩn nhận lỗi").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC6").Caption("Thực hiện công việc theo đúng Kế hoạch").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC7").Caption("Chất lượng công việc").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC8").Caption("Tốc độ công việc").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC9").Caption("Có đề án cải tiến").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC10").Caption("Tự học hỏi, tự nâng cao năng lực").Alignment(HorizontalAlignment.Center);
+            nvColumns.Add().DataField("NV_TC11").Caption("Công việc làm theo nhóm").Alignment(HorizontalAlignment.Center);
+        });
+
+        columns.Add().Caption("CẤP QUẢN LÝ").Alignment(HorizontalAlignment.Center).Visible(false).Columns(qlColumns =>
+        {
+            qlColumns.Add().DataField("QL_TC1").Caption("Không đợi chỉ thị, tự bản thân tìm hiểu và tiến hành thực hiện công việc").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC2").Caption("Đào tạo, hướng dẫn cấp dưới").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC3").Caption("Kỹ năng lặp kế hoạch, kỹ năng làm báo cáo").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC4").Caption("Khi báo cáo xử lý sự cố không dựa vào suy nghĩ chủ quan, phải báo cáo chính xác").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC5").Caption("Phối hợp nhịp nhàng giữa các phòng,Tổ liên quan").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC6").Caption("Khi phát sinh thắc mắc hoặc phàn nàn từ khách hàng đối với cùng 1 vấn đề thì cần có đối sách trên phạm vi toàn công ty").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC7").Caption("Có thể hiểu rõ định hướng, mục tiêu kinh doanh của công ty và có hành động phù hợp với định hướng và mục tiêu đó").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC8").Caption("Tuyệt đối tuân thủ theo sự chỉ đạo của cấp trên").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC9").Caption("Thường xuyên sửa đổi, cải tiến kế hoạch thực hiện cho phù hợp với hoàn cảnh thực tại").Alignment(HorizontalAlignment.Center);
+        });
+    })
+)
+
+<script>
+    let isManager = false;
+    let staffDataSource = [];
+    let currentForm = null;
+    let isRestoringSelections = false;
+    let cachedDeptValue = null;
+    let cachedStaffValue = null;
+
+    function cacheSelections() {
+        const deptSelect = $("#DeptSelect").dxSelectBox("instance");
+        const staffSelect = $("#StaffSelect").dxSelectBox("instance");
+
+        if (deptSelect) cachedDeptValue = deptSelect.option("value");
+        if (staffSelect) cachedStaffValue = staffSelect.option("value");
+    }
+
+    function restoreSelections() {
+        const deptSelect = $("#DeptSelect").dxSelectBox("instance");
+        const staffSelect = $("#StaffSelect").dxSelectBox("instance");
+
+        isRestoringSelections = true;
+        try {
+            if (deptSelect) {
+                deptSelect.option("value", cachedDeptValue);
+            }
+            if (staffSelect) {
+                staffSelect.option("dataSource", staffDataSource || []);
+                staffSelect.option("value", cachedStaffValue);
+            }
+        } finally {
+            isRestoringSelections = false;
+        }
+    }
+
+    $(document).ready(function() {
+        loadReviewerInfo();
+    });
+
+    function onFormInitialized(e) {
+        currentForm = e.component;
+
+        if (currentForm.option("formData") && currentForm.option("formData").Id === undefined) {
+            const allTcFields = [
+                "NV_TC1", "NV_TC2", "NV_TC3", "NV_TC4", "NV_TC5", "NV_TC6", "NV_TC7", "NV_TC8", "NV_TC9", "NV_TC10", "NV_TC11",
+                "QL_TC1", "QL_TC2", "QL_TC3", "QL_TC4", "QL_TC5", "QL_TC6", "QL_TC7", "QL_TC8", "QL_TC9"
+            ];
+
+            currentForm.beginUpdate();
+            allTcFields.forEach(f => currentForm.updateData(f, 0));
+            currentForm.updateData("ProcessId", '@Session["StaffID"].ToString()');
+            currentForm.endUpdate();
+        }
+    }
+
+    function loadReviewerInfo() {
+        $.ajax({
+            url: '@Url.Action("GetReviewerInfo", "api/C222_Evaluation_Reviewer")',
+            type: 'GET',
+            data: { StaffID: "@Session["StaffID"].ToString()" },
+            dataType: 'json',
+            success: function(response) {
+                if (response && response.success && response.data) {
+                    $("#infoText").text(response.data.displayMessage);
+                    $("#reviewerInfo").show();
+                    isManager = response.data.manager;
+
+                    const grid = $("#evaluationGrid").dxDataGrid("instance");
+                    grid.option("columns[3].visible", isManager);
+                    grid.refresh();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Lỗi khi tải thông tin:", error);
+            }
+        });
+    }
+
+    function onRowInserting(e) {
+        if (!currentForm) return;
+
+        const formData = currentForm.option("formData");
+
+        $.ajax({
+            url: '@Url.Action("Post", "api/C222_Evaluation_Employee")',
+            type: 'POST',
+            data: {
+                values: JSON.stringify(formData)
+            },
+            success: function (response) {
+                if (response && response.result && response.result.Id) {
+                    e.cancel = false;
+                    location.reload();  
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Lỗi khi thêm dữ liệu:", error);
+                e.cancel = true;
+            }
+        });
+    }
+
+    function onRowRemoving(e) {
+        if (!e || !e.key) return;
+
+        $.ajax({
+            url: '@Url.Action("Delete", "api/C222_Evaluation_Employee")',
+            type: 'DELETE',
+            data: { id: e.key },
+            success: function(response) {
+                if (response && response.success) {
+                    const grid = $("#evaluationGrid").dxDataGrid("instance");
+                    grid.refresh();
+                    location.reload();  
+                } else {
+                    e.cancel = true;
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Lỗi khi xoá dữ liệu:", error);
+                e.cancel = true;
+            }
+        });
+    }
+
+    function onDeptChanged(e) {
+        var deptCode = e.value;
+        var staffSelect = $("#StaffSelect").dxSelectBox("instance");
+        var secName = '@Session["Department"].ToString()';
+
+        if (!deptCode) {
+            staffDataSource = [];
+            staffSelect.option("dataSource", []);
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetByDept", "api/C222_Staff")',
+            data: { DeptCode: deptCode, SecName: secName },
+            dataType: 'json',
+            cache: false,
+            success: function (response) {
+                if (response && response.data && response.data.length > 0) {
+                    staffDataSource = response?.data || [];
+                    staffSelect.option("dataSource", response.data);
+                } else {
+                    staffDataSource = [];
+                    staffSelect.option("dataSource", []);
+                }
+            },
+            error: function (err) {
+                console.error(err);
+                staffDataSource = [];
+                staffSelect.option("dataSource", []);
+                alert("Lỗi khi tải danh sách nhân viên!");
+            }
+        });
+    }
+
+    function onStaffChanged(e) {
+        if (isRestoringSelections) return;
+        if (!e || !currentForm) return;
+
+        cachedStaffValue = e.value;
+        cacheSelections();
+
+        currentForm.updateData("StaffId", e.value);
+
+        const staff = staffDataSource.find(x => x.StaffID === e.value);
+        const isManager = staff?.Manager === true;
+
+        currentForm.beginUpdate();
+        currentForm.itemOption("QL_GROUP", "visible", isManager);
+
+        if (!isManager) {
+            ["QL_TC1", "QL_TC2", "QL_TC3", "QL_TC4", "QL_TC5", "QL_TC6", "QL_TC7", "QL_TC8", "QL_TC9"]
+                .forEach(f => currentForm.updateData(f, 0));
+        }
+
+        currentForm.endUpdate();
+
+        setTimeout(function() {
+            restoreSelections();
+        }, 0);
+    }
+
+    function onTcValueChanged(e) {
+        if (!currentForm) return;
+        const dataField = e.component.option("name");
+        if (dataField) {
+            currentForm.updateData(dataField, e.value);
+        }
+    }
+
+    function onExportingDatagridToExcel(e) {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Danh sách đánh giá');
+
+        DevExpress.excelExporter.exportDataGrid({
+            component: e.component,
+            worksheet: worksheet,
+            autoFilterEnabled: true
+        }).then(function() {
+            workbook.xlsx.writeBuffer().then(function(buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DanhSachDanhGia.xlsx');
+            });
+        });
+        e.cancel = true;
+    }
+</script>

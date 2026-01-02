@@ -1,0 +1,204 @@
+﻿@{
+    ViewBag.Title = "Quản lý sự cố bảo trì";
+}
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-back {
+        background: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-back:hover {
+        background: #5a6268;
+        color: white;
+    }
+</style>
+
+<div class="page-header">
+    <div>
+        <h2>@ViewBag.Title</h2>
+        <p>Danh sách sự cố đang mở và đang xử lý</p>
+    </div>
+    <a href="/bao-tri/quan-ly" class="btn-back">← Quay lại Dashboard</a>
+</div>
+
+@(Html.DevExtreme().DataGrid()
+    .ID("bugGrid")
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_MaintenanceBugApi")
+        .LoadAction("GetOpen")
+        .UpdateAction("Put")
+        .Key("ID")
+    )
+    .RemoteOperations(false)
+    .ShowBorders(true)
+    .ColumnAutoWidth(true)
+    .Columns(columns =>
+    {
+        columns.Add()
+            .DataField("MachineName")
+            .Caption("Tên máy")
+            .Width(150);
+
+        columns.Add()
+            .DataField("CheckDate")
+            .Caption("Ngày kiểm tra")
+            .DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date)
+            .Format("dd/MM/yyyy")
+            .Width(120);
+
+        columns.Add()
+            .DataField("Description")
+            .Caption("Mô tả sự cố")
+            .Width(250);
+
+        columns.Add()
+            .DataField("Reporter")
+            .Caption("Người báo cáo")
+            .Width(120);
+
+        columns.Add()
+            .DataField("FixWay")
+            .Caption("Cách xử lý")
+            .Width(150);
+
+        columns.Add()
+            .DataField("Status")
+            .Caption("Trạng thái")
+            .Width(120)
+            .CellTemplate(@<text>
+                <% if (data.Status === 'Open') { %>
+                    <span style="color: #dc3545; font-weight: 500;">Mới</span>
+                <% } else if (data.Status === 'Processing') { %>
+                    <span style="color: #ffc107; font-weight: 500;">Đang xử lý</span>
+                <% } %>
+            </text>);
+
+        columns.Add()
+            .Caption("Hành động")
+            .Width(150)
+            .CellTemplate(@<text>
+                <% if (data.Status === 'Open') { %>
+                    <button class="dx-button dx-button-warning" onclick="processBug(<%- data.ID %>)">
+                        Xử lý
+                    </button>
+                <% } else if (data.Status === 'Processing') { %>
+                    <button class="dx-button dx-button-success" onclick="completeBug(<%- data.ID %>)">
+                        Hoàn thành
+                    </button>
+                <% } %>
+            </text>)
+            .AllowFiltering(false)
+            .AllowSorting(false);
+    })
+    .SearchPanel(s => s.Visible(true).Placeholder("Tìm kiếm..."))
+    .NoDataText("Không có sự cố nào đang mở")
+)
+
+@(Html.DevExtreme().Popup()
+    .ID("bugPopup")
+    .Title("Xử lý sự cố")
+    .Width(600)
+    .Height(450)
+    .ShowCloseButton(true)
+    .ContentTemplate(@<text>
+        <div style="padding: 20px;">
+            <div class="form-group">
+                <label>Cách xử lý:</label>
+                <textarea id="fixWay" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Chi tiết xử lý:</label>
+                <textarea id="fixDetail" rows="4" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+            </div>
+            <div style="margin-top: 20px; text-align: right;">
+                <button class="dx-button dx-button-normal" onclick="closePopup()">Hủy</button>
+                <button class="dx-button dx-button-success" onclick="saveBugFix()" style="margin-left: 10px;">Lưu</button>
+            </div>
+        </div>
+    </text>)
+)
+
+<script>
+var currentBugId = null;
+
+function processBug(bugId) {
+    currentBugId = bugId;
+    $('#fixWay').val('');
+    $('#fixDetail').val('');
+    $('#bugPopup').dxPopup('instance').show();
+}
+
+function completeBug(bugId) {
+    if (!confirm('Xác nhận hoàn thành xử lý sự cố này?')) return;
+
+    updateBugStatus(bugId, 'Done');
+}
+
+function closePopup() {
+    $('#bugPopup').dxPopup('instance').hide();
+}
+
+function saveBugFix() {
+    var fixWay = $('#fixWay').val();
+    var fixDetail = $('#fixDetail').val();
+
+    if (!fixWay || !fixDetail) {
+        alert('Vui lòng nhập đầy đủ thông tin xử lý!');
+        return;
+    }
+
+    $.ajax({
+        url: '/api/C242_MaintenanceBug/Put',
+        method: 'POST',
+        data: {
+            key: currentBugId,
+            values: JSON.stringify({
+                FixWay: fixWay,
+                FixDetail: fixDetail,
+                Status: 'Processing'
+            })
+        },
+        success: function() {
+            alert('Đã cập nhật thông tin xử lý!');
+            closePopup();
+            $('#bugGrid').dxDataGrid('instance').refresh();
+        },
+        error: function() {
+            alert('Lỗi khi cập nhật!');
+        }
+    });
+}
+
+function updateBugStatus(bugId, status) {
+    $.ajax({
+        url: '/api/C242_MaintenanceBug/Put',
+        method: 'POST',
+        data: {
+            key: bugId,
+            values: JSON.stringify({
+                Status: status
+            })
+        },
+        success: function() {
+            alert('Đã cập nhật trạng thái!');
+            $('#bugGrid').dxDataGrid('instance').refresh();
+        },
+        error: function() {
+            alert('Lỗi khi cập nhật!');
+        }
+    });
+}
+</script>

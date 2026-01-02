@@ -223,6 +223,10 @@ namespace NNworking.Controllers
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
 
+            DateTime vietnamNow = GetVietnamTime();
+            model.YCKPDate = vietnamNow;
+            model.YCKPProcessTime = vietnamNow;
+
             Validate(model);
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, GetFullErrorMessage(ModelState));
@@ -243,6 +247,8 @@ namespace NNworking.Controllers
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
+
+            model.YCKPProcessTime = GetVietnamTime();
 
             Validate(model);
             if (!ModelState.IsValid)
@@ -417,6 +423,12 @@ namespace NNworking.Controllers
             }
 
             return String.Join(" ", messages);
+        }
+
+        private DateTime GetVietnamTime()
+        {
+            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
         }
 
         protected override void Dispose(bool disposing)

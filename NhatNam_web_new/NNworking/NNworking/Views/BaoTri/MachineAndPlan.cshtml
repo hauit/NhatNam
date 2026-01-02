@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Quản lý kế hoạch bảo trì";
+}
+
+<style>
+    .btn-generate {
+        background: #28a745;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .btn-generate:hover {
+        background: #218838;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="page-header">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_MaintenancePlan>()
+    .ID("planGrid")
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_MaintenancePlanApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .RemoteOperations(true)
+    .ShowBorders(true)
+    .ColumnAutoWidth(true)
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.MachineId)
+            .Caption("Mã máy")
+            .Width(200);
+
+        columns.AddFor(m => m.FrequencyMonth)
+            .Caption("Chu kỳ bảo trì")
+            .Width(150)
+            .EditorOptions(new { 
+                placeholder = "Chọn chu kỳ"
+            })
+            .Lookup(l => l
+                .DataSource(new[] {
+                    new { value = 1, text = "Hàng tháng (1 tháng)" },
+                    new { value = 3, text = "Hàng quý (3 tháng)" },
+                    new { value = 6, text = "Nửa năm (6 tháng)" },
+                    new { value = 12, text = "Hàng năm (12 tháng)" }
+                })
+                .DisplayExpr("text")
+                .ValueExpr("value")
+            );
+
+        columns.AddFor(m => m.StartDate)
+            .Caption("Ngày bắt đầu")
+            .Width(150)
+            .DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date)
+            .Format("dd/MM/yyyy")
+            .EditorOptions(new {
+                type = "date",
+                displayFormat = "dd/MM/yyyy"
+            });
+    })
+    .FilterRow(f => f.Visible(true))
+    .SearchPanel(s => s.Visible(true).Placeholder("Tìm kiếm..."))
+    .Paging(p => p.PageSize(10))
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+        .Mode(GridEditMode.Popup)
+        .Popup(p => p
+            .Title("Kế hoạch bảo trì")
+            .Width(600)
+            .Height(400)
+        )
+    )
+    .OnEditorPreparing(@"
+        function(e) {
+            if (e.dataField === 'MachineId' && e.parentType === 'dataRow') {
+                e.editorOptions.dataSource = {
+                    store: {
+                        type: 'webapi',
+                        key: 'MachineID',
+                        loadUrl: '/api/C222_Machine/Get'
+                    }
+                };
+                e.editorOptions.displayExpr = 'MachineName';
+                e.editorOptions.valueExpr = 'MachineID';
+                e.editorOptions.searchEnabled = true;
+                e.editorOptions.placeholder = 'Chọn máy';
+            }
+        }
+    ")
+    .OnRowInserted(@"
+        function(e) {
+            // Tự động tạo assignments sau khi tạo plan
+            $.ajax({
+                url: '/api/C242_MaintenancePlan/GenerateAssignments',
+                method: 'POST',
+                success: function(response) {
+                    if (response.Count > 0) {
+                        DevExpress.ui.notify(response.Message, 'success', 2000);
+                    }
+                }
+            });
+        }
+    ")
+)

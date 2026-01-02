@@ -20,8 +20,13 @@ namespace NNworking.Models.Controllers
 
         [HttpGet]
         public HttpResponseMessage Get(DataSourceLoadOptions loadOptions) {
-            var c242_yckp = _context.View_242_YCKP.ToList();
-            return Request.CreateResponse(DataSourceLoader.Load(c242_yckp, loadOptions));
+            try {
+                var c242_yckp = _context.View_242_YCKP.AsQueryable();
+                return Request.CreateResponse(DataSourceLoader.Load(c242_yckp, loadOptions));
+            }
+            catch (Exception ex) {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost]

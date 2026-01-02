@@ -1,0 +1,338 @@
+﻿@{
+    ViewBag.Title = "Thực hiện kiểm tra bảo trì";
+    var machineId = ViewBag.MachineId as string;
+    var assignDate = ViewBag.AssignDate as string;
+    var isReadOnly = ViewBag.ReadOnly;
+}
+
+<style>
+    .check-form {
+        max-width: 900px;
+        margin: 20px auto;
+    }
+
+    .form-section {
+        background: #f8f9fa;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+    }
+
+    .form-section h3 {
+        margin-top: 0;
+        color: #333;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group textarea {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .form-group input[readonly] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 20px;
+    }
+
+    .radio-group label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: normal;
+    }
+
+    .bug-panel {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+        display: none;
+    }
+
+    .bug-panel.show {
+        display: block;
+    }
+
+    .bug-panel h3 {
+        color: #856404;
+        margin-top: 0;
+    }
+
+    .btn-submit {
+        background: #28a745;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .btn-submit:hover {
+        background: #218838;
+    }
+
+    .btn-submit:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .btn-back {
+        background: #6c757d;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-right: 10px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-back:hover {
+        background: #5a6268;
+    }
+</style>
+
+<div class="check-form">
+    <h2>@ViewBag.Title</h2>
+
+    @if (isReadOnly)
+    {
+        <div class="alert alert-info">
+            <strong>Chế độ xem:</strong> Công việc kiểm tra này đã hoàn thành. Bạn chỉ có thể xem thông tin.
+        </div>
+    }
+    
+    <form id="checkForm">
+        <!-- KHỐI 1: THÔNG TIN CỐ ĐỊNH (READ-ONLY) -->
+        <div class="form-section">
+            <h3>Thông tin công việc</h3>
+            <div class="form-group">
+                <label>Máy:</label>
+                <input type="text" id="machineId" value="@machineId" readonly/>
+            </div>
+            <div class="form-group">
+                <label>Ngày kiểm tra:</label>
+                <input type="text" id="assignDate" value="@assignDate" readonly />
+            </div>
+            <div class="form-group">
+                <label>Người được giao:</label>
+                <input type="text" id="assignedStaff" readonly />
+            </div>
+        </div>
+
+        <!-- KHỐI 2: NỘI DUNG KIỂM TRA -->
+        <div class="form-section">
+            <h3>Nội dung kiểm tra</h3>
+
+            <h4 style="margin-top: 20px; color: #666;">Vận hành</h4>
+            <div class="form-group">
+                <label>Nồng độ trước:</label>
+                <input type="text" name="PrevValue" @(isReadOnly ? "readonly" : "") />
+            </div>
+            <div class="form-group">
+                <label>Nồng độ sau:</label>
+                <input type="text" name="AfterValue" @(isReadOnly ? "readonly" : "") />
+            </div>
+            <div class="form-group">
+                <label>Số lượng:</label>
+                <input type="text" name="Quantity" @(isReadOnly ? "readonly" : "") />
+            </div>
+
+            <h4 style="margin-top: 20px; color: #666;">Dầu</h4>
+            <div class="form-group">
+                <label>Dầu V5:</label>
+                <input type="text" name="OilV5" @(isReadOnly ? "readonly" : "") />
+            </div>
+            <div class="form-group">
+                <label>Dầu 68:</label>
+                <input type="text" name="Oil68" @(isReadOnly ? "readonly" : "") />
+            </div>
+
+            <h4 style="margin-top: 20px; color: #666;">An toàn</h4>
+            <div class="form-group">
+                <label>Kiểm tra rò rỉ:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="LeakOK" value="Đạt" class="safety-check" @(isReadOnly ? "disabled" : "") /> Đạt</label>
+                    <label><input type="radio" name="LeakOK" value="Không đạt" class="safety-check" @(isReadOnly ? "disabled" : "") /> Không đạt</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>An toàn điện:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="ElectricalOK" value="Đạt" class="safety-check" @(isReadOnly ? "disabled" : "") /> Đạt</label>
+                    <label><input type="radio" name="ElectricalOK" value="Không đạt" class="safety-check" @(isReadOnly ? "disabled" : "") /> Không đạt</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Kiểm tra thân máy:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="BodyOK" value="Đạt" class="safety-check" @(isReadOnly ? "disabled" : "") /> Đạt</label>
+                    <label><input type="radio" name="BodyOK" value="Không đạt" class="safety-check" @(isReadOnly ? "disabled" : "") /> Không đạt</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- KHỐI 3: THÔNG TIN NHÂN SỰ -->
+        <div class="form-section">
+            <h3>Thông tin nhân sự</h3>
+            <div class="form-group">
+                <label>Người thực hiện:</label>
+                <input type="text" name="ProcessStaff" id="processStaff" readonly />
+            </div>
+            <div class="form-group">
+                <label>Người kiểm tra: <span style="color: red;">*</span></label>
+                <input type="text" name="CheckedStaff" required @(isReadOnly ? "readonly" : "") />
+            </div>
+        </div>
+
+        <!-- INLINE BUG PANEL (CONDITIONAL) -->
+        <div class="bug-panel" id="bugPanel">
+            <h3>⚠️ Báo cáo sự cố</h3>
+            <p>Phát hiện vấn đề an toàn. Vui lòng mô tả chi tiết sự cố:</p>
+            <div class="form-group">
+                <label>Mô tả sự cố: <span style="color: red;">*</span></label>
+                <textarea name="BugDescription" id="bugDescription" rows="4" placeholder="Mô tả chi tiết vấn đề phát hiện..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Người báo cáo:</label>
+                <input type="text" id="bugReporter" readonly />
+            </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div style="margin-top: 30px;">
+            <a href="/bao-tri/cong-viec" class="btn-back">
+                Quay lại
+            </a>
+            @if (!isReadOnly)
+            {
+                <button type="submit" class="btn-submit" id="btnSubmit">
+                    Hoàn thành kiểm tra
+                </button>
+            }
+        </div>
+    </form>
+</div>
+
+<script>
+$(function() {
+    var machineId = '@machineId';
+    var assignDate = '@assignDate';
+    var isReadOnly = @(isReadOnly ? "true" : "false");
+
+    // Load assignment details
+    $.ajax({
+        url: '/api/C242_MaintenanceAssignment/GetByMachineAndDate',
+        data: { machineId: machineId, assignDate: assignDate },
+        success: function(response) {
+            $('#machineName').val(response.MachineName);
+            $('#assignedStaff').val(response.AssignedStaff);
+
+            // Auto-fill current user as ProcessStaff
+            $('#processStaff').val(response.AssignedStaff);
+            $('#bugReporter').val(response.AssignedStaff);
+        },
+        error: function() {
+            alert('Không tìm thấy công việc kiểm tra này!');
+            window.location.href = '/bao-tri/cong-viec';
+        }
+    });
+
+    // Show/hide bug panel based on safety checks
+    $('.safety-check').on('change', function() {
+        var hasFail = $('input[name="LeakOK"]:checked').val() === 'Không đạt' ||
+                      $('input[name="ElectricalOK"]:checked').val() === 'Không đạt' ||
+                      $('input[name="BodyOK"]:checked').val() === 'Không đạt';
+
+        if (hasFail) {
+            $('#bugPanel').addClass('show');
+            $('#bugDescription').prop('required', true);
+        } else {
+            $('#bugPanel').removeClass('show');
+            $('#bugDescription').prop('required', false);
+        }
+    });
+
+    // Form submission
+    $('#checkForm').on('submit', function(e) {
+        e.preventDefault();
+
+        if (isReadOnly) return;
+
+        var formData = {
+            MachineId: machineId,
+            CreatedAt: new Date().toISOString(),
+            PrevValue: $('input[name="PrevValue"]').val(),
+            AfterValue: $('input[name="AfterValue"]').val(),
+            Quantity: $('input[name="Quantity"]').val(),
+            OilV5: $('input[name="OilV5"]').val(),
+            Oil68: $('input[name="Oil68"]').val(),
+            LeakOK: $('input[name="LeakOK"]:checked').val(),
+            ElectricalOK: $('input[name="ElectricalOK"]:checked').val(),
+            BodyOK: $('input[name="BodyOK"]:checked').val(),
+            ProcessStaff: $('input[name="ProcessStaff"]').val(),
+            CheckedStaff: $('input[name="CheckedStaff"]').val()
+        };
+
+        // Validate required fields
+        if (!formData.CheckedStaff) {
+            alert('Vui lòng nhập người kiểm tra!');
+            return;
+        }
+
+        var bugDescription = $('#bugDescription').val();
+        if ($('#bugPanel').hasClass('show') && !bugDescription) {
+            alert('Vui lòng mô tả sự cố!');
+            return;
+        }
+
+        $('#btnSubmit').prop('disabled', true).text('Đang xử lý...');
+
+        // Submit to API
+        $.ajax({
+            url: '/api/C242_MaintenanceCheck/Post',
+            method: 'POST',
+            data: {
+                values: JSON.stringify(formData),
+                bugDescription: bugDescription
+            },
+            success: function(response) {
+                alert(response.Message);
+                window.location.href = '/bao-tri/cong-viec';
+            },
+            error: function(xhr) {
+                alert('Lỗi: ' + (xhr.responseJSON?.Message || 'Không thể lưu dữ liệu'));
+                $('#btnSubmit').prop('disabled', false).text('Hoàn thành kiểm tra');
+            }
+        });
+    });
+});
+</script>

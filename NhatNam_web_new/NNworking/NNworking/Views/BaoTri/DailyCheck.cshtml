@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "Công việc kiểm tra hôm nay";
+}
+
+<style>
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .status-assigned {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .status-overdue {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .status-done {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-back {
+        background: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-back:hover {
+        background: #5a6268;
+        color: white;
+    }
+</style>
+
+<div class="page-header">
+    <div>
+        <h2>@ViewBag.Title</h2>
+        <p>Danh sách công việc kiểm tra: <strong>@DateTime.Today.ToString("dd/MM/yyyy")</strong></p>
+    </div>
+    <a href="/bao-tri/quan-ly" class="btn-back">← Quay lại Dashboard</a>
+</div>
+
+@(Html.DevExtreme().DataGrid()
+    .ID("assignmentGrid")
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_MaintenanceAssignmentApi")
+        .LoadAction("GetToday")
+        .Key("ID")
+    )
+    .RemoteOperations(false)
+    .ShowBorders(true)
+    .ColumnAutoWidth(true)
+    .Columns(columns =>
+    {
+        columns.Add()
+            .DataField("MachineId")
+            .Caption("Tên máy")
+            .Width(200);
+
+        columns.Add()
+            .DataField("AssignDate")
+            .Caption("Ngày kiểm tra")
+            .DataType(DevExtreme.AspNet.Mvc.GridColumnDataType.Date)
+            .Format("dd/MM/yyyy")
+            .Width(120);
+
+        columns.Add()
+            .DataField("AssignedStaff")
+            .Caption("Người thực hiện")
+            .Width(150);
+
+        columns.Add()
+            .DataField("Status")
+            .Caption("Trạng thái")
+            .Width(120)
+            .CellTemplate(@<text>
+                <div class="status-badge status-<%- data.Status.toLowerCase() %>">
+                    <% if (data.Status === 'Assigned') { %>
+                        Đã giao
+                    <% } else if (data.Status === 'Overdue') { %>
+                        Quá hạn
+                    <% } else if (data.Status === 'Done') { %>
+                        Hoàn thành
+                    <% } %>
+                </div>
+            </text>);
+
+        columns.Add()
+            .DataField("Note")
+            .Caption("Ghi chú")
+            .Width(200);
+
+        columns.Add()
+            .Caption("Hành động")
+            .Width(150)
+            .CellTemplate(@<text>
+                <% if (data.Status === 'Done') { %>
+                    <a href="/bao-tri/thuc-hien?machineId=<%- data.MachineId %>&assignDate=<%- formatDate(data.AssignDate) %>&readOnly=true"
+                       class="dx-button dx-button-normal dx-button-mode-contained"
+                       style="padding: 4px 12px; text-decoration: none;">
+                        Xem
+                    </a>
+                <% } else if (data.Status === 'Overdue') { %>
+                    <a href="/bao-tri/thuc-hien?machineId=<%- data.MachineId %>&assignDate=<%- formatDate(data.AssignDate) %>"
+                       class="dx-button dx-button-danger dx-button-mode-contained"
+                       style="padding: 4px 12px; text-decoration: none;">
+                        Kiểm tra (trễ)
+                    </a>
+                <% } else { %>
+                    <a href="/bao-tri/thuc-hien?machineId=<%- data.MachineId %>&assignDate=<%- formatDate(data.AssignDate) %>"
+                       class="dx-button dx-button-success dx-button-mode-contained"
+                       style="padding: 4px 12px; text-decoration: none;">
+                        Kiểm tra
+                    </a>
+                <% } %>
+            </text>)
+            .AllowFiltering(false)
+            .AllowSorting(false);
+    })
+    .Paging(p => p.Enabled(false))
+    .FilterRow(f => f.Visible(false))
+    .SearchPanel(s => s.Visible(true).Placeholder("Tìm kiếm..."))
+    .NoDataText("Không có công việc kiểm tra nào hôm nay")
+)
+
+<script>
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        var date = new Date(dateString);
+        var year = date.getFullYear();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2);
+        var day = ('0' + date.getDate()).slice(-2);
+        return year + '-' + month + '-' + day;
+    }
+
+    $(function() {
+        // Auto refresh every 5 minutes
+        setInterval(function() {
+            $("#assignmentGrid").dxDataGrid("instance").refresh();
+        }, 300000);
+    });
+</script>

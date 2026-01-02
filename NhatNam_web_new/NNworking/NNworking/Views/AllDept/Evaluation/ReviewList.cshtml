@@ -1,0 +1,136 @@
+﻿
+<h2>Đánh giá nhân viên</h2>
+<table>
+    <tr>
+        <td>
+            Tháng/Năm:
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().DateBox()
+                .Type(DateBoxType.Date)
+                .DisplayFormat("MM/yyyy")
+                .Value(DateTime.Now)
+                .ID("evaluationDate")
+            )
+        </td>
+        <td style="padding-left: 10px;">
+            @(Html.DevExtreme().Button()
+                .Text("Xem")
+                .ID("btnView")
+                .Type(ButtonType.Normal)
+                .Width(90)
+                .OnClick("ViewData")
+            )
+        </td>
+    </tr>
+</table>
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.sp_EvaluationEmployee_Result>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C222_Evaluation_EmployeeApi")
+        .LoadAction("GetEvaluationEmployeeData").LoadParams(new { date = new JS("getEvaluationDate") })
+        .Key("Id")
+    )
+    .ID("dxEvaluationGrid")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple))
+    .OnExporting("onExportingDatagridToExcel")
+    .Export(e => e.Enabled(true)
+        .AllowExportSelectedData(true))
+    .ColumnAutoWidth(true)
+    .WordWrapEnabled(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+    )
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.StaffId).Caption("Mã NV").Alignment(HorizontalAlignment.Center);
+        columns.AddFor(m => m.StaffName).Caption("Tên NV").Alignment(HorizontalAlignment.Center);
+        columns.AddFor(m => m.DeptCode).Caption("Bộ phận").Alignment(HorizontalAlignment.Center);
+        
+        columns.Add().Caption("ĐÁNH GIÁ NHÂN VIÊN").Alignment(HorizontalAlignment.Center).Columns(nvColumns =>
+        {
+            nvColumns.AddFor(m => m.NV_TC1).Caption("Tuân thủ đầy đủ các việc đã quyết định, thống nhất, quy trình quy định của Công ty, của Phòng").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC2).Caption("Thời gian làm việc đúng theo sự sắp xếp phân công").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC3).Caption("Trang phục, tác phong, lề lối làm việc chuẩn mực").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC4).Caption("Luôn sắp xếp gọn gàng, ngăn nắp(5S)").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC5).Caption("Khi bản thân mắc lỗi không bao biện mà thành khẩn nhận lỗi").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC6).Caption("Thực hiện công việc theo đúng Kế hoạch").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC7).Caption("Chất lượng công việc").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC8).Caption("Tốc độ công việc").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC9).Caption("Có đề án cải tiến").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC10).Caption("Tự học hỏi, tự nâng cao năng lực").Alignment(HorizontalAlignment.Center);
+            nvColumns.AddFor(m => m.NV_TC11).Caption("Công việc làm theo nhóm").Alignment(HorizontalAlignment.Center);
+        });
+        
+        columns.Add().Caption("CẤP QUẢN LÝ").Alignment(HorizontalAlignment.Center).Columns(qlColumns =>
+        {
+            qlColumns.AddFor(m => m.QL_TC1).Caption("Không đợi chỉ thị, tự bản thân tìm hiểu và tiến hành thực hiện công việc").Alignment(HorizontalAlignment.Center);
+            qlColumns.AddFor(m => m.QL_TC2).Caption("Đào tạo, hướng dẫn cấp dưới").Alignment(HorizontalAlignment.Center);
+            qlColumns.AddFor(m => m.QL_TC3).Caption("Kỹ năng lặp kế hoạch, kỹ năng làm báo cáo").Alignment(HorizontalAlignment.Center);
+            qlColumns.AddFor(m => m.QL_TC4).Caption("Khi báo cáo xử lý sự cố không dựa vào suy nghĩ chủ quan, phải báo cáo chính xác").Alignment(HorizontalAlignment.Center);
+            qlColumns.AddFor(m => m.QL_TC5).Caption("Phối hợp nhịp nhàng giữa các phòng,Tổ liên quan").Alignment(HorizontalAlignment.Center);
+            qlColumns.AddFor(m => m.QL_TC6).Caption("Khi phát sinh thắc mắc hoặc phàn nàn từ khách hàng đối với cùng 1 vấn đề thì cần có đối sách trên phạm vi toàn công ty").Alignment(HorizontalAlignment.Center);
+            qlColumns.AddFor(m => m.QL_TC7).Caption("Có thể hiểu rõ định hướng, mục tiêu kinh doanh của công ty và có hành động phù hợp với định hướng và mục tiêu đó").Alignment(HorizontalAlignment.Center);
+            qlColumns.AddFor(m => m.QL_TC8).Caption("Tuyệt đối tuân thủ theo sự chỉ đạo của cấp trên").Alignment(HorizontalAlignment.Center);
+            qlColumns.AddFor(m => m.QL_TC9).Caption("Thường xuyên sửa đổi, cải tiến kế hoạch thực hiện cho phù hợp với hoàn cảnh thực tại").Alignment(HorizontalAlignment.Center);
+        });
+        
+        columns.AddFor(m => m.TotalScore).Caption("Tổng điểm").Alignment(HorizontalAlignment.Center);
+        
+        columns.Add()
+            .Caption("Xếp loại")
+            .Alignment(HorizontalAlignment.Center)
+            .CalculateCellValue("calculateRating");
+    })
+)
+
+<script>
+    function getEvaluationDate() {
+        var dateBox = $("#evaluationDate").dxDateBox("instance");
+        var date = dateBox.option("value");
+        date = new Date(date.getFullYear(), date.getMonth(), 1);
+        return date;
+    }
+
+    function calculateRating(rowData) {
+        var score = rowData.TotalScore;
+        if (score == null) return "";
+        
+        if (score >= 85) return "Xuất sắc";
+        if (score >= 70) return "Tốt";
+        if (score >= 61) return "Khá";
+        if (score >= 50) return "Trung bình";
+        return "Yếu";
+    }
+
+    function ViewData() {
+        $("#dxEvaluationGrid").dxDataGrid("instance").refresh();
+    }
+
+    function onExportingDatagridToExcel(e) {
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet('Evaluation');
+        
+        DevExpress.excelExporter.exportDataGrid({
+            component: e.component,
+            worksheet: worksheet,
+            autoFilterEnabled: true
+        }).then(function() {
+            workbook.xlsx.writeBuffer().then(function(buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Evaluation_Report.xlsx');
+            });
+        });
+        e.cancel = true;
+    }
+</script>

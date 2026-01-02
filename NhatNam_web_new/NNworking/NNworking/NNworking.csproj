@@ -4784,6 +4784,13 @@
     <Content Include="Views\Workfolow\WorkflowStep.cshtml" />
     <Content Include="Views\Workfolow\WorkfolowActionType.cshtml" />
     <Content Include="Views\Kaizen\_KaizenTimeline.cshtml" />
+    <Content Include="Views\BaoTri\DailyCheck.cshtml" />
+    <Content Include="Views\BaoTri\DailyWork.cshtml" />
+    <Content Include="Views\BaoTri\DailyBug.cshtml" />
+    <Content Include="Views\BaoTri\MachineAndPlan.cshtml" />
+    <Content Include="Views\AllDept\Evaluation\RegisterReview.cshtml" />
+    <Content Include="Views\AllDept\Evaluation\ReviewList.cshtml" />
+    <Content Include="Views\AllDept\Evaluation\ManageReviewList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4802,6 +4809,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AllDept\AllDeptController.cs" />
     <Compile Include="Controllers\AllDept\StaffManagementController.cs" />
+    <Compile Include="Controllers\BaoTriController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\C222_KaizenController.cs" />
     <Compile Include="Controllers\C222_KaizenTypeController.cs" />
@@ -4829,6 +4837,8 @@
     <Compile Include="Controllers\TableAPI\C222_CarRegisterController.cs" />
     <Compile Include="Controllers\TableAPI\C222_CarsController.cs" />
     <Compile Include="Controllers\TableAPI\C222_DepartmentController.cs" />
+    <Compile Include="Controllers\TableAPI\C222_Evaluation_EmployeeController.cs" />
+    <Compile Include="Controllers\TableAPI\C222_Evaluation_ReviewerController.cs" />
     <Compile Include="Controllers\TableAPI\C222_GroupMachineController.cs" />
     <Compile Include="Controllers\TableAPI\C222_LeaderDailyInputController.cs" />
     <Compile Include="Controllers\TableAPI\C222_LeaderMonthlyInputController.cs" />
@@ -4884,6 +4894,10 @@
     <Compile Include="Controllers\TableAPI\C242_InventoryReceivedDetailController.cs" />
     <Compile Include="Controllers\TableAPI\C242_MachinePlanningController.cs" />
     <Compile Include="Controllers\TableAPI\C242_MachinePlan_PreparationController.cs" />
+    <Compile Include="Controllers\TableAPI\C242_MaintenanceAssignmentController.cs" />
+    <Compile Include="Controllers\TableAPI\C242_MaintenanceBugController.cs" />
+    <Compile Include="Controllers\TableAPI\C242_MaintenanceCheckController.cs" />
+    <Compile Include="Controllers\TableAPI\C242_MaintenancePlanController.cs" />
     <Compile Include="Controllers\TableAPI\C242_MechanicalElectronicalWorkController.cs" />
     <Compile Include="Controllers\TableAPI\C242_OptionController.cs" />
     <Compile Include="Controllers\TableAPI\C242_OptionDataController.cs" />
@@ -4923,6 +4937,12 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_Department.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_Evaluation_Employee.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_Evaluation_Reviewer.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_GroupMachine.cs">
@@ -5172,6 +5192,18 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C242_MachinePlan_Preparation.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_MaintenanceAssignment.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_MaintenanceBug.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_MaintenanceCheck.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_MaintenancePlan.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C242_ManualExcution.cs">
@@ -5959,6 +5991,9 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_AcquireMachine_CompareWithPlan_Result.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_EvaluationEmployee_Result.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_GetAllOrderJigNull_Result.cs">

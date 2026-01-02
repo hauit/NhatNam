@@ -12,21 +12,14 @@ namespace NNworking.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class C242_MechanicalElectronicalWork
+    public partial class C242_MaintenanceAssignment
     {
         public int ID { get; set; }
-        public string WorkContent { get; set; }
-        public string Nature { get; set; }
-        public System.DateTime RequestDate { get; set; }
-        public string RequestStaff { get; set; }
-        public string RequestDept { get; set; }
-        public System.DateTime Deadline { get; set; }
-        public Nullable<System.DateTime> CompleteDate { get; set; }
-        public string MainPIC { get; set; }
+        public string MachineId { get; set; }
+        public System.DateTime AssignDate { get; set; }
+        public string AssignedStaff { get; set; }
         public string Status { get; set; }
-        public string Result { get; set; }
-        public string InCompleteReason { get; set; }
         public string Note { get; set; }
-        public string ProcessContent { get; set; }
+        public Nullable<System.DateTime> CreatedAt { get; set; }
     }
 }

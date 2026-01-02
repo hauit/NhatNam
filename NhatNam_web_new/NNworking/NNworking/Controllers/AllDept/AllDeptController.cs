@@ -377,6 +377,26 @@ namespace NNworking.Controllers.AllDept
             return View("~/Views/AllDept/Redmine.cshtml");
         }
 
+        [Route("Dang-ky-danh-gia.html")]
+        public ActionResult RegisterReview()
+        {
+            CheckPermissAndRedirect();
+            return View("~/Views/AllDept/Evaluation/RegisterReview.cshtml");
+        }
+
+        [Route("Danh-sach-danh-gia.html")]
+        public ActionResult ReviewList()
+        {
+            CheckPermissAndRedirect();
+            return View("~/Views/AllDept/Evaluation/ReviewList.cshtml");
+        }
+
+        [Route("Quan-ly-nguoi-danh-gia.html")]
+        public ActionResult ManageReviewList()
+        {
+            CheckPermissAndRedirect();
+            return View("~/Views/AllDept/Evaluation/ManageReviewList.cshtml");
+        }
 
         [HttpPost]
         public JsonResult check(string check)
@@ -401,7 +421,7 @@ namespace NNworking.Controllers.AllDept
         }
 
         [HttpPost]
-        public JsonResult CreateUser( string staffID)
+        public JsonResult CreateUser(string staffID)
         {
             try
             {
@@ -422,9 +442,9 @@ namespace NNworking.Controllers.AllDept
                 db.SaveChanges();
                 return Json(new { Status = "OK", Value = string.Empty }, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return Json(new { Status = "NG",Value = ex.Message},JsonRequestBehavior.AllowGet);
+                return Json(new { Status = "NG", Value = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -443,7 +463,7 @@ namespace NNworking.Controllers.AllDept
             try
             {
                 var data = db.C222_Users.Where(x => x.StaffID == staffID).FirstOrDefault();
-                if(data == null)
+                if (data == null)
                 {
                     throw new ArgumentException("Không tìm thấy mã nhân viên");
                 }
@@ -588,7 +608,7 @@ namespace NNworking.Controllers.AllDept
         }
 
         [HttpPost]
-        public JsonResult ImportGiaoNhan(string staffID,string fromDept, string toDept)
+        public JsonResult ImportGiaoNhan(string staffID, string fromDept, string toDept)
         {
             // Checking no of files injected in Request object  
             if (Request.Files.Count == 0)
@@ -671,7 +691,7 @@ namespace NNworking.Controllers.AllDept
                 return Json(new { Status = "NG", Values = "Error occurred. Error details: " + ex.Message, Errors = Error });
             }
         }
-        
+
         [HttpPost]
         public JsonResult ImportStokerTool(string staffID)
         {
@@ -714,7 +734,7 @@ namespace NNworking.Controllers.AllDept
                 return Json(new { Status = "NG", Values = "Error occurred. Error details: " + ex.Message, Errors = Error });
             }
         }
-        
+
         [HttpPost]
         public JsonResult ImportStokerInput(string staffID)
         {
@@ -962,21 +982,21 @@ namespace NNworking.Controllers.AllDept
                         try
                         {
                             //var PartNo = item.Cells["A" + line].Value == null ? string.Empty : item.Cells["A" + line].Value.ToString();
-                            var MONo =                  item.Cells["A" + line].Value == null ? string.Empty : item.Cells["A" + line].Value.ToString().Trim();
-                            var OptionID =              item.Cells["B" + line].Value == null ? string.Empty : item.Cells["B" + line].Value.ToString().Trim();
-                            var PartID =                item.Cells["C" + line].Value == null ? string.Empty : item.Cells["C" + line].Value.ToString().Trim();
-                            var ErrorNumber =           item.Cells["D" + line].Value == null ? string.Empty : item.Cells["D" + line].Value.ToString().Trim();
-                            var NotifyDept =            item.Cells["E" + line].Value == null ? string.Empty : item.Cells["E" + line].Value.ToString().Trim();
-                            var ErrorTypeID =           item.Cells["F" + line].Value == null ? string.Empty : item.Cells["F" + line].Value.ToString().Trim();
-                            var ErrorContent =          item.Cells["G" + line].Value == null ? string.Empty : item.Cells["G" + line].Value.ToString().Trim();
-                            var NotifyDate =            item.Cells["H" + line].Value == null ? string.Empty : item.Cells["H" + line].Value.ToString().Trim();
-                            var ReceiveErrorItemDate =  item.Cells["I" + line].Value == null ? string.Empty : item.Cells["I" + line].Value.ToString().Trim();
-                            var Note =                  item.Cells["J" + line].Value == null ? string.Empty : item.Cells["J" + line].Value.ToString().Trim();
-                            var Supplier =              item.Cells["K" + line].Value == null ? string.Empty : item.Cells["K" + line].Value.ToString().Trim();
-                            var RaiseErrorDept =        item.Cells["L" + line].Value == null ? string.Empty : item.Cells["L" + line].Value.ToString().Trim();
-                            var ErrorComment =          item.Cells["M" + line].Value == null ? string.Empty : item.Cells["M" + line].Value.ToString().Trim();
-                            var CauseOfError =          item.Cells["N" + line].Value == null ? string.Empty : item.Cells["N" + line].Value.ToString().Trim();
-                            var evaluate =              item.Cells["O" + line].Value == null ? string.Empty : item.Cells["O" + line].Value.ToString().Trim();
+                            var MONo = item.Cells["A" + line].Value == null ? string.Empty : item.Cells["A" + line].Value.ToString().Trim();
+                            var OptionID = item.Cells["B" + line].Value == null ? string.Empty : item.Cells["B" + line].Value.ToString().Trim();
+                            var PartID = item.Cells["C" + line].Value == null ? string.Empty : item.Cells["C" + line].Value.ToString().Trim();
+                            var ErrorNumber = item.Cells["D" + line].Value == null ? string.Empty : item.Cells["D" + line].Value.ToString().Trim();
+                            var NotifyDept = item.Cells["E" + line].Value == null ? string.Empty : item.Cells["E" + line].Value.ToString().Trim();
+                            var ErrorTypeID = item.Cells["F" + line].Value == null ? string.Empty : item.Cells["F" + line].Value.ToString().Trim();
+                            var ErrorContent = item.Cells["G" + line].Value == null ? string.Empty : item.Cells["G" + line].Value.ToString().Trim();
+                            var NotifyDate = item.Cells["H" + line].Value == null ? string.Empty : item.Cells["H" + line].Value.ToString().Trim();
+                            var ReceiveErrorItemDate = item.Cells["I" + line].Value == null ? string.Empty : item.Cells["I" + line].Value.ToString().Trim();
+                            var Note = item.Cells["J" + line].Value == null ? string.Empty : item.Cells["J" + line].Value.ToString().Trim();
+                            var Supplier = item.Cells["K" + line].Value == null ? string.Empty : item.Cells["K" + line].Value.ToString().Trim();
+                            var RaiseErrorDept = item.Cells["L" + line].Value == null ? string.Empty : item.Cells["L" + line].Value.ToString().Trim();
+                            var ErrorComment = item.Cells["M" + line].Value == null ? string.Empty : item.Cells["M" + line].Value.ToString().Trim();
+                            var CauseOfError = item.Cells["N" + line].Value == null ? string.Empty : item.Cells["N" + line].Value.ToString().Trim();
+                            var evaluate = item.Cells["O" + line].Value == null ? string.Empty : item.Cells["O" + line].Value.ToString().Trim();
 
                             if (string.IsNullOrEmpty(MONo))
                             {
@@ -987,7 +1007,7 @@ namespace NNworking.Controllers.AllDept
                             {
                                 throw new ArgumentException("Số lượng lỗi phải là kiểu số");
                             }
-                            
+
                             var errorType = db.C242_ErrorType.Where(x => x.ErrorType.ToLower().Trim() == ErrorTypeID.ToLower()).FirstOrDefault();
                             if (errorType == null)
                             {
@@ -995,7 +1015,7 @@ namespace NNworking.Controllers.AllDept
                             }
 
                             DateTime notifyDate;
-                            if(!DateTime.TryParse(NotifyDate,out notifyDate))
+                            if (!DateTime.TryParse(NotifyDate, out notifyDate))
                             {
                                 throw new ArgumentException("Ngày thông báo lỗi không đúng định dạng");
                             }
@@ -1229,11 +1249,11 @@ namespace NNworking.Controllers.AllDept
                             }
 
                             int qty;
-                            if(!int.TryParse(Qty,out qty))
+                            if (!int.TryParse(Qty, out qty))
                             {
                                 throw new ArgumentException("Qty phải là kiểu số");
                             }
-                            
+
                             C242_InventoryReceivedDetail obj = new C242_InventoryReceivedDetail();
                             obj.VoucherID = po.ID;
                             obj.Deleted = false;
@@ -1259,7 +1279,7 @@ namespace NNworking.Controllers.AllDept
                             db.C242_InventoryReceivedDetail.Add(obj);
                             //Error.Add(new clsError(line, "Not OK", "Add obj OK"));
                             clsBase ba = new clsBase();
-                            ba.CheckAndUpdateBusOrder(obj,db);
+                            ba.CheckAndUpdateBusOrder(obj, db);
                         }
                         catch (Exception ex)
                         {
@@ -1271,7 +1291,7 @@ namespace NNworking.Controllers.AllDept
                     {
                         db.SaveChanges();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         var db1 = new NN_DatabaseEntities();
                         db1.C242_InventoryReceived.Remove(po);
@@ -1292,14 +1312,14 @@ namespace NNworking.Controllers.AllDept
             {
                 var limitDate = DateTime.Now.AddDays(-3);
                 var data = db.WorkingNotifycations.Where(x => (x.FromClient == fromClient && x.ToClient == toClient) || (x.FromClient == toClient && x.ToClient == fromClient) && x.NotifyTime >= limitDate).ToList();
-                if(data.Count == 0)
+                if (data.Count == 0)
                 {
                     throw new ArgumentException("Không có lịch sử chát.");
                 }
 
-                foreach(var item in data)
+                foreach (var item in data)
                 {
-                    if(item.FromClient == fromClient)
+                    if (item.FromClient == fromClient)
                     {
                         continue;
                     }
@@ -1360,12 +1380,12 @@ namespace NNworking.Controllers.AllDept
             bool msgToMachine = false;
             NN_DatabaseEntities db = new NN_DatabaseEntities();
             var data = db.C222_Users.Where(x => x.UserName.ToLower() == toUser.ToLower()).FirstOrDefault();
-            if(data == null)
+            if (data == null)
             {
                 return msgToMachine;
             }
 
-            if(data.UserName.ToLower() == data.StaffID.ToLower())
+            if (data.UserName.ToLower() == data.StaffID.ToLower())
             {
                 msgToMachine = true;
             }
@@ -1380,13 +1400,13 @@ namespace NNworking.Controllers.AllDept
             {
                 NN_DatabaseEntities db = new NN_DatabaseEntities();
                 var data = db.View_242_OptionData.Where(x => x.PartID.ToLower() == partid.ToLower() && x.OptionID.ToLower() == optionid.ToLower()).FirstOrDefault();
-                if(data == null)
+                if (data == null)
                 {
                     throw new ArgumentException("Không tìm thấy thông tin chi tiết, nguyên công");
                 }
 
                 var data_new = db.C242_OptionData.Find(data.ID);
-                data_new.ProTime = Math.Round(protime,2);
+                data_new.ProTime = Math.Round(protime, 2);
                 data_new.ClampTime = Math.Round(clamptime, 2);
                 db.SaveChanges();
                 return Json(new { Status = "OK", Values = String.Empty }, JsonRequestBehavior.AllowGet);
@@ -1403,8 +1423,8 @@ namespace NNworking.Controllers.AllDept
             {
                 NN_DatabaseEntities db = new NN_DatabaseEntities();
                 string fromStaffID = Session["StaffID"].ToString().Trim();
-                var data = db.C222_Staff.Where(x=>x.StaffID.ToLower() == fromStaffID.ToLower()).FirstOrDefault();
-                if(data == null)
+                var data = db.C222_Staff.Where(x => x.StaffID.ToLower() == fromStaffID.ToLower()).FirstOrDefault();
+                if (data == null)
                 {
                     return Json(new { Status = "NG", Values = "Không chấp nhận chế độ ẩn danh!" }, JsonRequestBehavior.AllowGet);
                 }
@@ -1412,7 +1432,7 @@ namespace NNworking.Controllers.AllDept
                 var returnData = db.C222_Users.Take(0).ToList();
                 returnData = db.C222_Users.ToList();
                 return Json(new { Status = "OK", Values = returnData }, JsonRequestBehavior.AllowGet);
-                
+
             }
             catch (Exception ex)
             {
@@ -1426,7 +1446,7 @@ namespace NNworking.Controllers.AllDept
             // Checking no of files injected in Request object  
             if (Request.Files.Count == 0)
             {
-                return Json(new { Status = "NG", Values = "Chưa chọn file import."});
+                return Json(new { Status = "NG", Values = "Chưa chọn file import." });
             }
 
             try
@@ -1437,7 +1457,7 @@ namespace NNworking.Controllers.AllDept
                 {
                     HttpPostedFileBase file = files[i];
                     string fname;
-                    
+
                     if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
                     {
                         string[] testfiles = file.FileName.Split(new char[] { '\\' });
@@ -1447,13 +1467,13 @@ namespace NNworking.Controllers.AllDept
                     {
                         fname = file.FileName;
                     }
-                        
+
                     fname = Path.Combine(Server.MapPath("~/Files/"), fname);
                     file.SaveAs(fname);
                     string name = ChangeName(fname);
                     System.IO.File.Move(fname, name);
                 }
-                return Json(new {Status = "OK",Values = "Import thành công!", Errors = Error });
+                return Json(new { Status = "OK", Values = "Import thành công!", Errors = Error });
             }
             catch (Exception ex)
             {
@@ -1494,7 +1514,7 @@ namespace NNworking.Controllers.AllDept
         {
             try
             {
-                var list = db.View_242_BusOder.Where(x=> x.Deadline.Value.ToString("yyyyMM") == month).ToString();
+                var list = db.View_242_BusOder.Where(x => x.Deadline.Value.ToString("yyyyMM") == month).ToString();
                 return Json(list, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -1523,12 +1543,12 @@ namespace NNworking.Controllers.AllDept
             try
             {
                 var meeting = db.View_222_MeetingContent.Where(x => x.ID == id).ToList();
-                var meetingComment = db.View_222_MeetingComment.Where(x => x.MeetingID == id).OrderBy(x=>x.ID).ToList();
+                var meetingComment = db.View_222_MeetingComment.Where(x => x.MeetingID == id).OrderBy(x => x.ID).ToList();
                 List<View_222_MeetingComment_File> listComment = new List<View_222_MeetingComment_File>();
-                foreach(var item in meetingComment)
+                foreach (var item in meetingComment)
                 {
-                    var serializedParent = JsonConvert.SerializeObject(item); 
-                    View_222_MeetingComment_File obj  = JsonConvert.DeserializeObject<View_222_MeetingComment_File>(serializedParent);                    
+                    var serializedParent = JsonConvert.SerializeObject(item);
+                    View_222_MeetingComment_File obj = JsonConvert.DeserializeObject<View_222_MeetingComment_File>(serializedParent);
                     obj.FilesUploaded = db.C222_MeetingUploadFile.Where(x => x.CommentID == obj.ID).ToList();
                     listComment.Add(obj);
                 }
@@ -1539,7 +1559,7 @@ namespace NNworking.Controllers.AllDept
                     listStaff = GetListStaff(meeting[0]);
                 }
 
-                return Json(new { Status = "OK", Values = string.Empty, MeetingContent = meeting, MeetingComment=listComment, StaffList = listStaff }, JsonRequestBehavior.AllowGet);
+                return Json(new { Status = "OK", Values = string.Empty, MeetingContent = meeting, MeetingComment = listComment, StaffList = listStaff }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -1549,15 +1569,15 @@ namespace NNworking.Controllers.AllDept
 
         [HttpPost]
         [ValidateInput(false)]
-        public JsonResult InputMeetingContent(string date, string deadline, string content,string subject, string evaluate, string command, string staff)
+        public JsonResult InputMeetingContent(string date, string deadline, string content, string subject, string evaluate, string command, string staff)
         {
             try
             {
                 List<string> listFiles = UploadFiles(Request.Files);
-                
+
                 var obj = new C222_MeetingContent();
                 DateTime fromDate;
-                if(!DateTime.TryParse(date,out fromDate))
+                if (!DateTime.TryParse(date, out fromDate))
                 {
                     fromDate = DateTime.ParseExact(date.Substring(0, 24),
                                   "ddd MMM d yyyy HH:mm:ss",
@@ -1598,7 +1618,7 @@ namespace NNworking.Controllers.AllDept
 
                     db.SaveChanges();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     db.C222_MeetingContent.Remove(obj);
                     db.SaveChanges();
@@ -1615,13 +1635,13 @@ namespace NNworking.Controllers.AllDept
 
         [HttpPost]
         [ValidateInput(false)]
-        public JsonResult InputPermissionContent( string[] staff,int[] fList)
+        public JsonResult InputPermissionContent(string[] staff, int[] fList)
         {
             try
             {
-                foreach(var item in staff)
+                foreach (var item in staff)
                 {
-                    foreach(var func in fList)
+                    foreach (var func in fList)
                     {
                         var obj = new C222_WebPermission();
                         obj.StaffID = item;
@@ -1657,7 +1677,7 @@ namespace NNworking.Controllers.AllDept
 
                 if (allMem)
                 {
-                    GetMettingStaff(meetingID,ref staff);
+                    GetMettingStaff(meetingID, ref staff);
                 }
                 obj.ToStaff = staff;
                 obj.Date = DateTime.Now;
@@ -1672,13 +1692,13 @@ namespace NNworking.Controllers.AllDept
                         itemObj.CommentID = obj.ID;
                         itemObj.Deleted = false;
                         itemObj.FilePath = item;
-                        itemObj.FileName = item.Replace($@"~/Files/Stored/","");
+                        itemObj.FileName = item.Replace($@"~/Files/Stored/", "");
                         db.C222_MeetingUploadFile.Add(itemObj);
                     }
 
                     db.SaveChanges();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     db.C222_MeetingComment.Remove(obj);
                     db.SaveChanges();
@@ -1695,19 +1715,19 @@ namespace NNworking.Controllers.AllDept
         private void GetMettingStaff(int meetingID, ref string staff)
         {
             var listStaff = db.View_222_MeetingContent.Where(x => x.ID == meetingID).FirstOrDefault();
-            if (listStaff == null )
+            if (listStaff == null)
             {
                 return;
             }
 
             string staffID = Session["StaffID"].ToString();
             var c222_staff = db.C222_Staff.Where(x => listStaff.Staff.IndexOf(x.StaffID) != -1 && x.StaffID != staffID).ToList();
-            if(c222_staff.Count == 0)
+            if (c222_staff.Count == 0)
             {
                 return;
             }
 
-            for(int i = 0; i < c222_staff.Count; i ++)
+            for (int i = 0; i < c222_staff.Count; i++)
             {
                 staff = $@"{c222_staff[i].StaffID},";
             }
@@ -1717,7 +1737,7 @@ namespace NNworking.Controllers.AllDept
         {
             string result = string.Empty;
             result += $@"{staff[0]};";
-            for(int i = 1; i < staff.Length; i++)
+            for (int i = 1; i < staff.Length; i++)
             {
                 result += $@"{staff[i]};";
             }
@@ -1730,13 +1750,13 @@ namespace NNworking.Controllers.AllDept
             var listStaff = view_222_MeetingContent.Staff.Split(',');
             var result = new List<string>();
 
-            if(listStaff.Length > 0)
+            if (listStaff.Length > 0)
             {
                 NN_DatabaseEntities db1 = new NN_DatabaseEntities();
-                foreach(var item in listStaff)
+                foreach (var item in listStaff)
                 {
                     var staff = db.C222_Staff.Where(x => x.StaffID == item).FirstOrDefault();
-                    if(staff == null)
+                    if (staff == null)
                     {
                         continue;
                     }
@@ -1755,7 +1775,7 @@ namespace NNworking.Controllers.AllDept
             string newName = $"{path}/{DateTime.Now.ToString("yyyyMMddHHmmss")}{extention}";
             return newName;
         }
-        
+
         //select * from [242_BusOder]
 
         //select * from [242_MO]

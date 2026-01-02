@@ -19,13 +19,15 @@ namespace NNworking.Models.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public HttpResponseMessage Get(DataSourceLoadOptions loadOptions) {
+        public HttpResponseMessage Get(DataSourceLoadOptions loadOptions)
+        {
             var c242_mechanicalelectronicalwork = _context.C242_MechanicalElectronicalWork.ToList();
             return Request.CreateResponse(DataSourceLoader.Load(c242_mechanicalelectronicalwork, loadOptions));
         }
 
         [HttpPost]
-        public HttpResponseMessage Post(FormDataCollection form) {
+        public HttpResponseMessage Post(FormDataCollection form)
+        {
             var model = new C242_MechanicalElectronicalWork();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
@@ -41,10 +43,11 @@ namespace NNworking.Models.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Put(FormDataCollection form) {
+        public HttpResponseMessage Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = _context.C242_MechanicalElectronicalWork.FirstOrDefault(item => item.ID == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "C242_MechanicalElectronicalWork not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -60,7 +63,8 @@ namespace NNworking.Models.Controllers
         }
 
         [HttpDelete]
-        public void Delete(FormDataCollection form) {
+        public void Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = _context.C242_MechanicalElectronicalWork.FirstOrDefault(item => item.ID == key);
 
@@ -69,7 +73,8 @@ namespace NNworking.Models.Controllers
         }
 
 
-        private void PopulateModel(C242_MechanicalElectronicalWork model, IDictionary values) {
+        private void PopulateModel(C242_MechanicalElectronicalWork model, IDictionary values)
+        {
             string ID = nameof(C242_MechanicalElectronicalWork.ID);
             string WORK_CONTENT = nameof(C242_MechanicalElectronicalWork.WorkContent);
             string NATURE = nameof(C242_MechanicalElectronicalWork.Nature);
@@ -83,73 +88,96 @@ namespace NNworking.Models.Controllers
             string RESULT = nameof(C242_MechanicalElectronicalWork.Result);
             string IN_COMPLETE_REASON = nameof(C242_MechanicalElectronicalWork.InCompleteReason);
             string NOTE = nameof(C242_MechanicalElectronicalWork.Note);
+            string PROCESS_CONTENT = nameof(C242_MechanicalElectronicalWork.ProcessContent);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(WORK_CONTENT)) {
+            if (values.Contains(WORK_CONTENT))
+            {
                 model.WorkContent = Convert.ToString(values[WORK_CONTENT]);
             }
 
-            if(values.Contains(NATURE)) {
+            if (values.Contains(NATURE))
+            {
                 model.Nature = Convert.ToString(values[NATURE]);
             }
 
-            if(values.Contains(REQUEST_DATE)) {
+            if (values.Contains(REQUEST_DATE))
+            {
                 model.RequestDate = Convert.ToDateTime(values[REQUEST_DATE]);
             }
 
-            if(values.Contains(REQUEST_STAFF)) {
+            if (values.Contains(REQUEST_STAFF))
+            {
                 model.RequestStaff = Convert.ToString(values[REQUEST_STAFF]);
             }
 
-            if(values.Contains(REQUEST_DEPT)) {
+            if (values.Contains(REQUEST_DEPT))
+            {
                 model.RequestDept = Convert.ToString(values[REQUEST_DEPT]);
             }
 
-            if(values.Contains(DEADLINE)) {
+            if (values.Contains(DEADLINE))
+            {
                 model.Deadline = Convert.ToDateTime(values[DEADLINE]);
             }
 
-            if(values.Contains(COMPLETE_DATE)) {
+            if (values.Contains(COMPLETE_DATE))
+            {
                 model.CompleteDate = Convert.ToDateTime(values[COMPLETE_DATE]);
             }
 
-            if(values.Contains(MAIN_PIC)) {
+            if (values.Contains(MAIN_PIC))
+            {
                 model.MainPIC = Convert.ToString(values[MAIN_PIC]);
             }
 
-            if(values.Contains(STATUS)) {
+            if (values.Contains(STATUS))
+            {
                 model.Status = Convert.ToString(values[STATUS]);
             }
 
-            if(values.Contains(RESULT)) {
+            if (values.Contains(RESULT))
+            {
                 model.Result = Convert.ToString(values[RESULT]);
             }
 
-            if(values.Contains(IN_COMPLETE_REASON)) {
+            if (values.Contains(IN_COMPLETE_REASON))
+            {
                 model.InCompleteReason = Convert.ToString(values[IN_COMPLETE_REASON]);
             }
 
-            if(values.Contains(NOTE)) {
+            if (values.Contains(NOTE))
+            {
                 model.Note = Convert.ToString(values[NOTE]);
+            }
+
+            if (values.Contains(PROCESS_CONTENT))
+            {
+                model.ProcessContent = Convert.ToString(values[PROCESS_CONTENT]);
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);

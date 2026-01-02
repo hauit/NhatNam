@@ -110,6 +110,20 @@
                             <li class="fa-address-book"><a href="@Url.Action("StockerOutputCalculation","Tool")"><i class="fa fa-circle-o"></i> Tính toán xuất kho</a></li>
                         </ul>
                     </li>
+                    <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                        <a href="#">
+                            <i class="fa fa-stop-circle"></i> Đánh giá CB
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li><a href="@Url.Action("RegisterReview","Alldept")" class=""><i class="fa fa-circle-o"></i>Đăng kí đánh giá</a></li>
+                            <li><a href="@Url.Action("ReviewList","Alldept")" class=""><i class="fa fa-circle-o"></i>Danh sách đánh giá</a></li>
+                            <li><a href="@Url.Action("ManageReviewList","Alldept")" class=""><i class="fa fa-circle-o"></i>Quản lý</a></li>
+                        </ul>
+
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -189,7 +203,7 @@
             </li>
         </ul>
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+             <li class="@Html.IsSelected(controller: "Dashboard") treeview">
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Phòng cơ điện</span>
                     <span class="pull-right-container">
@@ -198,8 +212,22 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("MechanicalElectronical_WorkDaily","Alldept")"><i class="fa fa-circle-o"></i>Công việc hàng ngày</a></li>
+                    <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                        <a href="#">
+                            <i class="fa fa-coffee"></i> <span>Kế hoạch bảo trì</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("MachineAndPlan","BaoTri")"><i class="fa fa-circle-o"></i>Quản lý máy và kế hoạch</a></li>
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("DailyCheck","BaoTri")"><i class="fa fa-circle-o"></i>Công việc kiểm tra</a></li>
+                            @*<li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("DailyWork","BaoTri")"><i class="fa fa-circle-o"></i>Thực hiện kiểm tra</a></li>*@
+                            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("DailyBug","BaoTri")"><i class="fa fa-circle-o"></i>Sự cố</a></li>
+                        </ul>
+                    </li>
                 </ul>
-            </li>
+            </li> 
         </ul>
         <ul class="sidebar-menu" data-widget="tree">
             <li class="@Html.IsSelected(controller: "Dashboard") treeview">
@@ -232,7 +260,7 @@
                             <li><a href="@Url.Action("FunctionPermission","AllDept")" class=""><i class="fa fa-circle-o"></i>Cấp quyền truy cập</a></li>
 
                             @*@if (Session["StaffID"].ToString() == "1556" || Session["StaffID"].ToString() == "0828")
-                            {*@
+                {*@
                             <li><a href="@Url.Action("UserList","InputData")"><i class="fa fa-circle-o"></i> Danh sách tài khoản</a></li>
                             @*}*@
                         </ul>

@@ -57,9 +57,10 @@
     .ShowColumnHeaders(true)
     .ShowRowLines(true)
     .Export(exp => exp.Enabled(true)
-        .FileName("WTS data")
+        .Formats(new[] { "xlsx" })
         .AllowExportSelectedData(true)
     )
+    .OnExporting("function(e) { e.fileName = 'WTS_data_' + new Date().toISOString().slice(0, 10); }")
     .Columns(columns => {
 
         columns.AddFor(m => m.ID);

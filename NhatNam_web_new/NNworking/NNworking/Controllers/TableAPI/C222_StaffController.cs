@@ -31,8 +31,61 @@ namespace NNworking.Models.Controllers
         {
             var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
             string deptCode = queryParams.ContainsKey("DeptCode") ? queryParams["DeptCode"] : "";
-            var c242_part = _context.C222_Staff.Where(x => x.DeptCode == deptCode).Select(i => new { i.StaffID, i.StaffName, DisplayName = i.StaffID + " - " + i.StaffName }).ToList();
-            return Request.CreateResponse(DataSourceLoader.Load(c242_part, loadOptions));
+            string secName = queryParams.ContainsKey("SecName") ? queryParams["SecName"] : "";
+
+            var currentDate = DateTime.Now;
+            var hierarchy = new Dictionary<string, int>
+            {
+                { "PGĐ", 6 }, { "Trưởng phòng", 5 }, { "Phó phòng", 4 },
+                { "Trưởng ca", 3 }, { "Tổ trưởng", 2 }, { "Tổ phó", 1 }
+            };
+
+            var query = _context.C222_Staff
+                .Where(x => x.DeptCode == deptCode)
+                .Select(i => new
+                {
+                    i.StaffID,
+                    i.StaffName,
+                    DisplayName = i.StaffID + " - " + i.StaffName,
+                    Manager = false
+                });
+
+            if (!string.IsNullOrEmpty(secName))
+            {
+                int currentLevel = hierarchy.ContainsKey(secName) ? hierarchy[secName] : 0;
+                var notAllowedSections = hierarchy
+                    .Where(x => x.Value >= currentLevel)
+                    .Select(x => x.Key)
+                    .ToList();
+                var notAllowedStaffIds = _context.C222_Evaluation_Reviewer
+                    .Where(r => notAllowedSections.Contains(r.DeptName))
+                    .Select(r => r.StaffId)
+                    .ToList();
+
+                var existingReviewerStaffIds = _context.C222_Evaluation_Employee
+                    .Where(r => r.Date.Month == currentDate.Month && r.Date.Year == currentDate.Year) 
+                    .Select(r => r.StaffId)
+                    .ToList();
+
+                var excludedStaffIds = new HashSet<string>(notAllowedStaffIds.Concat(existingReviewerStaffIds));
+                query = query.Where(s => !excludedStaffIds.Contains(s.StaffID));
+
+                var managerStaffIds = _context.C222_Evaluation_Reviewer
+                    .Select(r => r.StaffId)
+                    .Distinct()
+                    .ToHashSet();
+
+                query = query.ToList()
+                    .Select(s => new {
+                        s.StaffID,
+                        s.StaffName,
+                        s.DisplayName,
+                        Manager = managerStaffIds.Contains(s.StaffID)
+                    })
+                    .AsQueryable();
+            }
+
+            return Request.CreateResponse(DataSourceLoader.Load(query, loadOptions));
         }
 
         [HttpPost]
