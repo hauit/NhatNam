@@ -6,7 +6,7 @@
 @(Html.DevExtreme().DataGrid<NNworking.Models.C222_WorkFolowModuleDefinition>()
     .DataSource(ds => ds.WebApi()
         .RouteName("C222_WorkFolowModuleDefinitionApi")
-        .LoadAction("Get")
+        .LoadAction("Get").LoadParams(new { ModuleName = ViewBag.ModuleName })
         .InsertAction("Post")
         .UpdateAction("Put")
         .DeleteAction("Delete")

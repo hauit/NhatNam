@@ -4791,6 +4791,11 @@
     <Content Include="Views\AllDept\Evaluation\RegisterReview.cshtml" />
     <Content Include="Views\AllDept\Evaluation\ReviewList.cshtml" />
     <Content Include="Views\AllDept\Evaluation\ManageReviewList.cshtml" />
+    <Content Include="Views\Purchase\Index.cshtml" />
+    <Content Include="Views\Purchase\PurChaseOrderAdd.cshtml" />
+    <Content Include="Views\Purchase\WorkFolowSetup.cshtml" />
+    <Content Include="Views\Shared\Dashboardv_Layout\_Purchase.cshtml" />
+    <Content Include="Views\Purchase\PurchaseOrderDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4814,6 +4819,9 @@
     <Compile Include="Controllers\C222_KaizenController.cs" />
     <Compile Include="Controllers\C222_KaizenTypeController.cs" />
     <Compile Include="Controllers\C222_PartnerTypeController.cs" />
+    <Compile Include="Controllers\C222_PurChaseController.cs" />
+    <Compile Include="Controllers\C222_PurChaseDetailController.cs" />
+    <Compile Include="Controllers\C222_StockerItemController.cs" />
     <Compile Include="Controllers\C222_WorkFollowDefinitionController.cs" />
     <Compile Include="Controllers\C222_WorkFollowInstanceController.cs" />
     <Compile Include="Controllers\C222_WorkFollowInstanceHistoryController.cs" />
@@ -5015,6 +5023,12 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_PathOfSofware.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_PurChase.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C222_PurChaseDetail.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C222_ReportList.cs">

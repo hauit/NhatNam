@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewBag.Title = "PurChaseOrderAdd";
+}
+
+
+@*@(Html.DevExtreme().DataGrid<NNworking.Models.C222_PurChase>()
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C222_PurChaseApi")
+            .LoadAction("Get")
+            .InsertAction("Post")
+            .UpdateAction("Put")
+            .DeleteAction("Delete")
+            .Key("ID")
+        )
+        .RemoteOperations(true)
+        .Columns(columns => {
+
+            columns.AddFor(m => m.ID);
+
+            columns.AddFor(m => m.PurchaseID);
+
+            columns.AddFor(m => m.InputDate);
+
+            columns.AddFor(m => m.StaffID);
+
+            columns.AddFor(m => m.Note);
+        })
+        .Editing(e => e
+            .AllowAdding(true)
+            .AllowUpdating(true)
+            .AllowDeleting(true)
+        )
+    )
+    @(Html.DevExtreme().DataGrid<NNworking.Models.C222_PurChaseDetail>()
+        .DataSource(ds => ds.WebApi()
+            .RouteName("C222_PurChaseDetailApi")
+            .LoadAction("Get")
+            .InsertAction("Post")
+            .UpdateAction("Put")
+            .DeleteAction("Delete")
+            .Key("ID")
+        )
+        .RemoteOperations(true)
+        .Columns(columns => {
+
+            columns.AddFor(m => m.ID);
+
+            columns.AddFor(m => m.ItemID);
+
+            columns.AddFor(m => m.Qty);
+
+            columns.AddFor(m => m.Price);
+
+            columns.AddFor(m => m.Amount);
+
+            columns.AddFor(m => m.Note);
+        })
+        .Editing(e => e
+            .AllowAdding(true)
+            .AllowUpdating(true)
+            .AllowDeleting(true)
+        )
+    )*@
+
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C222_PurChase>()
+    .ID("gridPurchase")
+    .Editing(e => e
+        .AllowAdding(false)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+    .Toolbar(t => {
+        t.Items(i => {
+            i.Add()
+             .Widget(w => w.Button()
+                 .Text("Thêm mới")
+                 .Icon("add")
+                 .OnClick("openAddPopup")
+             )
+             .Location(ToolbarItemLocation.Before);
+        });
+    })
+)
+@(Html.DevExtreme().Popup()
+    .ID("popupAddPurchase")
+    .Width(900)
+    .Height(600)
+    .ShowTitle(true)
+    .Title("Thêm phiếu mua")
+    .Visible(false)
+    .ContentTemplate(@<text>
+
+        <!-- FORM CHA -->
+        @(Html.DevExtreme().Form<NNworking.Models.C222_PurChase>()
+            .ID("formPurchase")
+            .FormData(new NNworking.Models.C222_PurChase { InputDate = DateTime.Now, StaffID = @Session["StaffID"].ToString(), Subject = string.Empty, Note = string.Empty })
+            .Items(i => {
+                //i.AddSimpleFor(m => m.PurchaseID);
+                i.AddSimpleFor(m => m.Subject);
+                i.AddSimpleFor(m => m.InputDate);
+                i.AddSimpleFor(m => m.StaffID);
+                i.AddSimpleFor(m => m.TimeNeed);
+                i.AddSimpleFor(m => m.Note);
+            })
+        )
+
+        <hr />
+
+        <!-- GRID DETAIL -->
+        @(Html.DevExtreme().DataGrid<NNworking.Models.C222_PurChaseDetail>()
+            .ID("gridDetailTemp")
+            .DataSource(new JS("[]"))
+            .Editing(e => {
+                e.AllowAdding(true);
+                e.AllowUpdating(true);
+                e.AllowDeleting(true);
+            })
+            .Columns(c => {
+                c.AddFor(m => m.ItemID).Lookup(lup =>
+                    lup.DataSource(ds => ds.WebApi()
+                        .RouteName("C222_StockerItemApi")
+                        .LoadAction("Get")
+                    )
+                    .DisplayExpr("ItemName")
+                    .ValueExpr("ItemID")
+                ).Caption("Sản phẩm");
+                c.AddFor(m => m.Qty).Caption("Số lượng");
+                c.AddFor(m => m.Price).Caption("Giá");
+                c.AddFor(m => m.Amount).Caption("Tổng tiền").Visible(false);
+                c.AddFor(m => m.Note).Caption("Ghi chú");
+            })
+        )
+
+        <div style="text-align:right;margin-top:10px">
+            @(Html.DevExtreme().Button()
+                .Text("Lưu")
+                .Type(ButtonType.Success)
+                .OnClick("savePurchase")
+            )
+        </div>
+
+    </text>)
+)
+
+<script>
+    function openAddPopup() {
+        $("#popupAddPurchase").dxPopup("instance").show();
+    }
+
+    function savePurchase() {
+        var purchase = $("#formPurchase").dxForm("instance").option("formData");
+        var details = $("#gridDetailTemp").dxDataGrid("instance")
+            .getDataSource().items();
+
+        if (!purchase || purchase.Subject.length === 0) {
+            alert("Chưa nhập tiêu đề đơn hàng!");
+            return;
+        }
+
+        if (!details || details.length === 0) {
+            alert("Chưa nhập chi tiết đơn hàng!");
+            return;
+        }
+
+        var payload = {
+            purchase: purchase,
+            details: details
+        };
+
+        $.ajax({
+            url: '@Url.Action("InsertPurchaseOrders", "Purchase")',
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(payload),
+            success: function () {
+                $("#popupAddPurchase").dxPopup("instance").hide();
+                $("#gridPurchase").dxDataGrid("instance").refresh();
+            }
+        });
+    }
+
+</script>

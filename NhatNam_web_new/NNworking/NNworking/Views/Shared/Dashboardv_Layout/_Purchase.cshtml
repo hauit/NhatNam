@@ -1,0 +1,26 @@
+﻿
+@{
+
+}
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        @*<ul class="sidebar-menu">
+                <li class="@Html.IsSelected(controller: " Dashboard")">
+                    <a href="@Url.Action("Index","EmailConfiguration")">
+                        <i class="fa fa-dashboard"></i> <span>Trang chủ cấu hình</span>
+                    </a>
+                </li>
+            </ul>*@
+
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("Index","Purchase")"><i class="fa fa-circle-o"></i> Trang chủ mua hàng</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("PurChaseOrderAdd","Purchase")"><i class="fa fa-circle-o"></i> Thêm đơn hàng</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("PurChaseOrderAdd","Purchase")"><i class="fa fa-circle-o"></i> Chi tiết đơn hàng</a></li>
+            <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("WorkFolowSetup","Purchase")"><i class="fa fa-circle-o"></i> Cấu hình phần mềm</a></li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+

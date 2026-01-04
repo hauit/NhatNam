@@ -13,7 +13,11 @@ namespace NNworking.Controllers
 {
     public class KaizenController : Controller
     {
-        public static string ModuleName = nameof(KaizenController);
+        public static string ModuleName
+        {
+            get { return nameof(KaizenController); }
+        }
+
         // GET: Kaizen
         public ActionResult Index()
         {

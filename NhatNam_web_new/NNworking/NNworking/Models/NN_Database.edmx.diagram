@@ -330,9 +330,11 @@
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_MaintenanceBug" Width="1.5" PointX="59.375" PointY="31.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_MaintenanceCheck" Width="1.5" PointX="59.375" PointY="35.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C242_MaintenancePlan" Width="1.5" PointX="59.375" PointY="40.75" />
-        <EntityTypeShape EntityType="NN_DatabaseModel.C242_MechanicalElectronicalWork" Width="1.5" PointX="23.375" PointY="0.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_Evaluation_Employee" Width="1.5" PointX="59.375" PointY="43.75" />
         <EntityTypeShape EntityType="NN_DatabaseModel.C222_Evaluation_Reviewer" Width="1.5" PointX="59.375" PointY="50.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C242_MechanicalElectronicalWork" Width="1.5" PointX="23.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_PurChaseDetail" Width="1.5" PointX="19.375" PointY="60.75" />
+        <EntityTypeShape EntityType="NN_DatabaseModel.C222_PurChase" Width="1.5" PointX="59.375" PointY="53.75" />
 			</Diagram>
 		</edmx:Diagrams>
 	</edmx:Designer>

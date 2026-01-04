@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green-gradient">
+            <a href="@Url.Action("KaizenList", "Kaizen", new {kaizenStatus = (int)NNworking.Controllers.StatusAfterAction.Approval})">
+                <div class="inner" style="color:white;padding-left:20px;">
+                    <h3>Aprroved</h3>
+                    <p>Đơn hàng được chấp nhận</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-cash"></i>
+                </div>
+            </a>
+            <a href="@Url.Action("KaizenList", "Kaizen", new {kaizenStatus = (int)NNworking.Controllers.StatusAfterAction.Approval})" class="small-box-footer">Xem thêm <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-red-gradient">
+            <a href="@Url.Action("KaizenList", "Kaizen", new {kaizenStatus = (int)NNworking.Controllers.StatusAfterAction.Reject})">
+                <div class="inner" style="color:white;padding-left:20px;">
+                    <h3>Reject</h3>
+                    <p>Đơn hàng bị từ chối</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-xbox"></i>
+                </div>
+            </a>
+            <a href="@Url.Action("KaizenList", "Kaizen", new {kaizenStatus = (int)NNworking.Controllers.StatusAfterAction.Reject})" class="small-box-footer">Xem thêm <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-yellow-gradient">
+            <a href="@Url.Action("KaizenList", "Kaizen", new {kaizenStatus = (int)NNworking.Controllers.StatusAfterAction.Pending})">
+                <div class="inner" style="color:white;padding-left:20px;">
+                    <h3>Pending</h3>
+                    <p>Đơn hàng đang chờ duyệt</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-document"></i>
+                </div>
+            </a>
+            <a href="@Url.Action("KaizenList", "Kaizen", new {kaizenStatus = (int)NNworking.Controllers.StatusAfterAction.Pending})" class="small-box-footer">Xem thêm <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-yellow-gradient">
+            <a href="@Url.Action("KaizenList", "Kaizen", new { kaizenStatus = 4 })">
+                <div class="inner" style="color:white;padding-left:20px;">
+                    <h3>All</h3>
+                    <p>Danh sách đơn hàng</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-document"></i>
+                </div>
+            </a>
+            <a href="@Url.Action("KaizenList", "Kaizen", new {kaizenStatus = 4})" class="small-box-footer">Xem thêm <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-blue-gradient">
+            <a href="@Url.Action("KaizenList", "Kaizen", new { kaizenStatus = 4 })">
+                <div class="inner" style="color:white;padding-left:20px;">
+                    <h3>Personal page</h3>
+                    <p>Trang riêng</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-document"></i>
+                </div>
+            </a>
+            <a href="@Url.Action("KaizenList", "Kaizen", new {kaizenStatus = 4})" class="small-box-footer">Xem thêm <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+</div>

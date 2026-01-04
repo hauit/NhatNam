@@ -203,7 +203,7 @@
             </li>
         </ul>
         <ul class="sidebar-menu" data-widget="tree">
-             <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Phòng cơ điện</span>
                     <span class="pull-right-container">
@@ -227,7 +227,7 @@
                         </ul>
                     </li>
                 </ul>
-            </li> 
+            </li>
         </ul>
         <ul class="sidebar-menu" data-widget="tree">
             <li class="@Html.IsSelected(controller: "Dashboard") treeview">
@@ -260,7 +260,7 @@
                             <li><a href="@Url.Action("FunctionPermission","AllDept")" class=""><i class="fa fa-circle-o"></i>Cấp quyền truy cập</a></li>
 
                             @*@if (Session["StaffID"].ToString() == "1556" || Session["StaffID"].ToString() == "0828")
-                {*@
+                            {*@
                             <li><a href="@Url.Action("UserList","InputData")"><i class="fa fa-circle-o"></i> Danh sách tài khoản</a></li>
                             @*}*@
                         </ul>
@@ -372,6 +372,13 @@
             <li>
                 <a href="@Url.Action("Index","Kaizen")">
                     <i class="fa fa-hospital-o"></i> <span>PM cải tiến</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("Index","Purchase")">
+                    <i class="fa fa-hospital-o"></i> <span>PM đặt hàng</span>
                 </a>
             </li>
         </ul>

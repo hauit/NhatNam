@@ -25,6 +25,7 @@ namespace NNworking.Controllers
         [HttpGet]
         public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
         {
+            var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
             var c222_WorkFolowmoduledefinition = _context.C222_WorkFolowModuleDefinition.Select(i => new
             {
                 i.ID,
@@ -35,13 +36,22 @@ namespace NNworking.Controllers
                 i.Deleted
             });
 
-            // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
-            // This can make SQL execution plans more efficient.
-            // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
-            // loadOptions.PrimaryKey = new[] { "ID" };
-            // loadOptions.PaginateViaPrimaryKey = true;
-
+            if (queryParams.Count > 0 && queryParams.ContainsKey("ModuleName"))
+            {
+                string moduleName = queryParams["ModuleName"];
+                c222_WorkFolowmoduledefinition = _context.C222_WorkFolowModuleDefinition.Where(x=>x.ModuleName == moduleName).Select(i => new
+                {
+                    i.ID,
+                    i.DefinitionID,
+                    i.ModuleName,
+                    i.Note,
+                    i.Active,
+                    i.Deleted
+                });
+            }
+            
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c222_WorkFolowmoduledefinition, loadOptions));
+
         }
 
         [HttpPost]
