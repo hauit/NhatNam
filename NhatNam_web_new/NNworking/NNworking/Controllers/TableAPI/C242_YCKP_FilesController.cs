@@ -40,6 +40,7 @@ namespace NNworking.Controllers
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c242_yckp_files, loadOptions));
         }
 
+        // Lấy danh sách file theo OrderNo, Date và StaffId
         [HttpGet]
         public async Task<HttpResponseMessage> GetByOrderNoDateStaff()
         {
@@ -52,6 +53,7 @@ namespace NNworking.Controllers
                 string staffId = queryParams.ContainsKey("StaffId") ? queryParams["StaffId"] : "";
                 string dateStr = queryParams.ContainsKey("Date") ? queryParams["Date"] : "";
 
+                // Parse date và tạo khoảng thời gian +/- 1 giây để tìm kiếm chính xác
                 DateTime date;
                 DateTime.TryParse(dateStr, out date);
                 var nextSecond = date.AddSeconds(1);
@@ -72,14 +74,17 @@ namespace NNworking.Controllers
             }
         }
 
+        // Upload nhiều file lên server
         [HttpPost]
         public async Task<HttpResponseMessage> UploadFiles()
         {
             try
             {
+                // Kiểm tra content type có phải multipart không
                 if (!Request.Content.IsMimeMultipartContent())
                     return Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
 
+                // Đọc multipart content
                 var provider = new MultipartMemoryStreamProvider();
                 await Request.Content.ReadAsMultipartAsync(provider);
 
@@ -88,40 +93,42 @@ namespace NNworking.Controllers
                 var orderNo = HttpContext.Current.Request.Form["OrderNo"];
                 var staffId = HttpContext.Current.Request.Form["StaffId"];
 
-                TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
-                DateTime vietnamNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
-
-                var todayFolder = vietnamNow.Date.ToString("dd-MM-yyyy");
+                // Tạo folder theo ngày
+                var todayFolder = DateTime.Today;
                 var baseFolder = HttpContext.Current.Server.MapPath("~/Files");
-                var folderPath = Path.Combine(baseFolder, todayFolder);
+                var folderPath = Path.Combine(baseFolder, todayFolder.ToString("dd-MM-yyyy"));
                 if (!System.IO.Directory.Exists(folderPath))
                     System.IO.Directory.CreateDirectory(folderPath);
 
+                // Lấy danh sách file từ request
                 var fileParts = provider.Contents
                     .Where(c => c.Headers.ContentDisposition.FileName != null);
 
                 foreach (var file in fileParts)
                 {
+                    // Làm sạch tên file
                     var rawFileName = file.Headers.ContentDisposition?.FileName?.Trim('"');
                     var cleanFileName = string.Concat(rawFileName.Split(Path.GetInvalidFileNameChars()));
 
                     var ext = Path.GetExtension(cleanFileName);
                     var nameWithoutExt = Path.GetFileNameWithoutExtension(cleanFileName);
 
+                    // Tạo tên file unique với GUID
                     var guid = Guid.NewGuid().ToString();
                     var filename = $"{nameWithoutExt}_{guid}{ext}";
 
+                    // Lưu file vào server
                     var fileBytes = await file.ReadAsByteArrayAsync();
                     var filePath = System.IO.Path.Combine(folderPath, filename);
-
                     System.IO.File.WriteAllBytes(filePath, fileBytes);
 
+                    // Tạo record trong database
                     var record = new C242_YCKP_Files
                     {
                         OrderNo = orderNo,
                         StaffId = staffId,
-                        Date = vietnamNow,  // Sử dụng thời gian từ backend
-                        Path = $"/Files/{todayFolder}/{filename}"
+                        Date = todayFolder,  // Sử dụng thời gian từ backend
+                        Path = $"/Files/{todayFolder.ToString("dd-MM-yyyy")}/{filename}"
                     };
 
                     _context.C242_YCKP_Files.Add(record);
@@ -130,6 +137,7 @@ namespace NNworking.Controllers
 
                 await _context.SaveChangesAsync();
 
+                // Trả về danh sách ID của file đã upload
                 return Request.CreateResponse(HttpStatusCode.OK, uploadedFiles.Select(f => new
                 {
                     f.ID
@@ -140,7 +148,6 @@ namespace NNworking.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
 
         [HttpPost]
         public async Task<HttpResponseMessage> Post(FormDataCollection form)

@@ -25,23 +25,26 @@ namespace NNworking.Models.Controllers
             return Request.CreateResponse(DataSourceLoader.Load(c222_staff, loadOptions));
         }
 
-
+        // Lấy danh sách nhân viên theo phòng ban với bộ lọc phân cấp
         [HttpGet]
         public HttpResponseMessage GetByDept(DataSourceLoadOptions loadOptions)
         {
             var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
             string deptCode = queryParams.ContainsKey("DeptCode") ? queryParams["DeptCode"] : "";
             string secName = queryParams.ContainsKey("SecName") ? queryParams["SecName"] : "";
+            string staffID = queryParams.ContainsKey("StaffID") ? queryParams["StaffID"] : "";
 
             var currentDate = DateTime.Now;
+            // Định nghĩa thứ bậc chức vụ
             var hierarchy = new Dictionary<string, int>
             {
                 { "PGĐ", 6 }, { "Trưởng phòng", 5 }, { "Phó phòng", 4 },
                 { "Trưởng ca", 3 }, { "Tổ trưởng", 2 }, { "Tổ phó", 1 }
             };
 
+            // Loại bỏ MachineID và nhân viên đã nghỉ
             var query = _context.C222_Staff
-                .Where(x => x.DeptCode == deptCode)
+                .Where(x => x.DeptCode == deptCode & x.Sub_Group != "MachineID" && x.StopDate == null)
                 .Select(i => new
                 {
                     i.StaffID,
@@ -52,31 +55,42 @@ namespace NNworking.Models.Controllers
 
             if (!string.IsNullOrEmpty(secName))
             {
+                // Xác định cấp độ hiện tại
                 int currentLevel = hierarchy.ContainsKey(secName) ? hierarchy[secName] : 0;
                 var notAllowedSections = hierarchy
                     .Where(x => x.Value >= currentLevel)
                     .Select(x => x.Key)
                     .ToList();
+
+                // Lấy ID của các nhân viên thuộc chức vụ không được phép
                 var notAllowedStaffIds = _context.C222_Evaluation_Reviewer
                     .Where(r => notAllowedSections.Contains(r.DeptName))
                     .Select(r => r.StaffId)
                     .ToList();
 
+                // Lấy ID của các nhân viên đã được đánh giá trong tháng hiện tại
                 var existingReviewerStaffIds = _context.C222_Evaluation_Employee
-                    .Where(r => r.Date.Month == currentDate.Month && r.Date.Year == currentDate.Year) 
+                    .Where(r => r.Date.Month == currentDate.Month && r.Date.Year == currentDate.Year && r.ProcessId == staffID)
                     .Select(r => r.StaffId)
                     .ToList();
 
+                // Gộp các ID cần loại bỏ và áp dụng filter
                 var excludedStaffIds = new HashSet<string>(notAllowedStaffIds.Concat(existingReviewerStaffIds));
                 query = query.Where(s => !excludedStaffIds.Contains(s.StaffID));
 
+                // Lọc lại các nhân viên không thuộc chức vụ bị cấm
+                query = query.Where(s => !notAllowedStaffIds.Contains(s.StaffID));
+
+                // Lấy danh sách quản lý để đánh dấu flag Manager
                 var managerStaffIds = _context.C222_Evaluation_Reviewer
                     .Select(r => r.StaffId)
                     .Distinct()
                     .ToHashSet();
 
+                // Materialize query và cập nhật flag Manager
                 query = query.ToList()
-                    .Select(s => new {
+                    .Select(s => new
+                    {
                         s.StaffID,
                         s.StaffName,
                         s.DisplayName,

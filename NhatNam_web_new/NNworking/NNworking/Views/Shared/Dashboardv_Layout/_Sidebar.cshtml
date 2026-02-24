@@ -110,20 +110,6 @@
                             <li class="fa-address-book"><a href="@Url.Action("StockerOutputCalculation","Tool")"><i class="fa fa-circle-o"></i> Tính toán xuất kho</a></li>
                         </ul>
                     </li>
-                    <li class="@Html.IsSelected(controller: "Dashboard") treeview">
-                        <a href="#">
-                            <i class="fa fa-stop-circle"></i> Đánh giá CB
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu" style="display: none;">
-                            <li><a href="@Url.Action("RegisterReview","Alldept")" class=""><i class="fa fa-circle-o"></i>Đăng kí đánh giá</a></li>
-                            <li><a href="@Url.Action("ReviewList","Alldept")" class=""><i class="fa fa-circle-o"></i>Danh sách đánh giá</a></li>
-                            <li><a href="@Url.Action("ManageReviewList","Alldept")" class=""><i class="fa fa-circle-o"></i>Quản lý</a></li>
-                        </ul>
-
-                    </li>
                 </ul>
             </li>
         </ul>
@@ -379,6 +365,28 @@
             <li>
                 <a href="@Url.Action("Index","Purchase")">
                     <i class="fa fa-hospital-o"></i> <span>PM đặt hàng</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <xpan>Đánh giá CB</xpan>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li><a href="@Url.Action("RegisterReview","Alldept")" class=""><i class="fa fa-circle-o"></i>Đăng kí đánh giá</a></li>
+                    <li><a href="@Url.Action("ReviewList","Alldept")" class=""><i class="fa fa-circle-o"></i>Danh sách đánh giá</a></li>
+                    <li><a href="@Url.Action("ManageReviewList","Alldept")" class=""><i class="fa fa-circle-o"></i>Quản lý</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <a href="@Url.Action("PrepareProcessing","AllDept")">
+                    <i class="fa fa-hospital-o"></i> <span>Theo dõi cb gc</span>
                 </a>
             </li>
         </ul>

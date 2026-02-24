@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "YCKP";
 }
 
@@ -34,7 +33,6 @@
     .ShowRowLines(true)
     .RemoteOperations(true)
     .Columns(columns => {
-
         columns.AddFor(m => m.ID).AllowEditing(false).Visible(false);
 
         columns.AddFor(m => m.Date).Caption("Ngày");
@@ -126,7 +124,7 @@
 )
 
 <script>
-    function onInitNewRow(e){
+    function onInitNewRow(e){   
         e.data.ID = 0;
     }
 

@@ -398,6 +398,13 @@ namespace NNworking.Controllers.AllDept
             return View("~/Views/AllDept/Evaluation/ManageReviewList.cshtml");
         }
 
+        [Route("theo-doi-chuan-bi-gia-cong.html")]
+        public ActionResult PrepareProcessing()
+        {
+            CheckPermissAndRedirect();
+            return View("~/Views/AllDept/PrepareProcessing.cshtml");
+        }
+
         [HttpPost]
         public JsonResult check(string check)
         {
@@ -868,6 +875,50 @@ namespace NNworking.Controllers.AllDept
         }
 
         [HttpPost]
+        public JsonResult ImportCBGC()
+        {
+            // Checking no of files injected in Request object  
+            if (Request.Files.Count == 0)
+            {
+                return Json(new { Status = "NG", Values = "Chưa chọn file import." });
+            }
+
+            List<clsError> Error = new List<clsError>();
+            try
+            {
+                HttpFileCollectionBase files = Request.Files;
+                for (int i = 0; i < files.Count; i++)
+                {
+                    HttpPostedFileBase file = files[i];
+                    string fname;
+
+                    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                    {
+                        string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                        fname = testfiles[testfiles.Length - 1];
+                    }
+                    else
+                    {
+                        fname = file.FileName;
+                    }
+
+                    fname = Path.Combine(Server.MapPath("~/Files/"), fname);
+                    file.SaveAs(fname);
+                    string name = ChangeName(fname);
+                    System.IO.File.Move(fname, name);
+
+                    // Process CBGC import data
+                    ImportCBGCData(name, out Error);
+                }
+                return Json(new { Status = "OK", Values = "Import xong!", Errors = Error });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Status = "NG", Values = "Error occurred. Error details: " + ex.Message, Errors = Error });
+            }
+        }
+
+        [HttpPost]
         public JsonResult ImportBaoLoi_New(string staffID)
         {
             // Checking no of files injected in Request object  
@@ -1304,6 +1355,208 @@ namespace NNworking.Controllers.AllDept
             return true;
         }
 
+
+        private bool ImportCBGCData(string fname, out List<clsError> Error)
+        {
+            Error = new List<clsError>();
+            ExcelPackage.License.SetNonCommercialPersonal("Alo1234");
+
+            using (ExcelPackage package = new ExcelPackage(new FileInfo(fname)))
+            {
+                var b = package.Workbook.Worksheets.Count;
+                if (b == 0)
+                {
+                    return false;
+                }
+
+                foreach (var item in package.Workbook.Worksheets)
+                {
+                    if (item.Name.ToUpper() != "SHEET1")
+                    {
+                        continue;
+                    }
+
+                    int line = 0;
+                    int headerLine = 0;
+                    bool foundHeader = false;
+
+                    for (int searchLine = 1; searchLine <= 100; searchLine++)
+                    {
+                        var cellA = item.Cells["A" + searchLine].Value == null ? string.Empty : item.Cells["A" + searchLine].Value.ToString();
+                        var cellB = item.Cells["B" + searchLine].Value == null ? string.Empty : item.Cells["B" + searchLine].Value.ToString();
+                        var cellC = item.Cells["C" + searchLine].Value == null ? string.Empty : item.Cells["C" + searchLine].Value.ToString();
+                        var cellD = item.Cells["D" + searchLine].Value == null ? string.Empty : item.Cells["D" + searchLine].Value.ToString();
+                        var cellE = item.Cells["E" + searchLine].Value == null ? string.Empty : item.Cells["E" + searchLine].Value.ToString();
+
+                        if (cellA.Contains("Ngày") && cellB.Contains("Máy gia công") && cellC.Contains("Lệnh") && cellD.Contains("Chi tiết") && cellE.Contains("NC"))
+                        {
+                            headerLine = searchLine;
+                            foundHeader = true;
+                            line = searchLine + 1;
+                            break;
+                        }
+                    }
+
+                    if (!foundHeader)
+                    {
+                        throw new ArgumentException("Không tìm thấy dòng tiêu đề trong file Excel. Vui lòng kiểm tra lại cấu trúc file.");
+                    }
+
+                    NN_DatabaseEntities db = new NN_DatabaseEntities();
+
+                    while (line < 1000000)
+                    {
+                        line++;
+                        try
+                        {
+                            var Date = item.Cells["A" + line].Value == null ? string.Empty : item.Cells["A" + line].Value.ToString();
+                            var MachineID = item.Cells["B" + line].Value == null ? string.Empty : item.Cells["B" + line].Value.ToString();
+                            var Command = item.Cells["C" + line].Value == null ? string.Empty : item.Cells["C" + line].Value.ToString();
+                            var PartID = item.Cells["D" + line].Value == null ? string.Empty : item.Cells["D" + line].Value.ToString();
+                            var OptionID = item.Cells["E" + line].Value == null ? string.Empty : item.Cells["E" + line].Value.ToString();
+                            var Priority = item.Cells["F" + line].Value == null ? string.Empty : item.Cells["F" + line].Value.ToString();
+                            var CB_StaffID = item.Cells["G" + line].Value == null ? string.Empty : item.Cells["G" + line].Value.ToString();
+                            var CB_Start = item.Cells["H" + line].Value == null ? string.Empty : item.Cells["H" + line].Value.ToString();
+                            var CB_End = item.Cells["I" + line].Value == null ? string.Empty : item.Cells["I" + line].Value.ToString();
+                            var CT_StaffID = item.Cells["J" + line].Value == null ? string.Empty : item.Cells["J" + line].Value.ToString();
+                            var CT_Start = item.Cells["K" + line].Value == null ? string.Empty : item.Cells["K" + line].Value.ToString();
+                            var CT_End = item.Cells["L" + line].Value == null ? string.Empty : item.Cells["L" + line].Value.ToString();
+                            var SX_StaffID = item.Cells["M" + line].Value == null ? string.Empty : item.Cells["M" + line].Value.ToString();
+                            var SX_Start = item.Cells["N" + line].Value == null ? string.Empty : item.Cells["N" + line].Value.ToString();
+                            var SX_End = item.Cells["O" + line].Value == null ? string.Empty : item.Cells["O" + line].Value.ToString();
+                            var Note = item.Cells["P" + line].Value == null ? string.Empty : item.Cells["P" + line].Value.ToString();
+                            if (string.IsNullOrEmpty(Date))
+                            {
+                                break;
+                            }
+
+                            if (string.IsNullOrEmpty(PartID))
+                            {
+                                throw new ArgumentException("Chi tiết không được để trống");
+                            }
+
+                            if (string.IsNullOrEmpty(Command))
+                            {
+                                throw new ArgumentException("Lệnh không được để trống");
+                            }
+
+                            if (string.IsNullOrEmpty(OptionID))
+                            {
+                                throw new ArgumentException("OptionID không được để trống");
+                            }
+
+                            C242_Prepare_Processing obj = new C242_Prepare_Processing();
+
+                            DateTime dateValue;
+                            if (!string.IsNullOrEmpty(Date) && DateTime.TryParse(Date, out dateValue))
+                            {
+                                obj.Date = dateValue;
+                            }
+                            else
+                            {
+                                throw new ArgumentException("Ngày không đúng định dạng");
+                            }
+
+                            obj.MachineID = MachineID;
+                            obj.Command = Command;
+                            obj.PartID = PartID;
+                            obj.OptionID = OptionID;
+                            obj.Priority = Priority;
+
+                            obj.CB_StaffID = CB_StaffID;
+                            if (!string.IsNullOrEmpty(CB_Start))
+                            {
+                                DateTime cbStart;
+                                if (DateTime.TryParse(CB_Start, out cbStart))
+                                {
+                                    obj.CB_Start = cbStart;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException("Thời gian bắt đầu chuẩn bị không đúng định dạng");
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(CB_End))
+                            {
+                                DateTime cbEnd;
+                                if (DateTime.TryParse(CB_End, out cbEnd))
+                                {
+                                    obj.CB_End = cbEnd;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException("Thời gian kết thúc chuẩn bị không đúng định dạng");
+                                }
+                            }
+
+                            obj.CT_StaffID = CT_StaffID;
+                            if (!string.IsNullOrEmpty(CT_Start))
+                            {
+                                DateTime ctStart;
+                                if (DateTime.TryParse(CT_Start, out ctStart))
+                                {
+                                    obj.CT_Start = ctStart;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException("Thời gian bắt đầu chương trình không đúng định dạng");
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(CT_End))
+                            {
+                                DateTime ctEnd;
+                                if (DateTime.TryParse(CT_End, out ctEnd))
+                                {
+                                    obj.CT_End = ctEnd;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException("Thời gian kết thúc chương trình không đúng định dạng");
+                                }
+                            }
+
+                            obj.SX_StaffID = SX_StaffID;
+                            if (!string.IsNullOrEmpty(SX_Start))
+                            {
+                                DateTime sxStart;
+                                if (DateTime.TryParse(SX_Start, out sxStart))
+                                {
+                                    obj.SX_Start = sxStart;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException("Thời gian bắt đầu chạy thử không đúng định dạng");
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(SX_End))
+                            {
+                                DateTime sxEnd;
+                                if (DateTime.TryParse(SX_End, out sxEnd))
+                                {
+                                    obj.SX_End = sxEnd;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException("Thời gian kết thúc chạy thử không đúng định dạng");
+                                }
+                            }
+
+                            obj.Note = Note;
+
+                            db.C242_Prepare_Processing.Add(obj);
+                        }
+                        catch (Exception ex)
+                        {
+                            Error.Add(new clsError(line, "Not OK", ex.Message));
+                        }
+                    }
+                    db.SaveChanges();
+                }
+            }
+
+            return true;
+        }
+
         //TODO: Đang làm giở ngày 20190822: lấy lịch sử chát giữa 2 user
         [HttpPost]
         public JsonResult GetChattingHistory(string fromClient, string toClient)
@@ -1486,7 +1739,16 @@ namespace NNworking.Controllers.AllDept
         {
             try
             {
-                var list = db.sp_242_BusOder_Month_FinishNumber().ToList();
+                var list = db.sp_242_BusOder_Month_FinishNumber()
+                    .OrderBy(x => x.month)
+                    .Select(x => new
+                    {
+                        month = DateTime.ParseExact(x.month, "yyyyMM", null).ToString("MM-yyyy"),
+                        x.Finised_Num,
+                        x.Total,
+                        x.Tile
+                    })
+                    .ToList();
                 return Json(list, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -1791,5 +2053,22 @@ namespace NNworking.Controllers.AllDept
 
 
         //select * from [242_WTS]
+
+        private DateTime? GetExcelDateTime(ExcelWorksheet worksheet, int row, int column)
+        {
+            var cellValue = worksheet.Cells[row, column].Value;
+            if (cellValue == null) return null;
+
+            if (DateTime.TryParse(cellValue.ToString(), out DateTime result))
+                return result;
+
+            return null;
+        }
+
+        private string GetExcelString(ExcelWorksheet worksheet, int row, int column)
+        {
+            var cellValue = worksheet.Cells[row, column].Value;
+            return cellValue?.ToString().Trim();
+        }
     }
 }

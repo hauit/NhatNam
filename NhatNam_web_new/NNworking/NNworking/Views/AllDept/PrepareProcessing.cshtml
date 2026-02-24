@@ -1,0 +1,232 @@
+﻿
+<h2 style="margin-bottom: 20px; color: #333;">Theo Dõi Chuẩn Bị Gia Công(5 ngày gần nhất)</h2>
+
+<div style="display: flex; gap: 70px;">
+    @(Html.DevExtreme().Button()
+        .Text("Nhập kế hoạch")
+        .Icon("import")
+        .Height(40)
+        .Width(150)
+        .Type(ButtonType.Success)
+        .OnClick("showImportPopup")
+    )
+</div>
+
+<!-- Popup import dữ liệu -->
+@(Html.DevExtreme().Popup()
+    .ID("importPopup")
+    .Width(800)
+    .Height(500)
+    .ShowTitle(true)
+    .Title("Import Dữ Liệu")
+    .Visible(false)
+    .DragEnabled(true)
+    .ShowCloseButton(true)
+    .ContentTemplate(@<text>
+        <div style="padding: 20px;">
+            <div style="margin-bottom: 20px;">
+                @(Html.DevExtreme().Button()
+                    .Text("Chọn File Import")
+                    .Icon("upload")
+                    .Type(ButtonType.Success)
+                    .OnClick("onImportClick")
+                )
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <label><strong>Message:</strong></label>
+            </div>
+            
+            @(Html.DevExtreme().TextArea()
+                .ID("importMessageArea")
+                .Height(200)
+                .ReadOnly(true)
+                .Value("")
+            )
+        </div>
+    </text>)
+)
+
+@(Html.DevExtreme().DataGrid<NNworking.Models.C242_Prepare_Processing>()
+    .DataSource(ds => ds.WebApi()
+        .RouteName("C242_Prepare_ProcessingApi")
+        .LoadAction("Get")
+        .InsertAction("Post")
+        .UpdateAction("Put")
+        .DeleteAction("Delete")
+        .Key("ID")
+    )
+    .ID("dxWTSGetCapacity2")
+    .Paging(page => page.PageSize(10))
+    .Pager(pager => pager.ShowPageSizeSelector(true)
+        .ShowInfo(true)
+        .AllowedPageSizes(new List<int> { 10, 20, 30, 50, 100, 200 })
+    )
+    .Sorting(sort => sort.Mode(GridSortingMode.Multiple)
+        .DescendingText("Date")
+    )
+    .OnExporting("onExportingDatagridToExcel")
+    .Export(e => e.Enabled(true)
+        .AllowExportSelectedData(true)
+    )
+    .ColumnAutoWidth(false)
+    .WordWrapEnabled(true)
+    .FilterRow(fil => fil.Visible(true))
+    .FilterPanel(fi => fi.Visible(true))
+    .SearchPanel(search => search.Visible(true)
+        .Visible(true)
+        .HighlightSearchText(true)
+        .Width(500)
+        .SearchVisibleColumnsOnly(true)
+    )
+    .HeaderFilter(headerFilter => headerFilter.Visible(true))
+    .ShowColumnHeaders(true)
+    .ShowRowLines(true)
+    .RemoteOperations(true)
+    .Columns(columns => {
+        columns.AddFor(m => m.Date)
+                .Caption("Ngày")
+                .Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.MachineID)
+                .Caption("Máy gc")
+                .Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.Command)
+                .Caption("Lệnh")
+                .Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.PartID)
+                .Caption("Chi tiết")
+                .Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.OptionID)
+                .Caption("NC")
+                .Alignment(HorizontalAlignment.Center);
+
+        columns.AddFor(m => m.Priority)
+                .Caption("Thứ tự ưu tiên")
+                .Alignment(HorizontalAlignment.Center);
+
+        columns.Add()
+            .Caption("Chuẩn bị")
+            .Alignment(HorizontalAlignment.Center)
+            .Columns(group => {
+                group.AddFor(m => m.CB_StaffID)
+                    .Caption("Mã NV")
+                    .Alignment(HorizontalAlignment.Center);
+
+                group.AddFor(m => m.CB_Start)
+                    .Caption("TG bắt đầu")
+                    .Alignment(HorizontalAlignment.Center);
+
+                group.AddFor(m => m.CB_End)
+                    .Caption("TG kết thúc")
+                    .Alignment(HorizontalAlignment.Center);
+            });
+
+        columns.Add()
+            .Caption("Chương trình")
+            .Alignment(HorizontalAlignment.Center)
+            .Columns(group => {
+                group.AddFor(m => m.CT_StaffID)
+                    .Caption("Mã NV")
+                    .Alignment(HorizontalAlignment.Center);
+
+                group.AddFor(m => m.CT_Start)
+                    .Caption("TG bắt đầu")
+                    .Alignment(HorizontalAlignment.Center);
+
+                group.AddFor(m => m.CT_End)
+                    .Caption("TG kết thúc")
+                    .Alignment(HorizontalAlignment.Center);
+            });
+
+        columns.Add()
+            .Caption("Chạy thử")
+            .Alignment(HorizontalAlignment.Center)
+            .Columns(group => {
+                group.AddFor(m => m.SX_StaffID)
+                    .Caption("Mã NV")
+                    .Alignment(HorizontalAlignment.Center);
+
+                group.AddFor(m => m.SX_Start)
+                    .Caption("TG bắt đầu")
+                    .Alignment(HorizontalAlignment.Center);
+
+                group.AddFor(m => m.SX_End)
+                    .Caption("TG kết thúc")
+                    .Alignment(HorizontalAlignment.Center);
+            });
+
+        columns.AddFor(m => m.Note)
+                .Caption("Ghi chú")
+                .Alignment(HorizontalAlignment.Center);
+    })
+    .Editing(e => e
+        .Mode(GridEditMode.Form)
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+)
+
+<script>
+// Hiển thị popup import
+function showImportPopup(e) {
+        $("#importPopup").dxPopup("instance").show();
+        $("#importMessageArea").dxTextArea("instance").option("value", "");
+    }
+
+// Xử lý import file Excel/CSV
+function onImportClick(e) {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.xlsx,.xls,.csv';
+
+        fileInput.onchange = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                $("#importMessageArea").dxTextArea("instance").option("value", "Đang import file: " + file.name + "\n\nVui lòng chờ...");
+
+                $.ajax({
+                    url: '@Url.Action("ImportCBGC", "AllDept")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#dxWTSGetCapacity2').dxDataGrid('instance').refresh();
+
+                        let message = '';
+                        if (response.Status === 'OK') {
+                            message = 'Import thành công!\n\n';
+                            if (response.Errors && response.Errors.length > 0) {
+                                message += 'Các dòng không thêm được:\n';
+                                response.Errors.forEach(function(error) {
+                                    message += 'Dòng ' + error.Line + ': ' + error.Des + '\n';
+                                });
+                                message += '\n.....';
+                            } else {
+                                message += 'Tất cả dữ liệu đã được import thành công!';
+                            }
+                        } else {
+                            message = 'Import thất bại: ' + response.Values;
+                        }
+                        
+                        $("#importMessageArea").dxTextArea("instance").option("value", message);
+                    },
+                    error: function(xhr, status, error) {
+                        const errorMessage = 'Import dữ liệu thất bại: ' + (xhr.responseJSON?.message || error) + '\n....';
+                        $("#importMessageArea").dxTextArea("instance").option("value", errorMessage);
+                    }
+                });
+            }
+        };
+
+        fileInput.click();
+    }
+</script>

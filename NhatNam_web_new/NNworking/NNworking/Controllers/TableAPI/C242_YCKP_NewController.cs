@@ -26,11 +26,13 @@ namespace NNworking.Controllers
         [HttpGet]
         public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
         {
+            // Lấy ID của bản ghi mới nhất trong mỗi nhóm
             var latestIds = await _context.View_242_YCKPXL
                     .GroupBy(i => new { i.OrderNo, i.YCKPDate, i.InputStaff })
                     .Select(g => g.OrderByDescending(x => x.ID).Select(x => x.ID).FirstOrDefault())
                     .ToListAsync();
 
+            // Truy vấn các bản ghi chưa bị xóa và có ID trong danh sách mới nhất
             var c242_yckp_new = _context.View_242_YCKPXL
                 .Where(i => latestIds.Contains(i.ID) &&
                             i.Deleted == false
@@ -40,6 +42,7 @@ namespace NNworking.Controllers
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c242_yckp_new, loadOptions));
         }
 
+        // Lấy danh sách lịch sử xử lý YCKP theo OrderNo, InputStaff và YCKPDate
         [HttpGet]
         public async Task<HttpResponseMessage> GetList()
         {
@@ -54,6 +57,7 @@ namespace NNworking.Controllers
                 DateTime yckpDate;
                 DateTime.TryParse(yckpDateStr, out yckpDate);
 
+                // Tạo khoảng thời gian +/- 1 giây để tìm kiếm chính xác theo ngày
                 var query = _context.C242_YCKP_New.AsQueryable();
                 var nextSecond = yckpDate.AddSeconds(1);
                 var prevSecond = yckpDate.AddSeconds(-1);
@@ -80,27 +84,29 @@ namespace NNworking.Controllers
             }
         }
 
+        // Lấy danh sách YCKP đang chờ xử lý (YCKPXL)
         [HttpGet]
-        public async Task<HttpResponseMessage> GetYCKPXL()
+        public async Task<HttpResponseMessage> GetYCKPXL(DataSourceLoadOptions loadOptions)
         {
             try
             {
                 var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
 
+                // Lấy ID của bản ghi mới nhất trong mỗi nhóm
                 var latestIds = await _context.View_242_YCKPXL
                     .GroupBy(i => new { i.OrderNo, i.YCKPDate, i.InputStaff })
                     .Select(g => g.OrderByDescending(x => x.ID).Select(x => x.ID).FirstOrDefault())
                     .ToListAsync();
 
-                var c242_yckp_new = await _context.View_242_YCKPXL
+                // Lấy các YCKP đang xử lý, chưa bị xóa, sắp xếp theo deadline
+                var c242_yckp_new = _context.View_242_YCKPXL
                     .Where(i => latestIds.Contains(i.ID) &&
                                 i.Status == "Đang xử lý" &&
                                 i.Deleted == false
                     )
-                    .OrderBy(x => x.YCKPDeadline)
-                    .ToListAsync();
+                    .OrderBy(x => x.YCKPDeadline);
 
-                return Request.CreateResponse(HttpStatusCode.OK, c242_yckp_new);
+                return Request.CreateResponse(await DataSourceLoader.LoadAsync(c242_yckp_new, loadOptions));
             }
             catch (Exception ex)
             {
@@ -108,6 +114,7 @@ namespace NNworking.Controllers
             }
         }
 
+        // Lấy danh sách YCKP đã xử lý (YCKPDXL) theo nhân viên
         [HttpGet]
         public async Task<HttpResponseMessage> GetYCKPDXL()
         {
@@ -116,6 +123,7 @@ namespace NNworking.Controllers
                 var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
                 string currentStaffId = queryParams.ContainsKey("StaffID") ? queryParams["StaffID"] : "";
 
+                // Lấy các YCKP đã được xử lý bởi nhân viên hiện tại
                 var c242_yckp_new = await _context.View_242_YCKPXL
                     .Where(i => i.UpdatedStaff == currentStaffId)
                     .OrderBy(x => x.YCKPDeadline)
@@ -129,6 +137,7 @@ namespace NNworking.Controllers
             }
         }
 
+        // Lấy chi tiết YCKP bao gồm lịch sử xử lý và file đính kèm
         [HttpGet]
         public async Task<HttpResponseMessage> GetYCKPXLWithDetails()
         {
@@ -140,11 +149,13 @@ namespace NNworking.Controllers
                 string inputStaff = queryParams.ContainsKey("InputStaff") ? queryParams["InputStaff"] : "";
                 string yckpDateStr = queryParams.ContainsKey("YCKPDate") ? queryParams["YCKPDate"] : "";
 
+                // Parse ngày và tạo khoảng thời gian tìm kiếm
                 DateTime yckpDate;
                 DateTime.TryParse(yckpDateStr, out yckpDate);
                 var nextSecond = yckpDate.AddSeconds(1);
                 var prevSecond = yckpDate.AddSeconds(-1);
 
+                // Lấy lịch sử xử lý YCKP
                 var yckpRecords = await _context.View_242_YCKPXL
                     .Where(x =>
                             x.InputStaff == inputStaff &&
@@ -183,11 +194,13 @@ namespace NNworking.Controllers
                     })
                     .ToListAsync();
 
+                // Kiểm tra không tìm thấy bản ghi
                 if (yckpRecords == null || !yckpRecords.Any())
                 {
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Không tìm thấy bản ghi YCKP");
                 }
 
+                // Lấy danh sách file đính kèm
                 var allFiles = await _context.C242_YCKP_Files
                     .Where(x =>
                         x.StaffId == inputStaff &&
@@ -223,8 +236,11 @@ namespace NNworking.Controllers
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
 
-            DateTime vietnamNow = GetVietnamTime();
-            model.YCKPDate = vietnamNow;
+            DateTime vietnamNow = DateTime.Today;
+            if (model.YCKPDate != null)
+            {
+                model.YCKPDate = vietnamNow;
+            }
             model.YCKPProcessTime = vietnamNow;
 
             Validate(model);
@@ -248,7 +264,7 @@ namespace NNworking.Controllers
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
 
-            model.YCKPProcessTime = GetVietnamTime();
+            model.YCKPProcessTime = DateTime.Today;
 
             Validate(model);
             if (!ModelState.IsValid)
@@ -423,12 +439,6 @@ namespace NNworking.Controllers
             }
 
             return String.Join(" ", messages);
-        }
-
-        private DateTime GetVietnamTime()
-        {
-            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
-            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
         }
 
         protected override void Dispose(bool disposing)

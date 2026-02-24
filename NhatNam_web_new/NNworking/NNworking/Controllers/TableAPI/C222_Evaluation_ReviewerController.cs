@@ -23,14 +23,16 @@ namespace NNworking.Controllers
         private NN_DatabaseEntities _context = new NN_DatabaseEntities();
 
         [HttpGet]
-        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
-            var c222_evaluation_reviewer = _context.C222_Evaluation_Reviewer.Select(i => new {
+        public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions)
+        {
+            var c222_evaluation_reviewer = _context.C222_Evaluation_Reviewer.Select(i => new
+            {
                 i.Id,
                 i.StaffId,
                 i.SecName,
                 i.DeptName,
                 i.Manager
-            });
+            }).Where(i => i.StaffId != "1164");
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
             // This can make SQL execution plans more efficient.
@@ -41,6 +43,7 @@ namespace NNworking.Controllers
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c222_evaluation_reviewer, loadOptions));
         }
 
+        // Lấy thông tin người đánh giá theo StaffID
         [HttpGet]
         public async Task<HttpResponseMessage> GetReviewerInfo(DataSourceLoadOptions loadOptions)
         {
@@ -51,7 +54,7 @@ namespace NNworking.Controllers
 
                 var reviewer = await _context.C222_Evaluation_Reviewer
                     .Where(r => r.StaffId == staffId)
-                    .Select(r => new 
+                    .Select(r => new
                     {
                         r.StaffId,
                         r.SecName,
@@ -69,27 +72,29 @@ namespace NNworking.Controllers
                         secName = reviewer.SecName,
                         deptName = reviewer.DeptName,
                         manager = reviewer.Manager,
-                        displayMessage = $"Xin chào {reviewer.SecName}, khối {reviewer.DeptName}"
                     }
                 });
             }
             catch (Exception ex)
             {
                 return Request.CreateResponse(
-                    HttpStatusCode.InternalServerError, 
+                    HttpStatusCode.InternalServerError,
                     new { success = false, message = "Đã xảy ra lỗi khi lấy thông tin", error = ex.Message }
                 );
             }
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Post(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Post(FormDataCollection form)
+        {
             var model = new C222_Evaluation_Reviewer();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
 
+            // Tự động xác định flag Manager dựa trên chức vụ
             var managerPositions = new List<string> { "Phó phòng", "Trưởng phòng", "PGĐ" };
             model.Manager = model.SecName != null && managerPositions.Contains(model.SecName.Trim());
+
             Validate(model);
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, GetFullErrorMessage(ModelState));
@@ -101,10 +106,11 @@ namespace NNworking.Controllers
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> Put(FormDataCollection form) {
+        public async Task<HttpResponseMessage> Put(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_Evaluation_Reviewer.FirstOrDefaultAsync(item => item.Id == key);
-            if(model == null)
+            if (model == null)
                 return Request.CreateResponse(HttpStatusCode.Conflict, "Object not found");
 
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
@@ -120,7 +126,8 @@ namespace NNworking.Controllers
         }
 
         [HttpDelete]
-        public async Task Delete(FormDataCollection form) {
+        public async Task Delete(FormDataCollection form)
+        {
             var key = Convert.ToInt32(form.Get("key"));
             var model = await _context.C222_Evaluation_Reviewer.FirstOrDefaultAsync(item => item.Id == key);
 
@@ -129,47 +136,57 @@ namespace NNworking.Controllers
         }
 
 
-        private void PopulateModel(C222_Evaluation_Reviewer model, IDictionary values) {
+        private void PopulateModel(C222_Evaluation_Reviewer model, IDictionary values)
+        {
             string ID = nameof(C222_Evaluation_Reviewer.Id);
             string STAFF_ID = nameof(C222_Evaluation_Reviewer.StaffId);
             string SEC_NAME = nameof(C222_Evaluation_Reviewer.SecName);
             string DEPT_NAME = nameof(C222_Evaluation_Reviewer.DeptName);
             string MANAGER = nameof(C222_Evaluation_Reviewer.Manager);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID))
+            {
                 model.Id = Convert.ToInt32(values[ID]);
             }
 
-            if(values.Contains(STAFF_ID)) {
+            if (values.Contains(STAFF_ID))
+            {
                 model.StaffId = Convert.ToString(values[STAFF_ID]);
             }
 
-            if(values.Contains(SEC_NAME)) {
+            if (values.Contains(SEC_NAME))
+            {
                 model.SecName = Convert.ToString(values[SEC_NAME]);
             }
 
-            if(values.Contains(DEPT_NAME)) {
+            if (values.Contains(DEPT_NAME))
+            {
                 model.DeptName = Convert.ToString(values[DEPT_NAME]);
             }
 
-            if(values.Contains(MANAGER)) {
+            if (values.Contains(MANAGER))
+            {
                 model.Manager = Convert.ToBoolean(values[MANAGER]);
             }
         }
 
-        private string GetFullErrorMessage(ModelStateDictionary modelState) {
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
+        {
             var messages = new List<string>();
 
-            foreach(var entry in modelState) {
-                foreach(var error in entry.Value.Errors)
+            foreach (var entry in modelState)
+            {
+                foreach (var error in entry.Value.Errors)
                     messages.Add(error.ErrorMessage);
             }
 
             return String.Join(" ", messages);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 _context.Dispose();
             }
             base.Dispose(disposing);

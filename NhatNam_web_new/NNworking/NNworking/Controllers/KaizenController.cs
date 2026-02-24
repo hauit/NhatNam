@@ -41,7 +41,22 @@ namespace NNworking.Controllers
         /// <returns></returns>
         public ActionResult KaiZenDetail(int id)
         {
-            string staffID = Session["StaffID"].ToString().Trim();
+            string staffID = "";
+            var sessionCookie = Request.Cookies["Session"];
+            if (sessionCookie != null && !string.IsNullOrEmpty(sessionCookie.Value))
+            {
+                var sessionValue = HttpUtility.UrlDecode(sessionCookie.Value);
+                var pairs = sessionValue.Split('&');
+                foreach (var pair in pairs)
+                {
+                    var keyValue = pair.Split('=');
+                    if (keyValue.Length == 2 && keyValue[0] == "StaffID")
+                    {
+                        staffID = keyValue[1].Trim();
+                        break;
+                    }
+                }
+            }
             using (NN_DatabaseEntities _context = new NN_DatabaseEntities())
             {
                 var kaizen = _context.C222_Kaizen.Where(k => k.ID == id).FirstOrDefault();
@@ -97,23 +112,23 @@ namespace NNworking.Controllers
         private List<C222_Kaizen> GetApprovalHistory(int iD, NN_DatabaseEntities _context)
         {
             var data = (from a in _context.C222_WorkFolowInstance
-                       join b in _context.C222_WorkFolowInstanceHistory
-                           on new {a.ID, a.ItemID} equals new { ID = (int)b.InstanceID, ItemID = iD }
-                       select new
-                       {
-                           b.ActionDate,
-                           b.StepAction,
-                           b.ActionBy ,
-                           b.StatusAfterAction,
-                           a.Status
-                       }).ToList();
+                        join b in _context.C222_WorkFolowInstanceHistory
+                            on new { a.ID, a.ItemID } equals new { ID = (int)b.InstanceID, ItemID = iD }
+                        select new
+                        {
+                            b.ActionDate,
+                            b.StepAction,
+                            b.ActionBy,
+                            b.StatusAfterAction,
+                            a.Status
+                        }).ToList();
             List<C222_Kaizen> result = new List<C222_Kaizen>();
             if (data.Count == 0)
             {
                 return result;
             }
 
-            for (int i = 0; i < data.Count; i ++)
+            for (int i = 0; i < data.Count; i++)
             {
                 C222_Kaizen kaizen = new C222_Kaizen();
                 kaizen.InputDate = (DateTime)data[i].ActionDate;
@@ -121,8 +136,8 @@ namespace NNworking.Controllers
                 kaizen.Note = note;
                 kaizen.ID = (int)data[i].StatusAfterAction;
                 result.Add(kaizen);
-                    
-                if(i == (data.Count - 1) && data[i].Status == (int)StatusAfterAction.Pending)
+
+                if (i == (data.Count - 1) && data[i].Status == (int)StatusAfterAction.Pending)
                 {
                     C222_Kaizen kaizenLast = new C222_Kaizen();
                     kaizenLast.InputDate = DateTime.Now.Date.AddMonths(10);
@@ -176,7 +191,7 @@ namespace NNworking.Controllers
                 }
 
                 //var data2 = _context.C222_WorkFolowRole.Where(x => x.ID == data1.RoleID).FirstOrDefault();
-                if (data.StaffID.IndexOf(viewer) != -1)
+                if (data.StaffID != null && data.StaffID.IndexOf(viewer) != -1)
                 {
                     return new List<string>() { "KaizenDeptComment" };
                 }

@@ -41,9 +41,11 @@ namespace NNworking.Controllers
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c242_yckp_response, loadOptions));
         }
 
+        // Lấy thông tin phản hồi YCKP theo ID
         [HttpGet]
         public async Task<HttpResponseMessage> GetById(int id)
         {
+            // Lấy thông tin phản hồi theo ID
             var response = await _context.C242_YCKP_Response
                 .Where(i => i.ID == id)
                 .Select(i => new
@@ -61,6 +63,7 @@ namespace NNworking.Controllers
                 })
                 .FirstOrDefaultAsync();
 
+            // Kiểm tra không tìm thấy bản ghi
             if (response == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, "Record not found");
@@ -76,8 +79,8 @@ namespace NNworking.Controllers
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
 
-            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
-            model.Date = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
+            DateTime vietnamNow = DateTime.Today;
+            model.Date = vietnamNow;
 
             Validate(model);
             if (!ModelState.IsValid)

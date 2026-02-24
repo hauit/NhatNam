@@ -199,6 +199,7 @@
 </style>
 
 <script>
+    // Load hình ảnh khi master detail content ready
     function onDetailContentReady(e) {
         $(".detail-images-container").each(function () {
             loadImagesForDetail(
@@ -210,9 +211,11 @@
         });
     }
 
+    // Export YCKP ra Excel với custom formatting
     async function onExportingYCKP(e) {
         e.cancel = true;
         try {
+            // Mapping tên cột tiếng Việt
             const columnNameMapping = {
                 "OrderNo": "Số đơn hàng",
                 "PartId": "Tên chi tiết",
@@ -238,25 +241,31 @@
                 "UpdatedSolution": "Giải pháp"
             };
 
+            // Tạo workbook và worksheet
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('Sheet 1');
 
+            // Tạo filename với ngày hiện tại
             const today = new Date();
             const formattedDate = today.toISOString().split('T')[0].replace(/-/g, '');
             const filename = `YCKP_DaXuLy_${formattedDate}.xlsx`;
 
+            // Load tất cả dữ liệu từ DataGrid
             const dataSource = e.component.getDataSource();
             const allData = await dataSource.load({
                 skip: 0,
                 take: Number.MAX_SAFE_INTEGER
             });
 
+            // Validate dữ liệu
             if (!allData || allData.length === 0) {
                 throw new Error("Không có dữ liệu để xuất");
             }
 
+            // Filter các field ẩn
             const hiddenFields = ["Deleted", "Status", "ResponseId", "ID", "ProcessDept", "ProcessStaff"];
 
+            // Build danh sách cột
             let columns = [];
             if (allData.length > 0) {
                 columns = Object.keys(allData[0])
@@ -268,6 +277,7 @@
             }
 
 
+            // Fallback nếu không có mapping
             if (columns.length === 0 && allData.length > 0) {
                 columns = Object.keys(allData[0])
                     .filter(key => !hiddenFields.includes(key))
@@ -277,10 +287,12 @@
                     }));
             }
 
+            // Validate columns
             if (columns.length === 0) {
                 throw new Error("Không tìm thấy cột dữ liệu để xuất. Vui lòng kiểm tra dữ liệu nguồn.");
             }
 
+            // Tạo header row với styling
             const exportColumns = columns.map(col => ({
                     dataField: col.dataField,
                     caption: col.caption,
@@ -295,6 +307,7 @@
                 fgColor: { argb: 'FFD3D3D3' }
             };
 
+            // Add data rows với format
             allData.forEach(row => {
                 const rowData = exportColumns.map(col => {
                     const val = row[col.dataField];
@@ -306,6 +319,7 @@
                 worksheet.addRow(rowData);
             });
 
+            // Auto-fit columns và save file
             exportColumns.forEach((col, index) => {
                 const column = worksheet.getColumn(index + 1);
                 column.width = Math.min(50, Math.max(15, col.caption.length * 1.3));
@@ -326,6 +340,7 @@
         }
     }
 
+    // Load hình ảnh cho chi tiết YCKP
     function loadImagesForDetail(container, orderNo, staffId, yckpDate) {
         container.empty();
 
@@ -343,11 +358,13 @@
                     return;
                 }
 
+                // Render từng hình ảnh
                 response.forEach(function(file) {
-                    if (file.Path) {
-                        var relativePath = file.Path.replace(/^.*[\\\/]Files[\\\/]/, 'Files/');
+                        // Xử lý path và tạo image
+                        var relativePath = file.Path.replace(/^.*[\\/]Files[\\/]/, 'Files/');
                         var imageUrl = '/' + relativePath.replace(/\\/g, '/');
 
+                        // Tạo container cho image
                         var imageContainer = $('<div>').css({
                             width: '150px',
                             border: '1px solid #eee',
@@ -356,6 +373,7 @@
                             boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                         });
 
+                        // Tạo image element với click handler
                         var img = $('<img>').attr({
                             'src': imageUrl,
                             'alt': 'Hình ảnh đính kèm',
@@ -366,7 +384,6 @@
 
                         imageContainer.append(img);
                         container.append(imageContainer);
-                    }
                 });
             },
             error: function(error) {

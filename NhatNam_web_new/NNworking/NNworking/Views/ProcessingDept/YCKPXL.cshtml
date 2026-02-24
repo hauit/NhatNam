@@ -1,123 +1,11 @@
 ﻿
 <div style="padding: 20px;">
     <h2>Danh Sách Yêu Cầu Khắc Phục</h2>
-    
+
     <div id="cardsContainer" class="cards-container"></div>
 </div>
 
-<style>
-    .cards-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
-    }
-
-    .card {
-        background: white;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .card-title {
-        font-weight: bold;
-        color: #333;
-    }
-
-    .card-status {
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .status-medium { background: #e3f2fd; color: #1976d2; }
-    .status-hard { background: #fff3e0; color: #f57c00; }
-    .status-low { background: #e8f5e9; color: #388e3c; }
-
-    .card-body p {
-        margin: 8px 0;
-        font-size: 14px;
-        color: #666;
-    }
-
-    .card-body strong {
-        color: #333;
-    }
-
-    #responseForm .dx-radiogroup .dx-collection {
-        gap: 20px;
-    }
-
-    #responseForm .dx-radiogroup .dx-item {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 15px 20px;
-        border: 2px solid transparent;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        min-width: 80px;
-    }
-
-    #responseForm .dx-radiogroup .dx-radiobutton-icon {
-        width: 24px;
-        height: 24px;
-        border-width: 2px;
-    }
-
-    #responseForm .dx-radiogroup .dx-radiobutton-text {
-        font-size: 14px;
-        font-weight: 500;
-    }
-
-    #responseForm .dx-radiogroup .dx-item .dx-radiobutton-text,
-    #responseForm .dx-radiogroup .dx-item-content .dx-radiobutton-text,
-    #responseForm .dx-radiogroup .dx-radiobutton .dx-radiobutton-text,
-    #responseForm .dx-radiogroup .dx-item *,
-    #responseForm .dx-radiogroup .dx-item span {
-        color: white !important;
-    }
-
-    #responseForm .dx-radiogroup .dx-item:nth-child(1) {
-        background-color: #00b0b7;
-        border-color: #00b0b7;
-    }
-
-    #responseForm .dx-radiogroup .dx-item:nth-child(2) {
-        background-color: #f41b35;
-        border-color: #f41b35;
-    }
-
-    #responseForm .dx-radiogroup .dx-item:nth-child(3) {
-        background-color: #f41b35;
-        border-color: #f41b35;
-    }
-
-    #responseForm .dx-radiogroup .dx-item:nth-child(4) {
-        background-color: #00a94e;
-        border-color: #00a94e;
-    }
-</style>
-
+<!-- Popup cập nhật phản hồi YCKP -->
 @(Html.DevExtreme().Popup()
     .ID("responsePopup")
     .Title("Cập Nhật Phản Hồi YCKP")
@@ -127,13 +15,13 @@
     .DragEnabled(true)
     .Visible(false)
     .Content(@<text>
-        <div id="sendedImagesContainer" style="padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px; max-height: 300px; overflow-y: auto;">
+    <div id="sendedImagesContainer" style="padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px; max-height: 300px; overflow-y: auto;">
         </div>
         @(Html.DevExtreme().Form<NNworking.Models.C242_YCKP_Response>()
             .ID("responseForm")
             .ShowColonAfterLabel(true)
             .Items(items => {
-                items.AddGroup()
+            items.AddGroup()
                     .Items(groupItems => {
                         groupItems.AddSimple()
                             .DataField("StatusChoice")
@@ -183,7 +71,7 @@
                             .Visible(false);
                     });
 
-                items.AddGroup()
+            items.AddGroup()
                     .ColCount(2)
                     .Items(groupItems => {
                         groupItems.AddSimple()
@@ -231,7 +119,7 @@
                             .IsRequired(true);
                     });
 
-                items.AddGroup()
+            items.AddGroup()
                     .ColCount(2)
                     .Items(groupItems => {
                         groupItems.AddButton()
@@ -255,6 +143,121 @@
     </text>)
 )
 
+<style>
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .card {
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .card-body strong, .card-title {    
+        color: #333;
+    }
+
+    .card-status {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-medium {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .status-hard {
+        background: #fff3e0;
+        color: #f57c00;
+    }
+
+    .status-low {
+        background: #e8f5e9;
+        color: #388e3c;
+    }
+
+    .card-body p {
+        color: #666;
+    }
+
+    #responseForm .dx-radiogroup .dx-collection {
+        gap: 20px;
+    }
+
+    #responseForm .dx-radiogroup .dx-item {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 15px 20px;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        min-width: 80px;
+    }
+
+    #responseForm .dx-radiogroup .dx-radiobutton-icon {
+        width: 24px;
+        height: 24px;
+        border-width: 2px;
+    }
+
+    #responseForm .dx-radiogroup .dx-radiobutton-text {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    #responseForm .dx-radiogroup .dx-item *{
+        color: white !important;
+    }
+
+    #responseForm .dx-radiogroup .dx-item:nth-child(1) {
+        background-color: #00b0b7;
+        border-color: #00b0b7;
+    }
+
+    #responseForm .dx-radiogroup .dx-item:nth-child(2) {
+        background-color: #f41b35;
+        border-color: #f41b35;
+    }
+
+    #responseForm .dx-radiogroup .dx-item:nth-child(3) {
+        background-color: #f41b35;
+        border-color: #f41b35;
+    }
+
+    #responseForm .dx-radiogroup .dx-item:nth-child(4) {
+        background-color: #00a94e;
+        border-color: #00a94e;
+    }
+
+    .card-row {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
 <script>
     let yckpData = [];
     let currentYckpItem = null;
@@ -263,6 +266,7 @@
         loadYCKPData();
     });
 
+    // Load dữ liệu YCKP từ API
     function loadYCKPData() {
         $.ajax({
             url: '@Url.Action("GetYCKPXL", "api/C242_YCKP_New")',
@@ -270,8 +274,8 @@
             data: {
                 Department: '@Session["Department"].ToString()'
             },
-            success: function(response) {
-                yckpData = response || [];
+            success: function (response) {
+                yckpData = response.data || [];
                 renderCards();
             },
             error: function(xhr) {
@@ -281,6 +285,7 @@
         });
     }
 
+    // Render cards từ dữ liệu
     function renderCards() {
         const container = $('#cardsContainer');
         container.empty();
@@ -297,23 +302,33 @@
             const card = $(`
                 <div class="card" data-id="${item.ID}">
                     <div class="card-header">
-                        <span class="card-title">Số Order: ${item.OrderNo || 'N/A'}</span>
+                        <span class="card-title"><strong>Số Order: ${item.OrderNo || 'N/A'}</strong></span>
                         <span class="card-status ${statusClass}">${item.RankLevel || 'N/A'}</span>
                     </div>
                     <div class="card-body">
                         <p><strong>Người xử lý:</strong> ${item.ProcessStaff || 'N/A'}</p>
                         <p style="border-bottom: 1px solid #eee;"><strong>Phòng ban xử lý:</strong><span style="color:#D4A017; font-weight:600;"> ${item.ProcessDept || 'N/A'} </span></p>
                         <p><strong>Tên chi tiết:</strong> ${item.PartId || 'N/A'}</p>
-                        <p><strong>Máy gc:</strong> ${item.MachineID || 'N/A'}</p>
-                        <p><strong>Nguyên công:</strong> ${item.OptionID || 'N/A'}</p>
-                        <p><strong>Số sp gc:</strong> ${item.ProcessProduct || 'N/A'}</p>
-                        <p><strong>Số lần yckp:</strong> ${item.YCKPTimes || 'N/A'}</p>
-                        <p><strong>Tình trạng gc:</strong> ${item.ProcessStatus || 'N/A'}</p>
+                        <p><strong>Tình trạng GC:</strong> ${item.ProcessStatus || 'N/A'}</p>
+                        <div class="card-col">
+                            <div class="card-row">
+                                <p><strong>Máy GC:</strong> ${item.MachineID || 'N/A'}</p>
+                                <p><strong>Nguyên công:</strong> ${item.OptionID || 'N/A'}</p>
+                            </div>
+                            <div class="card-row">
+                                <p><strong>Số SP GC:</strong> ${item.ProcessProduct || 'N/A'}</p>
+                                <p><strong>Số lần YCKP:</strong> ${item.YCKPTimes || 'N/A'}</p>
+                            </div>
+                        </div>
                         <p><strong>Nội dung:</strong> ${item.YCKPContent || 'N/A'}</p>
                         <p><strong>Dự đoán:</strong> ${item.CauseContent || 'N/A'}</p>
                         <p><strong>Đề xuất:</strong> ${item.SolutionContent || 'N/A'}</p>
-                        <p><strong>Người yêu cầu:</strong> ${item.InputStaff || 'N/A'}</p>
-                        <p><strong>Deadline:</strong> ${item.YCKPDeadline ? new Date(item.YCKPDeadline).toLocaleDateString('vi-VN') : 'N/A'}</p>
+                        <div class="card-col">
+                            <div class="card-row">
+                                <p><strong>Người YC:</strong> ${item.InputStaff || 'N/A'}</p>
+                                <p><strong>Deadline:</strong> ${item.YCKPDeadline ? new Date(item.YCKPDeadline).toLocaleDateString('vi-VN') : 'N/A'}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `);
@@ -326,6 +341,7 @@
         });
     }
 
+    // Mở popup phản hồi
     function openResponsePopup(yckpItem) {
         currentYckpItem = yckpItem;
 
@@ -345,6 +361,7 @@
         }
     }
 
+    // Load hình ảnh đính kèm
     function loadImages1(orderNo, staffId, yckpDate) {
         var container = $("#sendedImagesContainer");
         container.empty();
@@ -397,18 +414,10 @@
         });
     }
 
+    // Lưu phản hồi YCKP
     function onSaveResponse() {
         const form = $('#responseForm').dxForm('instance');
         const formData = form.option('formData');
-
-        const now = new Date();
-        const options = {
-            timeZone: 'Asia/Ho_Chi_Minh',
-            year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit', second: '2-digit',
-            hour12: false
-        };
-        const currentDateTime = new Intl.DateTimeFormat('sv-SE', options).format(now).replace(/\//g, '-');
 
         switch (formData.StatusChoice) {
             case "OK":
@@ -420,13 +429,12 @@
                         values: JSON.stringify({
                             UpdatedStaff: '@Session["StaffID"].ToString()',
                             UpdatedDept: '@Session["Department"].ToString()',
-                            Date: currentDateTime,
                             Status: formData.StatusChoice,
                             UpdatedResponse: formData.UpdatedResponse,
                             UpdatedReason: formData.UpdatedReason,
                             UpdatedSolution: formData.UpdatedSolution,
-                            CausedDept: formData.CausedDept,   
-                            CausedDetail: formData.CausedDetail 
+                            CausedDept: formData.CausedDept,
+                            CausedDetail: formData.CausedDetail
                         })
                     },
                     success: function(responseData) {
@@ -437,8 +445,7 @@
                                 key: currentYckpItem.ID,
                                 values: JSON.stringify({
                                     ResponseId: responseData.ID.toString(),
-                                    Status: formData.Status,
-                                    YCKPProcessTime: currentDateTime
+                                    Status: formData.Status
                                 })
                             },
                             success: function() {
@@ -484,13 +491,12 @@
                         values: JSON.stringify({
                             UpdatedStaff: '@Session["StaffID"].ToString()',
                             UpdatedDept: '@Session["Department"].ToString()',
-                            Date: currentDateTime,
                             Status: formData.StatusChoice,
                             UpdatedResponse: formData.UpdatedResponse,
                             UpdatedReason: formData.UpdatedReason,
                             UpdatedSolution: formData.UpdatedSolution,
-                            CausedDept: null,        
-                            CausedDetail: null 
+                            CausedDept: null,
+                            CausedDetail: null
                         })
                     },
                     success: function (responseData) {
@@ -531,7 +537,6 @@
                                     SolutionContent: currentYckpItem.SolutionContent,
                                     YCKPDate: currentYckpItem.YCKPDate,
                                     YCKPDeadline: currentYckpItem.YCKPDeadline,
-                                    YCKPProcessTime: currentDateTime,
                                     InputStaff: currentYckpItem.InputStaff,
                                     InputDept: currentYckpItem.InputDept,
                                     ProcessStaff: finalProcessStaff,
@@ -560,10 +565,12 @@
         }
     }
 
+    // Đóng popup phản hồi
     function onCancelResponse() {
         $('#responsePopup').dxPopup('instance').hide();
     }
 
+    // Xử lý khi thay đổi trạng thái
     function onStatusChange(e) {
         const form = $('#responseForm').dxForm('instance');
 
@@ -606,9 +613,9 @@
 
         const showCausedFields = (e.value === "OK" || e.value === "Cancel");
         form.itemOption("CausedDeptField", "visible", showCausedFields);
-        //form.itemOption("CausedDetailField", "visible", showCausedFields);
     }
 
+    // Xử lý khi thay đổi phòng ban
     function onProcessDeptChanged(e) {
         var deptCode = e.value;
         var staffSelect = $("#ProcessStaffSelect").dxSelectBox("instance");

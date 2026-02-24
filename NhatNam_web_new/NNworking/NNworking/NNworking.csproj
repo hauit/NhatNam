@@ -4796,6 +4796,8 @@
     <Content Include="Views\Purchase\WorkFolowSetup.cshtml" />
     <Content Include="Views\Shared\Dashboardv_Layout\_Purchase.cshtml" />
     <Content Include="Views\Purchase\PurchaseOrderDetail.cshtml" />
+    <Content Include="Views\AllDept\Report\Customer_Capacity.cshtml" />
+    <Content Include="Views\AllDept\PrepareProcessing.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4911,6 +4913,7 @@
     <Compile Include="Controllers\TableAPI\C242_OptionDataController.cs" />
     <Compile Include="Controllers\TableAPI\C242_PartController.cs" />
     <Compile Include="Controllers\TableAPI\C242_PredictErrorCauseController.cs" />
+    <Compile Include="Controllers\TableAPI\C242_Prepare_ProcessingController.cs" />
     <Compile Include="Controllers\TableAPI\C242_ShiftHandOverController.cs" />
     <Compile Include="Controllers\TableAPI\C242_StandTimeController.cs" />
     <Compile Include="Controllers\TableAPI\C242_TechJob1Controller.cs" />
@@ -5260,6 +5263,9 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C242_PredictErrorCause.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C242_Prepare_Processing.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C242_P_NhapOrderlapKHGC.cs">
@@ -6041,6 +6047,9 @@
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_Get_MachineCapability_Result.cs">
+      <DependentUpon>NN_Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_Get_StaffCapability1_Result.cs">
       <DependentUpon>NN_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_Get_StaffCapability_Result.cs">

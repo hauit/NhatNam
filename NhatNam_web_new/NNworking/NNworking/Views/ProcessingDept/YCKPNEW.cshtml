@@ -37,7 +37,6 @@
     .ShowRowLines(true)
     .RemoteOperations(true)
     .Columns(columns => {
-
         columns.AddFor(m => m.ID)
                 .AllowEditing(false)
                 .Visible(false)
@@ -317,6 +316,7 @@
                                 renderFileList();
                             });
 
+                            // Render file list
                             function renderFileList() {
                                 var fileList = $("#YCKPFileList");
                                 fileList.empty();
@@ -352,12 +352,14 @@
 
 <div id="detail" style="display:flex; flex-direction: column;">
     <div id="detailContainer" style="display: flex; gap: 20px;">
+        <!-- Timeline panel -->
         <div id="timelineWrapper" style="flex: 1; display: flex; flex-direction: column;">
             <h3>Lịch sử</h3>
             <div id="yckpTimelinePanel" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; overflow-y: auto;">
             </div>
         </div>
 
+        <!-- Details panel -->
         <div id="detailsWrapper" style="flex: 2; display: flex; flex-direction: column;">
             <h3>Chi tiết</h3>
             <div id="responsePanel" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; overflow-y: auto;">
@@ -367,6 +369,7 @@
         </div>
     </div>
 </div>
+<!-- Images panel -->
 <div id="sendedImagesPanel" style="margin-top: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
     <h3>Hình ảnh đã gửi</h3>
     <div id="sendedImagesContainer" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
@@ -549,6 +552,7 @@
 </style>
 
 <script>
+    // Khởi tạo giá trị mặc định cho row mới
     function onInitNewRow(e){
         e.data.ID = 0;
         e.data.InputStaff = '@Session["StaffID"].ToString()';
@@ -557,6 +561,7 @@
         e.data.Status = "Đang xử lý";
     }
 
+    // Cấu hình form khi edit
     function onEditingStart(e) {
         if (e.data && e.data.ID) {
             const grid = $("#dxYCKPNEW").dxDataGrid("instance");
@@ -578,6 +583,7 @@
         }
     }
 
+    // Lấy thông tin Order No
     function onGetOrderNo() {
         var orderNo = window.currentOrderNo;
         var grid = $("#dxYCKPNEW").dxDataGrid("instance");
@@ -626,6 +632,7 @@
         });
     }
 
+    // Xử lý khi thay đổi phòng ban xử lý
     function onProcessDeptChanged(e) {
         var deptCode = e.value;
         var staffSelect = $("#ProcessStaffSelect").dxSelectBox("instance");
@@ -655,6 +662,7 @@
         });
     }
 
+    // Xử lý khi insert row mới
     function onRowInserting(e) {
         e.data.ProcessDept = $("#ProcessDeptSelect").dxSelectBox("instance").option("value");
         e.data.ProcessStaff = $("#ProcessStaffSelect").dxSelectBox("instance").option("value");
@@ -698,6 +706,7 @@
         //e.cancel = true;
     }
 
+    // Xử lý khi click vào row
     function onRowClick(e) {
         $("#dxYCKPNEW").find("tr.dx-data-row").attr("data-selected", null);
 
@@ -758,6 +767,7 @@
         loadImages1(data.OrderNo, data.InputStaff, data.YCKPDate);
     }
 
+    // Load timeline
     function loadTimeline(orderNo, inputStaff, yckpDate) {
         $.ajax({
             url: '@Url.Action("GetList", "api/C242_YCKP_New")',
@@ -771,6 +781,7 @@
         });
     }
 
+    // Load hình ảnh
     function loadImages1(orderNo, staffId, yckpDate) {
         var container = $("#sendedImagesContainer");
         container.empty();
@@ -825,6 +836,7 @@
         });
     }
 
+    // Load chi tiết phản hồi
     function loadResponseDetails(responseId) {
         $('#responseContainer').empty();
 
@@ -876,6 +888,7 @@
         }
     }
 
+    // Render timeline UI
     function renderTimeline(data) {
         if (!data || data.length === 0) {
             return;
@@ -1071,6 +1084,7 @@
         container.append(timeline);
     }
 
+    // Xử lý khi thay đổi tình trạng gia công
     function onProcessStatusChanged(e) {
         if (e.value === "Khác") {
             $("#otherStatusContainer").show();
@@ -1079,6 +1093,7 @@
         }
     }
 
+    // Export YCKP ra Excel với format chi tiết
     async function onExportingYCKP(e) {
         e.cancel = true;
 

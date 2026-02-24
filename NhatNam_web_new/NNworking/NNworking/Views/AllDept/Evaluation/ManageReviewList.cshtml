@@ -1,5 +1,4 @@
-﻿
-<h2>Quản lý người đánh giá</h2>
+﻿<h2>Quản lý người đánh giá</h2>
 
 @(Html.DevExtreme().DataGrid<NNworking.Models.C222_Evaluation_Reviewer>()
     .DataSource(ds => ds.WebApi()
@@ -101,19 +100,20 @@
 )
 
 <script>
-    function onExportingDatagridToExcel(e) {
-        var workbook = new ExcelJS.Workbook();
-        var worksheet = workbook.addWorksheet('Reviewers');
-        
-        DevExpress.excelExporter.exportDataGrid({
-            component: e.component,
-            worksheet: worksheet,
-            autoFilterEnabled: true
-        }).then(function() {
-            workbook.xlsx.writeBuffer().then(function(buffer) {
-                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Reviewers_List.xlsx');
-            });
+// Export DataGrid sang Excel với custom formatting
+function onExportingDatagridToExcel(e) {
+    var workbook = new ExcelJS.Workbook();
+    var worksheet = workbook.addWorksheet('Reviewers');
+    
+    DevExpress.excelExporter.exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        autoFilterEnabled: true
+    }).then(function() {
+        workbook.xlsx.writeBuffer().then(function(buffer) {
+            saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Reviewers_List.xlsx');
         });
-        e.cancel = true;
-    }
+    });
+    e.cancel = true;
+}
 </script>

@@ -59,16 +59,18 @@ namespace NNworking.Controllers
             // For more detailed information, please refer to this discussion: https://github.com/DevExpress/DevExtreme.AspNet.Data/issues/336.
             // loadOptions.PrimaryKey = new[] { "Id" };
             // loadOptions.PaginateViaPrimaryKey = true;
-                
+
             return Request.CreateResponse(await DataSourceLoader.LoadAsync(c222_evaluation_employee, loadOptions));
         }
 
+        // Lấy dữ liệu đánh giá nhân viên theo ngày từ stored procedure
         [HttpGet]
         public HttpResponseMessage GetEvaluationEmployeeData(DataSourceLoadOptions loadOptions)
         {
             try
             {
                 var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+                // Parse date từ format "ddd MMM d yyyy HH:mm:ss GMT" và lấy phần Date
                 var date = DateTime.ParseExact(queryParams["date"].Substring(0, 24),
                                   "ddd MMM d yyyy HH:mm:ss",
                                   System.Globalization.CultureInfo.InvariantCulture).Date;
@@ -76,7 +78,7 @@ namespace NNworking.Controllers
                 var result = _context.sp_EvaluationEmployee(date).ToList();
                 return Request.CreateResponse(DataSourceLoader.Load(result, loadOptions));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Request.CreateResponse(
                     HttpStatusCode.InternalServerError,
@@ -85,6 +87,7 @@ namespace NNworking.Controllers
             }
         }
 
+        // Lấy danh sách người được đánh giá theo ProcessId
         [HttpGet]
         public async Task<HttpResponseMessage> GetByProcessId(DataSourceLoadOptions loadOptions)
         {
@@ -101,6 +104,7 @@ namespace NNworking.Controllers
                         e.StaffId,
                         e.ProcessId,
                         e.Date,
+                        // Tiêu chí nhân viên (NV_TC)
                         e.NV_TC1,
                         e.NV_TC2,
                         e.NV_TC3,
@@ -112,6 +116,7 @@ namespace NNworking.Controllers
                         e.NV_TC9,
                         e.NV_TC10,
                         e.NV_TC11,
+                        // Tiêu chí quản lý (QL_TC)
                         e.QL_TC1,
                         e.QL_TC2,
                         e.QL_TC3,
@@ -140,7 +145,7 @@ namespace NNworking.Controllers
             var model = new C222_Evaluation_Employee();
             var values = JsonConvert.DeserializeObject<IDictionary>(form.Get("values"));
             PopulateModel(model, values);
-            
+
             model.Date = DateTime.Today;
 
             Validate(model);

@@ -1,8 +1,4 @@
-﻿<div id="reviewerInfo" style="margin: 20px 0; display: none;">
-    <h4 id="infoText" style="margin: 0; padding: 0;"></h4>
-</div>
-
-@(Html.DevExtreme().DataGrid<dynamic>()
+﻿@(Html.DevExtreme().DataGrid<dynamic>()
     .DataSource(ds => ds.WebApi()
         .RouteName("C222_Evaluation_EmployeeApi")
         .LoadAction("GetByProcessId").LoadParams(new { StaffID = @Session["StaffID"].ToString() })
@@ -43,6 +39,7 @@
             .Width(1100)
             .Height(650)
         );
+        // Form cấu hình các trường đánh giá
         editing.Form(f => {
             f.OnInitialized("onFormInitialized");
             f.ScrollingEnabled(true);
@@ -79,6 +76,7 @@
                         .ShowClearButton(true)
                         .Placeholder("Chọn nhân viên...")
                     );
+                // Nhóm tiêu chí đánh giá nhân viên (11 tiêu chí)
                 items.AddGroup()
                     .Name("CriteriaGroup")
                     .Caption("ĐÁNH GIÁ NHÂN VIÊN")
@@ -197,8 +195,8 @@
                                 .OnValueChanged("onTcValueChanged")
                                 .Name("NV_TC7")
                             );
-                        groupItems.AddSimple().
-                            DataField("NV_TC8")
+                        groupItems.AddSimple()
+                            .DataField("NV_TC8")
                             .Label(l => l.Text("Tốc độ công việc"))
                             .Editor(e => e
                                 .RadioGroup()
@@ -262,6 +260,7 @@
                                 .Name("NV_TC11")
                             );
                     });
+                // Nhóm tiêu chí cấp quản lý (ẩn mặc định, chỉ hiện khi chọn quản lý)
                 items.AddGroup()
                     .Name("QL_GROUP")
                     .Caption("CẤP QUẢN LÝ")
@@ -269,7 +268,6 @@
                     .ColCount(1)
                     .Items(groupItems =>
                     {
-
                         groupItems.AddSimple()
                             .DataField("QL_TC1")
                             .Label(l => l.Text("Không đợi chỉ thị, tự bản thân tìm hiểu và tiến hành thực hiện công việc"))
@@ -304,7 +302,7 @@
                             );
                         groupItems.AddSimple()
                             .DataField("QL_TC3")
-                            .Label(l => l.Text("Kỹ năng lặp kế hoạch, kỹ năng làm báo cáo"))
+                            .Label(l => l.Text("Kỹ năng lập kế hoạch, kỹ năng làm báo cáo"))
                             .Editor(e => e
                                 .RadioGroup()
                                 .DataSource(new[] {
@@ -336,7 +334,7 @@
                             );
                         groupItems.AddSimple()
                             .DataField("QL_TC5")
-                            .Label(l => l.Text("Phối hợp nhịp nhàng giữa các phòng,Tổ liên quan"))
+                            .Label(l => l.Text("Phối hợp nhịp nhàng giữa các phòng, Tổ liên quan"))
                             .Editor(e => e
                                 .RadioGroup()
                                 .DataSource(new[] {
@@ -419,7 +417,6 @@
         });
     })
     .OnRowInserting("onRowInserting")
-    .OnRowRemoving("onRowRemoving")
     .Columns(columns => {
         columns.Add().DataField("StaffId").Caption("Mã NV").Alignment(HorizontalAlignment.Center);
         columns.Add().DataField("Date").Caption("Ngày").DataType(GridColumnDataType.Date).Format("dd/MM/yyyy").Alignment(HorizontalAlignment.Center);
@@ -443,14 +440,24 @@
         {
             qlColumns.Add().DataField("QL_TC1").Caption("Không đợi chỉ thị, tự bản thân tìm hiểu và tiến hành thực hiện công việc").Alignment(HorizontalAlignment.Center);
             qlColumns.Add().DataField("QL_TC2").Caption("Đào tạo, hướng dẫn cấp dưới").Alignment(HorizontalAlignment.Center);
-            qlColumns.Add().DataField("QL_TC3").Caption("Kỹ năng lặp kế hoạch, kỹ năng làm báo cáo").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC3").Caption("Kỹ năng lập kế hoạch, kỹ năng làm báo cáo").Alignment(HorizontalAlignment.Center);
             qlColumns.Add().DataField("QL_TC4").Caption("Khi báo cáo xử lý sự cố không dựa vào suy nghĩ chủ quan, phải báo cáo chính xác").Alignment(HorizontalAlignment.Center);
-            qlColumns.Add().DataField("QL_TC5").Caption("Phối hợp nhịp nhàng giữa các phòng,Tổ liên quan").Alignment(HorizontalAlignment.Center);
+            qlColumns.Add().DataField("QL_TC5").Caption("Phối hợp nhịp nhàng giữa các phòng, Tổ liên quan").Alignment(HorizontalAlignment.Center);
             qlColumns.Add().DataField("QL_TC6").Caption("Khi phát sinh thắc mắc hoặc phàn nàn từ khách hàng đối với cùng 1 vấn đề thì cần có đối sách trên phạm vi toàn công ty").Alignment(HorizontalAlignment.Center);
             qlColumns.Add().DataField("QL_TC7").Caption("Có thể hiểu rõ định hướng, mục tiêu kinh doanh của công ty và có hành động phù hợp với định hướng và mục tiêu đó").Alignment(HorizontalAlignment.Center);
             qlColumns.Add().DataField("QL_TC8").Caption("Tuyệt đối tuân thủ theo sự chỉ đạo của cấp trên").Alignment(HorizontalAlignment.Center);
             qlColumns.Add().DataField("QL_TC9").Caption("Thường xuyên sửa đổi, cải tiến kế hoạch thực hiện cho phù hợp với hoàn cảnh thực tại").Alignment(HorizontalAlignment.Center);
         });
+
+        columns.Add()
+            .Caption("Tổng điểm")
+            .Alignment(HorizontalAlignment.Center)
+            .CalculateCellValue("calculateTotalScore");
+
+        columns.Add()
+            .Caption("Xếp loại")
+            .Alignment(HorizontalAlignment.Center)
+            .CalculateCellValue("calculateRating");
     })
 )
 
@@ -462,6 +469,7 @@
     let cachedDeptValue = null;
     let cachedStaffValue = null;
 
+    // Cache và restore selection để tránh mất dữ liệu khi reload
     function cacheSelections() {
         const deptSelect = $("#DeptSelect").dxSelectBox("instance");
         const staffSelect = $("#StaffSelect").dxSelectBox("instance");
@@ -470,6 +478,7 @@
         if (staffSelect) cachedStaffValue = staffSelect.option("value");
     }
 
+    // Restore selections sau khi form update
     function restoreSelections() {
         const deptSelect = $("#DeptSelect").dxSelectBox("instance");
         const staffSelect = $("#StaffSelect").dxSelectBox("instance");
@@ -492,6 +501,7 @@
         loadReviewerInfo();
     });
 
+    // Khởi tạo form với giá trị mặc định (reset all TC fields to 0)
     function onFormInitialized(e) {
         currentForm = e.component;
 
@@ -508,6 +518,7 @@
         }
     }
 
+    // Load thông tin reviewer và kiểm tra quyền quản lý
     function loadReviewerInfo() {
         $.ajax({
             url: '@Url.Action("GetReviewerInfo", "api/C222_Evaluation_Reviewer")',
@@ -516,7 +527,6 @@
             dataType: 'json',
             success: function(response) {
                 if (response && response.success && response.data) {
-                    $("#infoText").text(response.data.displayMessage);
                     $("#reviewerInfo").show();
                     isManager = response.data.manager;
 
@@ -531,6 +541,7 @@
         });
     }
 
+    // Xử lý thêm mới đánh giá - lưu dữ liệu đánh giá
     function onRowInserting(e) {
         if (!currentForm) return;
 
@@ -542,46 +553,25 @@
             data: {
                 values: JSON.stringify(formData)
             },
-            success: function (response) {
-                if (response && response.result && response.result.Id) {
+            success: function(response) {
+                if (response && response.Id) {
                     e.cancel = false;
-                    location.reload();  
+                    location.reload();
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("Lỗi khi thêm dữ liệu:", error);
                 e.cancel = true;
             }
         });
     }
 
-    function onRowRemoving(e) {
-        if (!e || !e.key) return;
-
-        $.ajax({
-            url: '@Url.Action("Delete", "api/C222_Evaluation_Employee")',
-            type: 'DELETE',
-            data: { id: e.key },
-            success: function(response) {
-                if (response && response.success) {
-                    const grid = $("#evaluationGrid").dxDataGrid("instance");
-                    grid.refresh();
-                    location.reload();  
-                } else {
-                    e.cancel = true;
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("Lỗi khi xoá dữ liệu:", error);
-                e.cancel = true;
-            }
-        });
-    }
-
+    // Xử lý khi thay đổi phòng ban - load nhân viên tương ứng
     function onDeptChanged(e) {
         var deptCode = e.value;
         var staffSelect = $("#StaffSelect").dxSelectBox("instance");
         var secName = '@Session["Department"].ToString()';
+        var staffId = '@Session["StaffID"].ToString()';
 
         if (!deptCode) {
             staffDataSource = [];
@@ -591,10 +581,10 @@
 
         $.ajax({
             url: '@Url.Action("GetByDept", "api/C222_Staff")',
-            data: { DeptCode: deptCode, SecName: secName },
+            data: { DeptCode: deptCode, SecName: secName, StaffID: staffId },
             dataType: 'json',
             cache: false,
-            success: function (response) {
+            success: function(response) {
                 if (response && response.data && response.data.length > 0) {
                     staffDataSource = response?.data || [];
                     staffSelect.option("dataSource", response.data);
@@ -603,7 +593,7 @@
                     staffSelect.option("dataSource", []);
                 }
             },
-            error: function (err) {
+            error: function(err) {
                 console.error(err);
                 staffDataSource = [];
                 staffSelect.option("dataSource", []);
@@ -612,6 +602,7 @@
         });
     }
 
+    // Xử lý khi chọn nhân viên - hiển thị/ẩn tiêu chí quản lý
     function onStaffChanged(e) {
         if (isRestoringSelections) return;
         if (!e || !currentForm) return;
@@ -639,6 +630,7 @@
         }, 0);
     }
 
+    // Cập nhật giá trị khi thay đổi tiêu chí đánh giá
     function onTcValueChanged(e) {
         if (!currentForm) return;
         const dataField = e.component.option("name");
@@ -647,6 +639,7 @@
         }
     }
 
+    // Xuất DataGrid ra Excel
     function onExportingDatagridToExcel(e) {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Danh sách đánh giá');
@@ -661,5 +654,55 @@
             });
         });
         e.cancel = true;
+    }
+
+    // Tính tổng điểm từ tất cả tiêu chí NV và QL
+    function calculateTotalScore(rowData) {
+        var nvScore = 0;
+        var nvFields = ["NV_TC1", "NV_TC2", "NV_TC3", "NV_TC4", "NV_TC5", "NV_TC6", "NV_TC7", "NV_TC8", "NV_TC9", "NV_TC10", "NV_TC11"];
+        for (var i = 0; i < nvFields.length; i++) {
+            var value = rowData[nvFields[i]];
+            if (value && !isNaN(value)) {
+                nvScore += parseFloat(value);
+            }
+        }
+        
+        var qlScore = 0;
+        var qlFields = ["QL_TC1", "QL_TC2", "QL_TC3", "QL_TC4", "QL_TC5", "QL_TC6", "QL_TC7", "QL_TC8", "QL_TC9"];
+        for (var i = 0; i < qlFields.length; i++) {
+            var value = rowData[qlFields[i]];
+            if (value && !isNaN(value)) {
+                qlScore += parseFloat(value);
+            }
+        }
+        
+        return nvScore + qlScore;
+    }
+
+    // Xếp loại nhân viên dựa trên tổng điểm và loại nhân viên
+    // Xếp loại dựa trên tổng điểm và vai trò (quản lý/nhân viên)
+    function calculateRating(rowData) {
+        var score = calculateTotalScore(rowData);
+        if (score == null || score === 0) return "";
+
+        var isManager = (rowData.QL_TC1 > 0) || (rowData.QL_TC2 > 0) ||
+            (rowData.QL_TC3 > 0) || (rowData.QL_TC4 > 0) ||
+            (rowData.QL_TC5 > 0) || (rowData.QL_TC6 > 0) ||
+            (rowData.QL_TC7 > 0) || (rowData.QL_TC8 > 0) ||
+            (rowData.QL_TC9 > 0);
+
+        if (isManager) {
+            if (score >= 85) return "Xuất sắc";
+            if (score >= 70) return "Tốt";
+            if (score >= 61) return "Khá";
+            if (score >= 50) return "Trung bình";
+            return "Yếu";
+        } else {
+            if (score >= 50) return "Xuất sắc";
+            if (score >= 40) return "Tốt";
+            if (score >= 34) return "Khá";
+            if (score >= 25) return "Trung bình";
+            return "Yếu";
+        }
     }
 </script>

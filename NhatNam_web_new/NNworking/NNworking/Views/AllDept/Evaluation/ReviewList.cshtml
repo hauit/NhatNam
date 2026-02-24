@@ -29,7 +29,6 @@
     .DataSource(ds => ds.WebApi()
         .RouteName("C222_Evaluation_EmployeeApi")
         .LoadAction("GetEvaluationEmployeeData").LoadParams(new { date = new JS("getEvaluationDate") })
-        .Key("Id")
     )
     .ID("dxEvaluationGrid")
     .Paging(page => page.PageSize(10))
@@ -96,29 +95,47 @@
 )
 
 <script>
-    function getEvaluationDate() {
+// Lấy ngày đánh giá từ DateBox (chuẩn hóa về đầu tháng)
+function getEvaluationDate() {
         var dateBox = $("#evaluationDate").dxDateBox("instance");
         var date = dateBox.option("value");
         date = new Date(date.getFullYear(), date.getMonth(), 1);
         return date;
     }
 
-    function calculateRating(rowData) {
+// Xếp loại nhân viên dựa trên tổng điểm và vai trò (quản lý/nhân viên)
+function calculateRating(rowData) {
         var score = rowData.TotalScore;
         if (score == null) return "";
-        
-        if (score >= 85) return "Xuất sắc";
-        if (score >= 70) return "Tốt";
-        if (score >= 61) return "Khá";
-        if (score >= 50) return "Trung bình";
-        return "Yếu";
+
+        var isManager = (rowData.QL_TC1 > 0) || (rowData.QL_TC2 > 0) ||
+            (rowData.QL_TC3 > 0) || (rowData.QL_TC4 > 0) ||
+            (rowData.QL_TC5 > 0) || (rowData.QL_TC6 > 0) ||
+            (rowData.QL_TC7 > 0) || (rowData.QL_TC8 > 0) ||
+            (rowData.QL_TC9 > 0);
+
+        if (isManager) {
+            if (score >= 85) return "Xuất sắc";
+            if (score >= 70) return "Tốt";
+            if (score >= 61) return "Khá";
+            if (score >= 50) return "Trung bình";
+            return "Yếu";
+        } else {
+            if (score >= 50) return "Xuất sắc";
+            if (score >= 40) return "Tốt";
+            if (score >= 34) return "Khá";
+            if (score >= 25) return "Trung bình";
+            return "Yếu";
+        }
     }
 
-    function ViewData() {
+// Refresh DataGrid khi thay đổi bộ lọc
+function ViewData() {
         $("#dxEvaluationGrid").dxDataGrid("instance").refresh();
     }
 
-    function onExportingDatagridToExcel(e) {
+// Xuất DataGrid ra Excel với custom formatting
+function onExportingDatagridToExcel(e) {
         var workbook = new ExcelJS.Workbook();
         var worksheet = workbook.addWorksheet('Evaluation');
         
