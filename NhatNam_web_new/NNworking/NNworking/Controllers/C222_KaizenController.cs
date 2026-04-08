@@ -41,6 +41,13 @@ namespace NNworking.Controllers
         {
             var queryParams = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
             int kaizenStatus;
+            string staffID = string.Empty;
+
+            if (!queryParams.ContainsKey("StaffID)"))
+            {
+                staffID = queryParams["StaffID"];
+            }
+
             if (!queryParams.ContainsKey("KaizenStatus)"))
             {
                 kaizenStatus = 0;
@@ -58,7 +65,7 @@ namespace NNworking.Controllers
             var c222_kaizen = _context.C222_Kaizen.Where(x => x.ID == 0).ToList();
             if (kaizenStatus > 0)
             {
-                GetDataByType(kaizenStatus, out c222_kaizen);
+                GetDataByType(kaizenStatus, out c222_kaizen, staffID);
             }
 
             // If underlying data is a large SQL table, specify PrimaryKey and PaginateViaPrimaryKey.
@@ -69,18 +76,17 @@ namespace NNworking.Controllers
             return Request.CreateResponse(DataSourceLoader.Load(c222_kaizen, loadOptions));
         }
 
-        private void GetDataByType(int dataType, out List<C222_Kaizen> c222_kaizen)
+        private void GetDataByType(int dataType, out List<C222_Kaizen> c222_kaizen, string staffID)
         {
             switch (dataType)
             {
                 case (int)StatusAfterAction.Pending:
-                    GetPendingKaizen(out c222_kaizen);
-                    break;
                 case (int)StatusAfterAction.Reject:
-                    GetRejectKaizen(out c222_kaizen);
-                    break;
                 case (int)StatusAfterAction.Approval:
-                    GetApprovalKaizen(out c222_kaizen);
+                    GetKaizenByteType(out c222_kaizen, dataType);
+                    break;
+                case (int)StatusAfterAction.Personal:
+                    GetPersonalKaizen(out c222_kaizen, staffID);
                     break;
                 default:
                     c222_kaizen = _context.C222_Kaizen.Where(x => x.ID == 0).ToList();
@@ -88,30 +94,19 @@ namespace NNworking.Controllers
             }
         }
 
-        private void GetApprovalKaizen(out List<C222_Kaizen> c222_kaizen)
+        private void GetPersonalKaizen(out List<C222_Kaizen> c222_kaizen, string staffID)
         {
-            var pendingInstance = _context.C222_WorkFolowInstance
-                .Where(x => x.ModuleName == KaizenController.ModuleName && x.Status == (int)StatusAfterAction.Approval)
-                .Select(x => x.ItemID)
-                .Distinct();
+            var data = _context.sp_222_Kaizen_GetDataForApproval(staffID)
+                .Select(x => x.ID)
+                .Distinct().ToList();
             c222_kaizen = _context.C222_Kaizen
-                .Where(x => pendingInstance.Contains(x.ID)).ToList();
+                .Where(x => data.Contains(x.ID)).ToList();
         }
 
-        private void GetRejectKaizen(out List<C222_Kaizen> c222_kaizen)
+        private void GetKaizenByteType(out List<C222_Kaizen> c222_kaizen, int dataType)
         {
             var pendingInstance = _context.C222_WorkFolowInstance
-                .Where(x => x.ModuleName == KaizenController.ModuleName && x.Status == (int)StatusAfterAction.Reject)
-                .Select(x => x.ItemID)
-                .Distinct();
-            c222_kaizen = _context.C222_Kaizen
-                .Where(x => pendingInstance.Contains(x.ID)).ToList();
-        }
-
-        private void GetPendingKaizen(out List<C222_Kaizen> c222_kaizen)
-        {
-            var pendingInstance = _context.C222_WorkFolowInstance
-                .Where(x => x.ModuleName == KaizenController.ModuleName && x.Status == (int)StatusAfterAction.Pending)
+                .Where(x => x.ModuleName == KaizenController.ModuleName && x.Status == dataType)
                 .Select(x => x.ItemID)
                 .Distinct();
             c222_kaizen = _context.C222_Kaizen
@@ -139,27 +134,7 @@ namespace NNworking.Controllers
                     model.KaizenEffectiveness = string.Empty;
                     var result = _context.C222_Kaizen.Add(model);
                     await _context.SaveChangesAsync();
-
-                    //// Add workflow history for step 1
-                    string moduleName = KaizenController.ModuleName;
-                    var worFlow = _context.C222_WorkFolowModuleDefinition.Where(w => w.ModuleName.ToLower() == moduleName.ToLower() && w.Active == true).FirstOrDefault();
-                    if (worFlow == null)
-                    {
-                        throw new Exception("Không tìm thấy thiết lập quy trình cho module Kaizen. Vui lòng liên hệ Admin");
-                    }
-
-                    var workflowInstance = new C222_WorkFolowInstance
-                    {
-                        WorkFollow = worFlow.DefinitionID,
-                        ModuleName = moduleName,
-                        CurrentStep = 1, // Starting at step 1
-                        Status = 1,
-                        CreateBy = model.StaffID,
-                        CreateDate = DateTime.Now,
-                        Note = string.Empty,
-                        ItemID = result.ID
-                    };
-                    _context.C222_WorkFolowInstance.Add(workflowInstance);
+                    BaseModel.InputWorkFolloIntance(_context, model.StaffID, result.ID, KaizenController.ModuleName);
                     await _context.SaveChangesAsync();
 
                     transaction.Commit();

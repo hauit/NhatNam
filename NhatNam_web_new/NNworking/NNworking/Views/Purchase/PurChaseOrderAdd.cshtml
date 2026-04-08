@@ -131,6 +131,7 @@
                 c.AddFor(m => m.Amount).Caption("Tổng tiền").Visible(false);
                 c.AddFor(m => m.Note).Caption("Ghi chú");
             })
+            .OnInitNewRow("onInitDetailNewRow")
         )
 
         <div style="text-align:right;margin-top:10px">
@@ -145,6 +146,10 @@
 )
 
 <script>
+    function onInitDetailNewRow(e) {
+        e.data.Amount = 0;
+    }
+
     function openAddPopup() {
         $("#popupAddPurchase").dxPopup("instance").show();
     }

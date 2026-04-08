@@ -1,4 +1,20 @@
 ﻿
+<style>
+    .group-chayThu {
+        background-color: #162775;
+        font-weight: bold;
+    }
+
+    .group-chuongTrinh {
+        background-color: #A22775;
+        font-weight: bold;
+    }
+
+    .group-chuanBi {
+        background-color: #A2C675;
+        font-weight: bold;
+    }
+</style>
 <h2 style="margin-bottom: 20px; color: #333;">Theo Dõi Chuẩn Bị Gia Công(5 ngày gần nhất)</h2>
 
 <div style="display: flex; gap: 70px;">
@@ -69,7 +85,7 @@
     .Export(e => e.Enabled(true)
         .AllowExportSelectedData(true)
     )
-    .ColumnAutoWidth(false)
+    .ColumnAutoWidth(true)
     .WordWrapEnabled(true)
     .FilterRow(fil => fil.Visible(true))
     .FilterPanel(fi => fi.Visible(true))
@@ -109,53 +125,109 @@
                 .Alignment(HorizontalAlignment.Center);
 
         columns.Add()
-            .Caption("Chuẩn bị")
+            .Caption("Kế hoạch")
             .Alignment(HorizontalAlignment.Center)
-            .Columns(group => {
-                group.AddFor(m => m.CB_StaffID)
-                    .Caption("Mã NV")
-                    .Alignment(HorizontalAlignment.Center);
+            .Columns(group =>
+            {
+                group.AddFor(m => m.KH_TGCT)
+                    .Caption("TG chương trình")
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
 
-                group.AddFor(m => m.CB_Start)
-                    .Caption("TG bắt đầu")
-                    .Alignment(HorizontalAlignment.Center);
+                group.AddFor(m => m.KH_TGCB)
+                    .Caption("TG chuẩn bị")
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
 
-                group.AddFor(m => m.CB_End)
-                    .Caption("TG kết thúc")
+                group.AddFor(m => m.KH_TGCTh)
+                    .Caption("TG chạy thử")
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
+
+                group.AddFor(m => m.KH_Note)
+                    .Caption("Ghi chú")
                     .Alignment(HorizontalAlignment.Center);
             });
 
         columns.Add()
             .Caption("Chương trình")
             .Alignment(HorizontalAlignment.Center)
-            .Columns(group => {
+            .CssClass("group-chuongTrinh")
+            .Columns(group =>
+            {
                 group.AddFor(m => m.CT_StaffID)
-                    .Caption("Mã NV")
+                    .Caption("NV chương trình")
                     .Alignment(HorizontalAlignment.Center);
 
                 group.AddFor(m => m.CT_Start)
                     .Caption("TG bắt đầu")
-                    .Alignment(HorizontalAlignment.Center);
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
 
                 group.AddFor(m => m.CT_End)
                     .Caption("TG kết thúc")
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
+
+                group.AddFor(m => m.CT_Note)
+                    .Caption("Ghi chú")
+                    .Alignment(HorizontalAlignment.Center);
+            });
+
+        columns.Add()
+            .Caption("Chuẩn bị")
+            .Alignment(HorizontalAlignment.Center)
+            .CssClass("group-chuanBi")
+            .Columns(group => {
+                group.AddFor(m => m.CB_StaffID)
+                    .Caption("NV chuẩn bị")
+                    .Alignment(HorizontalAlignment.Center);
+
+                group.AddFor(m => m.CB_Start)
+                    .Caption("TG bắt đầu")
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
+
+                group.AddFor(m => m.CB_End)
+                    .Caption("TG kết thúc")
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
+
+                group.AddFor(m => m.CB_Note)
+                    .Caption("Ghi chú")
                     .Alignment(HorizontalAlignment.Center);
             });
 
         columns.Add()
             .Caption("Chạy thử")
             .Alignment(HorizontalAlignment.Center)
+            .CssClass("group-chayThu")
             .Columns(group => {
                 group.AddFor(m => m.SX_StaffID)
-                    .Caption("Mã NV")
+                    .Caption("NV chạy thử")
                     .Alignment(HorizontalAlignment.Center);
 
                 group.AddFor(m => m.SX_Start)
                     .Caption("TG bắt đầu")
-                    .Alignment(HorizontalAlignment.Center);
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
 
                 group.AddFor(m => m.SX_End)
                     .Caption("TG kết thúc")
+                    .DataType(GridColumnDataType.DateTime)
+                    .Alignment(HorizontalAlignment.Center)
+                    .Format("dd/MM/yyyy HH:mm");
+
+                group.AddFor(m => m.SX_Note)
+                    .Caption("Ghi chú")
                     .Alignment(HorizontalAlignment.Center);
             });
 
@@ -202,7 +274,7 @@ function onImportClick(e) {
                         $('#dxWTSGetCapacity2').dxDataGrid('instance').refresh();
 
                         let message = '';
-                        if (response.Status === 'OK') {
+                        if (response.Status == 'OK') {
                             message = 'Import thành công!\n\n';
                             if (response.Errors && response.Errors.length > 0) {
                                 message += 'Các dòng không thêm được:\n';

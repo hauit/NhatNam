@@ -31,5 +31,13 @@ namespace NNworking.Models
         public Nullable<System.DateTime> SX_Start { get; set; }
         public Nullable<System.DateTime> SX_End { get; set; }
         public string Note { get; set; }
+        public string CB_Note { get; set; }
+        public string CT_Note { get; set; }
+        public string SX_Note { get; set; }
+        public Nullable<System.DateTime> KH_TGCT { get; set; }
+        public Nullable<System.DateTime> KH_TGCB { get; set; }
+        public Nullable<System.DateTime> KH_TGCTh { get; set; }
+        public string KH_Note { get; set; }
+        public string PBStaff { get; set; }
     }
 }

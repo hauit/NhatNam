@@ -26,6 +26,10 @@ namespace NNworking.Controllers
         public async Task<HttpResponseMessage> Get(DataSourceLoadOptions loadOptions) {
             var c222_purchase = _context.C222_PurChase.Select(i => new {
                 i.ID,
+                i.Subject,
+                i.TimeNeed,
+                i.AvailableTime,
+                i.Complete,
                 i.PurchaseID,
                 i.InputDate,
                 i.StaffID,
@@ -92,8 +96,12 @@ namespace NNworking.Controllers
             string INPUT_DATE = nameof(C222_PurChase.InputDate);
             string STAFF_ID = nameof(C222_PurChase.StaffID);
             string NOTE = nameof(C222_PurChase.Note);
+            string Subject = nameof(C222_PurChase.Subject);
+            string TimeNeed = nameof(C222_PurChase.TimeNeed);
+            string AvailableTime = nameof(C222_PurChase.AvailableTime);
+            string Complete = nameof(C222_PurChase.Complete);
 
-            if(values.Contains(ID)) {
+            if (values.Contains(ID)) {
                 model.ID = Convert.ToInt32(values[ID]);
             }
 
@@ -101,11 +109,31 @@ namespace NNworking.Controllers
                 model.PurchaseID = Convert.ToString(values[PURCHASE_ID]);
             }
 
-            if(values.Contains(INPUT_DATE)) {
+            if (values.Contains(Subject))
+            {
+                model.Subject = Convert.ToString(values[Subject]);
+            }
+
+            if (values.Contains(TimeNeed)) {
+                model.TimeNeed = Convert.ToDateTime(values[TimeNeed]);
+            }
+
+            if (values.Contains(AvailableTime))
+            {
+                model.AvailableTime = Convert.ToDateTime(values[AvailableTime]);
+            }
+
+            if (values.Contains(INPUT_DATE))
+            {
                 model.InputDate = Convert.ToDateTime(values[INPUT_DATE]);
             }
 
-            if(values.Contains(STAFF_ID)) {
+            if (values.Contains(Complete))
+            {
+                model.Complete = Convert.ToBoolean(values[Complete]);
+            }
+
+            if (values.Contains(STAFF_ID)) {
                 model.StaffID = Convert.ToString(values[STAFF_ID]);
             }
 

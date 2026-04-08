@@ -73,7 +73,7 @@ namespace NNworking.Controllers
 
                 ViewBag.HisoryApp = historyApp;
                 List<string> editableData = GetEditableData(staffID, kaizen);
-                ViewBag.EdiableData = editableData;
+                ViewBag.EditableData = editableData;
                 ViewBag.Viewer = staffID;
                 ViewBag.KaizenID = kaizen.ID;
                 ViewBag.InputDate = kaizen.InputDate.ToString("dd/MM/yyyy");
@@ -380,6 +380,7 @@ namespace NNworking.Controllers
     {
         Pending = 1,
         Approval = 2,
-        Reject = 3
+        Reject = 3,
+        Personal = 4
     }
 }

@@ -219,7 +219,7 @@
           <Property Name="DensanCode" Type="nvarchar" MaxLength="4" />
           <Property Name="Dmachine" Type="nvarchar" MaxLength="50" />
           <Property Name="MachineName" Type="nvarchar" MaxLength="50" />
-          <Property Name="MachineGR" Type="nvarchar(max)" />
+          <Property Name="MachineGR" Type="nvarchar" MaxLength="20" />
           <Property Name="Maker" Type="nvarchar" MaxLength="20" />
           <Property Name="Charge" Type="money" />
           <Property Name="Ratio" Type="float" />
@@ -230,7 +230,7 @@
           <Property Name="tranfer" Type="bit" />
           <Property Name="MachineGroup" Type="nvarchar" MaxLength="50" />
           <Property Name="MachineWTS" Type="nvarchar(max)" />
-          <Property Name="OriginalMachine" Type="nvarchar" MaxLength="250" />
+          <Property Name="OriginalMachine" Type="nvarchar(max)" />
           <Property Name="Active" Type="bit" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
@@ -394,7 +394,7 @@
           <Property Name="Note" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.222_PathOfSofware' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.222_PathOfSofware' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="222_PathOfSofware">
           <Key>
             <PropertyRef Name="ID" />
@@ -441,7 +441,7 @@ warning 6002: The table/view 'NT_Database.dbo.222_PathOfSofware' does not have a
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.222_RootPath' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.222_RootPath' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="222_RootPath">
           <Key>
             <PropertyRef Name="ID" />
@@ -532,7 +532,7 @@ warning 6002: The table/view 'NT_Database.dbo.222_RootPath' does not have a prim
           <Property Name="ErrorNoteEdit" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.222_StaffShift' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.222_StaffShift' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="222_StaffShift">
           <Key>
             <PropertyRef Name="ID" />
@@ -677,7 +677,7 @@ warning 6002: The table/view 'NT_Database.dbo.222_StaffShift' does not have a pr
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.222_StokerPurchase' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.222_StokerPurchase' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="222_StokerPurchase">
           <Key>
             <PropertyRef Name="Date" />
@@ -864,7 +864,7 @@ warning 6002: The table/view 'NT_Database.dbo.222_StokerPurchase' does not have 
           <Property Name="IsFinal" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.222_WorkingDay' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.222_WorkingDay' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="222_WorkingDay">
           <Key>
             <PropertyRef Name="ID" />
@@ -924,7 +924,7 @@ warning 6002: The table/view 'NT_Database.dbo.222_WorkingDay' does not have a pr
           <Property Name="dept" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_ChangeDataLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_ChangeDataLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_ChangeDataLog">
           <Key>
             <PropertyRef Name="ID" />
@@ -951,7 +951,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_ChangeDataLog' does not have a
           <Property Name="Des" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_DLMa' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_DLMa' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_DLMa">
           <Key>
             <PropertyRef Name="ID" />
@@ -977,7 +977,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_DLMa' does not have a primary 
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_Dulieudonhangmoi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_Dulieudonhangmoi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_Dulieudonhangmoi">
           <Key>
             <PropertyRef Name="BusOrder" />
@@ -1167,7 +1167,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_Dulieudonhangmoi' does not hav
           <Property Name="ReceivedConfirmStaff" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_Jig' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_Jig' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_Jig">
           <Key>
             <PropertyRef Name="ID" />
@@ -1288,7 +1288,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_Jig' does not have a primary k
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_MachinePlanning_cu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_MachinePlanning_cu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_MachinePlanning_cu">
           <Key>
             <PropertyRef Name="ID" />
@@ -1443,7 +1443,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_MachinePlanning_cu' does not h
           <Property Name="StartDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_ManualExcution' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_ManualExcution' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_ManualExcution">
           <Key>
             <PropertyRef Name="ID" />
@@ -1593,7 +1593,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_ManualExcution' does not have 
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_OptionData2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_OptionData2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_OptionData2">
           <Key>
             <PropertyRef Name="ID" />
@@ -1715,7 +1715,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_OptionData2' does not have a p
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_Planning' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_Planning' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_Planning">
           <Key>
             <PropertyRef Name="ID" />
@@ -1751,19 +1751,27 @@ warning 6002: The table/view 'NT_Database.dbo.242_Planning' does not have a prim
           <Property Name="OptionID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Command" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Priority" Type="nvarchar" MaxLength="50" />
+          <Property Name="PBStaff" Type="nvarchar" MaxLength="50" />
+          <Property Name="KH_TGCT" Type="datetime" />
+          <Property Name="KH_TGCB" Type="datetime" />
+          <Property Name="KH_TGCTh" Type="datetime" />
+          <Property Name="KH_Note" Type="nvarchar(max)" />
           <Property Name="CB_StaffID" Type="nvarchar" MaxLength="50" />
           <Property Name="CB_Start" Type="datetime" />
           <Property Name="CB_End" Type="datetime" />
+          <Property Name="CB_Note" Type="nvarchar(max)" />
           <Property Name="CT_StaffID" Type="nvarchar" MaxLength="50" />
           <Property Name="CT_Start" Type="datetime" />
           <Property Name="CT_End" Type="datetime" />
+          <Property Name="CT_Note" Type="nvarchar(max)" />
           <Property Name="SX_StaffID" Type="nvarchar" MaxLength="50" />
           <Property Name="SX_Start" Type="datetime" />
           <Property Name="SX_End" Type="datetime" />
+          <Property Name="SX_Note" Type="nvarchar(max)" />
           <Property Name="Note" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_ResultOfCheckMachineProcess' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_ResultOfCheckMachineProcess' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_ResultOfCheckMachineProcess">
           <Key>
             <PropertyRef Name="ID" />
@@ -1843,7 +1851,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_ResultOfCheckMachineProcess' d
           <Property Name="MachineGroup" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_StandTimeAffectationCode' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_StandTimeAffectationCode' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_StandTimeAffectationCode">
           <Key>
             <PropertyRef Name="ID" />
@@ -1857,7 +1865,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_StandTimeAffectationCode' does
           <Property Name="Sub_WorkID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_StandTimeManualChecking' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_StandTimeManualChecking' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_StandTimeManualChecking">
           <Key>
             <PropertyRef Name="ID" />
@@ -1955,7 +1963,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_StandTimeManualChecking' does 
           <Property Name="Available" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_ToolReturn' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_ToolReturn' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_ToolReturn">
           <Key>
             <PropertyRef Name="ID" />
@@ -1979,7 +1987,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_ToolReturn' does not have a pr
           <Property Name="BorrowNo" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_ToolsNeedForProcessing' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_ToolsNeedForProcessing' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_ToolsNeedForProcessing">
           <Key>
             <PropertyRef Name="ID" />
@@ -1997,7 +2005,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_ToolsNeedForProcessing' does n
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_ToolType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_ToolType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_ToolType">
           <Key>
             <PropertyRef Name="ID" />
@@ -2008,7 +2016,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_ToolType' does not have a prim
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_TrackingViTri' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_TrackingViTri' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_TrackingViTri">
           <Key>
             <PropertyRef Name="ID" />
@@ -2135,7 +2143,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_TrackingViTri' does not have a
           <Property Name="YCKPProcessTime" Type="datetime" Nullable="false" />
           <Property Name="InputStaff" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="InputDept" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="ProcessStaff" Type="nvarchar" MaxLength="250" />
+          <Property Name="ProcessStaff" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="ProcessDept" Type="nvarchar" MaxLength="250" />
           <Property Name="ResponseId" Type="nvarchar" MaxLength="250" />
           <Property Name="Status" Type="nvarchar" MaxLength="250" Nullable="false" />
@@ -2157,7 +2165,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_TrackingViTri' does not have a
           <Property Name="CausedDetail" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.333_Borrow' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.333_Borrow' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="333_Borrow">
           <Key>
             <PropertyRef Name="ID" />
@@ -2177,7 +2185,7 @@ warning 6002: The table/view 'NT_Database.dbo.333_Borrow' does not have a primar
           <Property Name="CreatedAt" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.333_Return' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.333_Return' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="333_Return">
           <Key>
             <PropertyRef Name="ID" />
@@ -2198,7 +2206,7 @@ warning 6002: The table/view 'NT_Database.dbo.333_Return' does not have a primar
           <Property Name="CreatedAt" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.333_Tool' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.333_Tool' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="333_Tool">
           <Key>
             <PropertyRef Name="ID" />
@@ -2221,7 +2229,7 @@ warning 6002: The table/view 'NT_Database.dbo.333_Tool' does not have a primary 
           <Property Name="CreateAt" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_Area' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_Area' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_Area">
           <Key>
             <PropertyRef Name="ID" />
@@ -2233,7 +2241,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_Area' does not have a primary k
           <Property Name="GroupID" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_Category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_Category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_Category">
           <Key>
             <PropertyRef Name="ID" />
@@ -2258,7 +2266,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_Category' does not have a prima
           <Property Name="ImageStandard" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_CheckSheet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_CheckSheet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_CheckSheet">
           <Key>
             <PropertyRef Name="ID" />
@@ -2290,7 +2298,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_CheckSheet' does not have a pri
           <Property Name="DateComplete" Type="smalldatetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_Comment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_Comment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_Comment">
           <Key>
             <PropertyRef Name="ID" />
@@ -2315,7 +2323,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_Comment' does not have a primar
           <Property Name="CheckSheetID" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_DailyMail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_DailyMail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_DailyMail">
           <Key>
             <PropertyRef Name="ID" />
@@ -2333,7 +2341,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_DailyMail' does not have a prim
           <Property Name="Content" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_Department">
           <Key>
             <PropertyRef Name="ID" />
@@ -2343,7 +2351,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_Department' does not have a pri
           <Property Name="DeptName" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_Evaluation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_Evaluation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_Evaluation">
           <Key>
             <PropertyRef Name="ID" />
@@ -2367,7 +2375,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_Evaluation' does not have a pri
           <Property Name="CodeResponsive" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_Evaluation_Planner' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_Evaluation_Planner' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_Evaluation_Planner">
           <Key>
             <PropertyRef Name="ID" />
@@ -2389,7 +2397,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_Evaluation_Planner' does not ha
           <Property Name="Require" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_Group' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_Group' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_Group">
           <Key>
             <PropertyRef Name="GroupID" />
@@ -2402,7 +2410,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_Group' does not have a primary 
           <Property Name="SubDept" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_GroupCategory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_GroupCategory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_GroupCategory">
           <Key>
             <PropertyRef Name="ID" />
@@ -2414,7 +2422,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_GroupCategory' does not have a 
           <Property Name="ContenVietNamese" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_Position' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_Position' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_Position">
           <Key>
             <PropertyRef Name="ID" />
@@ -2426,7 +2434,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_Position' does not have a prima
           <Property Name="GroupID" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_SubGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_SubGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_SubGroup">
           <Key>
             <PropertyRef Name="ID" />
@@ -2454,7 +2462,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_SubGroup' does not have a prima
           <Property Name="DayRemind" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.CS_WorkStandard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.CS_WorkStandard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CS_WorkStandard">
           <Key>
             <PropertyRef Name="WorkStandard" />
@@ -2464,7 +2472,7 @@ warning 6002: The table/view 'NT_Database.dbo.CS_WorkStandard' does not have a p
           <Property Name="ID" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.DES_Drawing_FullOption' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.DES_Drawing_FullOption' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DES_Drawing_FullOption">
           <Key>
             <PropertyRef Name="Id" />
@@ -2489,7 +2497,7 @@ warning 6002: The table/view 'NT_Database.dbo.DES_Drawing_FullOption' does not h
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.DES_DrawingInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.DES_DrawingInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DES_DrawingInfo">
           <Key>
             <PropertyRef Name="Id" />
@@ -2529,7 +2537,7 @@ warning 6002: The table/view 'NT_Database.dbo.DES_DrawingInfo' does not have a p
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.DES_DWGFolder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.DES_DWGFolder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DES_DWGFolder">
           <Key>
             <PropertyRef Name="Id" />
@@ -2544,7 +2552,7 @@ warning 6002: The table/view 'NT_Database.dbo.DES_DWGFolder' does not have a pri
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.DES_Platform_DrawingDWG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.DES_Platform_DrawingDWG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DES_Platform_DrawingDWG">
           <Key>
             <PropertyRef Name="Id" />
@@ -2566,7 +2574,7 @@ warning 6002: The table/view 'NT_Database.dbo.DES_Platform_DrawingDWG' does not 
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_Approval_Process' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_Approval_Process' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_Approval_Process">
           <Key>
             <PropertyRef Name="Id" />
@@ -2584,7 +2592,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_Approval_Process' does not ha
           <Property Name="Id_FromOldVersion" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_Approval_Process_Define' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_Approval_Process_Define' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_Approval_Process_Define">
           <Key>
             <PropertyRef Name="Id" />
@@ -2616,7 +2624,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_Approval_Process_Define' does
           <Property Name="IsBegin" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_Categories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_Categories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_Categories">
           <Key>
             <PropertyRef Name="Id" />
@@ -2631,7 +2639,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_Categories' does not have a p
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_DirectManagement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_DirectManagement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_DirectManagement">
           <Key>
             <PropertyRef Name="Id" />
@@ -2651,7 +2659,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_DirectManagement' does not ha
           <Property Name="Pass" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_FieldType_LinkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_FieldType_LinkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_FieldType_LinkData">
           <Key>
             <PropertyRef Name="Id" />
@@ -2665,7 +2673,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_FieldType_LinkData' does not 
           <Property Name="Query" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_ListForm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_ListForm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_ListForm">
           <Key>
             <PropertyRef Name="Id" />
@@ -2698,7 +2706,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_ListForm' does not have a pri
           <Property Name="ApproveContent" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_ListForm_DefineField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_ListForm_DefineField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_ListForm_DefineField">
           <Key>
             <PropertyRef Name="Id" />
@@ -2737,7 +2745,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_ListForm_DefineField' does no
           <Property Name="Id_Proccess_Enable" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_ListForm_Process_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_ListForm_Process_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_ListForm_Process_History">
           <Key>
             <PropertyRef Name="Id" />
@@ -2750,7 +2758,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_ListForm_Process_History' doe
           <Property Name="Version" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_Operator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_Operator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_Operator">
           <Key>
             <PropertyRef Name="Id" />
@@ -2762,7 +2770,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_Operator' does not have a pri
           <Property Name="QueryGetData" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_Operator_Backup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_Operator_Backup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_Operator_Backup">
           <Key>
             <PropertyRef Name="Id" />
@@ -2774,7 +2782,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_Operator_Backup' does not hav
           <Property Name="QueryGetData" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_RequestList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_RequestList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_RequestList">
           <Key>
             <PropertyRef Name="Id" />
@@ -2802,7 +2810,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_RequestList' does not have a 
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_RequestList_Attachment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_RequestList_Attachment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_RequestList_Attachment">
           <Key>
             <PropertyRef Name="Id" />
@@ -2818,7 +2826,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_RequestList_Attachment' does 
           <Property Name="Url" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_RequestList_Details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_RequestList_Details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_RequestList_Details">
           <Key>
             <PropertyRef Name="Id" />
@@ -2834,7 +2842,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_RequestList_Details' does not
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_RequestList_Process_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_RequestList_Process_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_RequestList_Process_History">
           <Key>
             <PropertyRef Name="Id" />
@@ -2849,7 +2857,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_RequestList_Process_History' 
           <Property Name="StaffIdNext" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Form_Signature' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Form_Signature' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Form_Signature">
           <Key>
             <PropertyRef Name="Id" />
@@ -2867,7 +2875,7 @@ warning 6002: The table/view 'NT_Database.dbo.Form_Signature' does not have a pr
           <Property Name="Url" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_AllowanceShift' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_AllowanceShift' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_AllowanceShift">
           <Key>
             <PropertyRef Name="Id" />
@@ -2883,7 +2891,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_AllowanceShift' does not have a
           <Property Name="Per90" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_BusStation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_BusStation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_BusStation">
           <Key>
             <PropertyRef Name="Id" />
@@ -2895,7 +2903,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_BusStation' does not have a pri
           <Property Name="OldName" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_CerfiticateType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_CerfiticateType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_CerfiticateType">
           <Key>
             <PropertyRef Name="Id" />
@@ -2906,7 +2914,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_CerfiticateType' does not have 
           <Property Name="OldName" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_City' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_City' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_City">
           <Key>
             <PropertyRef Name="Id" />
@@ -2923,7 +2931,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_City' does not have a primary k
           <Property Name="DeletedBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Classification' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Classification' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Classification">
           <Key>
             <PropertyRef Name="Id" />
@@ -2933,7 +2941,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Classification' does not have a
           <Property Name="VNName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Country' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Country' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Country">
           <Key>
             <PropertyRef Name="Id" />
@@ -2949,7 +2957,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Country' does not have a primar
           <Property Name="DeletedBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Department">
           <Key>
             <PropertyRef Name="Id" />
@@ -2971,7 +2979,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Department' does not have a pri
           <Property Name="DeletedBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_District' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_District' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_District">
           <Key>
             <PropertyRef Name="Id" />
@@ -2988,7 +2996,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_District' does not have a prima
           <Property Name="DeletedBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_DSGiayNghi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_DSGiayNghi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_DSGiayNghi">
           <Key>
             <PropertyRef Name="Id" />
@@ -3014,7 +3022,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_DSGiayNghi' does not have a pri
           <Property Name="InputBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_DSGiayNghi_QuaTrinhDuyet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_DSGiayNghi_QuaTrinhDuyet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_DSGiayNghi_QuaTrinhDuyet">
           <Key>
             <PropertyRef Name="Id" />
@@ -3027,7 +3035,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_DSGiayNghi_QuaTrinhDuyet' does 
           <Property Name="IdSP" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_DSGiayNghi_TaskDuyet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_DSGiayNghi_TaskDuyet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_DSGiayNghi_TaskDuyet">
           <Key>
             <PropertyRef Name="Id" />
@@ -3045,7 +3053,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_DSGiayNghi_TaskDuyet' does not 
           <Property Name="IdSP" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Educationlevel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Educationlevel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Educationlevel">
           <Key>
             <PropertyRef Name="Id" />
@@ -3056,7 +3064,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Educationlevel' does not have a
           <Property Name="VNName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Gender' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Gender' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Gender">
           <Key>
             <PropertyRef Name="Id" />
@@ -3066,7 +3074,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Gender' does not have a primary
           <Property Name="VNName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Group' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Group' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Group">
           <Key>
             <PropertyRef Name="Id" />
@@ -3091,7 +3099,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Group' does not have a primary 
           <Property Name="IdOld" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Informatic_Level' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Informatic_Level' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Informatic_Level">
           <Key>
             <PropertyRef Name="Id" />
@@ -3108,7 +3116,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Informatic_Level' does not have
           <Property Name="DeletedBy" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Language' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Language' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Language">
           <Key>
             <PropertyRef Name="Id" />
@@ -3124,7 +3132,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Language' does not have a prima
           <Property Name="DeletedBy" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Language_Level' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Language_Level' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Language_Level">
           <Key>
             <PropertyRef Name="Id" />
@@ -3142,7 +3150,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Language_Level' does not have a
           <Property Name="DeletedBy" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Majors' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Majors' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Majors">
           <Key>
             <PropertyRef Name="Id" />
@@ -3159,7 +3167,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Majors' does not have a primary
           <Property Name="DeletedBy" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_MajorsGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_MajorsGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_MajorsGroup">
           <Key>
             <PropertyRef Name="Id" />
@@ -3175,7 +3183,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_MajorsGroup' does not have a pr
           <Property Name="DeletedBy" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_MaritalStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_MaritalStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_MaritalStatus">
           <Key>
             <PropertyRef Name="Id" />
@@ -3191,7 +3199,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_MaritalStatus' does not have a 
           <Property Name="DeletedBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Menu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Menu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Menu">
           <Key>
             <PropertyRef Name="Id" />
@@ -3213,7 +3221,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Menu' does not have a primary k
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Menu_Access' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Menu_Access' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Menu_Access">
           <Key>
             <PropertyRef Name="Id" />
@@ -3229,7 +3237,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Menu_Access' does not have a pr
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Nation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Nation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Nation">
           <Key>
             <PropertyRef Name="Id" />
@@ -3239,7 +3247,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Nation' does not have a primary
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_OldPassXinNghi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_OldPassXinNghi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_OldPassXinNghi">
           <Key>
             <PropertyRef Name="Id" />
@@ -3250,7 +3258,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_OldPassXinNghi' does not have a
           <Property Name="Created" Type="smalldatetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Position' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Position' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Position">
           <Key>
             <PropertyRef Name="Id" />
@@ -3275,7 +3283,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Position' does not have a prima
           <Property Name="Rank" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Privilege' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Privilege' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Privilege">
           <Key>
             <PropertyRef Name="Id" />
@@ -3290,7 +3298,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Privilege' does not have a prim
           <Property Name="IsImport" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_ProfileType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_ProfileType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_ProfileType">
           <Key>
             <PropertyRef Name="Id" />
@@ -3300,7 +3308,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_ProfileType' does not have a pr
           <Property Name="VNName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_BlackList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_BlackList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_BlackList">
           <Key>
             <PropertyRef Name="Id" />
@@ -3327,7 +3335,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_BlackList' does not 
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Candidate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Candidate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Candidate">
           <Key>
             <PropertyRef Name="Id" />
@@ -3405,7 +3413,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Candidate' does not 
           <Property Name="TestDate" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Plan_ByYear' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Plan_ByYear' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Plan_ByYear">
           <Key>
             <PropertyRef Name="Id" />
@@ -3425,7 +3433,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Plan_ByYear' does no
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Position_Define' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Position_Define' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Position_Define">
           <Key>
             <PropertyRef Name="Id" />
@@ -3449,7 +3457,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Position_Define' doe
           <Property Name="IdOld" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Position_Define_Details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Position_Define_Details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Position_Define_Details">
           <Key>
             <PropertyRef Name="Id" />
@@ -3503,7 +3511,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Position_Define_Deta
           <Property Name="IdOld" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Profile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Profile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Profile">
           <Key>
             <PropertyRef Name="Id" />
@@ -3579,7 +3587,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Profile' does not ha
           <Property Name="IdPhaseTest" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Profile_Result' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Profile_Result' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Profile_Result">
           <Key>
             <PropertyRef Name="Id" />
@@ -3614,7 +3622,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Profile_Result' does
           <Property Name="Autoupdated" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Profile_Status' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Profile_Status' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Profile_Status">
           <Key>
             <PropertyRef Name="Id" />
@@ -3623,7 +3631,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Profile_Status' does
           <Property Name="Status" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_ProfileSource' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_ProfileSource' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_ProfileSource">
           <Key>
             <PropertyRef Name="Id" />
@@ -3632,7 +3640,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_ProfileSource' does 
           <Property Name="Name" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Stage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Stage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Stage">
           <Key>
             <PropertyRef Name="Id" />
@@ -3651,7 +3659,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Stage' does not have
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Stage_Details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Recruiment_Stage_Details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Recruiment_Stage_Details">
           <Key>
             <PropertyRef Name="Id" />
@@ -3675,7 +3683,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Recruiment_Stage_Details' does 
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Relation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Relation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Relation">
           <Key>
             <PropertyRef Name="Id" />
@@ -3685,7 +3693,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Relation' does not have a prima
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_School' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_School' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_School">
           <Key>
             <PropertyRef Name="Id" />
@@ -3705,7 +3713,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_School' does not have a primary
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_SourceCV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_SourceCV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_SourceCV">
           <Key>
             <PropertyRef Name="Id" />
@@ -3714,7 +3722,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_SourceCV' does not have a prima
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile">
           <Key>
             <PropertyRef Name="Id" />
@@ -3760,7 +3768,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile' does not have a p
           <Property Name="IdOld" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_Approver' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_Approver' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_Approver">
           <Key>
             <PropertyRef Name="StaffId" />
@@ -3770,7 +3778,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_Approver' does not
           <Property Name="IsEdit" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Staffprofile_ComputerSkill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Staffprofile_ComputerSkill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Staffprofile_ComputerSkill">
           <Key>
             <PropertyRef Name="Id" />
@@ -3791,7 +3799,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Staffprofile_ComputerSkill' doe
           <Property Name="DeletedBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Staffprofile_ComputerSkill_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Staffprofile_ComputerSkill_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Staffprofile_ComputerSkill_WaitApprove">
           <Key>
             <PropertyRef Name="Id" />
@@ -3815,7 +3823,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Staffprofile_ComputerSkill_Wait
           <Property Name="IsApprovedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_Education' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_Education' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_Education">
           <Key>
             <PropertyRef Name="Id" />
@@ -3838,7 +3846,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_Education' does no
           <Property Name="DeletedBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_Education_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_Education_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_Education_WaitApprove">
           <Key>
             <PropertyRef Name="Id" />
@@ -3864,7 +3872,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_Education_WaitAppr
           <Property Name="IsApprovedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_FamilyRelation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_FamilyRelation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_FamilyRelation">
           <Key>
             <PropertyRef Name="Id" />
@@ -3891,7 +3899,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_FamilyRelation' do
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_FamilyRelation_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_FamilyRelation_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_FamilyRelation_WaitApprove">
           <Key>
             <PropertyRef Name="Id" />
@@ -3921,7 +3929,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_FamilyRelation_Wai
           <Property Name="IsApprovedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_ForeignLanguage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_ForeignLanguage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_ForeignLanguage">
           <Key>
             <PropertyRef Name="Id" />
@@ -3946,7 +3954,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_ForeignLanguage' d
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_ForeignLanguage_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_ForeignLanguage_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_ForeignLanguage_WaitApprove">
           <Key>
             <PropertyRef Name="Id" />
@@ -3974,7 +3982,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_ForeignLanguage_Wa
           <Property Name="IsApprovedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_History">
           <Key>
             <PropertyRef Name="Id" />
@@ -4022,7 +4030,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_History' does not 
           <Property Name="IdGuid" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_WaitApprove">
           <Key>
             <PropertyRef Name="Id" />
@@ -4071,7 +4079,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WaitApprove' does 
           <Property Name="IsApprovedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WorkInformation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_WorkInformation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_WorkInformation">
           <Key>
             <PropertyRef Name="Id" />
@@ -4110,7 +4118,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WorkInformation' d
           <Property Name="CompanyGroupEmail" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WorkInformation_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_WorkInformation_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_WorkInformation_WaitApprove">
           <Key>
             <PropertyRef Name="Id" />
@@ -4149,7 +4157,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WorkInformation_Wa
           <Property Name="CompanyGroupEmail" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WorkProcess' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_WorkProcess' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_WorkProcess">
           <Key>
             <PropertyRef Name="Id" />
@@ -4172,7 +4180,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WorkProcess' does 
           <Property Name="DeletedBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WorkProcess_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffProfile_WorkProcess_WaitApprove' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffProfile_WorkProcess_WaitApprove">
           <Key>
             <PropertyRef Name="Id" />
@@ -4198,7 +4206,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffProfile_WorkProcess_WaitAp
           <Property Name="IsApprovedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StaffType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StaffType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StaffType">
           <Key>
             <PropertyRef Name="Id" />
@@ -4208,7 +4216,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StaffType' does not have a prim
           <Property Name="VNName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_StatusWork' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_StatusWork' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_StatusWork">
           <Key>
             <PropertyRef Name="Id" />
@@ -4218,7 +4226,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_StatusWork' does not have a pri
           <Property Name="VNName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_TrainingType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_TrainingType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_TrainingType">
           <Key>
             <PropertyRef Name="Id" />
@@ -4228,7 +4236,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_TrainingType' does not have a p
           <Property Name="VNName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_TypeReason' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_TypeReason' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_TypeReason">
           <Key>
             <PropertyRef Name="Id" />
@@ -4238,7 +4246,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_TypeReason' does not have a pri
           <Property Name="VNName" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.HR_Village_Ward' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.HR_Village_Ward' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HR_Village_Ward">
           <Key>
             <PropertyRef Name="Id" />
@@ -4255,7 +4263,7 @@ warning 6002: The table/view 'NT_Database.dbo.HR_Village_Ward' does not have a p
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Answers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Answers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Answers">
           <Key>
             <PropertyRef Name="Id" />
@@ -4270,7 +4278,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Answers' does not have a prim
           <Property Name="Status" Type="smallint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_DailyNumberQuizRegister_SHDF2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_DailyNumberQuizRegister_SHDF2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_DailyNumberQuizRegister_SHDF2">
           <Key>
             <PropertyRef Name="Id" />
@@ -4291,7 +4299,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_DailyNumberQuizRegister_SHDF2
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_DailyNumberQuizRegister_SHDF2_AutoEmail_Log' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_DailyNumberQuizRegister_SHDF2_AutoEmail_Log' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_DailyNumberQuizRegister_SHDF2_AutoEmail_Log">
           <Key>
             <PropertyRef Name="Id" />
@@ -4302,7 +4310,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_DailyNumberQuizRegister_SHDF2
           <Property Name="MailTitle" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Exam_Attempt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Exam_Attempt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Exam_Attempt">
           <Key>
             <PropertyRef Name="Id" />
@@ -4333,7 +4341,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Exam_Attempt' does not have a
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Exam_Result' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Exam_Result' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Exam_Result">
           <Key>
             <PropertyRef Name="Id" />
@@ -4363,7 +4371,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Exam_Result' does not have a 
           <Property Name="MarkContentModify" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Exam_Result_PathResult' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Exam_Result_PathResult' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Exam_Result_PathResult">
           <Key>
             <PropertyRef Name="Id" />
@@ -4382,7 +4390,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Exam_Result_PathResult' does 
           <Property Name="Reseaon" Type="nvarchar" MaxLength="550" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Exam_Slots' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Exam_Slots' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Exam_Slots">
           <Key>
             <PropertyRef Name="Id" />
@@ -4401,7 +4409,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Exam_Slots' does not have a p
           <Property Name="Mark" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_ExamAttend_Layout' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_ExamAttend_Layout' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_ExamAttend_Layout">
           <Key>
             <PropertyRef Name="Id" />
@@ -4413,7 +4421,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_ExamAttend_Layout' does not h
           <Property Name="Mark" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_ExamGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_ExamGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_ExamGroup">
           <Key>
             <PropertyRef Name="Id" />
@@ -4433,7 +4441,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_ExamGroup' does not have a pr
           <Property Name="Status" Type="smallint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_ExamGroup_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_ExamGroup_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_ExamGroup_1700_1428_2688_20190812">
           <Key>
             <PropertyRef Name="Id" />
@@ -4453,7 +4461,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_ExamGroup_1700_1428_2688_2019
           <Property Name="Status" Type="smallint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Exams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Exams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Exams">
           <Key>
             <PropertyRef Name="Id" />
@@ -4482,7 +4490,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Exams' does not have a primar
           <Property Name="RepeatTimes" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Exams_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Exams_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Exams_1700_1428_2688_20190812">
           <Key>
             <PropertyRef Name="Id" />
@@ -4510,7 +4518,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Exams_1700_1428_2688_20190812
           <Property Name="Type" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_F2_Exam_Define' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_F2_Exam_Define' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_F2_Exam_Define">
           <Key>
             <PropertyRef Name="Id" />
@@ -4529,7 +4537,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_F2_Exam_Define' does not have
           <Property Name="Type" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_GroupQuestion' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_GroupQuestion' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_GroupQuestion">
           <Key>
             <PropertyRef Name="Id" />
@@ -4551,7 +4559,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_GroupQuestion' does not have 
           <Property Name="Status" Type="smallint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_GroupQuestion_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_GroupQuestion_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_GroupQuestion_1700_1428_2688_20190812">
           <Key>
             <PropertyRef Name="Id" />
@@ -4573,7 +4581,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_GroupQuestion_1700_1428_2688_
           <Property Name="Status" Type="smallint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_GroupSHDF2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_GroupSHDF2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_GroupSHDF2">
           <Key>
             <PropertyRef Name="Id" />
@@ -4591,7 +4599,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_GroupSHDF2' does not have a p
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_ParentQuestion' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_ParentQuestion' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_ParentQuestion">
           <Key>
             <PropertyRef Name="Id" />
@@ -4601,7 +4609,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_ParentQuestion' does not have
           <Property Name="ContentQuestion" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Phase' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Phase' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Phase">
           <Key>
             <PropertyRef Name="Id" />
@@ -4629,7 +4637,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Phase' does not have a primar
           <Property Name="IdStage_Training" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Phase_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Phase_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Phase_1700_1428_2688_20190812">
           <Key>
             <PropertyRef Name="Id" />
@@ -4656,7 +4664,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Phase_1700_1428_2688_20190812
           <Property Name="Type" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Question' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Question' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Question">
           <Key>
             <PropertyRef Name="Id" />
@@ -4684,7 +4692,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Question' does not have a pri
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_Question_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_Question_1700_1428_2688_20190812' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_Question_1700_1428_2688_20190812">
           <Key>
             <PropertyRef Name="Id" />
@@ -4711,7 +4719,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_Question_1700_1428_2688_20190
           <Property Name="Import" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_StaffInGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_StaffInGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_StaffInGroup">
           <Key>
             <PropertyRef Name="Id" />
@@ -4726,7 +4734,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_StaffInGroup' does not have a
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Quiz_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Quiz_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Quiz_User">
           <Key>
             <PropertyRef Name="Id" />
@@ -4747,7 +4755,7 @@ warning 6002: The table/view 'NT_Database.dbo.Quiz_User' does not have a primary
           <Property Name="SHDF2" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.RP_DefineCheckReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.RP_DefineCheckReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RP_DefineCheckReport">
           <Key>
             <PropertyRef Name="Id" />
@@ -4773,7 +4781,7 @@ warning 6002: The table/view 'NT_Database.dbo.RP_DefineCheckReport' does not hav
           <Property Name="IApproveBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.RP_DefineCheckReport_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.RP_DefineCheckReport_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RP_DefineCheckReport_History">
           <Key>
             <PropertyRef Name="Id" />
@@ -4799,7 +4807,7 @@ warning 6002: The table/view 'NT_Database.dbo.RP_DefineCheckReport_History' does
           <Property Name="IApproveBy" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_Authority' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_Authority' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_Authority">
           <Key>
             <PropertyRef Name="ID" />
@@ -4811,7 +4819,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_Authority' does not have a prim
           <Property Name="Level" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_CurrentPosition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_CurrentPosition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_CurrentPosition">
           <Key>
             <PropertyRef Name="ID" />
@@ -4835,7 +4843,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_CurrentPosition' does not have 
           <Property Name="GroupName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_DailyReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_DailyReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_DailyReport">
           <Key>
             <PropertyRef Name="ID" />
@@ -4866,7 +4874,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_DailyReport' does not have a pr
           <Property Name="ContentLeader" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_DailyReport_Evaluation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_DailyReport_Evaluation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_DailyReport_Evaluation">
           <Key>
             <PropertyRef Name="ID" />
@@ -4893,7 +4901,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_DailyReport_Evaluation' does no
           <Property Name="ActionTimes" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_DailyReportRequirement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_DailyReportRequirement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_DailyReportRequirement">
           <Key>
             <PropertyRef Name="ID" />
@@ -4919,7 +4927,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_DailyReportRequirement' does no
           <Property Name="FieldTemp3" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_Department">
           <Key>
             <PropertyRef Name="ID" />
@@ -4929,7 +4937,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_Department' does not have a pri
           <Property Name="Department" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_FCD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_FCD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_FCD">
           <Key>
             <PropertyRef Name="Code" />
@@ -4939,7 +4947,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_FCD' does not have a primary ke
           <Property Name="Content" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_InitialTraining' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_InitialTraining' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_InitialTraining">
           <Key>
             <PropertyRef Name="ID" />
@@ -4957,7 +4965,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_InitialTraining' does not have 
           <Property Name="Date" Type="smalldatetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_PeriodicSkill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_PeriodicSkill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_PeriodicSkill">
           <Key>
             <PropertyRef Name="ID" />
@@ -4975,7 +4983,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_PeriodicSkill' does not have a 
           <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_PeriodicSkillResult' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_PeriodicSkillResult' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_PeriodicSkillResult">
           <Key>
             <PropertyRef Name="ID" />
@@ -5000,7 +5008,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_PeriodicSkillResult' does not h
           <Property Name="TheoryScore" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_Skill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_Skill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_Skill">
           <Key>
             <PropertyRef Name="ID" />
@@ -5012,7 +5020,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_Skill' does not have a primary 
           <Property Name="DeptID" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_SkillComp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_SkillComp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_SkillComp">
           <Key>
             <PropertyRef Name="ID" />
@@ -5026,7 +5034,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_SkillComp' does not have a prim
           <Property Name="Date" Type="smalldatetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_SkillResult' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_SkillResult' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_SkillResult">
           <Key>
             <PropertyRef Name="ID" />
@@ -5051,7 +5059,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_SkillResult' does not have a pr
           <Property Name="TheoryScore" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_SkillWork' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_SkillWork' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_SkillWork">
           <Key>
             <PropertyRef Name="ID" />
@@ -5065,7 +5073,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_SkillWork' does not have a prim
           <Property Name="CreateBy" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_TrainingProgram' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_TrainingProgram' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_TrainingProgram">
           <Key>
             <PropertyRef Name="Group" />
@@ -5084,7 +5092,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_TrainingProgram' does not have 
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_Work' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_Work' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_Work">
           <Key>
             <PropertyRef Name="ID" />
@@ -5097,7 +5105,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_Work' does not have a primary k
           <Property Name="Group" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_WorkGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_WorkGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_WorkGroup">
           <Key>
             <PropertyRef Name="ID" />
@@ -5109,7 +5117,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_WorkGroup' does not have a prim
           <Property Name="DeptID" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_WorkOfWorkGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_WorkOfWorkGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_WorkOfWorkGroup">
           <Key>
             <PropertyRef Name="ID" />
@@ -5121,7 +5129,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_WorkOfWorkGroup' does not have 
           <Property Name="WorkID" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.SM_WorkPosition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.SM_WorkPosition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SM_WorkPosition">
           <Key>
             <PropertyRef Name="ID" />
@@ -5142,7 +5150,7 @@ warning 6002: The table/view 'NT_Database.dbo.SM_WorkPosition' does not have a p
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.StaffListCheck202002' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.StaffListCheck202002' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="StaffListCheck202002">
           <Key>
             <PropertyRef Name="Id" />
@@ -5158,7 +5166,7 @@ warning 6002: The table/view 'NT_Database.dbo.StaffListCheck202002' does not hav
           <Property Name="Id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.sysdiagrams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.sysdiagrams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="name" />
@@ -5172,7 +5180,7 @@ warning 6002: The table/view 'NT_Database.dbo.sysdiagrams' does not have a prima
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Training_Group_TrainingContent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Training_Group_TrainingContent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Training_Group_TrainingContent">
           <Key>
             <PropertyRef Name="Id" />
@@ -5188,7 +5196,7 @@ warning 6002: The table/view 'NT_Database.dbo.Training_Group_TrainingContent' do
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Training_Stage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Training_Stage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Training_Stage">
           <Key>
             <PropertyRef Name="Id" />
@@ -5221,7 +5229,7 @@ warning 6002: The table/view 'NT_Database.dbo.Training_Stage' does not have a pr
           <Property Name="Reason" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Training_Stage_Attend_Staff' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Training_Stage_Attend_Staff' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Training_Stage_Attend_Staff">
           <Key>
             <PropertyRef Name="Id" />
@@ -5249,7 +5257,7 @@ warning 6002: The table/view 'NT_Database.dbo.Training_Stage_Attend_Staff' does 
           <Property Name="ApprovedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Training_Stage_Details_And_Result' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Training_Stage_Details_And_Result' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Training_Stage_Details_And_Result">
           <Key>
             <PropertyRef Name="Id" />
@@ -5271,7 +5279,7 @@ warning 6002: The table/view 'NT_Database.dbo.Training_Stage_Details_And_Result'
           <Property Name="Times" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Training_TestName' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Training_TestName' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Training_TestName">
           <Key>
             <PropertyRef Name="Id" />
@@ -5281,7 +5289,7 @@ warning 6002: The table/view 'NT_Database.dbo.Training_TestName' does not have a
           <Property Name="Times" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Training_TrainingContent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Training_TrainingContent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Training_TrainingContent">
           <Key>
             <PropertyRef Name="Id" />
@@ -5299,7 +5307,7 @@ warning 6002: The table/view 'NT_Database.dbo.Training_TrainingContent' does not
           <Property Name="DeletedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Welfare_EmailAccounting' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Welfare_EmailAccounting' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Welfare_EmailAccounting">
           <Key>
             <PropertyRef Name="Id" />
@@ -5308,7 +5316,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_EmailAccounting' does not 
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Welfare_List' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Welfare_List' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Welfare_List">
           <Key>
             <PropertyRef Name="Id" />
@@ -5361,7 +5369,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_List' does not have a prim
           <Property Name="Id_Pay" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Welfare_PayList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Welfare_PayList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Welfare_PayList">
           <Key>
             <PropertyRef Name="Id" />
@@ -5379,7 +5387,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_PayList' does not have a p
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Welfare_Permission' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Welfare_Permission' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Welfare_Permission">
           <Key>
             <PropertyRef Name="Id" />
@@ -5393,7 +5401,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_Permission' does not have 
           <Property Name="IsPay" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Welfare_Relative' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Welfare_Relative' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Welfare_Relative">
           <Key>
             <PropertyRef Name="Id" />
@@ -5411,7 +5419,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_Relative' does not have a 
           <Property Name="Note" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Welfare_Rule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Welfare_Rule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Welfare_Rule">
           <Key>
             <PropertyRef Name="Id" />
@@ -5429,7 +5437,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_Rule' does not have a prim
           <Property Name="Gift" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.WorkingNotifycation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.WorkingNotifycation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="WorkingNotifycation">
           <Key>
             <PropertyRef Name="ID" />
@@ -5459,7 +5467,7 @@ warning 6002: The table/view 'NT_Database.dbo.WorkingNotifycation' does not have
           <Property Name="ReplyTo" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_ErrorItemNotify_View' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_ErrorItemNotify_View' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_ErrorItemNotify_View">
           <Key>
             <PropertyRef Name="ID" />
@@ -5535,14 +5543,14 @@ warning 6002: The table/view 'NT_Database.dbo.242_ErrorItemNotify_View' does not
           <Property Name="Money" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.242_MachinePlanning_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.242_MachinePlanning_view' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="242_MachinePlanning_view">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="ProcessInFreely" />
             <PropertyRef Name="Deleted" />
+            <PropertyRef Name="ProcessInFreely" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Order" Type="nvarchar" MaxLength="150" />
           <Property Name="NC" Type="nvarchar" MaxLength="150" />
           <Property Name="MayGC" Type="nvarchar" MaxLength="150" />
@@ -5621,7 +5629,7 @@ warning 6002: The table/view 'NT_Database.dbo.242_MachinePlanning_view' does not
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.P_LayNClamKHGcong01' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.P_LayNClamKHGcong01' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="P_LayNClamKHGcong01">
           <Key>
             <PropertyRef Name="MONumber" />
@@ -5656,7 +5664,7 @@ warning 6002: The table/view 'NT_Database.dbo.P_LayNClamKHGcong01' does not have
           <Property Name="StaffID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.P_LayNClamKHGcong01_All' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.P_LayNClamKHGcong01_All' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="P_LayNClamKHGcong01_All">
           <Key>
             <PropertyRef Name="MONumber" />
@@ -5691,7 +5699,7 @@ warning 6002: The table/view 'NT_Database.dbo.P_LayNClamKHGcong01_All' does not 
           <Property Name="StaffID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.P_LayNClamKHGcong02' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.P_LayNClamKHGcong02' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="P_LayNClamKHGcong02">
           <Key>
             <PropertyRef Name="MONumber" />
@@ -5700,7 +5708,7 @@ warning 6002: The table/view 'NT_Database.dbo.P_LayNClamKHGcong02' does not have
           <Property Name="TongNC" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.P_LayNClamKHGcong03' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.P_LayNClamKHGcong03' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="P_LayNClamKHGcong03">
           <Key>
             <PropertyRef Name="ActualMachine" />
@@ -5738,14 +5746,14 @@ warning 6002: The table/view 'NT_Database.dbo.P_LayNClamKHGcong03' does not have
           <Property Name="SoNc" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_Department">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="DeptCode" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DeptCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DeptName" Type="nvarchar" MaxLength="50" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
@@ -5753,7 +5761,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_Department' does not have
           <Property Name="SecID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_GroupMachine' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_GroupMachine' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_GroupMachine">
           <Key>
             <PropertyRef Name="ID" />
@@ -5761,20 +5769,20 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_GroupMachine' does not ha
             <PropertyRef Name="DeptID" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GroupName" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="DeptID" Type="int" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_Machine' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_Machine' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_Machine">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="MachineID" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MachineID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="MakerMachineNo" Type="nvarchar" MaxLength="50" />
           <Property Name="AccName" Type="nvarchar" MaxLength="50" />
@@ -5798,7 +5806,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_Machine' does not have a 
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_MachineDepartment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_MachineDepartment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_MachineDepartment">
           <Key>
             <PropertyRef Name="ID" />
@@ -5806,13 +5814,13 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_MachineDepartment' does n
             <PropertyRef Name="SecID" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Dept" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="SecID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_MaterialStock' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_MaterialStock' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_MaterialStock">
           <Key>
             <PropertyRef Name="ID" />
@@ -5830,7 +5838,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_MaterialStock' does not h
           <Property Name="AvailableWeight" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_MeetingComment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_MeetingComment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_MeetingComment">
           <Key>
             <PropertyRef Name="ID" />
@@ -5847,7 +5855,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_MeetingComment' does not 
           <Property Name="Date1" Type="nvarchar" MaxLength="4000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_MeetingContent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_MeetingContent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_MeetingContent">
           <Key>
             <PropertyRef Name="ID" />
@@ -5870,7 +5878,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_MeetingContent' does not 
           <Property Name="Deadline1" Type="nvarchar" MaxLength="4000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_Partner' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_Partner' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_Partner">
           <Key>
             <PropertyRef Name="ID" />
@@ -5879,14 +5887,14 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_Partner' does not have a 
             <PropertyRef Name="Type" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Type" Type="bit" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_ShiftRegister' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_ShiftRegister' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_ShiftRegister">
           <Key>
             <PropertyRef Name="ID" />
@@ -5911,7 +5919,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_ShiftRegister' does not h
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_Staff' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_Staff' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_Staff">
           <Key>
             <PropertyRef Name="ID" />
@@ -5958,7 +5966,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_Staff' does not have a pr
           <Property Name="ErrorNoteEdit" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_StokerInput' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_StokerInput' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_StokerInput">
           <Key>
             <PropertyRef Name="ID" />
@@ -5982,7 +5990,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_StokerInput' does not hav
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_StokerMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_StokerMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_StokerMenu">
           <Key>
             <PropertyRef Name="ID" />
@@ -5999,7 +6007,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_StokerMenu' does not have
           <Property Name="MainAlias" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_StokerOutput' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_StokerOutput' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_StokerOutput">
           <Key>
             <PropertyRef Name="ID" />
@@ -6021,7 +6029,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_StokerOutput' does not ha
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_StokerTool' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_StokerTool' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_StokerTool">
           <Key>
             <PropertyRef Name="ID" />
@@ -6043,7 +6051,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_StokerTool' does not have
           <Property Name="AvailableQty" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_TimeCard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_TimeCard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_TimeCard">
           <Key>
             <PropertyRef Name="ID" />
@@ -6061,7 +6069,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_TimeCard' does not have a
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_TimeCardDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_TimeCardDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_TimeCardDetail">
           <Key>
             <PropertyRef Name="ID" />
@@ -6079,7 +6087,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_TimeCardDetail' does not 
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_Users">
           <Key>
             <PropertyRef Name="UserName" />
@@ -6094,7 +6102,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_Users' does not have a pr
           <Property Name="StaffID" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_222_WebPermission' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_222_WebPermission' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_222_WebPermission">
           <Key>
             <PropertyRef Name="StaffID" />
@@ -6107,7 +6115,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_222_WebPermission' does not h
           <Property Name="Note" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_BusOder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_BusOder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_BusOder">
           <Key>
             <PropertyRef Name="ID" />
@@ -6158,7 +6166,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_BusOder' does not have a 
           <Property Name="XACNHAN" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_ErrorItemNotify' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_ErrorItemNotify' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_ErrorItemNotify">
           <Key>
             <PropertyRef Name="ID" />
@@ -6229,7 +6237,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_ErrorItemNotify' does not
           <Property Name="ErrorCause2" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_InventoryData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_InventoryData">
           <Key>
             <PropertyRef Name="ID" />
@@ -6238,7 +6246,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryData' does not h
             <PropertyRef Name="Import" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="StaffID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Import" Type="bit" Nullable="false" />
@@ -6248,7 +6256,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryData' does not h
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryExport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_InventoryExport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_InventoryExport">
           <Key>
             <PropertyRef Name="ID" />
@@ -6257,7 +6265,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryExport' does not
             <PropertyRef Name="Import" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="StaffID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Import" Type="bit" Nullable="false" />
@@ -6267,7 +6275,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryExport' does not
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryReceived' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_InventoryReceived' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_InventoryReceived">
           <Key>
             <PropertyRef Name="ID" />
@@ -6276,7 +6284,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryReceived' does n
             <PropertyRef Name="Import" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="StaffID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Import" Type="bit" Nullable="false" />
@@ -6286,7 +6294,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryReceived' does n
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryReceivedDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_InventoryReceivedDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_InventoryReceivedDetail">
           <Key>
             <PropertyRef Name="ID" />
@@ -6297,7 +6305,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryReceivedDetail' 
             <PropertyRef Name="StatusID" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VoucherID" Type="int" Nullable="false" />
           <Property Name="PartNo" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="OrderNumber" Type="nvarchar" MaxLength="250" />
@@ -6313,20 +6321,20 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_InventoryReceivedDetail' 
           <Property Name="ReceivedConfirmStaff" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_Jig' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_Jig' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_Jig">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="JigType" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="JigType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="JigName" Type="nvarchar" MaxLength="30" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_Material' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_Material' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_Material">
           <Key>
             <PropertyRef Name="ID" />
@@ -6334,7 +6342,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_Material' does not have a
             <PropertyRef Name="Density" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MaterialID" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Density" Type="float" Nullable="false" />
           <Property Name="UnitPrice" Type="smallmoney" />
@@ -6344,13 +6352,13 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_Material' does not have a
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_MOOption' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_MOOption' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_MOOption">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MONo" Type="nvarchar" MaxLength="50" />
           <Property Name="PartID" Type="nvarchar" MaxLength="50" />
           <Property Name="MOQty" Type="int" />
@@ -6368,13 +6376,13 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_MOOption' does not have a
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_Option' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_Option' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_Option">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DeptCode" Type="nvarchar" MaxLength="50" />
           <Property Name="OptionID" Type="nvarchar" MaxLength="50" />
           <Property Name="Note" Type="nvarchar(max)" />
@@ -6382,7 +6390,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_Option' does not have a p
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_OptionData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_OptionData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_OptionData">
           <Key>
             <PropertyRef Name="ID" />
@@ -6415,7 +6423,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_OptionData' does not have
           <Property Name="STT" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_Part' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_Part' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_Part">
           <Key>
             <PropertyRef Name="ID" />
@@ -6450,13 +6458,13 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_Part' does not have a pri
           <Property Name="PartNoRRC" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_PartData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_PartData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_PartData">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InputDate" Type="datetime" />
           <Property Name="PartID" Type="nvarchar" MaxLength="250" />
           <Property Name="MaterialID" Type="nvarchar" MaxLength="250" />
@@ -6499,13 +6507,13 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_PartData' does not have a
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_Planning' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_Planning' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_Planning">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="Deleted" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="K" Type="nvarchar" MaxLength="50" />
           <Property Name="Date" Type="datetime" />
           <Property Name="Shift" Type="nvarchar" MaxLength="50" />
@@ -6517,7 +6525,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_Planning' does not have a
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_ShiftHandOver' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_ShiftHandOver' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_ShiftHandOver">
           <Key>
             <PropertyRef Name="ID" />
@@ -6539,7 +6547,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_ShiftHandOver' does not h
           <Property Name="HandOverItem1" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_WTS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_WTS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_WTS">
           <Key>
             <PropertyRef Name="ID" />
@@ -6579,7 +6587,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_WTS' does not have a prim
           <Property Name="WorkWhilePLJ1" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_YCKP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_YCKP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_YCKP">
           <Key>
             <PropertyRef Name="ID" />
@@ -6605,7 +6613,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_YCKP' does not have a pri
           <Property Name="ProcessDept" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_242_YCKPXL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_242_YCKPXL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_242_YCKPXL">
           <Key>
             <PropertyRef Name="ID" />
@@ -6659,7 +6667,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_242_YCKPXL' does not have a p
           <Property Name="CausedDetail" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_ManualExcutionChecking_GetCurrent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_ManualExcutionChecking_GetCurrent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_ManualExcutionChecking_GetCurrent">
           <Key>
             <PropertyRef Name="MONo" />
@@ -6676,7 +6684,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_ManualExcutionChecking_GetCur
           <Property Name="OptionID" Type="nvarchar" MaxLength="250" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_ManualExcutionChecking_GetTotal' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_ManualExcutionChecking_GetTotal' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_ManualExcutionChecking_GetTotal">
           <Key>
             <PropertyRef Name="MONo" />
@@ -6696,7 +6704,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_ManualExcutionChecking_GetTot
           <Property Name="Number" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_ToLenh' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_ToLenh' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_ToLenh">
           <Key>
             <PropertyRef Name="BOderNo" />
@@ -6719,7 +6727,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_ToLenh' does not have a prima
           <Property Name="TT" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.View_Tracking_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.View_Tracking_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_Tracking_History">
           <Key>
             <PropertyRef Name="Date" />
@@ -6748,7 +6756,7 @@ warning 6002: The table/view 'NT_Database.dbo.View_Tracking_History' does not ha
           <Property Name="TotalNote" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NN_Database.dbo.Welfare_V_StaffProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Welfare_V_StaffProfile">
           <Key>
             <PropertyRef Name="Id" />
@@ -6791,6 +6799,9 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Parameter Name="DeptCode" Type="nvarchar" Mode="In" />
           <Parameter Name="DeptName" Type="nvarchar" Mode="In" />
           <Parameter Name="Deleted" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="sp_222_Kaizen_GetDataForApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="staffID" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_222_Machine_GetMachineStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fromDate" Type="datetime" Mode="In" />
@@ -7080,7 +7091,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
         </Function>
         <Function Name="sp_242_PartData_UpdateMaterial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
-          <Parameter Name="InputDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="InputDate" Type="datetime" Mode="In" />
           <Parameter Name="MaterialID" Type="nvarchar" Mode="In" />
           <Parameter Name="MaterialType" Type="nvarchar" Mode="In" />
           <Parameter Name="PartID" Type="nvarchar" Mode="In" />
@@ -7285,9 +7296,6 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Parameter Name="group" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_DanhSachNhanVienDacBiet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="sp_EvaluationEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Date" Type="datetime" Mode="In" />
-        </Function>
         <Function Name="sp_Get_MachineCapability" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fromDate" Type="datetime" Mode="In" />
           <Parameter Name="toDate" Type="datetime" Mode="In" />
@@ -11593,7 +11601,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="DensanCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="Dmachine" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MachineName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MachineGR" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MachineGR" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Maker" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Charge" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Ratio" Type="Double" />
@@ -11604,7 +11612,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="tranfer" Type="Boolean" />
           <Property Name="MachineGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MachineWTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OriginalMachine" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OriginalMachine" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
         </EntityType>
@@ -17822,7 +17830,7 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="C242_MachinePlanning_view" EntityType="NN_DatabaseModel.C242_MachinePlanning_view" />
           <FunctionImport Name="sp_242_PartData_UpdateMaterial">
             <Parameter Name="ID" Mode="In" Type="Int32" />
-            <Parameter Name="InputDate" Mode="In" Type="String" />
+            <Parameter Name="InputDate" Mode="In" Type="DateTime" />
             <Parameter Name="MaterialID" Mode="In" Type="String" />
             <Parameter Name="MaterialType" Mode="In" Type="String" />
             <Parameter Name="PartID" Mode="In" Type="String" />
@@ -17872,24 +17880,23 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <EntitySet Name="C242_MaintenanceBug" EntityType="NN_DatabaseModel.C242_MaintenanceBug" />
           <EntitySet Name="C242_MaintenanceCheck" EntityType="NN_DatabaseModel.C242_MaintenanceCheck" />
           <EntitySet Name="C242_MaintenancePlan" EntityType="NN_DatabaseModel.C242_MaintenancePlan" />
-          <FunctionImport Name="sp_Get_StaffCapability" ReturnType="Collection(NN_DatabaseModel.sp_Get_StaffCapability_Result)">
-            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
-            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <EntitySet Name="C222_Evaluation_Employee" EntityType="NN_DatabaseModel.C222_Evaluation_Employee" />
           <EntitySet Name="C222_Evaluation_Reviewer" EntityType="NN_DatabaseModel.C222_Evaluation_Reviewer" />
           <EntitySet Name="C242_MechanicalElectronicalWork" EntityType="NN_DatabaseModel.C242_MechanicalElectronicalWork" />
           <EntitySet Name="C222_PurChaseDetail" EntityType="NN_DatabaseModel.C222_PurChaseDetail" />
           <EntitySet Name="C222_PurChase" EntityType="NN_DatabaseModel.C222_PurChase" />
-          <FunctionImport Name="sp_Get_StaffCapability1" ReturnType="Collection(NN_DatabaseModel.sp_Get_StaffCapability1_Result)">
-            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
-            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <FunctionImport Name="sp_EvaluationEmployee" ReturnType="Collection(NN_DatabaseModel.sp_EvaluationEmployee_Result)">
           <Parameter Name="Date" Mode="In" Type="DateTime" />
           </FunctionImport>
           <EntitySet Name="C242_YCKP_New" EntityType="NN_DatabaseModel.C242_YCKP_New" />
+          <FunctionImport Name="sp_222_Kaizen_GetDataForApproval" ReturnType="Collection(NN_DatabaseModel.sp_222_Kaizen_GetDataForApproval_Result)">
+          <Parameter Name="staffID" Mode="In" Type="String" />
+          </FunctionImport>
           <EntitySet Name="C242_Prepare_Processing" EntityType="NN_DatabaseModel.C242_Prepare_Processing" />
+          <FunctionImport Name="sp_Get_StaffCapability" ReturnType="Collection(NN_DatabaseModel.sp_Get_StaffCapability_Result)">
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_222_AcquireNotifications_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -20029,20 +20036,6 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="FrequencyMonth" Type="Int32" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <ComplexType Name="sp_Get_StaffCapability_Result">
-          <Property Type="String" Name="manv" Nullable="true" MaxLength="50" />
-          <Property Type="Decimal" Name="ttg" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="ttgpljtnv" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Double" Name="ttgpljttc" Nullable="true" />
-          <Property Type="Double" Name="ttgpbjpbn" Nullable="true" />
-          <Property Type="Double" Name="ttgpbjttc" Nullable="true" />
-          <Property Type="Decimal" Name="ttgk" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="C_B1" Nullable="true" Precision="38" Scale="11" />
-          <Property Type="Decimal" Name="C_C1" Nullable="true" Precision="38" Scale="11" />
-          <Property Type="Double" Name="C_D1" Nullable="true" />
-          <Property Type="Double" Name="C_E1" Nullable="true" />
-          <Property Type="Decimal" Name="C_G1" Nullable="true" Precision="38" Scale="11" />
-        </ComplexType>
         <EntityType Name="C222_Evaluation_Employee">
           <Key>
             <PropertyRef Name="Id" />
@@ -20127,20 +20120,6 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="Complete" Type="Boolean" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <ComplexType Name="sp_Get_StaffCapability1_Result">
-          <Property Type="String" Name="manv" Nullable="true" MaxLength="50" />
-          <Property Type="Decimal" Name="ttg" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="ttgpljtnv" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Double" Name="ttgpljttc" Nullable="true" />
-          <Property Type="Double" Name="ttgpbjpbn" Nullable="true" />
-          <Property Type="Double" Name="ttgpbjttc" Nullable="true" />
-          <Property Type="Decimal" Name="ttgk" Nullable="true" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="C_B1" Nullable="true" Precision="38" Scale="11" />
-          <Property Type="Decimal" Name="C_C1" Nullable="true" Precision="38" Scale="11" />
-          <Property Type="Double" Name="C_D1" Nullable="true" />
-          <Property Type="Double" Name="C_E1" Nullable="true" />
-          <Property Type="Decimal" Name="C_G1" Nullable="true" Precision="38" Scale="11" />
-        </ComplexType>
         <ComplexType Name="sp_EvaluationEmployee_Result">
           <Property Type="String" Name="StaffId" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="StaffName" Nullable="true" MaxLength="50" />
@@ -20189,12 +20168,31 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="YCKPProcessTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="InputStaff" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="InputDept" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ProcessStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStaff" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProcessDept" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ResponseId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <ComplexType Name="sp_222_Kaizen_GetDataForApproval_Result">
+          <Property Type="Int32" Name="ID" Nullable="true" />
+          <Property Type="DateTime" Name="InputDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="StaffID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Subject" Nullable="true" />
+          <Property Type="String" Name="PartID" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="OptionID" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="KaizenType" Nullable="true" />
+          <Property Type="String" Name="Note" Nullable="true" />
+          <Property Type="String" Name="CurrentProcess" Nullable="true" />
+          <Property Type="String" Name="KaizenProcess" Nullable="true" />
+          <Property Type="String" Name="AppliedPredictResult" Nullable="true" />
+          <Property Type="String" Name="ManagerComment" Nullable="true" />
+          <Property Type="String" Name="TechnicianComment" Nullable="true" />
+          <Property Type="String" Name="KaizenDeptComment" Nullable="true" />
+          <Property Type="String" Name="BeforeApplied" Nullable="true" />
+          <Property Type="String" Name="AfterApplied" Nullable="true" />
+          <Property Type="String" Name="KaizenEffectiveness" Nullable="true" />
+        </ComplexType>
         <EntityType Name="C242_Prepare_Processing">
           <Key>
             <PropertyRef Name="ID" />
@@ -20216,7 +20214,29 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
           <Property Name="SX_Start" Type="DateTime" Precision="3" />
           <Property Name="SX_End" Type="DateTime" Precision="3" />
           <Property Name="Note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CB_Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CT_Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SX_Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="KH_TGCT" Type="DateTime" Precision="3" />
+          <Property Name="KH_TGCB" Type="DateTime" Precision="3" />
+          <Property Name="KH_TGCTh" Type="DateTime" Precision="3" />
+          <Property Name="KH_Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PBStaff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <ComplexType Name="sp_Get_StaffCapability_Result">
+          <Property Type="String" Name="manv" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="ttg" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ttgpljtnv" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Double" Name="ttgpljttc" Nullable="true" />
+          <Property Type="Double" Name="ttgpbjpbn" Nullable="true" />
+          <Property Type="Double" Name="ttgpbjttc" Nullable="true" />
+          <Property Type="Decimal" Name="ttgk" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="C_B1" Nullable="true" Precision="38" Scale="11" />
+          <Property Type="Decimal" Name="C_C1" Nullable="true" Precision="38" Scale="11" />
+          <Property Type="Double" Name="C_D1" Nullable="true" />
+          <Property Type="Double" Name="C_E1" Nullable="true" />
+          <Property Type="Decimal" Name="C_G1" Nullable="true" Precision="38" Scale="11" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -28197,54 +28217,6 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_Get_StaffCapability1" FunctionName="NN_DatabaseModel.Store.sp_Get_StaffCapability">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="NN_DatabaseModel.sp_Get_StaffCapability1_Result">
-                <ScalarProperty Name="manv" ColumnName="manv" />
-                <ScalarProperty Name="ttg" ColumnName="ttg" />
-                <ScalarProperty Name="ttgpljtnv" ColumnName="ttgpljtnv" />
-                <ScalarProperty Name="ttgpljttc" ColumnName="ttgpljttc" />
-                <ScalarProperty Name="ttgpbjpbn" ColumnName="ttgpbjpbn" />
-                <ScalarProperty Name="ttgpbjttc" ColumnName="ttgpbjttc" />
-                <ScalarProperty Name="ttgk" ColumnName="ttgk" />
-                <ScalarProperty Name="C_B1" ColumnName="%B1" />
-                <ScalarProperty Name="C_C1" ColumnName="%C1" />
-                <ScalarProperty Name="C_D1" ColumnName="%D1" />
-                <ScalarProperty Name="C_E1" ColumnName="%E1" />
-                <ScalarProperty Name="C_G1" ColumnName="%G1" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_EvaluationEmployee" FunctionName="NN_DatabaseModel.Store.sp_EvaluationEmployee">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="NN_DatabaseModel.sp_EvaluationEmployee_Result">
-                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
-                <ScalarProperty Name="StaffName" ColumnName="StaffName" />
-                <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
-                <ScalarProperty Name="NV_TC1" ColumnName="NV_TC1" />
-                <ScalarProperty Name="NV_TC2" ColumnName="NV_TC2" />
-                <ScalarProperty Name="NV_TC3" ColumnName="NV_TC3" />
-                <ScalarProperty Name="NV_TC4" ColumnName="NV_TC4" />
-                <ScalarProperty Name="NV_TC5" ColumnName="NV_TC5" />
-                <ScalarProperty Name="NV_TC6" ColumnName="NV_TC6" />
-                <ScalarProperty Name="NV_TC7" ColumnName="NV_TC7" />
-                <ScalarProperty Name="NV_TC8" ColumnName="NV_TC8" />
-                <ScalarProperty Name="NV_TC9" ColumnName="NV_TC9" />
-                <ScalarProperty Name="NV_TC10" ColumnName="NV_TC10" />
-                <ScalarProperty Name="NV_TC11" ColumnName="NV_TC11" />
-                <ScalarProperty Name="QL_TC1" ColumnName="QL_TC1" />
-                <ScalarProperty Name="QL_TC2" ColumnName="QL_TC2" />
-                <ScalarProperty Name="QL_TC3" ColumnName="QL_TC3" />
-                <ScalarProperty Name="QL_TC4" ColumnName="QL_TC4" />
-                <ScalarProperty Name="QL_TC5" ColumnName="QL_TC5" />
-                <ScalarProperty Name="QL_TC6" ColumnName="QL_TC6" />
-                <ScalarProperty Name="QL_TC7" ColumnName="QL_TC7" />
-                <ScalarProperty Name="QL_TC8" ColumnName="QL_TC8" />
-                <ScalarProperty Name="QL_TC9" ColumnName="QL_TC9" />
-                <ScalarProperty Name="TotalScore" ColumnName="TotalScore" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="C242_YCKP_New">
             <EntityTypeMapping TypeName="NN_DatabaseModel.C242_YCKP_New">
               <MappingFragment StoreEntitySet="242_YCKP_New">
@@ -28274,9 +28246,40 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_222_Kaizen_GetDataForApproval" FunctionName="NN_DatabaseModel.Store.sp_222_Kaizen_GetDataForApproval">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NN_DatabaseModel.sp_222_Kaizen_GetDataForApproval_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="InputDate" ColumnName="InputDate" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="KaizenType" ColumnName="KaizenType" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="CurrentProcess" ColumnName="CurrentProcess" />
+                <ScalarProperty Name="KaizenProcess" ColumnName="KaizenProcess" />
+                <ScalarProperty Name="AppliedPredictResult" ColumnName="AppliedPredictResult" />
+                <ScalarProperty Name="ManagerComment" ColumnName="ManagerComment" />
+                <ScalarProperty Name="TechnicianComment" ColumnName="TechnicianComment" />
+                <ScalarProperty Name="KaizenDeptComment" ColumnName="KaizenDeptComment" />
+                <ScalarProperty Name="BeforeApplied" ColumnName="BeforeApplied" />
+                <ScalarProperty Name="AfterApplied" ColumnName="AfterApplied" />
+                <ScalarProperty Name="KaizenEffectiveness" ColumnName="KaizenEffectiveness" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="C242_Prepare_Processing">
             <EntityTypeMapping TypeName="NN_DatabaseModel.C242_Prepare_Processing">
               <MappingFragment StoreEntitySet="242_Prepare_Processing">
+                <ScalarProperty Name="PBStaff" ColumnName="PBStaff" />
+                <ScalarProperty Name="KH_Note" ColumnName="KH_Note" />
+                <ScalarProperty Name="KH_TGCTh" ColumnName="KH_TGCTh" />
+                <ScalarProperty Name="KH_TGCB" ColumnName="KH_TGCB" />
+                <ScalarProperty Name="KH_TGCT" ColumnName="KH_TGCT" />
+                <ScalarProperty Name="SX_Note" ColumnName="SX_Note" />
+                <ScalarProperty Name="CT_Note" ColumnName="CT_Note" />
+                <ScalarProperty Name="CB_Note" ColumnName="CB_Note" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="SX_End" ColumnName="SX_End" />
                 <ScalarProperty Name="SX_Start" ColumnName="SX_Start" />
@@ -28297,6 +28300,24 @@ warning 6002: The table/view 'NT_Database.dbo.Welfare_V_StaffProfile' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_Get_StaffCapability" FunctionName="NN_DatabaseModel.Store.sp_Get_StaffCapability" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NN_DatabaseModel.sp_Get_StaffCapability_Result">
+                <ScalarProperty Name="manv" ColumnName="manv" />
+                <ScalarProperty Name="ttg" ColumnName="ttg" />
+                <ScalarProperty Name="ttgpljtnv" ColumnName="ttgpljtnv" />
+                <ScalarProperty Name="ttgpljttc" ColumnName="ttgpljttc" />
+                <ScalarProperty Name="ttgpbjpbn" ColumnName="ttgpbjpbn" />
+                <ScalarProperty Name="ttgpbjttc" ColumnName="ttgpbjttc" />
+                <ScalarProperty Name="ttgk" ColumnName="ttgk" />
+                <ScalarProperty Name="C_B1" ColumnName="%B1" />
+                <ScalarProperty Name="C_C1" ColumnName="%C1" />
+                <ScalarProperty Name="C_D1" ColumnName="%D1" />
+                <ScalarProperty Name="C_E1" ColumnName="%E1" />
+                <ScalarProperty Name="C_G1" ColumnName="%G1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

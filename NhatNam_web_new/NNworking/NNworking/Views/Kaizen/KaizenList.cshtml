@@ -8,7 +8,7 @@
     .DataSource(ds => ds.WebApi()
         .RouteName("C222_KaizenApi")
         .LoadAction("GetDataTemplate")
-        .LoadParams(new { KaizenStatus = status })
+        .LoadParams(new { KaizenStatus = status,StaffID = Session["StaffID"].ToString() })
         .InsertAction("Post")
         .UpdateAction("Put")
         .DeleteAction("Delete")

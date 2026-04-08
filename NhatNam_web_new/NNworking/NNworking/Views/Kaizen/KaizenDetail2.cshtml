@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "KaizenDetail2";
-    List<string> ediableData = (List<string>)ViewBag.EdiableData;
+    List<string> editableData = (List<string>)ViewBag.EditableData;
 }
 
 <!DOCTYPE html>
@@ -198,7 +198,7 @@
         </tr>
         <tr>
             <td>
-                @if (ediableData.Where(x => x.ToLower() == "ManagerComment".ToLower()).Any())
+                @if (editableData.Where(x => x.ToLower() == "ManagerComment".ToLower()).Any())
                 {
                     <textarea id="ManagerComment" style="border: 1px solid red;" placeholder="...">@ViewBag.ManagerComment</textarea>
                 }
@@ -215,7 +215,7 @@
         </tr>
         <tr>
             <td>
-                @if (ediableData.Where(x => x.ToLower() == "TechnicianComment".ToLower()).Any())
+                @if (editableData.Where(x => x.ToLower() == "TechnicianComment".ToLower()).Any())
                 {
                     <textarea id="TechnicianComment" style="border: 1px solid red;" placeholder="...">@ViewBag.TechnicianComment</textarea>
                 }
@@ -232,7 +232,7 @@
         </tr>
         <tr>
             <td>
-                @if (ediableData.Where(x => x.ToLower() == "KaizenDeptComment".ToLower()).Any())
+                @if (editableData.Where(x => x.ToLower() == "KaizenDeptComment".ToLower()).Any())
                 {
                     <textarea id="KaizenDeptComment" style="border: 1px solid red;" placeholder="...">@ViewBag.KaizenDeptComment</textarea>
                 }
@@ -296,7 +296,7 @@
         </tr>
 
     </table>
-    @if (ediableData.Where(x => x.ToLower() == "KaizenDeptComment".ToLower()).Any())
+    @if (editableData.Where(x => x.ToLower() == "KaizenDeptComment".ToLower()).Any())
     {
         <span>
             @(Html.DevExtreme().Button()

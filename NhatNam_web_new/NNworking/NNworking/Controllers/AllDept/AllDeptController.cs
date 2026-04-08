@@ -910,6 +910,10 @@ namespace NNworking.Controllers.AllDept
                     // Process CBGC import data
                     ImportCBGCData(name, out Error);
                 }
+                if(Error.Count == 0)
+                {
+                    throw new Exception("Import có lỗi. Vui lòng kiểm tra chi tiết lỗi");
+                }
                 return Json(new { Status = "OK", Values = "Import xong!", Errors = Error });
             }
             catch (Exception ex)
@@ -1376,31 +1380,31 @@ namespace NNworking.Controllers.AllDept
                         continue;
                     }
 
-                    int line = 0;
-                    int headerLine = 0;
-                    bool foundHeader = false;
+                    int line = 2;
+                    //int headerLine = 0;
+                    //bool foundHeader = false;
 
-                    for (int searchLine = 1; searchLine <= 100; searchLine++)
-                    {
-                        var cellA = item.Cells["A" + searchLine].Value == null ? string.Empty : item.Cells["A" + searchLine].Value.ToString();
-                        var cellB = item.Cells["B" + searchLine].Value == null ? string.Empty : item.Cells["B" + searchLine].Value.ToString();
-                        var cellC = item.Cells["C" + searchLine].Value == null ? string.Empty : item.Cells["C" + searchLine].Value.ToString();
-                        var cellD = item.Cells["D" + searchLine].Value == null ? string.Empty : item.Cells["D" + searchLine].Value.ToString();
-                        var cellE = item.Cells["E" + searchLine].Value == null ? string.Empty : item.Cells["E" + searchLine].Value.ToString();
+                    //for (int searchLine = 1; searchLine <= 100; searchLine++)
+                    //{
+                    //    var cellA = item.Cells["A" + searchLine].Value == null ? string.Empty : item.Cells["A" + searchLine].Value.ToString();
+                    //    var cellB = item.Cells["B" + searchLine].Value == null ? string.Empty : item.Cells["B" + searchLine].Value.ToString();
+                    //    var cellC = item.Cells["C" + searchLine].Value == null ? string.Empty : item.Cells["C" + searchLine].Value.ToString();
+                    //    var cellD = item.Cells["D" + searchLine].Value == null ? string.Empty : item.Cells["D" + searchLine].Value.ToString();
+                    //    var cellE = item.Cells["E" + searchLine].Value == null ? string.Empty : item.Cells["E" + searchLine].Value.ToString();
 
-                        if (cellA.Contains("Ngày") && cellB.Contains("Máy gia công") && cellC.Contains("Lệnh") && cellD.Contains("Chi tiết") && cellE.Contains("NC"))
-                        {
-                            headerLine = searchLine;
-                            foundHeader = true;
-                            line = searchLine + 1;
-                            break;
-                        }
-                    }
+                    //    if (cellA.Contains("Ngày") && cellB.Contains("Máy gia công") && cellC.Contains("Lệnh") && cellD.Contains("Chi tiết") && cellE.Contains("NC"))
+                    //    {
+                    //        headerLine = searchLine;
+                    //        foundHeader = true;
+                    //        line = searchLine + 1;
+                    //        break;
+                    //    }
+                    //}
 
-                    if (!foundHeader)
-                    {
-                        throw new ArgumentException("Không tìm thấy dòng tiêu đề trong file Excel. Vui lòng kiểm tra lại cấu trúc file.");
-                    }
+                    //if (!foundHeader)
+                    //{
+                    //    throw new ArgumentException("Không tìm thấy dòng tiêu đề trong file Excel. Vui lòng kiểm tra lại cấu trúc file.");
+                    //}
 
                     NN_DatabaseEntities db = new NN_DatabaseEntities();
 
@@ -1410,25 +1414,34 @@ namespace NNworking.Controllers.AllDept
                         try
                         {
                             var Date = item.Cells["A" + line].Value == null ? string.Empty : item.Cells["A" + line].Value.ToString();
+                            if (string.IsNullOrEmpty(Date))
+                            {
+                                break;
+                            }
                             var MachineID = item.Cells["B" + line].Value == null ? string.Empty : item.Cells["B" + line].Value.ToString();
                             var Command = item.Cells["C" + line].Value == null ? string.Empty : item.Cells["C" + line].Value.ToString();
                             var PartID = item.Cells["D" + line].Value == null ? string.Empty : item.Cells["D" + line].Value.ToString();
                             var OptionID = item.Cells["E" + line].Value == null ? string.Empty : item.Cells["E" + line].Value.ToString();
                             var Priority = item.Cells["F" + line].Value == null ? string.Empty : item.Cells["F" + line].Value.ToString();
-                            var CB_StaffID = item.Cells["G" + line].Value == null ? string.Empty : item.Cells["G" + line].Value.ToString();
-                            var CB_Start = item.Cells["H" + line].Value == null ? string.Empty : item.Cells["H" + line].Value.ToString();
-                            var CB_End = item.Cells["I" + line].Value == null ? string.Empty : item.Cells["I" + line].Value.ToString();
-                            var CT_StaffID = item.Cells["J" + line].Value == null ? string.Empty : item.Cells["J" + line].Value.ToString();
-                            var CT_Start = item.Cells["K" + line].Value == null ? string.Empty : item.Cells["K" + line].Value.ToString();
-                            var CT_End = item.Cells["L" + line].Value == null ? string.Empty : item.Cells["L" + line].Value.ToString();
-                            var SX_StaffID = item.Cells["M" + line].Value == null ? string.Empty : item.Cells["M" + line].Value.ToString();
-                            var SX_Start = item.Cells["N" + line].Value == null ? string.Empty : item.Cells["N" + line].Value.ToString();
-                            var SX_End = item.Cells["O" + line].Value == null ? string.Empty : item.Cells["O" + line].Value.ToString();
-                            var Note = item.Cells["P" + line].Value == null ? string.Empty : item.Cells["P" + line].Value.ToString();
-                            if (string.IsNullOrEmpty(Date))
-                            {
-                                break;
-                            }
+                            var pbStaff = item.Cells["G" + line].Value == null ? string.Empty : item.Cells["G" + line].Value.ToString();
+                            //var a = item.Cells["G" + line].Value == null ? string.Empty : item.Cells["G" + line].Value.ToString();
+                            var kh_TGCT = VerifyDateTime(item.Cells["H" + line].Value == null ? string.Empty : item.Cells["H" + line].Value.ToString(), "kh_TGCT");
+                            var kh_TGCB = VerifyDateTime(item.Cells["I" + line].Value == null ? string.Empty : item.Cells["I" + line].Value.ToString(), "kh_TGCB");
+                            var kh_TGCTh = VerifyDateTime(item.Cells["J" + line].Value == null ? string.Empty : item.Cells["J" + line].Value.ToString(), "kh_TGCTh");
+                            var KH_Note = item.Cells["K" + line].Value == null ? string.Empty : item.Cells["K" + line].Value.ToString();
+                            //var CT_StaffID = item.Cells["K" + line].Value == null ? string.Empty : item.Cells["K" + line].Value.ToString();
+                            //var CT_Start = item.Cells["L" + line].Value == null ? string.Empty : item.Cells["L" + line].Value.ToString();
+                            //var CT_End = item.Cells["M" + line].Value == null ? string.Empty : item.Cells["M" + line].Value.ToString();
+                            //var CT_Note = item.Cells["N" + line].Value == null ? string.Empty : item.Cells["N" + line].Value.ToString();
+                            //var CB_StaffID = item.Cells["O" + line].Value == null ? string.Empty : item.Cells["O" + line].Value.ToString();
+                            //var CB_Start = item.Cells["P" + line].Value == null ? string.Empty : item.Cells["P" + line].Value.ToString();
+                            //var CB_End = item.Cells["Q" + line].Value == null ? string.Empty : item.Cells["Q" + line].Value.ToString();
+                            //var CB_Note = item.Cells["R" + line].Value == null ? string.Empty : item.Cells["R" + line].Value.ToString();
+                            //var SX_StaffID = item.Cells["S" + line].Value == null ? string.Empty : item.Cells["S" + line].Value.ToString();
+                            //var SX_Start = item.Cells["T" + line].Value == null ? string.Empty : item.Cells["T" + line].Value.ToString();
+                            //var SX_End = item.Cells["U" + line].Value == null ? string.Empty : item.Cells["U" + line].Value.ToString();
+                            //var SX_Note = item.Cells["V" + line].Value == null ? string.Empty : item.Cells["V" + line].Value.ToString();
+                            var Note = item.Cells["W" + line].Value == null ? string.Empty : item.Cells["W" + line].Value.ToString();
 
                             if (string.IsNullOrEmpty(PartID))
                             {
@@ -1448,14 +1461,11 @@ namespace NNworking.Controllers.AllDept
                             C242_Prepare_Processing obj = new C242_Prepare_Processing();
 
                             DateTime dateValue;
-                            if (!string.IsNullOrEmpty(Date) && DateTime.TryParse(Date, out dateValue))
-                            {
-                                obj.Date = dateValue;
-                            }
-                            else
+                            if (!DateTime.TryParse(Date, out dateValue))
                             {
                                 throw new ArgumentException("Ngày không đúng định dạng");
                             }
+                            obj.Date = dateValue;
 
                             obj.MachineID = MachineID;
                             obj.Command = Command;
@@ -1463,83 +1473,92 @@ namespace NNworking.Controllers.AllDept
                             obj.OptionID = OptionID;
                             obj.Priority = Priority;
 
-                            obj.CB_StaffID = CB_StaffID;
-                            if (!string.IsNullOrEmpty(CB_Start))
-                            {
-                                DateTime cbStart;
-                                if (DateTime.TryParse(CB_Start, out cbStart))
-                                {
-                                    obj.CB_Start = cbStart;
-                                }
-                                else
-                                {
-                                    throw new ArgumentException("Thời gian bắt đầu chuẩn bị không đúng định dạng");
-                                }
-                            }
-                            if (!string.IsNullOrEmpty(CB_End))
-                            {
-                                DateTime cbEnd;
-                                if (DateTime.TryParse(CB_End, out cbEnd))
-                                {
-                                    obj.CB_End = cbEnd;
-                                }
-                                else
-                                {
-                                    throw new ArgumentException("Thời gian kết thúc chuẩn bị không đúng định dạng");
-                                }
-                            }
+                            obj.KH_TGCT = kh_TGCT;
+                            obj.KH_TGCB = kh_TGCB;
+                            obj.KH_TGCTh = kh_TGCTh;
+                            obj.KH_Note = KH_Note;
+                            obj.PBStaff = pbStaff;
 
-                            obj.CT_StaffID = CT_StaffID;
-                            if (!string.IsNullOrEmpty(CT_Start))
-                            {
-                                DateTime ctStart;
-                                if (DateTime.TryParse(CT_Start, out ctStart))
-                                {
-                                    obj.CT_Start = ctStart;
-                                }
-                                else
-                                {
-                                    throw new ArgumentException("Thời gian bắt đầu chương trình không đúng định dạng");
-                                }
-                            }
-                            if (!string.IsNullOrEmpty(CT_End))
-                            {
-                                DateTime ctEnd;
-                                if (DateTime.TryParse(CT_End, out ctEnd))
-                                {
-                                    obj.CT_End = ctEnd;
-                                }
-                                else
-                                {
-                                    throw new ArgumentException("Thời gian kết thúc chương trình không đúng định dạng");
-                                }
-                            }
+                            //obj.CB_StaffID = CB_StaffID;
+                            //if (!string.IsNullOrEmpty(CB_Start))
+                            //{
+                            //    DateTime cbStart;
+                            //    if (DateTime.TryParse(CB_Start, out cbStart))
+                            //    {
+                            //        obj.CB_Start = cbStart;
+                            //    }
+                            //    else
+                            //    {
+                            //        throw new ArgumentException("Thời gian bắt đầu chuẩn bị không đúng định dạng");
+                            //    }
+                            //}
+                            //if (!string.IsNullOrEmpty(CB_End))
+                            //{
+                            //    DateTime cbEnd;
+                            //    if (DateTime.TryParse(CB_End, out cbEnd))
+                            //    {
+                            //        obj.CB_End = cbEnd;
+                            //    }
+                            //    else
+                            //    {
+                            //        throw new ArgumentException("Thời gian kết thúc chuẩn bị không đúng định dạng");
+                            //    }
+                            //}
+                            //obj.CB_Note = CB_Note;
 
-                            obj.SX_StaffID = SX_StaffID;
-                            if (!string.IsNullOrEmpty(SX_Start))
-                            {
-                                DateTime sxStart;
-                                if (DateTime.TryParse(SX_Start, out sxStart))
-                                {
-                                    obj.SX_Start = sxStart;
-                                }
-                                else
-                                {
-                                    throw new ArgumentException("Thời gian bắt đầu chạy thử không đúng định dạng");
-                                }
-                            }
-                            if (!string.IsNullOrEmpty(SX_End))
-                            {
-                                DateTime sxEnd;
-                                if (DateTime.TryParse(SX_End, out sxEnd))
-                                {
-                                    obj.SX_End = sxEnd;
-                                }
-                                else
-                                {
-                                    throw new ArgumentException("Thời gian kết thúc chạy thử không đúng định dạng");
-                                }
-                            }
+                            //obj.CT_StaffID = CT_StaffID;
+                            //if (!string.IsNullOrEmpty(CT_Start))
+                            //{
+                            //    DateTime ctStart;
+                            //    if (DateTime.TryParse(CT_Start, out ctStart))
+                            //    {
+                            //        obj.CT_Start = ctStart;
+                            //    }
+                            //    else
+                            //    {
+                            //        throw new ArgumentException("Thời gian bắt đầu chương trình không đúng định dạng");
+                            //    }
+                            //}
+                            //if (!string.IsNullOrEmpty(CT_End))
+                            //{
+                            //    DateTime ctEnd;
+                            //    if (DateTime.TryParse(CT_End, out ctEnd))
+                            //    {
+                            //        obj.CT_End = ctEnd;
+                            //    }
+                            //    else
+                            //    {
+                            //        throw new ArgumentException("Thời gian kết thúc chương trình không đúng định dạng");
+                            //    }
+                            //}
+                            //obj.CT_Note = CT_Note;
+
+                            //obj.SX_StaffID = SX_StaffID;
+                            //if (!string.IsNullOrEmpty(SX_Start))
+                            //{
+                            //    DateTime sxStart;
+                            //    if (DateTime.TryParse(SX_Start, out sxStart))
+                            //    {
+                            //        obj.SX_Start = sxStart;
+                            //    }
+                            //    else
+                            //    {
+                            //        throw new ArgumentException("Thời gian bắt đầu chạy thử không đúng định dạng");
+                            //    }
+                            //}
+                            //if (!string.IsNullOrEmpty(SX_End))
+                            //{
+                            //    DateTime sxEnd;
+                            //    if (DateTime.TryParse(SX_End, out sxEnd))
+                            //    {
+                            //        obj.SX_End = sxEnd;
+                            //    }
+                            //    else
+                            //    {
+                            //        throw new ArgumentException("Thời gian kết thúc chạy thử không đúng định dạng");
+                            //    }
+                            //}
+                            //obj.SX_Note = SX_Note;
 
                             obj.Note = Note;
 
@@ -1555,6 +1574,16 @@ namespace NNworking.Controllers.AllDept
             }
 
             return true;
+        }
+
+        private DateTime VerifyDateTime(string inputData, string dataName)
+        {
+            DateTime resultDateTime;
+            if (!DateTime.TryParse(inputData, out resultDateTime))
+            {
+                throw new ArgumentException($@"Thời gian {dataName} không đúng định dạng");
+            }
+            return resultDateTime;
         }
 
         //TODO: Đang làm giở ngày 20190822: lấy lịch sử chát giữa 2 user
